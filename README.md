@@ -7,3 +7,6 @@ https://docs.google.com/document/d/e/2PACX-1vTu9-tfUnrAeRfMlmBdqOSn-AdwqrCkRLjFq
 - Eric Sung
 - Kevin Yang
 - Kyeong Hui (Kate) Park
+
+### Project Manager
+- Tim Davis
