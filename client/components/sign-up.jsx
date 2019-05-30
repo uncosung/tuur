@@ -60,7 +60,7 @@ class SignUp extends React.Component {
             <h1 className="signUp-title">Sign up</h1>
           </div>
           <Grid mx="auto" container>
-            <form style={{width: 100 + '%'}} onSubmit={this.handleSubmit} >
+            <form style={{ width: 100 + '%' }} onSubmit={this.handleSubmit} >
               <div className={classes.margin}>
                 <Grid container alignItems="flex-end">
                   <Grid item>
