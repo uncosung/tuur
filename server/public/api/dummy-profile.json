@@ -4,13 +4,15 @@
         "name": "John Doe",
         "email": "John@gmail.com",
         "location": "Los Angeles, CA",
-        "bio": "I like dogs"
+        "bio": "I like dogs",
+        "isGuide": false
     },
     {
         "id": 2,
         "name": "Billy Bob",
         "email": "BillyBob@gmail.com",
         "location": "Kansas City, MO",
-        "bio": "I like farming"
+        "bio": "I like farming",
+        "isGuide": true
     }
 ]
