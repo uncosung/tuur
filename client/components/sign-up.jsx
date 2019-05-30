@@ -57,21 +57,21 @@ class SignUp extends Component {
   handleSubmit(event) {
     console.log('submit clicked');
     event.preventDefault();
-    fetch ('/api/profile.php', {
+    fetch('/api/profile.php', {
       method: 'POST',
       body: JSON.stringify(this.state)
     })
       .then(res => res.json())
       .then(newUser => {
-        console.log(newUser)
+        console.log(newUser);
         this.setState({
           name: '',
           email: '',
           location: '',
           bio: '',
           isGuide: false
-        })
-      })
+        });
+      });
   }
 
   render() {
@@ -119,19 +119,19 @@ class SignUp extends Component {
 
             <div className={classes.margin}>
               <Grid container alignItems="flex-end">
-          
+
                 <Grid item >
-                <TextField
-                id='outlined-textarea'
-                label='Tell us about yourself'
-                multiline
-                className={classes.textField}
-                margin='normal'
-                variant='outlined'
-              />
+                  <TextField
+                    id='outlined-textarea'
+                    label='Tell us about yourself'
+                    multiline
+                    className={classes.textField}
+                    margin='normal'
+                    variant='outlined'
+                  />
                 </Grid>
               </Grid>
-         
+
             </div>
 
             <FormControlLabel control={
@@ -142,7 +142,7 @@ class SignUp extends Component {
 
           </form>
         </Grid>
-      </>  
+      </>
     );
   }
 }
