@@ -8,7 +8,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Email from '@material-ui/icons/Email';
 import LocationOn from '@material-ui/icons/LocationOn';
-import Description from '@material-ui/icons/Description';
 
 const styles = theme => ({
   margin: {
@@ -124,7 +123,7 @@ class SignUp extends Component {
 
           </form>
         </Grid>
-      </>  
+      </>
     );
   }
 }
