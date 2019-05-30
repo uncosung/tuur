@@ -8,7 +8,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Email from '@material-ui/icons/Email';
 import LocationOn from '@material-ui/icons/LocationOn';
-import Description from '@material-ui/icons/Description';
 
 const styles = theme => ({
   margin: {
@@ -101,7 +100,7 @@ class SignUp extends Component {
                 <Grid item>
                   <Email />
                 </Grid>
-                <Grid item>
+                <Grid item xs={10}>
                   <TextField required id="input-email" label="Email" name="email" onChange={this.handleChange} />
                 </Grid>
               </Grid>
@@ -131,7 +130,6 @@ class SignUp extends Component {
                   />
                 </Grid>
               </Grid>
-
             </div>
 
             <FormControlLabel control={
