@@ -20,6 +20,13 @@ const styles = theme => ({
   button: {
     margin: theme.spacing(1),
     right: 20
+  },
+  textField: {
+    marginRight: theme.spacing(1),
+    width: '100%'
+  },
+  title: {
+    textAlign: 'center'
   }
 });
 
@@ -58,7 +65,7 @@ class SignUp extends Component {
     return (
       <>
         <div className = "signUp-title-container">
-          <h1 className="signUp-title">Sign Up</h1>
+          <h1 className={classes.title}>Sign Up</h1>
         </div>
         <Grid mx="auto" container justify="center">
           <form onSubmit={this.handleSubmit} >
@@ -96,13 +103,19 @@ class SignUp extends Component {
 
             <div className={classes.margin}>
               <Grid container alignItems="flex-end">
-                <Grid item>
-                  <Description />
-                </Grid>
-                <Grid item>
-                  <TextField required id="input-shortDescription" label="Description" name="shortDescription" onChange={this.handleChange} />
+          
+                <Grid item >
+                <TextField
+                id='outlined-textarea'
+                label='Tell us about yourself'
+                multiline
+                className={classes.textField}
+                margin='normal'
+                variant='outlined'
+              />
                 </Grid>
               </Grid>
+         
             </div>
 
             <FormControlLabel control={
