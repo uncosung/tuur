@@ -17,6 +17,10 @@ const styles = theme => ({
   button: {
     margin: theme.spacing(1),
     right: 20
+  },
+  textField: {
+    marginRight: theme.spacing(1),
+    width: '100%'
   }
 });
 
@@ -56,8 +60,7 @@ class SignUp extends React.Component {
             <h1 className="signUp-title">Sign up</h1>
           </div>
           <Grid mx="auto" container>
-            <form onSubmit={this.handleSubmit} >
-
+            <form style={{width: 100 + '%'}} onSubmit={this.handleSubmit} >
               <div className={classes.margin}>
                 <Grid container alignItems="flex-end">
                   <Grid item>
@@ -67,6 +70,14 @@ class SignUp extends React.Component {
                     <TextField required id="input-name" label="Name" name="name" onChange={this.handleChange} />
                   </Grid>
                 </Grid>
+                <TextField
+                  id='outlined-textarea'
+                  label='Tell us about yourself'
+                  multiline
+                  className={classes.textField}
+                  margin='normal'
+                  variant='outlined'
+                />
               </div>
 
               <FormControlLabel control={
