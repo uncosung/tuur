@@ -73,7 +73,7 @@ class SignUp extends Component {
                   <Email />
                 </Grid>
                 <Grid item>
-                  <TextField multiline rowsMax="4"required id="input-email" label="Email" name="email" onChange={this.handleChange} />
+                  <TextField required id="input-email" label="Email" name="email" onChange={this.handleChange} />
                 </Grid>
               </Grid>
             </div>
@@ -95,7 +95,7 @@ class SignUp extends Component {
                   <Description />
                 </Grid>
                 <Grid item>
-                  <TextField required rows="4" id="input-shortDescription" label="Description" name="shortDescription" onChange={this.handleChange} />
+                  <TextField required id="input-shortDescription" label="Description" name="shortDescription" onChange={this.handleChange} />
                 </Grid>
               </Grid>
             </div>
