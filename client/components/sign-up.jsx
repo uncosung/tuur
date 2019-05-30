@@ -4,17 +4,18 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 const styles = theme => ({
   margin: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(1)
   },
   padding: {
-    padding: theme.spacing.unit
+    padding: theme.spacing(1)
   },
-  spacing: 8,
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     right: 20
   }
 });
@@ -26,16 +27,22 @@ class SignUp extends React.Component {
       name: '',
       email: '',
       location: '',
-      shortDescription: '',
-      accout: 'tuurist'
+      bio: '',
+      isGuide: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handdleToggle = this.handdleToggle.bind(this);
   }
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
+  handdleToggle(event) {
+    let isGuide = this.state.isGuide;
+    this.setState({ isGuide: !isGuide }, () => console.log(this.state));
+  }
   handleSubmit(event) {
+    console.log('submit clicked');
     event.preventDefault();
   }
   componentDidMount() {
@@ -48,19 +55,26 @@ class SignUp extends React.Component {
           <div className = "signUp-title-container">
             <h1 className="signUp-title">Sign up</h1>
           </div>
-          <Grid mx="auto" container spacing={16}>
+          <Grid mx="auto" container>
             <form onSubmit={this.handleSubmit} >
 
               <div className={classes.margin}>
-                <Grid container spacing={1} alignItems="flex-end">
+                <Grid container alignItems="flex-end">
                   <Grid item>
                     <AccountCircle />
                   </Grid>
-                  <Grid item>
+                  <Grid item xs={8}>
                     <TextField required id="input-name" label="Name" name="name" onChange={this.handleChange} />
                   </Grid>
                 </Grid>
               </div>
+
+              <FormControlLabel control={
+                <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} value="guide" />} label="Do you want to be a guide?" />
+
+              <Grid className={classes.margin} container justify="center" alignItems="center">
+                <Button justify="center" variant="contained" size="medium" color="primary" className={classes.button} onClick={this.handleSubmit}><p>Sign up</p></Button>
+              </Grid>
 
             </form>
           </Grid>
