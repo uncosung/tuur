@@ -85,7 +85,7 @@ class SignUp extends Component {
                 <Grid item>
                   <Email />
                 </Grid>
-                <Grid item>
+                <Grid item xs={10}>
                   <TextField required id="input-email" label="Email" name="email" onChange={this.handleChange} />
                 </Grid>
               </Grid>
@@ -103,19 +103,17 @@ class SignUp extends Component {
 
             <div className={classes.margin}>
               <Grid container alignItems="flex-end">
-          
                 <Grid item >
-                <TextField
-                id='outlined-textarea'
-                label='Tell us about yourself'
-                multiline
-                className={classes.textField}
-                margin='normal'
-                variant='outlined'
-              />
+                  <TextField
+                    id='outlined-textarea'
+                    label='Tell us about yourself'
+                    multiline
+                    className={classes.textField}
+                    margin='normal'
+                    variant='outlined'
+                  />
                 </Grid>
               </Grid>
-         
             </div>
 
             <FormControlLabel control={
