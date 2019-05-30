@@ -89,7 +89,7 @@ class SignUp extends Component {
                   <AccountCircle />
                 </Grid>
                 <Grid item>
-                  <TextField required id="input-name" label="Name" value = {this.state.name} name="name" onChange={this.handleChange} />
+                  <TextField required id="input-name" label="Name" value={this.state.name} name="name" onChange={this.handleInputChange} />
 
                 </Grid>
               </Grid>
