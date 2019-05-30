@@ -44,6 +44,21 @@ class SignUp extends React.Component {
   handleSubmit(event) {
     console.log('submit clicked');
     event.preventDefault();
+    fetch ('/api/profile.php', {
+      method: 'POST',
+      body: JSON.stringify(this.state)
+    })
+      .then(res => res.json())
+      .then(newUser => {
+        console.log(newUser)
+        this.setState({
+          name: '',
+          email: '',
+          location: '',
+          bio: '',
+          isGuide: false
+        })
+      })
   }
   componentDidMount() {
 
@@ -64,7 +79,7 @@ class SignUp extends React.Component {
                     <AccountCircle />
                   </Grid>
                   <Grid item xs={8}>
-                    <TextField required id="input-name" label="Name" name="name" onChange={this.handleChange} />
+                    <TextField required id="input-name" label="Name" name="name" value = {this.state.name} onChange={this.handleChange} />
                   </Grid>
                 </Grid>
               </div>
