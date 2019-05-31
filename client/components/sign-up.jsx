@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -11,21 +14,24 @@ import LocationOn from '@material-ui/icons/LocationOn';
 
 const styles = theme => ({
   margin: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(2)
   },
   padding: {
     padding: theme.spacing(1)
-  },
-  button: {
-    margin: theme.spacing(1),
-    right: 20
   },
   textField: {
     marginRight: theme.spacing(1),
     width: '100%'
   },
-  title: {
-    textAlign: 'center'
+  marginTop: {
+    marginTop: theme.spacing(3)
+  },
+  avatar: {
+    width: 60,
+    height: 60
+  },
+  marginTop2: {
+    marginTop: theme.spacing(2)
   }
 });
 
@@ -37,6 +43,7 @@ class SignUp extends Component {
       email: '',
       location: '',
       bio: '',
+      image: '',
       isGuide: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -62,68 +69,76 @@ class SignUp extends Component {
     const { classes } = this.props;
 
     return (
-      <>
-        <div className = "signUp-title-container">
-          <h1 className={classes.title}>Sign Up</h1>
-        </div>
-        <Grid mx="auto" container justify="center">
-          <form onSubmit={this.handleSubmit} >
-            <div className={classes.margin}>
-              <Grid container alignItems="flex-end">
-                <Grid item>
-                  <AccountCircle />
-                </Grid>
-                <Grid item>
-                  <TextField required id="input-name" label="Name" name="name" onChange={this.handleChange} />
-                </Grid>
-              </Grid>
-            </div>
+      <Container>
+        <Typography className={classes.marginTop} variant="h4" align="center" gutterBottom>
+        Sign up
+        </Typography>
+        <Grid mx="auto" container component="form" justify="center" onSubmit={this.handleSubmit}>
 
-            <div className={classes.margin}>
-              <Grid container alignItems="flex-end">
-                <Grid item>
-                  <Email />
-                </Grid>
-                <Grid item xs={10}>
-                  <TextField required id="input-email" label="Email" name="email" onChange={this.handleChange} />
-                </Grid>
-              </Grid>
-            </div>
-            <div className={classes.margin}>
-              <Grid container alignItems="flex-end">
-                <Grid item>
-                  <LocationOn />
-                </Grid>
-                <Grid item>
-                  <TextField required id="input-location" label="location" name="location" onChange={this.handleChange} />
-                </Grid>
-              </Grid>
-            </div>
+          <Grid className={classes.margin} container alignItems="flex-end">
+            <Grid item xs={1}>
+              <AccountCircle />
+            </Grid>
+            <Grid item xs={11}>
+              <TextField required fullWidth id="input-name" label="Name" name="name" onChange={this.handleInputChange} />
+            </Grid>
+          </Grid>
 
-            <div className={classes.margin}>
-              <Grid container alignItems="flex-end">
-                <Grid item >
-                  <TextField
-                    id='outlined-textarea'
-                    label='Tell us about yourself'
-                    multiline
-                    className={classes.textField}
-                    margin='normal'
-                    variant='outlined'
-                  />
-                </Grid>
-              </Grid>
-            </div>
+          <Grid className={classes.margin} container alignItems="flex-end">
+            <Grid item xs={1}>
+              <Email />
+            </Grid>
+            <Grid item xs={11}>
+              <TextField required fullWidth id="input-email" label="Email" name="email" onChange={this.handleInputChange} />
+            </Grid>
+          </Grid>
 
+          <Grid className={classes.margin} container alignItems="flex-end">
+            <Grid item xs={1}>
+              <LocationOn />
+            </Grid>
+            <Grid item xs={11}>
+              <TextField required fullWidth id="input-location" label="location" name="location" onChange={this.handleInputChange} />
+            </Grid>
+          </Grid>
+
+          <Grid className={classes.margin} container alignItems="flex-end">
+            <Grid item xs={2}>
+              <Avatar alt="avatar" src={this.state.image ? this.state.image : 'https://www.pngfind.com/pngs/m/481-4816267_default-icon-shadow-of-man-head-hd-png.png'} className={classes.avatar}/>
+            </Grid>
+            <Grid item xs={10}>
+              <TextField required fullWidth id="input-imageUrl" label=" Upload your image(URL)" name="image" onChange={this.handleInputChange} />
+            </Grid>
+          </Grid>
+
+          <Grid className={classes.margin} container alignItems="flex-end">
+            <Grid item xs={12}>
+              <TextField
+                id='outlined-textarea'
+                label='Tell us about yourself'
+                multiline
+                fullWidth
+                rowsMax={3}
+                className={classes.textField}
+                margin='normal'
+                name="bio"
+                onChange={this.handleInputChange}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid justify="center" className={classes.margin} container>
             <FormControlLabel control={
               <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} value="guide" />} label="Do you want to be a guide?" />
-            <Grid className={classes.margin} container justify="center" alignItems="center">
-              <Button justify="center" variant="contained" size="medium" color="primary" className={classes.button} onClick={this.handleSubmit}><p>Sign up</p></Button>
+            <Grid className={classes.marginTop} container justify="center" >
+              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
+                <Typography variant="body1" gutterBottom>sign up</Typography>
+              </Button>
             </Grid>
+          </Grid>
 
-          </form>
         </Grid>
-      </>
+      </Container>
     );
   }
 }
