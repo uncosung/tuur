@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SignUp from './components/sign-up';
+import App from './components/app';
 
 ReactDOM.render(
-  <SignUp />,
-  document.getElementById('root')
+  <App/>,
+  document.querySelector('#root')
 );
