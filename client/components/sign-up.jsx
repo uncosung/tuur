@@ -68,7 +68,7 @@ class SignUp extends Component {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
-      inputErrors: {...this.state.inputErrors, [name]:false}
+      inputErrors: { ...this.state.inputErrors, [name]: false }
     });
   }
   handdleToggle(event) {
@@ -76,9 +76,9 @@ class SignUp extends Component {
     this.setState({ isGuide: !isGuide }, () => console.log(this.state));
   }
   handleSubmit(event) {
-    const { name, email, location, bio, image, isGuide } = this.state
+    const { name, email, location, bio, image, isGuide } = this.state;
     event.preventDefault();
-    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length){
+    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length) {
       this.setState({
         inputErrors: {
           name: !this.state.name,
@@ -88,11 +88,10 @@ class SignUp extends Component {
           image: !this.state.image
         }
       });
-    }
-    else {
+    } else {
       fetch('/api/profile.php', {
         method: 'POST',
-        body: JSON.stringify({name, email, location, bio, image, isGuide})
+        body: JSON.stringify({ name, email, location, bio, image, isGuide })
       })
         .then(res => res.json())
         .then(newUser => {
@@ -118,7 +117,6 @@ class SignUp extends Component {
         </Typography>
         <Grid mx="auto" container component="form" justify="center" onSubmit={this.handleSubmit}>
 
-
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={2}>
               <AccountCircle fontSize='inherit' className={classes.paddingBottom}/>
@@ -136,7 +134,6 @@ class SignUp extends Component {
             </Grid>
           </Grid>
 
-
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={2}>
               <LocationOn fontSize='inherit' className={classes.paddingBottom}/>
@@ -151,7 +148,7 @@ class SignUp extends Component {
               <Avatar alt="avatar" src={this.state.image ? this.state.image : 'https://www.pngfind.com/pngs/m/481-4816267_default-icon-shadow-of-man-head-hd-png.png'} className={classes.avatar}/>
             </Grid>
             <Grid item xs={9}>
-              <TextField required helperText={this.state.inputErrors.image ? 'Empty Field!' : ' '} error={this.state.inputErrors.image}  fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.image ? 'Empty Field!' : ' '} error={this.state.inputErrors.image} fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end">
@@ -160,8 +157,8 @@ class SignUp extends Component {
                 id='outlined-textarea'
                 label='Tell us about yourself'
                 required
-                helperText={this.state.inputErrors.bio ? 'Empty Field!' : ' '} 
-                error={this.state.inputErrors.bio} 
+                helperText={this.state.inputErrors.bio ? 'Empty Field!' : ' '}
+                error={this.state.inputErrors.bio}
                 multiline
                 fullWidth
                 rowsMax={3}
@@ -172,7 +169,6 @@ class SignUp extends Component {
               />
             </Grid>
           </Grid>
-
 
           <Grid justify="center" className={classes.margin} container>
             <FormControlLabel control={
