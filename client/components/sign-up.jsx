@@ -14,17 +14,22 @@ import LocationOn from '@material-ui/icons/LocationOn';
 
 const styles = theme => ({
   margin: {
-    margin: theme.spacing(2)
+    margin: theme.spacing(0.5),
+    fontSize: 33
   },
   padding: {
     padding: theme.spacing(1)
+  },
+  paddingBottom: {
+    paddingBottom: theme.spacing(1)
   },
   textField: {
     marginRight: theme.spacing(1),
     width: '100%'
   },
   marginTop: {
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(5)
   },
   avatar: {
     width: 60,
@@ -114,29 +119,29 @@ class SignUp extends Component {
 
 
           <Grid className={classes.margin} container alignItems="flex-end">
-            <Grid item xs={1}>
-              <AccountCircle />
+            <Grid item xs={2}>
+              <AccountCircle fontSize='inherit' className={classes.paddingBottom}/>
             </Grid>
-            <Grid item xs={11}>
-              <TextField required error={this.state.inputErrors.name} fullWidth id="input-name" label="Name" name="name" onChange={this.handleInputChange} />
+            <Grid item xs={10}>
+              <TextField required helperText={this.state.inputErrors.name ? 'Empty Field!' : ' '} error={this.state.inputErrors.name} fullWidth id="input-name" label="Name" name="name" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end">
-            <Grid item xs={1}>
-              <Email />
+            <Grid item xs={2}>
+              <Email fontSize='inherit' className={classes.paddingBottom}/>
             </Grid>
-            <Grid item xs={11}>
-              <TextField required error={this.state.inputErrors.email} fullWidth id="input-email" label="Email" name="email" onChange={this.handleInputChange} />
+            <Grid item xs={10}>
+              <TextField required helperText={this.state.inputErrors.email ? 'Empty Field!' : ' '} error={this.state.inputErrors.email} fullWidth id="input-email" label="Email" name="email" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
 
           <Grid className={classes.margin} container alignItems="flex-end">
-            <Grid item xs={1}>
-              <LocationOn />
+            <Grid item xs={2}>
+              <LocationOn fontSize='inherit' className={classes.paddingBottom}/>
             </Grid>
-            <Grid item xs={11}>
-              <TextField required error={this.state.inputErrors.location} fullWidth id="input-location" label="location" name="location" onChange={this.handleInputChange} />
+            <Grid item xs={10}>
+              <TextField required helperText={this.state.inputErrors.location ? 'Empty Field!' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="location" name="location" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -145,7 +150,7 @@ class SignUp extends Component {
               <Avatar alt="avatar" src={this.state.image ? this.state.image : 'https://www.pngfind.com/pngs/m/481-4816267_default-icon-shadow-of-man-head-hd-png.png'} className={classes.avatar}/>
             </Grid>
             <Grid item xs={9}>
-              <TextField required error={this.state.inputErrors.image}  fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.image ? 'Empty Field!' : ' '} error={this.state.inputErrors.image}  fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end">
@@ -153,6 +158,8 @@ class SignUp extends Component {
               <TextField
                 id='outlined-textarea'
                 label='Tell us about yourself'
+                required
+                helperText={this.state.inputErrors.bio ? 'Empty Field!' : ' '} 
                 error={this.state.inputErrors.bio} 
                 multiline
                 fullWidth
