@@ -37,7 +37,13 @@ class SignUp extends Component {
       email: '',
       location: '',
       bio: '',
-      isGuide: false
+      isGuide: false,
+      inputErrors: {
+        name: false,
+        email: false,
+        location: false,
+        bio: false
+      }
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handdleToggle = this.handdleToggle.bind(this);
@@ -46,7 +52,8 @@ class SignUp extends Component {
   handleInputChange(event) {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+      [name]: value,
+      inputErrors: {...this.state.inputErrors, [name]:false}
     });
   }
   handdleToggle(event) {
@@ -56,21 +63,33 @@ class SignUp extends Component {
   handleSubmit(event) {
     console.log('submit clicked');
     event.preventDefault();
-    fetch('/api/profile.php', {
-      method: 'POST',
-      body: JSON.stringify(this.state)
-    })
-      .then(res => res.json())
-      .then(newUser => {
-        console.log(newUser);
-        this.setState({
-          name: '',
-          email: '',
-          location: '',
-          bio: '',
-          isGuide: false
-        });
+    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length){
+      this.setState({
+        inputErrors: {
+          name: !this.state.name,
+          email: !this.state.email,
+          location: !this.state.location,
+          bio: !this.state.bio
+        }
       });
+    }
+    else {
+      fetch('/api/profile.php', {
+        method: 'POST',
+        body: JSON.stringify(this.state)
+      })
+        .then(res => res.json())
+        .then(newUser => {
+          console.log(newUser);
+          this.setState({
+            name: '',
+            email: '',
+            location: '',
+            bio: '',
+            isGuide: false
+          });
+        });
+    }
   }
 
   render() {
@@ -89,7 +108,7 @@ class SignUp extends Component {
                   <AccountCircle />
                 </Grid>
                 <Grid item>
-                  <TextField required id="input-name" label="Name" value={this.state.name} name="name" onChange={this.handleInputChange} />
+                  <TextField error={this.state.inputErrors.name} required id="input-name" label="Name" value={this.state.name} name="name" onChange={this.handleInputChange} />
 
                 </Grid>
               </Grid>
@@ -101,7 +120,7 @@ class SignUp extends Component {
                   <Email />
                 </Grid>
                 <Grid item xs={10}>
-                  <TextField required id="input-email" label="Email" value={this.state.email} name="email" onChange={this.handleInputChange} />
+                  <TextField error={this.state.inputErrors.email} required id="input-email" label="Email" value={this.state.email} name="email" onChange={this.handleInputChange} />
                 </Grid>
               </Grid>
             </div>
@@ -111,7 +130,7 @@ class SignUp extends Component {
                   <LocationOn />
                 </Grid>
                 <Grid item>
-                  <TextField required id="input-location" label="location" value={this.state.location} name="location" onChange={this.handleInputChange} />
+                  <TextField error={this.state.inputErrors.location} required id="input-location" label="location" value={this.state.location} name="location" onChange={this.handleInputChange} />
                 </Grid>
               </Grid>
             </div>
@@ -121,6 +140,7 @@ class SignUp extends Component {
 
                 <Grid item >
                   <TextField
+                    error={this.state.inputErrors.bio} 
                     onChange = {this.handleInputChange}
                     id='outlined-textarea'
                     name = 'bio'
