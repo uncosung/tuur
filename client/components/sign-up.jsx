@@ -101,7 +101,7 @@ class SignUp extends Component {
                   <Email />
                 </Grid>
                 <Grid item xs={10}>
-                  <TextField required id="input-email" label="Email" name="email" onChange={this.handleChange} />
+                  <TextField required id="input-email" label="Email" value={this.state.email} name="email" onChange={this.handleInputChange} />
                 </Grid>
               </Grid>
             </div>
@@ -111,7 +111,7 @@ class SignUp extends Component {
                   <LocationOn />
                 </Grid>
                 <Grid item>
-                  <TextField required id="input-location" label="location" name="location" onChange={this.handleChange} />
+                  <TextField required id="input-location" label="location" value={this.state.location} name="location" onChange={this.handleInputChange} />
                 </Grid>
               </Grid>
             </div>
@@ -121,9 +121,12 @@ class SignUp extends Component {
 
                 <Grid item >
                   <TextField
+                    onChange = {this.handleInputChange}
                     id='outlined-textarea'
+                    name = 'bio'
                     label='Tell us about yourself'
-                    multiline
+                    value={this.state.bio} 
+                    multiline 
                     className={classes.textField}
                     margin='normal'
                     variant='outlined'
