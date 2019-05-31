@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import LinesEllipsis from 'react-lines-ellipsis';
 
 const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    margin: theme.spacing(1)
+  },
+  gridList: {
+    flexWrap: 'nowrap',
+    transform: 'translateZ(0)',
+    margin: theme.spacing(2),
+    height: 300
+  },
   marginTop: {
     marginTop: theme.spacing(3)
   },
@@ -16,25 +26,16 @@ const styles = theme => ({
     width: 80,
     height: 80
   },
-  cardContainer: {
-    marginBottom: theme.spacing(3),
-    display: 'flex',
-    flexDirection: 'row',
-    padding: 10,
-    overflowX: 'auto'
-  },
   marginLeft: {
     marginLeft: theme.spacing(2)
   },
-  card: {
-    width: 300,
-    height: 400
-  },
-  content: {
-    height: 220
-  },
   media: {
-    height: 250
+    height: 200
+  },
+  font: {
+    fontFamily: 'Roboto',
+    fontSize: '1.2rem',
+    marginRight: theme.spacing(1)
   }
 });
 
@@ -47,34 +48,44 @@ class UpCommingTuurItem extends Component {
     const { classes } = this.props;
     return (
       <>
-        <Grid className={classes.cardContainer} container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          spacing={0}
-          style={{ overflowX: 'auto', fontSize: '14px' }}>
+      <div className={classes.root}>
+        <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
 
-          <Card className={classes.card}>
-            <CardActionArea>
-              <CardMedia className={classes.media} component="img" image="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
-              <CardContent className={classes.content}>
-                <Typography variant="body1">it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+          <GridListTile className={classes.font}>
+            <img className={classes.media} src="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
+            <LinesEllipsis
+              text = "it is an amazing spot for chilling on the grass with coffee and a book.it is an amazing spot for chilling on the grass with coffe A few very interesting stores could be found there as well. Check it out!it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!"
+              maxLine='3'
+              ellipsis='...'
+              trimRight
+              basedOn='letters'
+            />
+          </GridListTile>
 
-          <Card className={classes.card}>
-            <CardActionArea>
-              <CardMedia className={classes.media} component="img" image="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
-              <CardContent className={classes.content}>
-                <Typography variant="body1">it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+          <GridListTile className={classes.font}>
+            <img className={classes.media} src="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
+            <LinesEllipsis
+              text = "chilling on the grass with coffee and a book. A few very interesting stores could be found coffee and a book. A few very interesting stores there as well.  Check it out! Check it out!it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!"
+              maxLine='3'
+              ellipsis='...'
+              trimRight
+              basedOn='letters'
+            />
+          </GridListTile>
 
-        </Grid>
+          <GridListTile className={classes.font}>
+            <img className={classes.media} src="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
+            <LinesEllipsis
+              text = "A few very interesting stores could be found there as well. Check it out!  Check it out! it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!"
+              maxLine='3'
+              ellipsis='...'
+              trimRight
+              basedOn='letters'
+            />
+          </GridListTile>
+
+        </GridList>
+      </div>
       </>
     );
   }

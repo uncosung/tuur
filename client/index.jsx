@@ -6,7 +6,7 @@ import UpCommingTuursList from './components/user-upcomming-tuurs-list';
 
 ReactDOM.render(
   <>
-  <UserProfile />,
+  <UserProfile />
   <UpCommingTuursList />
   </>,
   document.getElementById('root')
