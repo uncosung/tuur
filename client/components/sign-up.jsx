@@ -21,7 +21,8 @@ const styles = theme => ({
     padding: theme.spacing(1)
   },
   paddingBottom: {
-    paddingBottom: theme.spacing(1)
+    paddingBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(1)
   },
   textField: {
     marginRight: theme.spacing(1),
@@ -75,7 +76,7 @@ class SignUp extends Component {
     this.setState({ isGuide: !isGuide }, () => console.log(this.state));
   }
   handleSubmit(event) {
-    console.log('submit clicked');
+    const { name, email, location, bio, image, isGuide } = this.state
     event.preventDefault();
     if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length){
       this.setState({
@@ -91,7 +92,7 @@ class SignUp extends Component {
     else {
       fetch('/api/profile.php', {
         method: 'POST',
-        body: JSON.stringify(this.state)
+        body: JSON.stringify({name, email, location, bio, image, isGuide})
       })
         .then(res => res.json())
         .then(newUser => {
@@ -141,7 +142,7 @@ class SignUp extends Component {
               <LocationOn fontSize='inherit' className={classes.paddingBottom}/>
             </Grid>
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.location ? 'Empty Field!' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="location" name="location" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.location ? 'Empty Field!' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="Location" name="location" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
