@@ -44,7 +44,15 @@ class SignUp extends Component {
       location: '',
       bio: '',
       image: '',
-      isGuide: false
+      isGuide: false,
+      inputErrors: {
+        name: false,
+        email: false,
+        location: false,
+        image: false,
+        bio: false
+      }
+
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handdleToggle = this.handdleToggle.bind(this);
@@ -53,7 +61,8 @@ class SignUp extends Component {
   handleInputChange(event) {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+      [name]: value,
+      inputErrors: {...this.state.inputErrors, [name]:false}
     });
   }
   handdleToggle(event) {
@@ -63,21 +72,34 @@ class SignUp extends Component {
   handleSubmit(event) {
     console.log('submit clicked');
     event.preventDefault();
-    fetch('/api/profile.php', {
-      method: 'POST',
-      body: JSON.stringify(this.state)
-    })
-      .then(res => res.json())
-      .then(newUser => {
-        console.log(newUser);
-        this.setState({
-          name: '',
-          email: '',
-          location: '',
-          bio: '',
-          isGuide: false
-        });
+    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length){
+      this.setState({
+        inputErrors: {
+          name: !this.state.name,
+          email: !this.state.email,
+          location: !this.state.location,
+          bio: !this.state.bio,
+          image: !this.state.image
+        }
       });
+    }
+    else {
+      fetch('/api/profile.php', {
+        method: 'POST',
+        body: JSON.stringify(this.state)
+      })
+        .then(res => res.json())
+        .then(newUser => {
+          console.log(newUser);
+          this.setState({
+            name: '',
+            email: '',
+            location: '',
+            bio: '',
+            isGuide: false
+          });
+        });
+    }
   }
 
   render() {
@@ -90,30 +112,31 @@ class SignUp extends Component {
         </Typography>
         <Grid mx="auto" container component="form" justify="center" onSubmit={this.handleSubmit}>
 
+
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={1}>
               <AccountCircle />
             </Grid>
             <Grid item xs={11}>
-              <TextField required fullWidth id="input-name" label="Name" name="name" onChange={this.handleInputChange} />
+              <TextField required error={this.state.inputErrors.name} fullWidth id="input-name" label="Name" name="name" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
-
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={1}>
               <Email />
             </Grid>
             <Grid item xs={11}>
-              <TextField required fullWidth id="input-email" label="Email" name="email" onChange={this.handleInputChange} />
+              <TextField required error={this.state.inputErrors.email} fullWidth id="input-email" label="Email" name="email" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
+
 
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={1}>
               <LocationOn />
             </Grid>
             <Grid item xs={11}>
-              <TextField required fullWidth id="input-location" label="location" name="location" onChange={this.handleInputChange} />
+              <TextField required error={this.state.inputErrors.location} fullWidth id="input-location" label="location" name="location" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -122,15 +145,15 @@ class SignUp extends Component {
               <Avatar alt="avatar" src={this.state.image ? this.state.image : 'https://www.pngfind.com/pngs/m/481-4816267_default-icon-shadow-of-man-head-hd-png.png'} className={classes.avatar}/>
             </Grid>
             <Grid item xs={9}>
-              <TextField required fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
+              <TextField required error={this.state.inputErrors.image}  fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
-
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={12}>
               <TextField
                 id='outlined-textarea'
                 label='Tell us about yourself'
+                error={this.state.inputErrors.bio} 
                 multiline
                 fullWidth
                 rowsMax={3}
@@ -141,6 +164,7 @@ class SignUp extends Component {
               />
             </Grid>
           </Grid>
+
 
           <Grid justify="center" className={classes.margin} container>
             <FormControlLabel control={
