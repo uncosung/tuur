@@ -3,15 +3,17 @@ import UserProfile from './user-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 import BottomNav from './bottom-nav';
+import DatePicker from './daterangepicker';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <EditProfile/>
-        {/* <UserProfile/> */}
-        {/* <SignUp /> */}
-        <BottomNav />
+
+        {/* <EditProfile/> */}
+        {/* <SignUp />
+        <BottomNav /> */}
+        <DatePicker />
       </div>
     );
   }
