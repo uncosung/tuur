@@ -39,7 +39,7 @@ const styles = theme => ({
   }
 });
 
-class UpCommingTuurItem extends Component {
+class UpComingTuurItem extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -91,4 +91,4 @@ class UpCommingTuurItem extends Component {
   }
 }
 
-export default withStyles(styles)(UpCommingTuurItem);
+export default withStyles(styles)(UpComingTuurItem);

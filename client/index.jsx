@@ -7,7 +7,7 @@ import EditProfile from './components/user-edit-profile';
 ReactDOM.render(
   <>
   {/* <UserProfile />,
-  <UpCommingTuursList /> */}
+  <UpComingTuursList /> */}
   <EditProfile />
 
   </>,

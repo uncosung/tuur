@@ -1,10 +1,11 @@
+
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import UpCommingTuurItem from './user-upcomming-tuurs-list-item';
+import UpComingTuurItem from './user-upcoming-tuurs-list-item';
 
 const styles = theme => ({
   marginTop: {
@@ -28,20 +29,20 @@ const styles = theme => ({
   }
 });
 
-function UpCommingTuursList(props) {
+function UpComingTuursList(props) {
 
   const { classes } = props;
   return (
       <>
        <Container className={classes.marginBottom} >
          <Typography className={classes.marginTop} variant="h4">
-        Upcomming Tuurs
+        Upcoming Tuurs
          </Typography>
        </Container>
 
-        <UpCommingTuurItem />
+        <UpComingTuurItem />
       </>
   );
 }
 
-export default withStyles(styles)(UpCommingTuursList);
+export default withStyles(styles)(UpComingTuursList);
