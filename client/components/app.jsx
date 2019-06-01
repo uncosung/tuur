@@ -4,6 +4,7 @@ import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 import BottomNav from './bottom-nav';
 import DatePicker from './daterangepicker';
+import UpComingTuursList from './user-upcoming-tuurs-list';
 
 class App extends Component {
   render() {
@@ -11,9 +12,10 @@ class App extends Component {
       <div>
 
         {/* <EditProfile/> */}
-        {/* <SignUp />
-        <BottomNav /> */}
-        <DatePicker />
+        {/* <UserProfile/> */}
+        {/* <SignUp /> */}
+        <UpComingTuursList />
+        <BottomNav />
       </div>
     );
   }
