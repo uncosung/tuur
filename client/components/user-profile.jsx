@@ -25,22 +25,36 @@ const styles = theme => ({
 class UserProfile extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      name: '',
+      location: ''
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit(event) {
-    console.log('clicked');
+    // console.log('clicked');
   }
+
+  componentDidMount() {
+    const email = 'timD@gmail.com';
+    fetch(`api/profile.php?email=${email}`)
+      .then(res => res.json())
+      .then(response => this.setState({
+        name: response.name,
+        location: response.location
+      }));
+  }
+
   render() {
     const { classes } = this.props;
     return (
       <>
       <Container className={classes.marginBottom} >
         <Typography className={classes.marginTop} variant="h4">
-        John Doe
+          {this.state.name}
         </Typography>
         <Typography className={classes.marginLeft} variant="subtitle1">
-        Los Angels, CA
+          {this.state.location}
         </Typography>
       </Container>
       <Container>
