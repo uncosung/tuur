@@ -8,7 +8,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <SignUp />
+        <EditProfile/>
+        {/* <UserProfile/> */}
+        {/* <SignUp /> */}
         <BottomNav />
       </div>
     );

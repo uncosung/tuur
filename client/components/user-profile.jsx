@@ -46,12 +46,13 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    const email = 'timD@gmail.com';
+    const email = 'dPaschal@gmail.com';
     fetch(`api/profile.php?email=${email}`)
       .then(res => res.json())
       .then(response => this.setState({
         name: response.name,
-        location: response.location
+        location: response.location,
+        image: response.image
       }));
   }
 
@@ -73,7 +74,7 @@ class UserProfile extends Component {
           justify="center"
           alignItems="center">
           <Grid item xs={4}>
-            <Avatar alt="avatar" src={'https://s3.amazonaws.com/kairos-media/team/Ben_Virdee-Chapman.jpeg'} className={classes.avatar} />
+            <Avatar alt="avatar" src={this.state.image} className={classes.avatar} />
           </Grid>
           <Grid item xs={6}>
             <ThemeProvider theme={theme}>

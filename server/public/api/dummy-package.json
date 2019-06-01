@@ -13,11 +13,11 @@
       "05/31/2019",
       "09/01/2019"
     ],
-    "main_image": "image.png",
+    "mainImage": "image.png",
     "images": [
       "image.png",
       "image2.png"
     ],
-    "profile_id": 1
+    "profileEmail": 1
   }
 ]

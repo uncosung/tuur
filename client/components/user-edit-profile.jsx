@@ -40,27 +40,79 @@ const styles = theme => ({
 class EditProfile extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      name: '',
+      email: '',
+      location: '',
+      image: '',
+      bio: ''
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleInputChange() {
-
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value,
+      inputErrors: { ...this.state.inputErrors, [name]: false }
+    });
   }
 
   handleSubmit() {
+    const { name, email, location, bio, image } = this.state;
+    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length) {
+      this.setState({
+        inputErrors: {
+          name: !this.state.name,
+          email: !this.state.email,
+          location: !this.state.location,
+          bio: !this.state.bio,
+          image: !this.state.image
+        }
+      });
+    }
+    else {
+      const { name, email, location, bio, image } = this.state;
+      fetch(`api/profile.php?email=${email}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          location: location,
+          image: image,
+          bio: bio
+        })
+      })
+        .then(res=>res.json())
+        .then(updated => {
+          console.log('updated')
+        })
 
+    }
   }
-
+  componentDidMount() {
+    const email = 'dPaschal@gmail.com';
+    fetch(`api/profile.php?email=${email}`)
+      .then(res => res.json())
+      .then(response => this.setState({
+        name: response.name,
+        email: response.email,
+        location: response.location,
+        image: response.image,
+        bio: response.bio
+      }));
+  }
   render() {
     const { classes } = this.props;
     return (
             <>
             <Container className={classes.marginBottom} >
               <Typography className={classes.marginTop} variant="h4">
-              John Doe
+              {this.state.name}
               </Typography>
               <Typography className={classes.marginLeft} variant="subtitle1">
-              Los Angeles, CA
+              {this.state.location}
               </Typography>
             </Container>
             <Container>
@@ -69,7 +121,7 @@ class EditProfile extends Component {
                 justify="center"
                 alignItems="center">
                 <Grid item >
-                  <Avatar alt="avatar" src={'https://s3.amazonaws.com/kairos-media/team/Ben_Virdee-Chapman.jpeg'} className={classes.avatar} />
+                  <Avatar alt="avatar" src={this.state.image} className={classes.avatar} />
                 </Grid>
               </Grid>
             </Container>
@@ -81,7 +133,7 @@ class EditProfile extends Component {
                     <AccountCircle fontSize='inherit' />
                   </Grid>
                   <Grid item xs={10}>
-                    <TextField required fullWidth id="input-name" label="Name" name="name" onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-name" label="Name" name="name" value={this.state.name} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
                 <Grid className={classes.margin} container alignItems="flex-end">
@@ -89,7 +141,7 @@ class EditProfile extends Component {
                     <Email fontSize='inherit' />
                   </Grid>
                   <Grid item xs={10}>
-                    <TextField required fullWidth id="input-email" label="Email" name="email" onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-email" label="Email" name="email" value={this.state.email} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
 
@@ -98,13 +150,13 @@ class EditProfile extends Component {
                     <LocationOn fontSize='inherit'/>
                   </Grid>
                   <Grid item xs={10}>
-                    <TextField required fullWidth id="input-location" label="location" name="location" onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-location" label="location" name="location" value={this.state.location} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
 
                 <Grid className={classes.margin} container alignItems="flex-end">
                   <Grid item xs={12}>
-                    <TextField required fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" value={this.state.image} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
 
@@ -114,6 +166,7 @@ class EditProfile extends Component {
                       id='outlined-textarea'
                       label='Tell us about yourself'
                       required
+                      value={this.state.bio}
                       multiline
                       fullWidth
                       rowsMax={3}
