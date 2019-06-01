@@ -14,6 +14,12 @@ const styles = theme => ({
     width: 80,
     height: 80
   },
+  cardContainer: {
+    marginBottom: theme.spacing(1),
+    display: 'flex',
+    padding: 10,
+    width: '40rem'
+  },
   marginBottom: {
     marginBottom: theme.spacing(2)
   },
@@ -32,17 +38,8 @@ function UpCommingTuursList(props) {
         Upcomming Tuurs
          </Typography>
        </Container>
-      <Container className={classes.marginBottom} >
 
-        <Grid className={classes.marginBottom} container
-          direction="row"
-          justify="center"
-          alignItems="center">
-
-          <UpCommingTuurItem />
-
-        </Grid>
-      </Container>
+        <UpCommingTuurItem />
       </>
   );
 }
