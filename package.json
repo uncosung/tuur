@@ -23,12 +23,10 @@
   "dependencies": {
     "@material-ui/core": "^4.0.1",
     "@material-ui/icons": "^4.0.1",
-    "@wojtekmaj/react-daterange-picker": "^2.2.0",
     "install": "^0.12.2",
     "moment": "^2.24.0",
     "npm": "^6.9.0",
     "react": "^16.8.6",
-    "react-dates": "^20.2.0",
     "react-dom": "^16.8.6",
     "react-infinite-calendar": "^2.3.1",
     "react-lines-ellipsis": "^0.14.1",
