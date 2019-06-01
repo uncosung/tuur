@@ -91,10 +91,6 @@ class SignUp extends Component {
     } else {
       fetch('/api/profile.php', {
         method: 'POST',
-        header: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
         body: JSON.stringify(
           {name, email, location, bio, image, isGuide})
         
