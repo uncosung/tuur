@@ -42,27 +42,26 @@ const styles = theme => ({
   }
 });
 
-class UpComingTuursList extends React.Component{
-  constructor(props){
+class UpComingTuursList extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       packages: []
-    }
+    };
   }
 
-  componentDidMount(){
-    fetch( '/api/package.php')
-    .then( res => res.json())
-    .then( packages => this.setState({ packages: packages }))
+  componentDidMount() {
+    fetch('/api/package.php')
+      .then(res => res.json())
+      .then(packages => this.setState({ packages: packages }));
   }
 
-
-
-  render(){
-    console.log( this.state.packages)
+  render() {
+    console.log(this.state.packages);
     const { classes } = this.props;
-    const packageMap = this.state.packages.map( packageItem => {
-    return <UpComingTuurItem package={packageItem} key={packageItem.id} />})
+    const packageMap = this.state.packages.map(packageItem => {
+      return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
+    });
     return (
       <>
         <Container className={classes.marginBottom} >
@@ -76,11 +75,9 @@ class UpComingTuursList extends React.Component{
           </GridList>
         </div>
       </>
-  );
+    );
   }
-  
+
 }
-
-
 
 export default withStyles(styles)(UpComingTuursList);

@@ -46,10 +46,8 @@ class UpComingTuurItem extends Component {
     };
   }
 
-  
-
   render() {
-    console.log( this.props.package);
+    console.log(this.props.package);
     const { classes } = this.props;
     return (
       <>
