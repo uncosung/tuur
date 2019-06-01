@@ -42,50 +42,25 @@ const styles = theme => ({
 class UpComingTuurItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+    };
   }
+
   render() {
+    console.log(this.props.package);
     const { classes } = this.props;
     return (
       <>
-      <div className={classes.root}>
-        <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-
           <GridListTile className={classes.font}>
-            <img className={classes.media} src="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
+            <img className={classes.media} src={this.props.package.mainImage} alt="image" />
             <LinesEllipsis
-              text = "it is an amazing spot for chilling on the grass with coffee and a book.it is an amazing spot for chilling on the grass with coffe A few very interesting stores could be found there as well. Check it out!it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!"
+              text = {this.props.package.description}
               maxLine='3'
               ellipsis='...'
               trimRight
               basedOn='letters'
             />
           </GridListTile>
-
-          <GridListTile className={classes.font}>
-            <img className={classes.media} src="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
-            <LinesEllipsis
-              text = "chilling on the grass with coffee and a book. A few very interesting stores could be found coffee and a book. A few very interesting stores there as well.  Check it out! Check it out!it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!"
-              maxLine='3'
-              ellipsis='...'
-              trimRight
-              basedOn='letters'
-            />
-          </GridListTile>
-
-          <GridListTile className={classes.font}>
-            <img className={classes.media} src="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
-            <LinesEllipsis
-              text = "A few very interesting stores could be found there as well. Check it out!  Check it out! it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!"
-              maxLine='3'
-              ellipsis='...'
-              trimRight
-              basedOn='letters'
-            />
-          </GridListTile>
-
-        </GridList>
-      </div>
       </>
     );
   }
