@@ -66,7 +66,7 @@ class UserProfile extends Component {
             <Avatar alt="avatar" src={'https://s3.amazonaws.com/kairos-media/team/Ben_Virdee-Chapman.jpeg'} className={classes.avatar} />
           </Grid>
           <Grid item xs={6}>
-            <Button type="submit" fullWidth variant="contained" color="primary" onClick={this.handleSubmit} >
+            <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile')} >
               <Typography variant="button">Edit</Typography>
             </Button>
           </Grid>

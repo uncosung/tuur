@@ -96,8 +96,8 @@ class SignUp extends Component {
           'Accept': 'application/json'
         },
         body: JSON.stringify(
-          {name, email, location, bio, image, isGuide})
-        
+          { name, email, location, bio, image, isGuide })
+
       })
         .then(res => res.json())
         .then(newUser => {
@@ -180,7 +180,7 @@ class SignUp extends Component {
             <FormControlLabel control={
               <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} value="guide" />} label="Do you want to be a guide?" />
             <Grid className={classes.marginTop} container justify="center" >
-              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
+              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('userProfile')}>
                 <Typography variant="body1" gutterBottom>sign up</Typography>
               </Button>
             </Grid>
