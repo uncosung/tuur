@@ -9,14 +9,18 @@ import Message from '@material-ui/icons/Message';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 // const useStyles = makeStyles({
-//
+//     stickToBottom: {
+//         width: '100%',
+//         position: 'fixed',
+//         bottom: 0,
+//       },
 // });
 
 function BottomNav() {
-  // const classes = useStyles();
+//   const classes = useStyles();
 
   return (
-    <BottomNavigation showLabels >
+    <BottomNavigation showLabels>
       <BottomNavigationAction label="Home" icon={<Home />} />
       <BottomNavigationAction label="Favorites" icon={<FavoriteBorder />} />
       <BottomNavigationAction label="Itinerary" icon={<CardTravel />} />
@@ -26,4 +30,5 @@ function BottomNav() {
   );
 }
 
+// export default makeStyles(useStyles)(BottomNav);
 export default BottomNav;

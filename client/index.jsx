@@ -1,16 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SignUp from './components/sign-up';
-// import UserProfile from './components/user-profile';
-import EditProfile from './components/user-edit-profile';
-
+import App from './components/app';
 ReactDOM.render(
-  <>
-  {/* <UserProfile />,
-  <UpComingTuursList /> */}
-  {/* <EditProfile /> */}
-  <SignUp/>
-
-  </>,
+  <App />,
   document.getElementById('root')
 );
