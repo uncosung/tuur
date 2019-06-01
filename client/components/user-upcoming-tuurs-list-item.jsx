@@ -17,7 +17,7 @@ const styles = theme => ({
     flexWrap: 'nowrap',
     transform: 'translateZ(0)',
     margin: theme.spacing(2),
-    height: 300
+    height: 310
   },
   marginTop: {
     marginTop: theme.spacing(3)
