@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
@@ -11,6 +10,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Email from '@material-ui/icons/Email';
 import LocationOn from '@material-ui/icons/LocationOn';
+import { ThemeProvider } from '@material-ui/styles';
+import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#3A8288' },
+    secondary: { main: '#5bd1d7' },
+    lightBeige: { main: '#f1f1f1' },
+    beige: { main: '#f5e1da' }
+  }
+});
 
 const styles = theme => ({
   margin: {
@@ -92,8 +102,8 @@ class SignUp extends Component {
       fetch('/api/profile.php', {
         method: 'POST',
         body: JSON.stringify(
-          {name, email, location, bio, image, isGuide})
-        
+          { name, email, location, bio, image, isGuide })
+
       })
         .then(res => res.json())
         .then(newUser => {
@@ -124,7 +134,7 @@ class SignUp extends Component {
               <AccountCircle fontSize='inherit' className={classes.paddingBottom}/>
             </Grid>
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.name ? 'Empty Field!' : ' '} error={this.state.inputErrors.name} fullWidth id="input-name" label="Name" name="name" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.name ? 'Name must include first and last name' : ' '} error={this.state.inputErrors.name} fullWidth id="input-name" label="Name" name="name" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end">
@@ -132,7 +142,7 @@ class SignUp extends Component {
               <Email fontSize='inherit' className={classes.paddingBottom}/>
             </Grid>
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.email ? 'Empty Field!' : ' '} error={this.state.inputErrors.email} fullWidth id="input-email" label="Email" name="email" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.email ? 'Email is invalid or already taken' : ' '} error={this.state.inputErrors.email} fullWidth id="input-email" label="Email" name="email" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -141,7 +151,7 @@ class SignUp extends Component {
               <LocationOn fontSize='inherit' className={classes.paddingBottom}/>
             </Grid>
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.location ? 'Empty Field!' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="Location" name="location" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.location ? 'Please enter your location' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="Location" name="location" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -150,16 +160,16 @@ class SignUp extends Component {
               <Avatar alt="avatar" src={this.state.image ? this.state.image : 'https://www.pngfind.com/pngs/m/481-4816267_default-icon-shadow-of-man-head-hd-png.png'} className={classes.avatar}/>
             </Grid>
             <Grid item xs={9}>
-              <TextField required helperText={this.state.inputErrors.image ? 'Empty Field!' : ' '} error={this.state.inputErrors.image} fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.image ? 'Please enter a valid image url' : ' '} error={this.state.inputErrors.image} fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={12}>
               <TextField
                 id='outlined-textarea'
-                label='Tell us about yourself'
+                label='Tell us about yourself(In 150 characters)'
                 required
-                helperText={this.state.inputErrors.bio ? 'Empty Field!' : ' '}
+                helperText={this.state.inputErrors.bio ? 'Please enter a short description about yourself' : ' '}
                 error={this.state.inputErrors.bio}
                 multiline
                 fullWidth
@@ -176,9 +186,11 @@ class SignUp extends Component {
             <FormControlLabel control={
               <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} value="guide" />} label="Do you want to be a guide?" />
             <Grid className={classes.marginTop} container justify="center" >
-              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
-                <Typography variant="body1" gutterBottom>sign up</Typography>
-              </Button>
+              <ThemeProvider theme={theme}>
+                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
+                  <Typography variant="body1" gutterBottom>sign up</Typography>
+                </Button>
+              </ThemeProvider>
             </Grid>
           </Grid>
 
