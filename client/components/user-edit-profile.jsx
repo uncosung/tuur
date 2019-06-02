@@ -71,8 +71,7 @@ class EditProfile extends Component {
           image: !this.state.image
         }
       });
-    }
-    else {
+    } else {
       const { name, email, location, bio, image } = this.state;
       fetch(`api/profile.php?email=${email}`, {
         method: 'PATCH',
@@ -84,10 +83,10 @@ class EditProfile extends Component {
           bio: bio
         })
       })
-        .then(res=>res.json())
+        .then(res => res.json())
         .then(updated => {
-          console.log('updated')
-        })
+          console.log('updated');
+        });
 
     }
   }
@@ -109,10 +108,10 @@ class EditProfile extends Component {
             <>
             <Container className={classes.marginBottom} >
               <Typography className={classes.marginTop} variant="h4">
-              {this.state.name}
+                {this.state.name}
               </Typography>
               <Typography className={classes.marginLeft} variant="subtitle1">
-              {this.state.location}
+                {this.state.location}
               </Typography>
             </Container>
             <Container>
