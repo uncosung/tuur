@@ -11,6 +11,7 @@ import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
 import DirectionsRun from '@material-ui/icons/DirectionsRun';
 import FreeBreakfast from '@material-ui/icons/FreeBreakfast';
 import DirectionsBike from '@material-ui/icons/DirectionsBike';
+import CalendarToday from '@material-ui/icons/CalendarToday';
 
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
@@ -53,6 +54,12 @@ const styles = theme => ({
   },
   marginTop2: {
     marginTop: theme.spacing(2)
+  },
+  marginLeft: {
+    marginLeft: theme.spacing(3)
+  },
+  marginLeft2: {
+    marginLeft: theme.spacing(2)
   },
   chip: {
     width: '31%',
@@ -146,7 +153,7 @@ class CreatePackage extends Component {
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.language ? 'Please provide a language' : ' '} error={this.state.inputErrors.language} fullWidth id="input-language" label="language" name="language" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.language ? 'Please provide a language' : ' '} error={this.state.inputErrors.language} fullWidth id="input-language" label="Language" name="language" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -180,17 +187,16 @@ class CreatePackage extends Component {
             </Grid>
           </Grid>
 
-          <Grid className={classes.margin} container alignItems="flex-end" justify="center">
-            <Grid item xs={10}>
+          <Grid className={classes.margin} container alignItems="flex-end">
+            <Grid item xs={6} className={classes.marginLeft}>
               <Typography className={classes.subtitle} variant="subtitle2" align="left" gutterBottom>
               Available Dates
               </Typography>
-              <ThemeProvider theme={theme}>
-                <Button type="submit" className={classes.select} fullWidth variant="contained" color="secondary" onClick={this.handleSubmit}>
-                  <Typography variant="body1" gutterBottom>Select Date</Typography>
-                </Button>
-              </ThemeProvider>
             </Grid>
+            <Grid item xs={2} >
+              <CalendarToday />
+            </Grid>
+
           </Grid>
 
           <Grid className={classes.marginTop} container alignItems="flex-end" justify="center">
