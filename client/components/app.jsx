@@ -46,6 +46,12 @@ class App extends Component {
         }
         <CreatePackage />
 
+        {/* <EditProfile/> */}
+        {/* <UserProfile/> */}
+        {/* <SignUp /> */}
+        {/* <UpComingTuursList /> */}
+        <DatePicker/>
+        {/* <BottomNav /> */}
       </div>
     );
   }
