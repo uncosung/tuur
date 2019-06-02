@@ -59,7 +59,8 @@ class EditProfile extends Component {
     });
   }
 
-  handleSubmit() {
+  handleSubmit( evt ) {
+    evt.preventDefault();
     const { name, email, location, bio, image } = this.state;
     if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length) {
       this.setState({
@@ -84,11 +85,10 @@ class EditProfile extends Component {
         })
       })
         .then(res => res.json())
-        .then(updated => {
-          console.log('updated');
-        });
+        .then( data => {
+          console.log( 'updated');
+        })
         this.props.view('userProfile')
-        
     }
   }
   componentDidMount() {

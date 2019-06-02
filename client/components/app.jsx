@@ -44,7 +44,8 @@ class App extends Component {
           </div>
           : null
         }
-        <CreatePackage />
+        {/* <UpComingTuursList/> */}
+        {/* <CreatePackage /> */}
 
         {/* <EditProfile/> */}
         {/* <UserProfile/> */}
