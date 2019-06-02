@@ -87,7 +87,8 @@ class EditProfile extends Component {
         .then(updated => {
           console.log('updated');
         });
-
+        this.props.view('userProfile')
+        
     }
   }
   componentDidMount() {
@@ -178,7 +179,7 @@ class EditProfile extends Component {
                 </Grid>
 
                 <Grid className={classes.marginTop2} container justify="center" >
-                  <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('userProfile')}>
+                  <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
                     <Typography variant="body1" gutterBottom>Submit</Typography>
                   </Button>
                 </Grid>
