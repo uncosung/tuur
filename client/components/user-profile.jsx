@@ -77,11 +77,9 @@ class UserProfile extends Component {
             <Avatar alt="avatar" src={this.state.image} className={classes.avatar} />
           </Grid>
           <Grid item xs={6}>
-            <ThemeProvider theme={theme}>
-              <Button type="submit" fullWidth variant="contained" color="primary" onClick={this.handleSubmit} >
-                <Typography variant="button">Edit</Typography>
-              </Button>
-            </ThemeProvider>
+            <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile')} >
+              <Typography variant="button">Edit</Typography>
+            </Button>
           </Grid>
         </Grid>
       </Container>

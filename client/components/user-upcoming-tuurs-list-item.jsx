@@ -1,91 +1,44 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import LinesEllipsis from 'react-lines-ellipsis';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 const styles = theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    margin: theme.spacing(1)
-  },
-  gridList: {
-    flexWrap: 'nowrap',
-    transform: 'translateZ(0)',
-    margin: theme.spacing(2),
-    height: 310
-  },
-  marginTop: {
-    marginTop: theme.spacing(3)
-  },
-  avatar: {
-    width: 80,
-    height: 80
-  },
-  marginLeft: {
-    marginLeft: theme.spacing(2)
-  },
-  media: {
-    height: 200
+  tile: {
+    width: 300
   },
   font: {
     fontFamily: 'Roboto',
-    fontSize: '1.2rem',
+    fontSize: '1.3rem',
     marginRight: theme.spacing(1)
+  },
+  titleBar: {
+    background:
+      'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)'
   }
 });
 
 class UpComingTuurItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+    };
   }
+
   render() {
     const { classes } = this.props;
     return (
       <>
-      <div className={classes.root}>
-        <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-
-          <GridListTile className={classes.font}>
-            <img className={classes.media} src="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
-            <LinesEllipsis
-              text = "it is an amazing spot for chilling on the grass with coffee and a book.it is an amazing spot for chilling on the grass with coffe A few very interesting stores could be found there as well. Check it out!it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!"
-              maxLine='3'
-              ellipsis='...'
-              trimRight
-              basedOn='letters'
+          <GridListTile className={classes.font} key={this.props.package.mainImage}>
+            <img className={classes.tile} src={this.props.package.mainImage} alt={this.props.package.title} />
+            <GridListTileBar
+              title={this.props.package.title}
+              subtitle={<span>{this.props.package.description}</span>}
+              classes={{
+                root: classes.titleBar
+              }}
             />
           </GridListTile>
-
-          <GridListTile className={classes.font}>
-            <img className={classes.media} src="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
-            <LinesEllipsis
-              text = "chilling on the grass with coffee and a book. A few very interesting stores could be found coffee and a book. A few very interesting stores there as well.  Check it out! Check it out!it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!"
-              maxLine='3'
-              ellipsis='...'
-              trimRight
-              basedOn='letters'
-            />
-          </GridListTile>
-
-          <GridListTile className={classes.font}>
-            <img className={classes.media} src="https://cdn.pixabay.com/photo/2016/02/18/20/02/seljalandsfoss-1207956_1280.jpg" alt="image" />
-            <LinesEllipsis
-              text = "A few very interesting stores could be found there as well. Check it out!  Check it out! it is an amazing spot for chilling on the grass with coffee and a book. A few very interesting stores could be found there as well. Check it out!"
-              maxLine='3'
-              ellipsis='...'
-              trimRight
-              basedOn='letters'
-            />
-          </GridListTile>
-
-        </GridList>
-      </div>
       </>
     );
   }

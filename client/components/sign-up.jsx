@@ -86,6 +86,7 @@ class SignUp extends Component {
     this.setState({ isGuide: !isGuide });
   }
   handleSubmit(event) {
+    console.log( 'kjlkj');
     const { name, email, location, bio, image, isGuide } = this.state;
     event.preventDefault();
     if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length) {
@@ -114,9 +115,12 @@ class SignUp extends Component {
             bio: '',
             image: '',
             isGuide: false
+          }, () => {
+            this.props.view('userProfile')
           });
         });
     }
+    
   }
 
   render() {
@@ -186,11 +190,9 @@ class SignUp extends Component {
             <FormControlLabel control={
               <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} value="guide" />} label="Do you want to be a guide?" />
             <Grid className={classes.marginTop} container justify="center" >
-              <ThemeProvider theme={theme}>
-                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
-                  <Typography variant="body1" gutterBottom>sign up</Typography>
-                </Button>
-              </ThemeProvider>
+              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" >
+                <Typography variant="body1" gutterBottom>sign up</Typography>
+              </Button>
             </Grid>
           </Grid>
 

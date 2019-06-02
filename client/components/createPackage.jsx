@@ -163,6 +163,7 @@ class CreatePackage extends Component {
             </Grid>
           </Grid>
 
+
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
               <TextField required helperText={this.state.inputErrors.imageUrl ? 'Please provide available hours' : ' '} error={this.state.inputErrors.imageUrl} fullWidth id="input-hours" label="Available Hours" name="hours" onChange={this.handleInputChange} />
