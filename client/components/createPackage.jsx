@@ -153,7 +153,7 @@ class CreatePackage extends Component{
                             label="FOOD"
                             // onClick={}
                             className={classes.chip}
-                            foodIcon={<FastFood />}
+                            foodicon={<FastFood />}
                             variant="outlined"
                         />
 
