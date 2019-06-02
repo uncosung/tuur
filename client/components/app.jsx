@@ -14,8 +14,9 @@ class App extends Component {
         {/* <EditProfile/> */}
         {/* <UserProfile/> */}
         {/* <SignUp /> */}
-        <UpComingTuursList />
-        <BottomNav />
+        {/* <UpComingTuursList /> */}
+        <DatePicker/>
+        {/* <BottomNav /> */}
       </div>
     );
   }

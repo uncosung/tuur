@@ -5,6 +5,7 @@
         "email": "John@gmail.com",
         "location": "Los Angeles, CA",
         "bio": "I like dogs",
+        "image": "http://google.com/images?123124r23a",
         "isGuide": false
     },
     {
