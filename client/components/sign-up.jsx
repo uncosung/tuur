@@ -186,17 +186,9 @@ class SignUp extends Component {
             <FormControlLabel control={
               <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} value="guide" />} label="Do you want to be a guide?" />
             <Grid className={classes.marginTop} container justify="center" >
-<<<<<<< HEAD
-              <ThemeProvider theme={theme}>
-                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
-                  <Typography variant="body1" gutterBottom>sign up</Typography>
-                </Button>
-              </ThemeProvider>
-=======
               <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('userProfile')}>
                 <Typography variant="body1" gutterBottom>sign up</Typography>
               </Button>
->>>>>>> 0d357c444a5b2a226792f565e36e4a7f7f41c53c
             </Grid>
           </Grid>
 
