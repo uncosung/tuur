@@ -5,7 +5,6 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import UpComingTuurItem from './user-upcoming-tuurs-list-item';
 import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
 
 const styles = theme => ({
   marginTop: {
@@ -38,7 +37,7 @@ const styles = theme => ({
     flexWrap: 'nowrap',
     transform: 'translateZ(0)',
     margin: theme.spacing(2),
-    height: 310
+    height: 260
   }
 });
 
@@ -57,7 +56,6 @@ class UpComingTuursList extends React.Component {
   }
 
   render() {
-    console.log(this.state.packages);
     const { classes } = this.props;
     const packageMap = this.state.packages.map(packageItem => {
       return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
