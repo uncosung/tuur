@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
@@ -9,6 +8,17 @@ import TextField from '@material-ui/core/TextField';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Email from '@material-ui/icons/Email';
 import LocationOn from '@material-ui/icons/LocationOn';
+import { ThemeProvider } from '@material-ui/styles';
+import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#3A8288' },
+    secondary: { main: '#5bd1d7' },
+    lightBeige: { main: '#f1f1f1' },
+    beige: { main: '#f5e1da' }
+  }
+});
 
 const styles = theme => ({
   margin: {
@@ -71,8 +81,7 @@ class EditProfile extends Component {
           image: !this.state.image
         }
       });
-    }
-    else {
+    } else {
       const { name, email, location, bio, image } = this.state;
       fetch(`api/profile.php?email=${email}`, {
         method: 'PATCH',
@@ -84,10 +93,10 @@ class EditProfile extends Component {
           bio: bio
         })
       })
-        .then(res=>res.json())
+        .then(res => res.json())
         .then(updated => {
-          console.log('updated')
-        })
+          console.log('updated');
+        });
 
     }
   }
@@ -109,10 +118,10 @@ class EditProfile extends Component {
             <>
             <Container className={classes.marginBottom} >
               <Typography className={classes.marginTop} variant="h4">
-              {this.state.name}
+                {this.state.name}
               </Typography>
               <Typography className={classes.marginLeft} variant="subtitle1">
-              {this.state.location}
+                {this.state.location}
               </Typography>
             </Container>
             <Container>
@@ -179,9 +188,11 @@ class EditProfile extends Component {
                 </Grid>
 
                 <Grid className={classes.marginTop2} container justify="center" >
-                  <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
-                    <Typography variant="body1" gutterBottom>Submit</Typography>
-                  </Button>
+                  <ThemeProvider theme={theme}>
+                    <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
+                      <Typography variant="body1" gutterBottom>Submit</Typography>
+                    </Button>
+                  </ThemeProvider>
                 </Grid>
               </Grid>
             </Container>
