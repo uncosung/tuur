@@ -5,7 +5,7 @@ import SignUp from './sign-up';
 import BottomNav from './bottom-nav';
 import DatePicker from './daterangepicker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
-import CreatePackage from './createPackage'
+import CreatePackage from './createPackage';
 
 class App extends Component {
   constructor(props) {
@@ -44,14 +44,16 @@ class App extends Component {
           </div>
           : null
         }
-        {/* <UpComingTuursList/> */}
+
+       
+
         {/* <CreatePackage /> */}
 
         {/* <EditProfile/> */}
         {/* <UserProfile/> */}
         {/* <SignUp /> */}
         {/* <UpComingTuursList /> */}
-        <DatePicker/>
+        {/* <DatePicker/> */}
         {/* <BottomNav /> */}
       </div>
     );
