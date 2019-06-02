@@ -86,14 +86,16 @@ class SignUp extends Component {
     this.setState({ isGuide: !isGuide });
   }
   handleSubmit(event) {
-    console.log( 'kjlkj');
-    const { name, email, location, bio, image, isGuide } = this.state;
     event.preventDefault();
-    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length) {
+    const regexEmail = /[?=@]/g;
+    const regexFullName = /[A-Za-z][A-Za-z]+\s[A-Za-z][A-Za-z]+$/g;
+    const { name, email, location, bio, image, isGuide } = this.state;
+
+    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || !regexEmail.test(email) || !regexFullName.test(name)) {
       this.setState({
         inputErrors: {
-          name: !this.state.name,
-          email: !this.state.email,
+          name: !this.state.name || !regexFullName.test(name),
+          email: !regexEmail.test(email),
           location: !this.state.location,
           bio: !this.state.bio,
           image: !this.state.image
@@ -104,7 +106,6 @@ class SignUp extends Component {
         method: 'POST',
         body: JSON.stringify(
           { name, email, location, bio, image, isGuide })
-
       })
         .then(res => res.json())
         .then(newUser => {
@@ -116,11 +117,11 @@ class SignUp extends Component {
             image: '',
             isGuide: false
           }, () => {
-            this.props.view('userProfile')
+            this.props.view('userProfile');
           });
         });
     }
-    
+
   }
 
   render() {
@@ -190,9 +191,7 @@ class SignUp extends Component {
             <FormControlLabel control={
               <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} value="guide" />} label="Do you want to be a guide?" />
             <Grid className={classes.marginTop} container justify="center" >
-              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" 
-              // onClick={() => this.props.view('userProfile')}
-              >
+              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
                 <Typography variant="body1" gutterBottom>sign up</Typography>
               </Button>
             </Grid>
