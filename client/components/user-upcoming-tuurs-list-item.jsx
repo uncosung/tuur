@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import LinesEllipsis from 'react-lines-ellipsis';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 const styles = theme => ({
   root: {
@@ -34,8 +35,12 @@ const styles = theme => ({
   },
   font: {
     fontFamily: 'Roboto',
-    fontSize: '1.2rem',
+    fontSize: '1.3rem',
     marginRight: theme.spacing(1)
+  },
+  titleBar: {
+    background:
+      'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)'
   }
 });
 
@@ -51,15 +56,21 @@ class UpComingTuurItem extends Component {
     const { classes } = this.props;
     return (
       <>
-          <GridListTile className={classes.font}>
-            <img className={classes.media} src={this.props.package.mainImage} alt="image" />
-            <LinesEllipsis
+          <GridListTile className={classes.font} key={this.props.package.mainImage}>
+            <img className=""src={this.props.package.mainImage} alt={this.props.package.title} />
+            <GridListTileBar
+              title={this.props.package.title}
+              classes={{
+                root: classes.titleBar
+              }}
+            />
+            {/* <LinesEllipsis
               text = {this.props.package.description}
               maxLine='3'
               ellipsis='...'
               trimRight
               basedOn='letters'
-            />
+            /> */}
           </GridListTile>
       </>
     );
