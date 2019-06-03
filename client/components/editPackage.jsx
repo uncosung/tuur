@@ -47,11 +47,14 @@ const styles = theme => ({
     width: '100%'
   },
   marginTop: {
+    marginTop: theme.spacing(3)
+  },
+  marginTop2: {
     marginTop: theme.spacing(5)
   },
   marginLeft: {
     marginLeft: theme.spacing(3),
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(5)
   },
   chip: {
     width: '31%',
@@ -91,14 +94,7 @@ class CreatePackage extends Component {
       language: '',
       hours: '',
       dates: [],
-      imageUrl: '',
-      inputErrors: {
-        name: false,
-        email: false,
-        location: false,
-        image: false,
-        bio: false
-      }
+      imageUrl: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -124,34 +120,37 @@ class CreatePackage extends Component {
   handleSubmit(event) {
     const { title, description, tags, language, hours, dates, imageUrl } = this.state;
     event.preventDefault();
-    if (!this.state.title.length || !this.state.description.length || !this.state.language.length || !this.state.imageUrl.length) {
+    if (!this.state.title.length || !this.state.description.length || !this.state.tags.length || !this.state.language.length || !this.state.imageUrl.length || !this.state.hours.length || !this.state.dates.length) {
       this.setState({
         inputErrors: {
           title: !this.state.title,
           description: !this.state.description,
+          tags: !this.state.tags,
           language: !this.state.language,
+          hours: !this.state.hours,
+          dates: !this.state.dates,
           imageUrl: !this.state.imageUrl
         }
       });
     } else {
-      fetch('/api/package.php', {
-        method: 'POST',
-        body: JSON.stringify(
-          { title, description, tags, language, hours, dates, imageUrl })
+      fetch(`api/package.php?email=${email}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          title,
+          description,
+          tags,
+          language,
+          hours,
+          dates,
+          imageUrl
+        })
 
       })
         .then(res => res.json())
-        .then(newUser => {
-          this.setState({
-            title: '',
-            description: '',
-            tags: [],
-            language: '',
-            hours: '',
-            dates: [],
-            imageUrl: ''
-          });
+        .then(data => {
+          console.log('updated');
         });
+      this.props.view('userProfile');
     }
   }
 
@@ -161,46 +160,45 @@ class CreatePackage extends Component {
     return (
       <Container>
         <Typography className={classes.marginTop} variant="h4" align="center" gutterBottom>
-            Create Tuur
+            Edit Tuur
         </Typography>
         <Grid mx="auto" container component="form" justify="center" onSubmit={this.handleSubmit}>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.title ? 'Must include a title' : ' '} error={this.state.inputErrors.title} fullWidth id="input-title" label="Title" name="title" onChange={this.handleInputChange} />
+              <TextField required fullWidth id="input-title" label="Title" name="title" value={this.state.title} onChange={this.handleInputChange} />
             </Grid>
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
-            <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.language ? 'Please provide a language' : ' '} error={this.state.inputErrors.language} fullWidth id="input-language" label="Language" name="language" onChange={this.handleInputChange} />
-            </Grid>
-          </Grid>
-
-          <Grid className={classes.margin} container alignItems="flex-end" justify="center">
-            <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.imageUrl ? 'Please provide images' : ' '} error={this.state.inputErrors.imageUrl} fullWidth id="input-imageUrl" label="Images" name="imageUrl" onChange={this.handleInputChange} />
+            <Grid item xs={10} className={classes.marginTop}>
+              <TextField required fullWidth id="input-language" label="Language" name="language" value={this.state.language} onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
-            <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.imageUrl ? 'Please provide duration of tuur' : ' '} error={this.state.inputErrors.imageUrl} fullWidth id="input-hours" label="Tuur Duration(hours)" name="hours" onChange={this.handleInputChange} />
+            <Grid item xs={10} className={classes.marginTop}>
+              <TextField required fullWidth id="input-imageUrl" label="Images" name="imageUrl" value={this.state.imageUrl} onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
-            <Grid item xs={10}>
+            <Grid item xs={10} className={classes.marginTop}>
+              <TextField required fullWidth id="input-hours" label="Tuur Duration(hours)" name="hours" value={this.state.hours} onChange={this.handleInputChange} />
+            </Grid>
+          </Grid>
+
+          <Grid className={classes.margin} container alignItems="flex-end" justify="center">
+            <Grid item xs={10} className={classes.marginTop}>
               <TextField
                 id='outlined-textarea'
                 label='Describe the Tuur(150 characters)'
                 required
-                helperText={this.state.inputErrors.description ? 'Please enter a short description about the tuur' : ' '}
-                error={this.state.inputErrors.description}
                 multiline
                 fullWidth
                 rowsMax={3}
                 className={classes.textField}
                 name="description"
+                value={this.state.description}
                 onChange={this.handleInputChange}
               />
             </Grid>
@@ -221,7 +219,7 @@ class CreatePackage extends Component {
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <div className={classes.root}>
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="select-multiple-chip" required>
+                <InputLabel htmlFor="select-multiple-chip" required value={this.state.tags}>
                     Categories
                 </InputLabel>
                 <Select
@@ -253,74 +251,13 @@ class CreatePackage extends Component {
               </FormControl>
             </div>
 
-            {/* <div className={classes.root}>
-              <Chip
-                label="FOOD"
-                clickable
-                color="primary"
-                onClick={this.handleSubmit}
-                className={classes.chip}
-                icon={<FastFood />}
-                // variant="outlined"
-              />
-
-              <Chip
-                label="NIGHTLIFE"
-                clickable
-                color="primary"
-                onClick={this.handleSubmit}
-                icon={<LocalBar />}
-                className={classes.chip}
-                // variant="outlined"
-              />
-
-              <Chip
-                label="OUTDOORS"
-                clickable
-                color="primary"
-                // onClick={}
-                icon={<DirectionsBike />}
-                className={classes.chip}
-                // variant="outlined"
-              />
-
-              <Chip
-                label="SHOPPING"
-                clickable
-                color="primary"
-                // onClick={}
-                icon={ <ShoppingBasket />}
-                className={classes.chip}
-                // variant="outlined"
-              />
-
-              <Chip
-                label="ACTIVITIES"
-                clickable
-                color="primary"
-                // onClick={}
-                icon={<DirectionsRun />}
-                className={classes.chip}
-                // variant="outlined"
-              />
-
-              <Chip
-                label="COFFEE"
-                clickable
-                color="primary"
-                // onClick={}
-                icon={<FreeBreakfast />}
-                className={classes.chip}
-                // variant="outlined"
-              />
-            </div> */}
           </Grid>
 
           <Grid justify="center" className={classes.margin} container>
-            <Grid className={classes.marginTop} container justify="center" >
+            <Grid className={classes.marginTop2} container justify="center" >
               <ThemeProvider theme={theme}>
                 <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
-                  <Typography variant="body1" gutterBottom>Create Package</Typography>
+                  <Typography variant="body1" gutterBottom>Submit</Typography>
                 </Button>
               </ThemeProvider>
             </Grid>
