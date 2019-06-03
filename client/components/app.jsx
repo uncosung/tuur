@@ -4,7 +4,7 @@ import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 import BottomNav from './bottom-nav';
-
+import GuideProfile from './guide-profile';
 import DatePicker from './daterangepicker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
 import CreatePackage from './createPackage';
@@ -17,7 +17,7 @@ class App extends Component {
     super(props);
     this.state = {
       view: {
-        name: 'login'
+        name: 'signUp'
       }
     };
     this.setView = this.setView.bind(this);
@@ -40,13 +40,13 @@ class App extends Component {
       <div>
         {this.state.view.name === 'userProfile'
           ? <div>
-            <UserProfile view={this.setView}/>
+            <UserProfile view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null
         }
         {this.state.view.name === 'signUp'
-          ? <SignUp view={this.setView}/>
+          ? <SignUp view={this.setView} status={this.setStatus}/>
           : null
         }
         {this.state.view.name === 'editProfile'
@@ -73,6 +73,13 @@ class App extends Component {
         {this.state.view.name === 'login'
           ? <div>
             <LogIn view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'guideProfile'
+          ? <div>
+            <GuideProfile view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null
