@@ -30,64 +30,64 @@ class App extends Component {
 
   render() {
     return (
-      // <Router>
-      //   <div>
-      //     <Route path="/" component={CreatePackage} />
-      //     <BottomNav />
-      //   </div>
-      // </Router>
+    // <Router>
+    //   <div>
+    //     <Route path="/" component={CreatePackage} />
+    //     <BottomNav />
+    //   </div>
+    // </Router>
 
-    <div>
-      {this.state.view.name === 'userProfile'
-        ? <div>
-          <UserProfile view={this.setView}/>
-          {/* <BottomNav /> */}
-        </div>
-        : null
-      }
-      {this.state.view.name === 'signUp'
-        ? <SignUp view={this.setView}/>
-        : null
-      }
-      {this.state.view.name === 'editProfile'
-        ? <div>
-          <EditProfile view={this.setView} />
-          {/* <BottomNav /> */}
-        </div>
-        : null
-      }
-      {this.state.view.name === 'createPackage'
-        ? <div>
-          <CreatePackage view={this.setView} />
-          {/* <BottomNav /> */}
-        </div>
-        : null
-      }
-      {this.state.view.name === 'editPackage'
-        ? <div>
-          <EditPackage view={this.setView} />
-          {/* <BottomNav /> */}
-        </div>
-        : null
-      }
-      {this.state.view.name === 'login'
-        ? <div>
-          <LogIn view={this.setView} />
-          {/* <BottomNav /> */}
-        </div>
-        : null
-      }
+      <div>
+        {this.state.view.name === 'userProfile'
+          ? <div>
+            <UserProfile view={this.setView}/>
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'signUp'
+          ? <SignUp view={this.setView}/>
+          : null
+        }
+        {this.state.view.name === 'editProfile'
+          ? <div>
+            <EditProfile view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'createPackage'
+          ? <div>
+            <CreatePackage view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'editPackage'
+          ? <div>
+            <EditPackage view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'login'
+          ? <div>
+            <LogIn view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
 
-    {/* <CreatePackage /> */}
-    {/* <EditPackage /> */}
-    {/* <EditProfile/> */}
-    {/* <UserProfile/> */}
-    {/* <SignUp /> */}
-    {/* <UpComingTuursList /> */}
-    {/* <DatePicker/> */}
-    {/* <BottomNav /> */}
-    {/* <LogIn /> */}
-    </div>
+        {/* <CreatePackage /> */}
+        {/* <EditPackage /> */}
+        {/* <EditProfile/> */}
+        {/* <UserProfile/> */}
+        {/* <SignUp /> */}
+        {/* <UpComingTuursList /> */}
+        {/* <DatePicker/> */}
+        {/* <BottomNav /> */}
+        {/* <LogIn /> */}
+      </div>
 
     );
   }

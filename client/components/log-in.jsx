@@ -31,13 +31,13 @@ class LogIn extends React.Component {
     this.state = {
       email: ''
     };
-    this.handleSubmit=this.handleSubmit.bind(this);
-    this.handleInputChange=this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
   handleInputChange(event) {
     const { name, value } = event.target;
     this.setState({
-      [name]: value,
+      [name]: value
       // inputErrors: { ...this.state.inputErrors, [name]: false }
     });
   }
@@ -64,7 +64,7 @@ class LogIn extends React.Component {
       <Grid className={classes.marginTop} container justify="center" alignItems="flex-end">
         <Grid item xs={8}>
           <ThemeProvider theme={theme}>
-            <Button type="submit" className={classes.marginTop} onClick={() => this.props.view('userProfile')}  fullWidth variant="contained" color="primary">
+            <Button type="submit" className={classes.marginTop} onClick={() => this.props.view('userProfile')} fullWidth variant="contained" color="primary">
               <Typography variant="body1" gutterBottom>log in</Typography>
             </Button>
           </ThemeProvider>
