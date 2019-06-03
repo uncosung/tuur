@@ -90,8 +90,7 @@ class SignUp extends Component {
     const regexEmail = /[?=@]/g;
     const regexFullName = /[A-Za-z][A-Za-z]+\s[A-Za-z][A-Za-z]+$/g;
     const { name, email, location, bio, image, isGuide } = this.state;
-
-    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || !regexEmail.test(email) || !regexFullName.test(name)) {
+    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || regexEmail.test(email) === false || regexFullName.test(name) === false) {
       this.setState({
         inputErrors: {
           name: !this.state.name || !regexFullName.test(name),
@@ -109,19 +108,10 @@ class SignUp extends Component {
       })
         .then(res => res.json())
         .then(newUser => {
-          this.setState({
-            name: '',
-            email: '',
-            location: '',
-            bio: '',
-            image: '',
-            isGuide: false
-          }, () => {
-            this.props.view('userProfile');
-          });
+          this.props.view('userProfile', this.state);
         });
-    }
 
+    }
   }
 
   render() {
