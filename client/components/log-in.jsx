@@ -63,20 +63,20 @@ class LogIn extends React.Component {
         <Grid item xs={8}>
           <ThemeProvider theme={theme}>
             <Button type="submit" className={classes.marginTop} onClick={this.handleSubmit} onChange={this.handleInputChange} fullWidth variant="contained" color="primary">
-              <Typography variant="body1" gutterBottom>sign up</Typography>
+              <Typography variant="body1" gutterBottom>log in</Typography>
             </Button>
           </ThemeProvider>
         </Grid>
       </Grid>
 
       <Grid className={classes.marginTop} container justify="center" alignItems="flex-end">
-        <Grid item xs={8}>
-          <Typography className={classes.marginTop} variant="button" gutterBottom>
+        <Grid item xs={7}>
+          <Typography className={classes.marginTop} variant="button" gutterBottom align="center">
             Don't have an account? </Typography>
         </Grid>
         <Grid item xs={3}>
           <ThemeProvider theme={theme}>
-            <Typography className={classes.marginLeft} color="primary" variant="button" >sign up</Typography>
+            <Typography className={classes.marginLeft} color="primary" variant="button" align="center">sign up</Typography>
           </ThemeProvider>
         </Grid>
       </Grid>
