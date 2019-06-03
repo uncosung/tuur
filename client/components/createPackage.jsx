@@ -219,7 +219,7 @@ class CreatePackage extends Component {
               </Typography>
             </Grid>
             <Grid item xs={2} >
-              <CalendarToday />
+              <CalendarToday onClick={() => this.props.view('calendar')}/>
             </Grid>
 
           </Grid>
@@ -259,67 +259,6 @@ class CreatePackage extends Component {
               </FormControl>
             </div>
 
-            {/* <div className={classes.root}>
-              <Chip
-                label="FOOD"
-                clickable
-                color="primary"
-                onClick={this.handleSubmit}
-                className={classes.chip}
-                icon={<FastFood />}
-                // variant="outlined"
-              />
-
-              <Chip
-                label="NIGHTLIFE"
-                clickable
-                color="primary"
-                onClick={this.handleSubmit}
-                icon={<LocalBar />}
-                className={classes.chip}
-                // variant="outlined"
-              />
-
-              <Chip
-                label="OUTDOORS"
-                clickable
-                color="primary"
-                // onClick={}
-                icon={<DirectionsBike />}
-                className={classes.chip}
-                // variant="outlined"
-              />
-
-              <Chip
-                label="SHOPPING"
-                clickable
-                color="primary"
-                // onClick={}
-                icon={ <ShoppingBasket />}
-                className={classes.chip}
-                // variant="outlined"
-              />
-
-              <Chip
-                label="ACTIVITIES"
-                clickable
-                color="primary"
-                // onClick={}
-                icon={<DirectionsRun />}
-                className={classes.chip}
-                // variant="outlined"
-              />
-
-              <Chip
-                label="COFFEE"
-                clickable
-                color="primary"
-                // onClick={}
-                icon={<FreeBreakfast />}
-                className={classes.chip}
-                // variant="outlined"
-              />
-            </div> */}
           </Grid>
 
           <Grid justify="center" className={classes.margin} container>

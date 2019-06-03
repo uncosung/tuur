@@ -8,7 +8,7 @@ import InfiniteCalendar, {
 import 'react-infinite-calendar/styles.css'; // only needs to be imported once
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
+import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
   root: {
@@ -28,37 +28,41 @@ class DatePicker extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  setDate(date){
+  setDate(date) {
     let dateArray = defaultMultipleDateInterpolation(date, this.state.dates);
     this.setState({
       dates: dateArray
-    })
-  }
-  handleSubmit(){
-    this.state.dates.sort((a,b) => {
-      return a.getTime() - b.getTime()
     });
-    console.log(this.state.dates)
   }
-  componentDidMount(){
+  handleSubmit() {
+    this.state.dates.sort((a, b) => {
+      return a.getTime() - b.getTime();
+    });
+    console.log(this.state.dates);
+  }
+  componentDidMount() {
     const dateArray = this.selectedDate.concat(this.state.dates);
     this.setState({
       dates: dateArray
-    })
+    });
   }
   render() {
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-
+        <Grid justify="center" alignItems="center" container>
+          <Typography className={classes.marginTop} variant="h4" gutterBottom>
+          Select dates
+          </Typography>
+        </Grid>
         <InfiniteCalendar
           width={350}
           height={300}
           Component={MultipleDatesCalendar}
           interpolateSelection={defaultMultipleDateInterpolation}
           selected={this.selectedDate}
-          onSelect={(date) => {
+          onSelect={date => {
             this.setDate(date);
           }}
         />
