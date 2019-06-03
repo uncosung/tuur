@@ -4,7 +4,6 @@ import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 import BottomNav from './bottom-nav';
-
 import DatePicker from './daterangepicker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
 import CreatePackage from './createPackage';
@@ -18,14 +17,15 @@ class App extends Component {
     this.state = {
       view: {
         name: 'login'
-      }
+      },
+      user: {}
     };
     this.setView = this.setView.bind(this);
   }
 
-  setView(name) {
+  setView(name, user) {
     const view = { name };
-    this.setState({ view });
+    this.setState({ view, user });
   }
 
   render() {
@@ -40,7 +40,7 @@ class App extends Component {
       <div>
         {this.state.view.name === 'userProfile'
           ? <div>
-            <UserProfile view={this.setView}/>
+            <UserProfile view={this.setView} user={ this.state.user }/>
             {/* <BottomNav /> */}
           </div>
           : null
@@ -51,7 +51,7 @@ class App extends Component {
         }
         {this.state.view.name === 'editProfile'
           ? <div>
-            <EditProfile view={this.setView} />
+            <EditProfile view={this.setView} user={ this.state.user} />
             {/* <BottomNav /> */}
           </div>
           : null
@@ -78,7 +78,7 @@ class App extends Component {
           : null
         }
 
-        {/* <CreatePackage /> */}
+        {/* // <CreatePackage /> */}
         {/* <EditPackage /> */}
         {/* <EditProfile/> */}
         {/* <UserProfile/> */}
