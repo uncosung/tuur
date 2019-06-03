@@ -35,10 +35,13 @@ class DatePicker extends Component {
     })
   }
   handleSubmit(){
+    this.state.dates.sort((a,b) => {
+      return a.getTime() - b.getTime()
+    });
     console.log(this.state.dates)
   }
   componentDidMount(){
-    let dateArray = defaultMultipleDateInterpolation(this.selectedDate, this.state.dates);
+    const dateArray = this.selectedDate.concat(this.state.dates);
     this.setState({
       dates: dateArray
     })
