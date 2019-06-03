@@ -26,7 +26,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        {this.state.view.name === 'userProfile'
+        {/* {this.state.view.name === 'userProfile'
           ? <div>
             <UserProfile view={this.setView}/>
             <BottomNav />
@@ -43,11 +43,11 @@ class App extends Component {
             <BottomNav />
           </div>
           : null
-        }
+        } */}
 
        
 
-        {/* <CreatePackage /> */}
+        <CreatePackage />
 
         {/* <EditProfile/> */}
         {/* <UserProfile/> */}

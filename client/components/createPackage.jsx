@@ -77,11 +77,12 @@ class CreatePackage extends Component {
     this.state = {
       title: '',
       description: '',
-      tags: [],
+      tags: ['test'],
       language: '',
+      location: 'sd',
       hours: '',
-      dates: [],
-      imageUrl: '',
+      dates: ['01/01/2019'],
+      imageUrl: ['test'],
       inputErrors: {
         name: false,
         email: false,
@@ -103,8 +104,9 @@ class CreatePackage extends Component {
   }
 
   handleSubmit(event) {
-    const { title, description, tags, language, hours, dates, imageUrl } = this.state;
     event.preventDefault();
+    const { title, description, location, tags, language, hours, dates, imageUrl } = this.state;
+    
     if (!this.state.title.length || !this.state.description.length || !this.state.language.length || !this.state.imageUrl.length) {
       this.setState({
         inputErrors: {
@@ -118,25 +120,28 @@ class CreatePackage extends Component {
       fetch('/api/package.php', {
         method: 'POST',
         body: JSON.stringify(
-          { title, description, tags, language, hours, dates, imageUrl })
-
+          { title, location, tags, hours, description, dates, imageUrl })
       })
-        .then(res => res.json())
-        .then(newUser => {
-          this.setState({
-            title: '',
-            description: '',
-            tags: [],
-            language: '',
-            hours: '',
-            dates: [],
-            imageUrl: ''
-          });
-        });
+      .then(res => {
+        console.log( res );
+        return res.json()})
+      .then(newUser => {
+        console.log( newuser )
+        // this.setState({
+        //   title: '',
+        //   description: '',
+        //   tags: [],
+        //   language: '',
+        //   hours: '',
+        //   dates: [],
+        //   imageUrl: ''
+        // });
+      });
     }
   }
 
   render() {
+    console.log( 'state' , this.state );
     const { classes } = this.props;
 
     return (
@@ -148,7 +153,7 @@ class CreatePackage extends Component {
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.title ? 'Must include a title' : ' '} error={this.state.inputErrors.title} fullWidth id="input-title" label="Title" name="title" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.title ? 'Must include a title' : ' '} error={this.state.inputErrors.title} fullWidth id="input-title" label="Title" name="title" onChange={this.handleInputChange} text={ this.state.name}/>
             </Grid>
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
