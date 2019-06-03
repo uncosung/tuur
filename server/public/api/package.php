@@ -23,7 +23,7 @@ if ( $method === 'POST'){
   $images = json_encode( $package['imageUrl']);
   $query = "INSERT INTO `package`(`title`, `description`, `tags`, `location`, `timeRange`, `dates`, `mainImage`, `images`, `profileEmail`)
             VALUES ('{$package['title']}', '{$package['description']}', '{$tags}',  '{$package['location']}', '{$package['hours']}', 
-            '{$dates}', '{$package['imageUrl'][0]}', '{$images}', '{$email}')";
+            '{$dates}', '{$images[0]}', '{$images}', '{$email}')";
   var_dump( $query );
   $result = mysqli_query($conn, $query);
   print_r( $result );

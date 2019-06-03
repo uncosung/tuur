@@ -87,7 +87,7 @@ class CreatePackage extends Component {
     this.state = {
       title: '',
       description: '',
-      tags: ['test'],
+      tags: [],
       language: '',
       location: 'sd',
       hours: '',

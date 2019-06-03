@@ -4,10 +4,15 @@ import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import BottomNav from './bottom-nav';
+<<<<<<< HEAD
 import DatePicker from './daterangepicker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
 import CreatePackage from './createPackage';
 import EditPackage from './editPackage';
+=======
+import CreatePackage from './createPackage';
+import LogIn from './log-in';
+>>>>>>> d0e8f3c096eeadba774f252d741f6e14fefc8df3
 
 class App extends Component {
   constructor(props) {
@@ -27,7 +32,6 @@ class App extends Component {
 
   render() {
     return (
-
       <Router>
         <div>
           <Route path="/" component={CreatePackage} />
@@ -77,8 +81,9 @@ class App extends Component {
     // {/* <UpComingTuursList /> */}
     // {/* <DatePicker/> */}
     // {/* <BottomNav /> */}
-
+    // <LogIn />
     // </div>
+
     );
   }
 }
