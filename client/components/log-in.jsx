@@ -31,12 +31,14 @@ class LogIn extends React.Component {
     this.state = {
       email: ''
     };
+    this.handleSubmit=this.handleSubmit.bind(this);
+    this.handleInputChange=this.handleInputChange.bind(this);
   }
   handleInputChange(event) {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
-      inputErrors: { ...this.state.inputErrors, [name]: false }
+      // inputErrors: { ...this.state.inputErrors, [name]: false }
     });
   }
   handleSubmit(event) {
@@ -62,7 +64,7 @@ class LogIn extends React.Component {
       <Grid className={classes.marginTop} container justify="center" alignItems="flex-end">
         <Grid item xs={8}>
           <ThemeProvider theme={theme}>
-            <Button type="submit" className={classes.marginTop} onClick={this.handleSubmit} onChange={this.handleInputChange} fullWidth variant="contained" color="primary">
+            <Button type="submit" className={classes.marginTop} onClick={() => this.props.view('userProfile')}  fullWidth variant="contained" color="primary">
               <Typography variant="body1" gutterBottom>log in</Typography>
             </Button>
           </ThemeProvider>
@@ -76,7 +78,7 @@ class LogIn extends React.Component {
         </Grid>
         <Grid item xs={3}>
           <ThemeProvider theme={theme}>
-            <Typography className={classes.marginLeft} color="primary" variant="button" align="center">sign up</Typography>
+            <Typography className={classes.marginLeft} color="primary" variant="button" align="center" onClick={() => this.props.view('signUp')}>sign up</Typography>
           </ThemeProvider>
         </Grid>
       </Grid>
