@@ -125,7 +125,7 @@ class CreatePackage extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const { title, description, location, tags, language, hours, dates, imageUrl } = this.state;
-    
+
     if (!this.state.title.length || !this.state.description.length || !this.state.language.length || !this.state.imageUrl.length) {
       this.setState({
         inputErrors: {
@@ -141,11 +141,12 @@ class CreatePackage extends Component {
         body: JSON.stringify(
           { title, location, tags, hours, description, dates, imageUrl })
       })
-      .then(res => {
-        console.log( res );
-        return res.json()})
-      .then(newUser => {
-        console.log( newuser )
+        .then(res => {
+          console.log(res);
+          return res.json();
+        })
+        .then(newUser => {
+          console.log(newuser);
         // this.setState({
         //   title: '',
         //   description: '',
@@ -155,12 +156,12 @@ class CreatePackage extends Component {
         //   dates: [],
         //   imageUrl: ''
         // });
-      });
+        });
     }
   }
 
   render() {
-    console.log( 'state' , this.state );
+    console.log('state', this.state);
     const { classes } = this.props;
 
     return (
