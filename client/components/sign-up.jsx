@@ -87,14 +87,17 @@ class SignUp extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    const regexEmail = /[?=@]/g;
-    const regexFullName = /[A-Za-z][A-Za-z]+\s[A-Za-z][A-Za-z]+$/g;
     const { name, email, location, bio, image, isGuide } = this.state;
+    const regexEmail = /[?=@]/g;
+    const regexFullName = /[A-Za-z][A-Za-z.'-]+\s[A-Za-z][A-Za-z.'-]+$/g;
+    const emailTest = regexEmail.test( email );
+    const nameTest = regexFullName.test( name );
     if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || regexEmail.test(email) === false || regexFullName.test(name) === false) {
+      console.log( nameTest );
       this.setState({
         inputErrors: {
-          name: !this.state.name || !regexFullName.test(name),
-          email: !regexEmail.test(email),
+          name: !nameTest,
+          email: !emailTest,
           location: !this.state.location,
           bio: !this.state.bio,
           image: !this.state.image
