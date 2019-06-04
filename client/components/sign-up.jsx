@@ -106,13 +106,14 @@ class SignUp extends Component {
       fetch('/api/profile.php', {
         method: 'POST',
         body: JSON.stringify(
-          { name, email, location, bio, image, isGuide })
-      })
-        .then(res => res.json())
-        .then(newUser => {
-          this.props.view('userProfile', this.state);
-        });
-
+          { name, email, location, bio, image, isGuide }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }})
+        .then(res => { res.json()})
+        .then( newUser => this.props.view('userProfile', this.state)
+        );
     }
   }
 
