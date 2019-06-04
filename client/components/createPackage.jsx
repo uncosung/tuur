@@ -297,7 +297,7 @@ class CreatePackage extends Component {
           <Grid justify="center" className={classes.margin} container>
             <Grid className={classes.marginTop} container justify="center" >
               <ThemeProvider theme={theme}>
-                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('guideProfile')}>
+                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('userProfile')}>
                   <Typography variant="body1" gutterBottom>Create Package</Typography>
                 </Button>
               </ThemeProvider>

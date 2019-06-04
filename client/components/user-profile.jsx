@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UpComingTuursList from './user-upcoming-tuurs-list';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -29,7 +30,7 @@ const styles = theme => ({
   },
   marginLeft: {
     marginLeft: theme.spacing(2)
-  }
+  },
 });
 
 class UserProfile extends Component {
@@ -85,6 +86,10 @@ class UserProfile extends Component {
           </Grid>
         </Grid>
       </Container>
+      {this.state.isGuide===true
+      ?<UpComingTuursList view={this.props.view}/>
+      :<Typography variant="h5">No Tuurs available</Typography>
+      }
       </>
     );
   }
