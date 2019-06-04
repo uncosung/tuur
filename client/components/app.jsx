@@ -78,7 +78,7 @@ class App extends Component {
           : null
         }
 
-        {/* // <CreatePackage /> */}
+        {/* <CreatePackage /> */}
         {/* <EditPackage /> */}
         {/* <EditProfile/> */}
         {/* <UserProfile/> */}

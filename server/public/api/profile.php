@@ -23,7 +23,7 @@ if ($method === 'POST'){
 elseif ($method === 'GET'){
     $email = $_GET['email'];
     $query = "SELECT
-    `profile`.`name`, `profile`.`email`, `profile`.`location`, `profile`.`image`, `profile`.`bio`
+    `profile`.`name`, `profile`.`email`, `profile`.`location`, `profile`.`image`, `profile`.`bio`, `profile`.`isGuide`
     FROM `profile`
     WHERE `profile`.`email` = '{$email}'";
 
@@ -35,6 +35,7 @@ elseif ($method === 'GET'){
         $output['location'] = $row['location'];
         $output['image'] = $row['image'];
         $output['bio'] = $row['bio'];
+        $output['isGuide'] = $row['isGuide'] ? true : false;
     }
     $_SESSION['userEmail'] = $email;
     $json_output = json_encode($output);
