@@ -38,7 +38,8 @@ class UserProfile extends Component {
     this.state = {
       name: '',
       location: '',
-      image: ''
+      image: '',
+      isGuide: undefined
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -52,7 +53,8 @@ class UserProfile extends Component {
       .then(response => this.setState({
         name: response.name,
         location: response.location,
-        image: response.image
+        image: response.image,
+        isGuide: response.isGuide
       }));
   }
 
