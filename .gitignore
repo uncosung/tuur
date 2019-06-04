@@ -1,2 +1,2 @@
-db_connection.php
+./server/public/api/db_connection.php
 node_modules
