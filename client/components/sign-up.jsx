@@ -92,7 +92,6 @@ class SignUp extends Component {
     const regexFullName = /[A-Za-z][A-Za-z.'-]+\s[A-Za-z][A-Za-z.'-]+$/g;
     const emailTest = regexEmail.test( email );
     const nameTest = regexFullName.test( name );
-    console.log( !emailTest, nameTest );
     if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || !emailTest || !nameTest ) {
       this.setState({
         inputErrors: {
