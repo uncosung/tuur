@@ -24,7 +24,6 @@ if ( $method === 'POST'){
   $query = "INSERT INTO `package`(`title`, `description`, `tags`, `location`, `timeRange`, `dates`, `mainImage`, `images`, `profileEmail`)
             VALUES ('{$package['title']}', '{$package['description']}', '{$tags}',  '{$package['location']}', '{$package['timeRange']}', 
             '{$dates}', '{$images[0]}', '{$images}', '{$email}')";
-  var_dump( $query );
   $result = mysqli_query($conn, $query);
   print_r( $result );
 }

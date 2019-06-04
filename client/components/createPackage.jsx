@@ -158,35 +158,20 @@ class CreatePackage extends Component {
         body: JSON.stringify(
           { title, location, tags, timeRange, description, dates, imageUrl })
       })
-        .then(res => {
-          console.log(res);
-          return res.json();
-        })
-        .then(newPackage => {
-          console.log(newPackage);
-        // this.setState({
-        //   title: '',
-        //   description: '',
-        //   tags: [],
-        //   language: '',
-        //   hours: '',
-        //   dates: [],
-        //   imageUrl: ''
-        // });
-        }, () => {
-          this.props.view('guideProfile')
-        });
+        .then(res => res.json())
+        .then(newPackage => this.props.view( 'userProfile' , this.props.user ));
+      }
     }
-  }
+  
+
   handleModalClose(dates) {
     this.setState({ 
       openModal: false,
       dates: dates 
-    }, () => console.log(this.state));
+    });
   }
 
   render() {
-    console.log('state', this.state);
     const { classes } = this.props;
 
     return (

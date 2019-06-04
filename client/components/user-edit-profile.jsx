@@ -94,10 +94,7 @@ class EditProfile extends Component {
           bio: bio
         })
       })
-        .then(res => res.json())
-        .then(data => {
-          console.log('updated');
-        });
+      .then(res => res.json())
       this.props.view('userProfile', this.state);
     }
   }

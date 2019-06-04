@@ -112,7 +112,7 @@ class SignUp extends Component {
           'Accept': 'application/json'
         }})
         .then(res => { res.json()})
-        .then( newUser => this.props.view('userProfile', this.state)
+        .then( newUser => this.props.view('userProfile', this.state )
         );
     }
   }

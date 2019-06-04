@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UpComingTuursList from './user-upcoming-tuurs-list';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -29,7 +30,7 @@ const styles = theme => ({
   },
   marginLeft: {
     marginLeft: theme.spacing(2)
-  }
+  },
 });
 
 class UserProfile extends Component {
@@ -41,21 +42,20 @@ class UserProfile extends Component {
       image: '',
       isGuide: undefined
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  handleSubmit(event) {
-    // console.log('clicked');
   }
 
   componentDidMount() {
-    fetch(`api/profile.php?email=${this.props.user.email}`)
-      .then(res => res.json())
-      .then(response => this.setState({
-        name: response.name,
-        location: response.location,
-        image: response.image,
-        isGuide: response.isGuide
-      }));
+
+    fetch(`api/profile.php?email=${ this.props.user.email }`)
+    .then(res => res.json())
+    .then(response => {
+      return this.setState({
+      name: response.name,
+      location: response.location,
+      image: response.image,
+      isGuide: response.isGuide
+      })
+    });
   }
 
   render() {
@@ -79,12 +79,16 @@ class UserProfile extends Component {
             <Avatar alt="avatar" src={this.state.image} className={classes.avatar} />
           </Grid>
           <Grid item xs={6}>
-            <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile', this.props.user)} >
+            <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile', this.props.user)} >
               <Typography variant="button">Edit</Typography>
             </Button>
           </Grid>
         </Grid>
       </Container>
+      {this.state.isGuide===true
+      ?<UpComingTuursList view={this.props.view} user={ this.props.user }/>
+      :<Typography variant="h5">No Tuurs available</Typography>
+      }
       </>
     );
   }
