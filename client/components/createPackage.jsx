@@ -103,16 +103,17 @@ class CreatePackage extends Component {
       description: '',
       tags: [],
       //   language: '',
-      location: 'sd',
-      hours: '',
-      dates: ['01/01/2019'],
-      imageUrl: ['test'],
+      location: '',
+      timeRange: '',
+      dates: [],
+      mainImage: '',
       inputErrors: {
-        name: false,
-        email: false,
+        title: false,
         location: false,
-        image: false,
-        bio: false
+        mainImage: false,
+        timeRange: false,
+        description: false,
+        tags: false
       },
       openModal: false
 
@@ -140,29 +141,29 @@ class CreatePackage extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { title, description, location, tags, hours, dates, imageUrl } = this.state;
+    const { title, description, location, tags, timeRange, dates, mainImage } = this.state;
 
-    if (!this.state.title.length || !this.state.description.length || !this.state.location.length || !this.state.imageUrl.length) {
+    if (!this.state.title.length || !this.state.description.length || !this.state.location.length || !this.state.mainImage.length) {
       this.setState({
         inputErrors: {
           title: !this.state.title,
           description: !this.state.description,
           location: !this.state.location,
-          imageUrl: !this.state.imageUrl
+          mainImage: !this.state.mainImage
         }
       });
     } else {
       fetch('/api/package.php', {
         method: 'POST',
         body: JSON.stringify(
-          { title, location, tags, hours, description, dates, imageUrl })
+          { title, location, tags, timeRange, description, dates, mainImage })
       })
         .then(res => {
           console.log(res);
           return res.json();
         })
-        .then(newUser => {
-          console.log(newuser);
+        .then(newPackage => {
+          console.log(newPackage);
         // this.setState({
         //   title: '',
         //   description: '',
@@ -172,11 +173,16 @@ class CreatePackage extends Component {
         //   dates: [],
         //   imageUrl: ''
         // });
+        }, () => {
+          this.props.view('guideProfile')
         });
     }
   }
-  handleModalClose() {
-    this.setState({ openModal: false });
+  handleModalClose(dates) {
+    this.setState({ 
+      openModal: false,
+      dates: dates 
+    }, () => console.log(this.state));
   }
 
   render() {
@@ -203,13 +209,13 @@ class CreatePackage extends Component {
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.imageUrl ? 'Please provide images' : ' '} error={this.state.inputErrors.imageUrl} fullWidth id="input-imageUrl" label="Images" name="imageUrl" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.mainImage ? 'Please provide images' : ' '} error={this.state.inputErrors.mainImage} fullWidth id="input-mainImage" label="Images" name="mainImage" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.imageUrl ? 'Please provide duration of tuur' : ' '} error={this.state.inputErrors.imageUrl} fullWidth id="input-hours" label="Tuur Duration(hours)" name="hours" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.timeRange ? 'Please provide duration of tuur' : ' '} error={this.state.inputErrors.timeRange} fullWidth id="input-timeRange" label="Tuur Duration(timeRange)" name="timeRange" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -246,10 +252,10 @@ class CreatePackage extends Component {
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
                 open={this.state.openModal}
-                onClose={this.handleModalClose}
+                onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker close={this.handleModalClose}/>
+                  <DatePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose}/>
                 </Grid>
 
               </Modal>
@@ -297,7 +303,7 @@ class CreatePackage extends Component {
           <Grid justify="center" className={classes.margin} container>
             <Grid className={classes.marginTop} container justify="center" >
               <ThemeProvider theme={theme}>
-                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('guideProfile')}>
+                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
                   <Typography variant="body1" gutterBottom>Create Package</Typography>
                 </Button>
               </ThemeProvider>

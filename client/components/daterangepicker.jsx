@@ -40,9 +40,9 @@ class DatePicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dates: []
+      dates: this.props.dates
     };
-    this.selectedDate = [new Date()];
+    this.selectedDate = this.state.dates.length === 0 ? [new Date()] : this.state.dates;
     this.setDate = this.setDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -58,9 +58,10 @@ class DatePicker extends Component {
       return a.getTime() - b.getTime();
     });
     console.log(this.state.dates);
-    this.props.close();
+    this.props.close(this.state.dates);
   }
   componentDidMount() {
+    console.log('yo',this.state.dates)
     const dateArray = this.selectedDate.concat(this.state.dates);
     this.setState({
       dates: dateArray
@@ -72,7 +73,7 @@ class DatePicker extends Component {
     return (
       <div className={classes.root}>
         <Grid justify="center" alignItems="center" container>
-          <Grid item xs={2} className={classes.paddingRight} onClick={this.props.close}>
+          <Grid item xs={2} className={classes.paddingRight} onClick={() => this.props.close(this.state.dates)}>
             <KeyboardArrowLeft className={classes.fontSize} />
           </Grid>
           <Grid item xs={10} className={classes.paddingLeft}>
@@ -91,6 +92,7 @@ class DatePicker extends Component {
           onSelect={date => {
             this.setDate(date);
           }}
+          disabledDates = {[]}
           className={classes.marginBottom}
         />
 
