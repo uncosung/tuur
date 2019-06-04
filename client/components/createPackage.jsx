@@ -4,26 +4,36 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-// import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
-// import Checkbox from '@material-ui/core/Checkbox';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
-// import FastFood from '@material-ui/icons/FastFood';
-// import LocalBar from '@material-ui/icons/LocalBar';
-// import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-// import DirectionsRun from '@material-ui/icons/DirectionsRun';
-// import FreeBreakfast from '@material-ui/icons/FreeBreakfast';
-// import DirectionsBike from '@material-ui/icons/DirectionsBike';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
 import Modal from '@material-ui/core/Modal';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import DatePicker from './daterangepicker';
+
+const divStyle = {
+  width: '47px',
+  height: '40px',
+  border: '1px solid gray',
+  marginRight: '5px',
+};
+
+const imgStyle = {
+  width: '100%',
+  height: '100%',
+  backgroundRepeat: 'norepeat',
+  backgroundSize: '100% 100%'
+};
+
 
 const theme = createMuiTheme({
   palette: {
@@ -50,6 +60,9 @@ const styles = theme => ({
   },
   marginTop: {
     marginTop: theme.spacing(5)
+  },
+  paddingTop: {
+    paddingTop: theme.spacing(5)
   },
   marginLeft: {
     marginLeft: theme.spacing(3),
@@ -83,6 +96,12 @@ const styles = theme => ({
     boxShadow: theme.shadows[5],
     padding: 7,
     outline: 'none'
+  },
+  input: {
+    width: '100%'
+  },
+  form : {
+    width: '100%'
   }
 });
 
@@ -106,7 +125,7 @@ class CreatePackage extends Component {
       location: 'sd',
       hours: '',
       dates: ['01/01/2019'],
-      imageUrl: ['test'],
+      imageUrl: [],
       inputErrors: {
         name: false,
         email: false,
@@ -114,13 +133,17 @@ class CreatePackage extends Component {
         image: false,
         bio: false
       },
-      openModal: false
+      openModal: false,
+      tempImage: '',
+      message: ''
 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
+    this.iconClickhandler = this.iconClickhandler.bind(this);
+    this.removeImage = this.removeImage.bind(this);
   }
 
   handleChange(event) {
@@ -178,7 +201,23 @@ class CreatePackage extends Component {
   handleModalClose() {
     this.setState({ openModal: false });
   }
-
+  iconClickhandler() {
+    let img = document.getElementById('input-imageUrl').value;
+    let imgArray= this.state.imageUrl;
+    if(imgArray.length >= 4) {
+      document.getElementById('input-imageUrl').value = '';
+      return;
+    }
+    this.setState({ imageUrl : [...this.state.imageUrl, img]});
+    document.getElementById('input-imageUrl').value = '';
+  }
+  removeImage(e) {
+    let id = e.target.id;
+    id = parseInt(id); 
+    let imgArray = this.state.imageUrl;
+    imgArray.splice(id, 1);
+    this.setState({ imageUrl: imgArray });
+  }
   render() {
     console.log('state', this.state);
     const { classes } = this.props;
@@ -202,9 +241,39 @@ class CreatePackage extends Component {
           </Grid>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
-            <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.imageUrl ? 'Please provide images' : ' '} error={this.state.inputErrors.imageUrl} fullWidth id="input-imageUrl" label="Images" name="imageUrl" onChange={this.handleInputChange} />
+            <Grid item xs={10} >
+              <FormControl className={classes.form}>
+              <InputLabel htmlFor="input-image" required>
+                    Images (max 4)
+                </InputLabel>
+                <Input
+                  placeholder='Images (max 4 images)'
+                  className={classes.input}
+                  id="input-imageUrl"
+                  type = 'text'
+                  name="tempImage"
+                  // onChange={this.handleInputChange}
+                     />
+              </FormControl>
             </Grid>
+          </Grid>
+          
+          <Grid container justify="center" direction="row">       
+            <div style={divStyle} className="preview" onClick={this.removeImage}>
+              <img id="0" style={imgStyle} src={this.state.imageUrl? this.state.imageUrl[0] : null} alt=""/>
+            </div>
+            <div style={divStyle} className="preview" onClick={this.removeImage}>
+              <img id="1" style={imgStyle} src={this.state.imageUrl? this.state.imageUrl[1] : null} alt=""/>
+            </div>
+            <div style={divStyle} className="preview" onClick={this.removeImage}>
+              <img id="2" style={imgStyle} src={this.state.imageUrl? this.state.imageUrl[2] : null} alt=""/>
+            </div>
+            <div style={divStyle} className="preview" onClick={this.removeImage}>
+              <img id="3" style={imgStyle} src={this.state.imageUrl? this.state.imageUrl[3] : null} alt=""/>
+            </div>
+            <IconButton aria-label="add" onClick={this.iconClickhandler}>
+              <AddCircleOutline />
+            </IconButton>
           </Grid>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
