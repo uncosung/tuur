@@ -196,12 +196,14 @@ class CreatePackage extends Component {
   iconClickhandler() {
     let img = document.getElementById('input-imageUrl').value;
     let imgArray= this.state.imageUrl;
-    if(imgArray.length >= 4) {
+    if ( img ){
+      if(imgArray.length >= 4) {
+        document.getElementById('input-imageUrl').value = '';
+        return;
+      }
+      this.setState({ imageUrl : [...this.state.imageUrl, img]});
       document.getElementById('input-imageUrl').value = '';
-      return;
     }
-    this.setState({ imageUrl : [...this.state.imageUrl, img]});
-    document.getElementById('input-imageUrl').value = '';
   }
   removeImage(e) {
     let id = e.target.id;
@@ -244,7 +246,7 @@ class CreatePackage extends Component {
                   type = 'text'
                   name="tempImage"
                   // onChange={this.handleInputChange}
-                     />
+                  />
               </FormControl>
             </Grid>
           </Grid>
