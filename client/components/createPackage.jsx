@@ -106,11 +106,11 @@ class CreatePackage extends Component {
       location: '',
       timeRange: '',
       dates: [],
-      mainImage: '',
+      imageUrl: '',
       inputErrors: {
         title: false,
         location: false,
-        mainImage: false,
+        imageUrl: false,
         timeRange: false,
         description: false,
         tags: false
@@ -141,22 +141,22 @@ class CreatePackage extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { title, description, location, tags, timeRange, dates, mainImage } = this.state;
+    const { title, description, location, tags, timeRange, dates, imageUrl } = this.state;
 
-    if (!this.state.title.length || !this.state.description.length || !this.state.location.length || !this.state.mainImage.length) {
+    if (!this.state.title.length || !this.state.description.length || !this.state.location.length || !this.state.imageUrl.length) {
       this.setState({
         inputErrors: {
           title: !this.state.title,
           description: !this.state.description,
           location: !this.state.location,
-          mainImage: !this.state.mainImage
+          imageUrl: !this.state.imageUrl
         }
       });
     } else {
       fetch('/api/package.php', {
         method: 'POST',
         body: JSON.stringify(
-          { title, location, tags, timeRange, description, dates, mainImage })
+          { title, location, tags, timeRange, description, dates, imageUrl })
       })
         .then(res => {
           console.log(res);
@@ -209,7 +209,7 @@ class CreatePackage extends Component {
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.mainImage ? 'Please provide images' : ' '} error={this.state.inputErrors.mainImage} fullWidth id="input-mainImage" label="Images" name="mainImage" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.imageUrl ? 'Please provide images' : ' '} error={this.state.inputErrors.imageUrl} fullWidth id="input-imageUrl" label="Images" name="imageUrl" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
