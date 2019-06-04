@@ -42,6 +42,10 @@ class LogIn extends React.Component {
     });
   }
   handleSubmit(event) {
+    fetch(`/api/profile.php?email=${this.state.email}`)
+      .then(res => res.json())
+      .then(data => this.props.view('userProfile', data));
+
     event.preventDefault();
     console.log('clicked');
   }
@@ -64,7 +68,7 @@ class LogIn extends React.Component {
       <Grid className={classes.marginTop} container justify="center" alignItems="flex-end">
         <Grid item xs={8}>
           <ThemeProvider theme={theme}>
-            <Button type="submit" className={classes.marginTop} onClick={() => this.props.view('userProfile')} fullWidth variant="contained" color="primary">
+            <Button type="submit" className={classes.marginTop} onClick={ this.handleSubmit } fullWidth variant="contained" color="primary">
               <Typography variant="body1" gutterBottom>log in</Typography>
             </Button>
           </ThemeProvider>

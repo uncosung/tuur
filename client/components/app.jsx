@@ -16,14 +16,15 @@ class App extends Component {
     this.state = {
       view: {
         name: 'createPackage'
-      }
+      },
+      user: {}
     };
     this.setView = this.setView.bind(this);
   }
 
-  setView(name) {
+  setView(name, user) {
     const view = { name };
-    this.setState({ view });
+    this.setState({ view, user });
   }
 
   render() {
@@ -38,7 +39,7 @@ class App extends Component {
       <div>
         {this.state.view.name === 'userProfile'
           ? <div>
-            <UserProfile view={this.setView}/>
+            <UserProfile view={this.setView} user={ this.state.user }/>
             <UpComingTuursList view={this.setView} />
             {/* <BottomNav /> */}
           </div>
@@ -50,7 +51,7 @@ class App extends Component {
         }
         {this.state.view.name === 'editProfile'
           ? <div>
-            <EditProfile view={this.setView} />
+            <EditProfile view={this.setView} user={ this.state.user} />
             {/* <BottomNav /> */}
           </div>
           : null
@@ -84,7 +85,7 @@ class App extends Component {
           : null
         }
 
-        {/* <CreatePackage /> */}
+        {/* // <CreatePackage /> */}
         {/* <EditPackage /> */}
         {/* <EditProfile/> */}
         {/* <UserProfile/> */}

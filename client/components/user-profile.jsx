@@ -37,7 +37,8 @@ class UserProfile extends Component {
     super(props);
     this.state = {
       name: '',
-      location: ''
+      location: '',
+      image: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -46,8 +47,7 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    const email = 'dPaschal@gmail.com';
-    fetch(`api/profile.php?email=${email}`)
+    fetch(`api/profile.php?email=${this.props.user.email}`)
       .then(res => res.json())
       .then(response => this.setState({
         name: response.name,
@@ -77,7 +77,7 @@ class UserProfile extends Component {
             <Avatar alt="avatar" src={this.state.image} className={classes.avatar} />
           </Grid>
           <Grid item xs={6}>
-            <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile')} >
+            <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile', this.props.user)} >
               <Typography variant="button">Edit</Typography>
             </Button>
           </Grid>

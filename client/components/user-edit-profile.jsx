@@ -69,7 +69,7 @@ class EditProfile extends Component {
     });
   }
 
-  handleSubmit( evt ) {
+  handleSubmit(evt) {
     evt.preventDefault();
     const { name, email, location, bio, image } = this.state;
     if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length) {
@@ -84,7 +84,7 @@ class EditProfile extends Component {
       });
     } else {
       const { name, email, location, bio, image } = this.state;
-      fetch(`api/profile.php?email=${email}`, {
+      fetch(`api/profile.php?email=${this.state.email}`, {
         method: 'PATCH',
         body: JSON.stringify({
           name: name,
@@ -95,15 +95,15 @@ class EditProfile extends Component {
         })
       })
         .then(res => res.json())
-        .then( data => {
-          console.log( 'updated');
-        })
-        this.props.view('userProfile')
+        .then(data => {
+          console.log('updated');
+        });
+      this.props.view('userProfile', this.state);
     }
   }
   componentDidMount() {
-    const email = 'dPaschal@gmail.com';
-    fetch(`api/profile.php?email=${email}`)
+    // const email = 'dPaschal@gmail.com';
+    fetch(`api/profile.php?email=${this.props.user.email}`)
       .then(res => res.json())
       .then(response => this.setState({
         name: response.name,
@@ -119,10 +119,10 @@ class EditProfile extends Component {
             <>
             <Container className={classes.marginBottom} >
               <Typography className={classes.marginTop} variant="h4">
-                {this.state.name}
+                {this.props.user.name}
               </Typography>
               <Typography className={classes.marginLeft} variant="subtitle1">
-                {this.state.location}
+                {this.props.user.location}
               </Typography>
             </Container>
             <Container>
