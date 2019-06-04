@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import UpComingTuursList from './user-upcoming-tuurs-list';
+import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { ThemeProvider } from '@material-ui/styles';
+// import { ThemeProvider } from '@material-ui/styles';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: '#3A8288' },
-    secondary: { main: '#5bd1d7' },
-    lightBeige: { main: '#f1f1f1' },
-    beige: { main: '#f5e1da' }
-  }
-});
+// const theme = createMuiTheme({
+//   palette: {
+//     primary: { main: '#3A8288' },
+//     secondary: { main: '#5bd1d7' },
+//     lightBeige: { main: '#f1f1f1' },
+//     beige: { main: '#f5e1da' }
+//   }
+// });
 
 const styles = theme => ({
   marginTop: {
@@ -85,6 +86,10 @@ class UserProfile extends Component {
           </Grid>
         </Grid>
       </Container>
+      {this.state.isGuide === true
+        ? <UpComingTuursList view={this.props.view}/>
+        : <Typography variant="h5">No Tuurs available</Typography>
+      }
       </>
     );
   }

@@ -17,7 +17,7 @@ class App extends Component {
     super(props);
     this.state = {
       view: {
-        name: 'createPackage'
+        name: 'logIn'
       },
       user: {}
     };
@@ -42,7 +42,7 @@ class App extends Component {
         {this.state.view.name === 'userProfile'
           ? <div>
             <UserProfile view={this.setView} user={ this.state.user }/>
-            <UpComingTuursList view={this.setView} />
+            {/* <UpComingTuursList view={this.setView} /> */}
             {/* <BottomNav /> */}
           </div>
           : null
