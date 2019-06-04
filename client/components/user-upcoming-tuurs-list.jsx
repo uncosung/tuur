@@ -57,10 +57,10 @@ const styles = theme => ({
   },
   marginTop2: {
     marginTop: theme.spacing(4)
-  },
+  }
 });
 
-class UpComingTuursList extends React.Component {
+class UpComingTuursList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -92,14 +92,14 @@ class UpComingTuursList extends React.Component {
           </GridList>
         </div>
         <Grid justify="center" className={classes.margin} container>
-        <Grid className={classes.marginTop2} container justify="center" >
-          <ThemeProvider theme={theme}>
-            <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage')}>
-              <Typography variant="body1" gutterBottom>Create Package</Typography>
-            </Button>
-          </ThemeProvider>
+          <Grid className={classes.marginTop2} container justify="center" >
+            <ThemeProvider theme={theme}>
+              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage')}>
+                <Typography variant="body1" gutterBottom>Create Package</Typography>
+              </Button>
+            </ThemeProvider>
+          </Grid>
         </Grid>
-      </Grid>
       </>
     );
   }
