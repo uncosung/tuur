@@ -80,6 +80,7 @@ class UpComingTuursList extends Component {
       return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
     });
     return (
+      
       <>
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
@@ -92,14 +93,14 @@ class UpComingTuursList extends Component {
           </GridList>
         </div>
         <Grid justify="center" className={classes.margin} container>
-          <Grid className={classes.marginTop2} container justify="center" >
-            <ThemeProvider theme={theme}>
-              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage')}>
-                <Typography variant="body1" gutterBottom>Create Package</Typography>
-              </Button>
-            </ThemeProvider>
-          </Grid>
+        <Grid className={classes.marginTop2} container justify="center" >
+          <ThemeProvider theme={theme}>
+            <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user )}>
+              <Typography variant="body1" gutterBottom>Create Package</Typography>
+            </Button>
+          </ThemeProvider>
         </Grid>
+      </Grid>
       </>
     );
   }

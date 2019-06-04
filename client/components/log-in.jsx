@@ -38,16 +38,13 @@ class LogIn extends React.Component {
     const { name, value } = event.target;
     this.setState({
       [name]: value
-      // inputErrors: { ...this.state.inputErrors, [name]: false }
     });
   }
   handleSubmit(event) {
+    event.preventDefault();
     fetch(`/api/profile.php?email=${this.state.email}`)
       .then(res => res.json())
       .then(data => this.props.view('userProfile', data));
-
-    event.preventDefault();
-    console.log('clicked');
   }
   render() {
     const { classes } = this.props;
