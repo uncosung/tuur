@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
@@ -11,6 +10,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Email from '@material-ui/icons/Email';
 import LocationOn from '@material-ui/icons/LocationOn';
+import { ThemeProvider } from '@material-ui/styles';
+import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#3A8288' },
+    secondary: { main: '#5bd1d7' },
+    lightBeige: { main: '#f1f1f1' },
+    beige: { main: '#f5e1da' }
+  }
+});
 
 const styles = theme => ({
   margin: {
@@ -21,7 +31,8 @@ const styles = theme => ({
     padding: theme.spacing(1)
   },
   paddingBottom: {
-    paddingBottom: theme.spacing(1)
+    paddingBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(1)
   },
   textField: {
     marginRight: theme.spacing(1),
@@ -67,43 +78,42 @@ class SignUp extends Component {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
-      inputErrors: {...this.state.inputErrors, [name]:false}
+      inputErrors: { ...this.state.inputErrors, [name]: false }
     });
   }
   handdleToggle(event) {
     let isGuide = this.state.isGuide;
-    this.setState({ isGuide: !isGuide }, () => console.log(this.state));
+    this.setState({ isGuide: !isGuide });
   }
   handleSubmit(event) {
-    console.log('submit clicked');
     event.preventDefault();
-    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length){
+    const { name, email, location, bio, image, isGuide } = this.state;
+    const regexEmail = /[?=@]/g;
+    const regexFullName = /[A-Za-z][A-Za-z.'-]+\s[A-Za-z][A-Za-z.'-]+$/g;
+    const emailTest = regexEmail.test( email );
+    const nameTest = regexFullName.test( name );
+    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || !emailTest || !nameTest ) {
       this.setState({
         inputErrors: {
-          name: !this.state.name,
-          email: !this.state.email,
+          name: !nameTest,
+          email: !emailTest,
           location: !this.state.location,
           bio: !this.state.bio,
           image: !this.state.image
         }
       });
-    }
-    else {
+    } else {
       fetch('/api/profile.php', {
         method: 'POST',
-        body: JSON.stringify(this.state)
-      })
-        .then(res => res.json())
-        .then(newUser => {
-          console.log(newUser);
-          this.setState({
-            name: '',
-            email: '',
-            location: '',
-            bio: '',
-            isGuide: false
-          });
-        });
+        body: JSON.stringify(
+          { name, email, location, bio, image, isGuide }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }})
+        .then(res => { res.json()})
+        .then( newUser => this.props.view('userProfile', this.state)
+        );
     }
   }
 
@@ -117,13 +127,12 @@ class SignUp extends Component {
         </Typography>
         <Grid mx="auto" container component="form" justify="center" onSubmit={this.handleSubmit}>
 
-
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={2}>
               <AccountCircle fontSize='inherit' className={classes.paddingBottom}/>
             </Grid>
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.name ? 'Empty Field!' : ' '} error={this.state.inputErrors.name} fullWidth id="input-name" label="Name" name="name" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.name ? 'Name must include first and last name' : ' '} error={this.state.inputErrors.name} fullWidth id="input-name" label="Name" name="name" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end">
@@ -131,17 +140,16 @@ class SignUp extends Component {
               <Email fontSize='inherit' className={classes.paddingBottom}/>
             </Grid>
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.email ? 'Empty Field!' : ' '} error={this.state.inputErrors.email} fullWidth id="input-email" label="Email" name="email" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.email ? 'Email is invalid or already taken' : ' '} error={this.state.inputErrors.email} fullWidth id="input-email" label="Email" name="email" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
-
 
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={2}>
               <LocationOn fontSize='inherit' className={classes.paddingBottom}/>
             </Grid>
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.location ? 'Empty Field!' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="location" name="location" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.location ? 'Please enter your location' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="Location" name="location" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -150,17 +158,17 @@ class SignUp extends Component {
               <Avatar alt="avatar" src={this.state.image ? this.state.image : 'https://www.pngfind.com/pngs/m/481-4816267_default-icon-shadow-of-man-head-hd-png.png'} className={classes.avatar}/>
             </Grid>
             <Grid item xs={9}>
-              <TextField required helperText={this.state.inputErrors.image ? 'Empty Field!' : ' '} error={this.state.inputErrors.image}  fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.image ? 'Please enter a valid image url' : ' '} error={this.state.inputErrors.image} fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={12}>
               <TextField
                 id='outlined-textarea'
-                label='Tell us about yourself'
+                label='Tell us about yourself(In 150 characters)'
                 required
-                helperText={this.state.inputErrors.bio ? 'Empty Field!' : ' '} 
-                error={this.state.inputErrors.bio} 
+                helperText={this.state.inputErrors.bio ? 'Please enter a short description about yourself' : ' '}
+                error={this.state.inputErrors.bio}
                 multiline
                 fullWidth
                 rowsMax={3}
@@ -172,13 +180,14 @@ class SignUp extends Component {
             </Grid>
           </Grid>
 
-
           <Grid justify="center" className={classes.margin} container>
             <FormControlLabel control={
               <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} value="guide" />} label="Do you want to be a guide?" />
             <Grid className={classes.marginTop} container justify="center" >
-              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
-                <Typography variant="body1" gutterBottom>sign up</Typography>
+
+              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
+
+                <Typography variant="body1" gutterBottom>Sign Up</Typography>
               </Button>
             </Grid>
           </Grid>

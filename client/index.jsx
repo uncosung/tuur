@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SignUp from './components/sign-up';
+import App from './components/app';
+import MapBox from './components/mapbox';
 
 ReactDOM.render(
-  <SignUp />,
+  <MapBox />,
   document.getElementById('root')
 );

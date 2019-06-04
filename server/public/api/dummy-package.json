@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Dummy",
+    "id": 1,
+    "description": "Data",
+    "tags": [
+      "coffee",
+      "nightlife"
+    ],
+    "location": "23052 Lake Forest Dr B2, Laguna Hills, CA 92653",
+    "timeRange": "DUMMY",
+    "dates": [
+      "05/31/2019",
+      "09/01/2019"
+    ],
+    "mainImage": "image.png",
+    "images": [
+      "image.png",
+      "image2.png"
+    ],
+    "profileEmail": 1
+  }
+]
