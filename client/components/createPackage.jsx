@@ -121,17 +121,18 @@ class CreatePackage extends Component {
       title: '',
       description: '',
       tags: [],
-      language: '',
-      location: 'sd',
-      hours: '',
-      dates: ['01/01/2019'],
-      imageUrl: [],
+      //   language: '',
+      location: '',
+      timeRange: '',
+      dates: [],
+      imageUrl: '',
       inputErrors: {
-        name: false,
-        email: false,
+        title: false,
         location: false,
-        image: false,
-        bio: false
+        imageUrl: false,
+        timeRange: false,
+        description: false,
+        tags: false
       },
       openModal: false,
       tempImage: '',
@@ -163,14 +164,14 @@ class CreatePackage extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { title, description, location, tags, language, hours, dates, imageUrl } = this.state;
+    const { title, description, location, tags, timeRange, dates, imageUrl } = this.state;
 
-    if (!this.state.title.length || !this.state.description.length || !this.state.language.length || !this.state.imageUrl.length) {
+    if (!this.state.title.length || !this.state.description.length || !this.state.location.length || !this.state.imageUrl.length) {
       this.setState({
         inputErrors: {
           title: !this.state.title,
           description: !this.state.description,
-          language: !this.state.language,
+          location: !this.state.location,
           imageUrl: !this.state.imageUrl
         }
       });
@@ -178,14 +179,14 @@ class CreatePackage extends Component {
       fetch('/api/package.php', {
         method: 'POST',
         body: JSON.stringify(
-          { title, location, tags, hours, description, dates, imageUrl })
+          { title, location, tags, timeRange, description, dates, imageUrl })
       })
         .then(res => {
           console.log(res);
           return res.json();
         })
-        .then(newUser => {
-          console.log(newuser);
+        .then(newPackage => {
+          console.log(newPackage);
         // this.setState({
         //   title: '',
         //   description: '',
@@ -195,11 +196,16 @@ class CreatePackage extends Component {
         //   dates: [],
         //   imageUrl: ''
         // });
+        }, () => {
+          this.props.view('guideProfile')
         });
     }
   }
-  handleModalClose() {
-    this.setState({ openModal: false });
+  handleModalClose(dates) {
+    this.setState({ 
+      openModal: false,
+      dates: dates 
+    }, () => console.log(this.state));
   }
   iconClickhandler() {
     let img = document.getElementById('input-imageUrl').value;
@@ -236,7 +242,7 @@ class CreatePackage extends Component {
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.language ? 'Please provide a language' : ' '} error={this.state.inputErrors.language} fullWidth id="input-language" label="Language" name="language" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.location ? 'Please provide a location' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="Location" name="location" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -278,7 +284,7 @@ class CreatePackage extends Component {
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.imageUrl ? 'Please provide duration of tuur' : ' '} error={this.state.inputErrors.imageUrl} fullWidth id="input-hours" label="Tuur Duration(hours)" name="hours" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.timeRange ? 'Please provide duration of tuur' : ' '} error={this.state.inputErrors.timeRange} fullWidth id="input-timeRange" label="Tuur Duration(timeRange)" name="timeRange" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -315,10 +321,10 @@ class CreatePackage extends Component {
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
                 open={this.state.openModal}
-                onClose={this.handleModalClose}
+                onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker close={this.handleModalClose}/>
+                  <DatePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose}/>
                 </Grid>
 
               </Modal>
@@ -366,7 +372,7 @@ class CreatePackage extends Component {
           <Grid justify="center" className={classes.margin} container>
             <Grid className={classes.marginTop} container justify="center" >
               <ThemeProvider theme={theme}>
-                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
+                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
                   <Typography variant="body1" gutterBottom>Create Package</Typography>
                 </Button>
               </ThemeProvider>

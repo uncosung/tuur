@@ -15,7 +15,7 @@ if ($method === 'POST'){
         $output['isGuide'] = 1;
     }
     $query = "INSERT INTO `profile`(`name`, `email`, `location`, `bio`, `image`, `isGuide`) 
-    VALUES ('{$output['name']}', '{$output['email']}', '{$output['location']}', '{$output['bio']}', '{$output['image']}', '{$output['isGuide']}')";
+    VALUES (\"{$output['name']}\", '{$output['email']}', '{$output['location']}', '{$output['bio']}', '{$output['image']}', '{$output['isGuide']}')";
     $result = mysqli_query($conn, $query);
     $_SESSION['userEmail'] = $output['email'];
     print_r($result);

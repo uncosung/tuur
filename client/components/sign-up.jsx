@@ -87,14 +87,16 @@ class SignUp extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    const regexEmail = /[?=@]/g;
-    const regexFullName = /[A-Za-z][A-Za-z]+\s[A-Za-z][A-Za-z]+$/g;
     const { name, email, location, bio, image, isGuide } = this.state;
-    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || regexEmail.test(email) === false || regexFullName.test(name) === false) {
+    const regexEmail = /[?=@]/g;
+    const regexFullName = /[A-Za-z][A-Za-z.'-]+\s[A-Za-z][A-Za-z.'-]+$/g;
+    const emailTest = regexEmail.test( email );
+    const nameTest = regexFullName.test( name );
+    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || !emailTest || !nameTest ) {
       this.setState({
         inputErrors: {
-          name: !this.state.name || !regexFullName.test(name),
-          email: !regexEmail.test(email),
+          name: !nameTest,
+          email: !emailTest,
           location: !this.state.location,
           bio: !this.state.bio,
           image: !this.state.image
@@ -104,13 +106,14 @@ class SignUp extends Component {
       fetch('/api/profile.php', {
         method: 'POST',
         body: JSON.stringify(
-          { name, email, location, bio, image, isGuide })
-      })
-        .then(res => res.json())
-        .then(newUser => {
-          this.props.view('userProfile', this.state);
-        });
-
+          { name, email, location, bio, image, isGuide }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }})
+        .then(res => { res.json()})
+        .then( newUser => this.props.view('userProfile', this.state)
+        );
     }
   }
 
@@ -184,7 +187,7 @@ class SignUp extends Component {
 
               <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
 
-                <Typography variant="body1" gutterBottom>sign up</Typography>
+                <Typography variant="body1" gutterBottom>Sign Up</Typography>
               </Button>
             </Grid>
           </Grid>
