@@ -102,7 +102,7 @@ class CreatePackage extends Component {
       title: '',
       description: '',
       tags: [],
-      language: '',
+      //   language: '',
       location: 'sd',
       hours: '',
       dates: ['01/01/2019'],
@@ -140,14 +140,14 @@ class CreatePackage extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { title, description, location, tags, language, hours, dates, imageUrl } = this.state;
+    const { title, description, location, tags, hours, dates, imageUrl } = this.state;
 
-    if (!this.state.title.length || !this.state.description.length || !this.state.language.length || !this.state.imageUrl.length) {
+    if (!this.state.title.length || !this.state.description.length || !this.state.location.length || !this.state.imageUrl.length) {
       this.setState({
         inputErrors: {
           title: !this.state.title,
           description: !this.state.description,
-          language: !this.state.language,
+          location: !this.state.location,
           imageUrl: !this.state.imageUrl
         }
       });
@@ -197,7 +197,7 @@ class CreatePackage extends Component {
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.language ? 'Please provide a language' : ' '} error={this.state.inputErrors.language} fullWidth id="input-language" label="Language" name="language" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.location ? 'Please provide a location' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="Location" name="location" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -297,7 +297,7 @@ class CreatePackage extends Component {
           <Grid justify="center" className={classes.margin} container>
             <Grid className={classes.marginTop} container justify="center" >
               <ThemeProvider theme={theme}>
-                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={this.handleSubmit}>
+                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('guideProfile')}>
                   <Typography variant="body1" gutterBottom>Create Package</Typography>
                 </Button>
               </ThemeProvider>

@@ -3,6 +3,8 @@ import UserProfile from './user-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
+import BottomNav from './bottom-nav';
+import GuideProfile from './guide-profile';
 // import BottomNav from './bottom-nav';
 import DatePicker from './daterangepicker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
@@ -46,7 +48,7 @@ class App extends Component {
           : null
         }
         {this.state.view.name === 'signUp'
-          ? <SignUp view={this.setView}/>
+          ? <SignUp view={this.setView} status={this.setStatus}/>
           : null
         }
         {this.state.view.name === 'editProfile'
@@ -80,6 +82,13 @@ class App extends Component {
         {this.state.view.name === 'logIn'
           ? <div>
             <LogIn view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'guideProfile'
+          ? <div>
+            <GuideProfile view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null

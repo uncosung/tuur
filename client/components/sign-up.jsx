@@ -184,7 +184,7 @@ class SignUp extends Component {
 
               <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
 
-                <Typography variant="body1" gutterBottom>sign up</Typography>
+                <Typography variant="body1" gutterBottom>Sign Up</Typography>
               </Button>
             </Grid>
           </Grid>
