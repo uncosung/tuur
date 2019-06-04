@@ -19,9 +19,11 @@ import Chip from '@material-ui/core/Chip';
 // import DirectionsRun from '@material-ui/icons/DirectionsRun';
 // import FreeBreakfast from '@material-ui/icons/FreeBreakfast';
 // import DirectionsBike from '@material-ui/icons/DirectionsBike';
+import Modal from '@material-ui/core/Modal';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import DatePicker from './daterangepicker';
 
 const theme = createMuiTheme({
   palette: {
@@ -69,6 +71,18 @@ const styles = theme => ({
   },
   subtitle: {
     fontSize: 20
+  },
+  modalStyle: {
+    top: 5,
+    left: 5
+  },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: 7,
+    outline: 'none'
   }
 });
 
@@ -99,12 +113,14 @@ class CreatePackage extends Component {
         location: false,
         image: false,
         bio: false
-      }
+      },
+      openModal: false
+
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
+    this.handleModalClose = this.handleModalClose.bind(this);
   }
 
   handleChange(event) {
@@ -158,6 +174,9 @@ class CreatePackage extends Component {
         // });
         });
     }
+  }
+  handleModalClose() {
+    this.setState({ openModal: false });
   }
 
   render() {
@@ -219,7 +238,21 @@ class CreatePackage extends Component {
               </Typography>
             </Grid>
             <Grid item xs={2} >
-              <CalendarToday onClick={() => this.props.view('calendar')}/>
+              <CalendarToday onClick={() => this.setState({ openModal: true })}/>
+            </Grid>
+
+            <Grid item xs={11} className={classes.marginZero}>
+              <Modal
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+                open={this.state.openModal}
+                onClose={this.handleModalClose}
+              >
+                <Grid className={classes.paper}>
+                  <DatePicker close={this.handleModalClose}/>
+                </Grid>
+
+              </Modal>
             </Grid>
 
           </Grid>
