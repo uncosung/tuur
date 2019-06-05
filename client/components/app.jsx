@@ -10,6 +10,7 @@ import UpComingTuursList from './user-upcoming-tuurs-list';
 import CreatePackage from './createPackage';
 import EditPackage from './editPackage';
 import LogIn from './log-in';
+import Itinerary from './itinerary';
 
 class App extends Component {
   constructor(props) {
@@ -85,7 +86,13 @@ class App extends Component {
           </div>
           : null
         }
-
+        {this.state.view.name === 'itinerary'
+          ? <div>
+            <Itinerary view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
       </div>
 
     );
