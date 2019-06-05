@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Billy Bob",
+    "email": "BillyBob@gmail.com",
+    "location": "Kansas City, MO",
+    "bio": "I like farming"
+  },
+  {
+    "id": 2,
+    "name": "Michael Jackson",
+    "email": "MichaelJackson@gmail.com",
+    "location": "Los Olivos, CA",
+    "bio": "HEEE Eeeee"
+  },
+  {
+    "id": 3,
+    "name": "Patrick Star",
+    "email": "PStar@gmail.com",
+    "location": "Newport Beach, CA",
+    "bio": "I like jellyfishing"
+  }
+]
