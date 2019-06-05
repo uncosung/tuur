@@ -11,6 +11,7 @@ if ($method === 'POST'){
     $emailQuery = "SELECT `email` FROM `profile` WHERE `email` = '{$output['email']}'";
     $emailExist = mysqli_query( $conn, $emailQuery );
     $email = mysqli_fetch_assoc( $emailExist );
+    
     if ( $email !== NULL){
         print(json_encode(['auth' => false]));
     } 
