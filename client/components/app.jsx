@@ -10,31 +10,17 @@ import CreatePackage from './createPackage';
 import EditPackage from './editPackage';
 import LogIn from './log-in';
 import Itinerary from './itinerary';
-<<<<<<< HEAD
 import SearchBar from './search-bar';
 import SearchResultGuide from './search-result-guide-list';
-<<<<<<< HEAD
-=======
 import Search from './search';
->>>>>>> e9102ab7c24161a2f82c09c18f0f798e958f7268
-=======
 import SearchPackages from './search-result-package';
->>>>>>> e9252b79e0e199d97fe35361411847d041937f78
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-<<<<<<< HEAD
-<<<<<<< HEAD
-        name: 'createPackage'
-=======
-        name: 'search'
->>>>>>> e9102ab7c24161a2f82c09c18f0f798e958f7268
-=======
         name: 'searchResult'
->>>>>>> e9252b79e0e199d97fe35361411847d041937f78
       },
       user: {}
     };

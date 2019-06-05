@@ -10,6 +10,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -92,17 +96,45 @@ const styles = theme => ({
   },
   buttonContainer: {
     paddingLeft: 15
+  },
+  subtitle: {
+    fontSize: 20
+  },
+  width:{
+    width:0,
+    opacity:0,
+    position:'absolute'
   }
 });
+
+const categories = [
+  'Food',
+  'Shopping',
+  'Coffee',
+  'Outdoors',
+  'Nightlife',
+  'Activities'
+];
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toggle: false
+      toggle: false,
+      tags:[],
     };
     this.handdleToggle = this.handdleToggle.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
+
+  handleChange(event) {
+    const { value } = event.target;
+    this.setState({
+      tags: value,
+    });
+  }
+  
+
   handdleToggle(event) {
     let newToggle = this.state.toggle;
     this.setState({ toggle: !newToggle });
@@ -142,9 +174,25 @@ class SearchBar extends Component {
                <Grid item xs={3} className={classes.button}>
                  <Button type="submit" fullWidth variant="contained" color="secondary">Dates</Button>
                </Grid>
-               <Grid item xs={3}>
-                 <Button type="submit" fullWidth variant="contained" color="secondary">Filter</Button>
-               </Grid>
+
+                <Grid item xs={3}>
+                  <Button type="submit" fullWidth variant="contained" color="secondary">Filter
+                      <Select
+                        className={classes.width}
+                        multiple
+                        value={this.state.tags}
+                        onChange={this.handleChange} 
+                      >
+                        {categories.map(name => (
+                          <MenuItem key={name} value={name}>
+                            <Typography className={classes.subtitle} variant="subtitle2" align="left" gutterBottom>
+                              {name}
+                            </Typography>
+                          </MenuItem>
+                        ))}
+                       </Select>
+                  </Button>
+                </Grid>
              </Grid>
 
            </AppBar>

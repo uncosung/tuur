@@ -11,11 +11,7 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-<<<<<<< HEAD
-import Clear from '@material-ui/icons/Clear';
-=======
 // import Clear from '@material-ui/icons/Clear';
->>>>>>> e9252b79e0e199d97fe35361411847d041937f78
 
 const styles = theme => ({
   marginTop: {
