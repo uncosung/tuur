@@ -10,12 +10,12 @@ import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-// import red from '@material-ui/core/colors/red';
-// import FavoriteIcon from '@material-ui/icons/Favorite';
-// import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-// import MoreVertIcon from '@material-ui/icons/MoreVert';
+<<<<<<< HEAD
 import Clear from '@material-ui/icons/Clear';
+=======
+// import Clear from '@material-ui/icons/Clear';
+>>>>>>> e9252b79e0e199d97fe35361411847d041937f78
 
 const styles = theme => ({
   marginTop: {
@@ -70,14 +70,8 @@ class Itinerary extends Component {
             </Container>
             <Card className={classes.card}>
               <CardHeader
-                // // action={
-                // //   <IconButton>
-                //     {/* <MoreVertIcon /> */}
-                //     {/* <Clear />
-                //   </IconButton> */}
-                // // }
                 title="Seattle Tuur"
-                subheader="September 14, 2016"
+                // subheader="September 14, 2016"
               />
               <CardMedia
                 className={classes.media}
@@ -90,12 +84,6 @@ class Itinerary extends Component {
                 </Typography>
               </CardContent>
               <CardActions disableSpacing>
-                {/* <IconButton aria-label="Add to favorites">
-                  <FavoriteIcon />
-                </IconButton>
-                <IconButton aria-label="Share">
-                  <ShareIcon />
-                </IconButton> */}
                 <IconButton
                   className={clsx(classes.expand, {
                     [classes.expandOpen]: this.state.expanded

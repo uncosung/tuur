@@ -1,0 +1,39 @@
+[
+  [
+    {
+        "name": "Tim Davis",
+        "email": "timD@gmail.com",
+        "location": "Irvine, CA, USA",
+        "image": "https://learningfuze.com/blog/wp-content/uploads/2019/04/tim-davis-768x511.jpg",
+        "bio": "Hi, I'm Tim and I like to code things. My brain is very big."
+    },
+    {
+        "name": "taj",
+        "email": "dPaschal@gmail.com",
+        "location": "Irvine, California",
+        "image": "https://learningfuze.com/blog/wp-content/uploads/2019/04/tim-davis-768x511.jpg",
+        "bio": "I like codin. My brain "
+    },
+    {
+        "name": "Big Jimbo",
+        "email": "bigjim@gmail.com",
+        "location": "Kentucky",
+        "image": "http://www.hillbillysillyscience.com/resources/ohio.jpg.opt424x442o0%2C0s424x442.jpg",
+        "bio": "I like moonshine and big women."
+    },
+    {
+        "name": "Pam Beasly",
+        "email": "pam@dundermifflin.com",
+        "location": "Scranton, Pennsylvania",
+        "image": "https://www.usnews.com/dims4/USNEWS/532d017/2147483647/thumbnail/640x420/quality/85/?url=http%3A%2F%2Fcom-usnews-beam-media.s3.amazonaws.com%2F5a%2Fa6%2F260f387c42028149b0558695d8ff%2F170208investingpam-editorial.jpg",
+        "bio": "I like paper. "
+    },
+    {
+        "name": "Michael Scott",
+        "email": "Michael@dundermifflin.com",
+        "location": "Scranton, Pennsylvania",
+        "image": "https://upload.wikimedia.org/wikipedia/en/d/dc/MichaelScott.png",
+        "bio": "I love paper."
+    }
+]
+]
