@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import clsx from 'clsx';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,7 +11,6 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Modal from '@material-ui/core/Modal';
 import CalendarToday from '@material-ui/icons/CalendarToday';
@@ -24,7 +22,7 @@ const divStyle = {
   width: '47px',
   height: '40px',
   border: '1px solid gray',
-  marginRight: '5px',
+  marginRight: '5px'
 };
 
 const imgStyle = {
@@ -33,7 +31,6 @@ const imgStyle = {
   backgroundRepeat: 'norepeat',
   backgroundSize: '100% 100%'
 };
-
 
 const theme = createMuiTheme({
   palette: {
@@ -100,8 +97,15 @@ const styles = theme => ({
   input: {
     width: '100%'
   },
-  form : {
+  form: {
     width: '100%'
+  },
+  dateChip: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    width: 40,
+    marginRight: '4px',
+    marginBottom: '4px'
   }
 });
 
@@ -121,7 +125,6 @@ class CreatePackage extends Component {
       title: '',
       description: '',
       tags: [],
-      //   language: '',
       location: '',
       timeRange: '',
       dates: [],
@@ -135,8 +138,7 @@ class CreatePackage extends Component {
         tags: false
       },
       openModal: false,
-      tempImage: '',
-      message: ''
+      newDates: []
 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -145,6 +147,8 @@ class CreatePackage extends Component {
     this.handleModalClose = this.handleModalClose.bind(this);
     this.iconClickhandler = this.iconClickhandler.bind(this);
     this.removeImage = this.removeImage.bind(this);
+    this.removeChips = this.removeChips.bind(this);
+    this.modalClose = this.modalClose.bind(this);
   }
 
   handleChange(event) {
@@ -184,14 +188,18 @@ class CreatePackage extends Component {
         .then(res => res.json())
         .then(newPackage => this.props.view( 'userProfile' , this.props.user ));
       }
+
     }
   
 
   handleModalClose(dates) {
-    this.setState({ 
+    this.setState({
       openModal: false,
       dates: dates 
     });
+  }
+  modalClose() {
+    this.setState({ openModal: false });
   }
   iconClickhandler() {
     let img = document.getElementById('input-imageUrl').value;
@@ -207,10 +215,17 @@ class CreatePackage extends Component {
   }
   removeImage(e) {
     let id = e.target.id;
-    id = parseInt(id); 
+    id = parseInt(id);
     let imgArray = this.state.imageUrl;
     imgArray.splice(id, 1);
     this.setState({ imageUrl: imgArray });
+  }
+  removeChips(e) {
+    let dateId = e.currentTarget.id;
+    dateId = parseInt(dateId);
+    let datesArray = this.state.dates;
+    datesArray.splice(dateId, 1);
+    this.setState({ dates: datesArray });
   }
   render() {
     const { classes } = this.props;
@@ -236,7 +251,7 @@ class CreatePackage extends Component {
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10} >
               <FormControl className={classes.form}>
-              <InputLabel htmlFor="input-image" required>
+                <InputLabel htmlFor="input-image" required>
                     Images (max 4)
                 </InputLabel>
                 <Input
@@ -244,25 +259,23 @@ class CreatePackage extends Component {
                   className={classes.input}
                   id="input-imageUrl"
                   type = 'text'
-                  name="tempImage"
-                  // onChange={this.handleInputChange}
-                  />
+                />
               </FormControl>
             </Grid>
           </Grid>
-          
-          <Grid container justify="center" direction="row">       
+
+          <Grid container justify="center" direction="row">
             <div style={divStyle} className="preview" onClick={this.removeImage}>
-              <img id="0" style={imgStyle} src={this.state.imageUrl? this.state.imageUrl[0] : null} alt=""/>
+              <img id="0" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[0] : null} alt=""/>
             </div>
             <div style={divStyle} className="preview" onClick={this.removeImage}>
-              <img id="1" style={imgStyle} src={this.state.imageUrl? this.state.imageUrl[1] : null} alt=""/>
+              <img id="1" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[1] : null} alt=""/>
             </div>
             <div style={divStyle} className="preview" onClick={this.removeImage}>
-              <img id="2" style={imgStyle} src={this.state.imageUrl? this.state.imageUrl[2] : null} alt=""/>
+              <img id="2" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[2] : null} alt=""/>
             </div>
             <div style={divStyle} className="preview" onClick={this.removeImage}>
-              <img id="3" style={imgStyle} src={this.state.imageUrl? this.state.imageUrl[3] : null} alt=""/>
+              <img id="3" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[3] : null} alt=""/>
             </div>
             <IconButton aria-label="add" onClick={this.iconClickhandler}>
               <AddCircleOutline />
@@ -311,12 +324,30 @@ class CreatePackage extends Component {
                 onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose}/>
-                </Grid>
+                  <DatePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose}/>
 
+                </Grid>
               </Modal>
             </Grid>
+          </Grid>
 
+          <Grid container>
+            {this.state.dates.map((data, index) => {
+              let date = data.getDate();
+              let month = data.getMonth() + 1;
+              let newdate = month + '/' + date;
+              return (
+                <Chip
+                  variant="outlined" color="primary" size="small"
+                  key={index}
+                  label={newdate}
+                  id={index}
+                  className={classes.dateChip}
+                  onClick={this.removeChips}
+                />
+              );
+
+            })}
           </Grid>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
