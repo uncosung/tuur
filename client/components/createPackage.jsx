@@ -17,6 +17,9 @@ import CalendarToday from '@material-ui/icons/CalendarToday';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import DatePicker from './daterangepicker';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+import green from '@material-ui/core/colors/green';
 
 const divStyle = {
   width: '47px',
@@ -61,8 +64,11 @@ const styles = theme => ({
   paddingTop: {
     paddingTop: theme.spacing(5)
   },
+  noPadding: {
+    padding: 2
+  },
   marginLeft: {
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(4),
     marginTop: theme.spacing(3)
   },
   chip: {
@@ -106,6 +112,15 @@ const styles = theme => ({
     width: 40,
     marginRight: '4px',
     marginBottom: '4px'
+  },
+  close: {
+    padding: theme.spacing.unit / 2
+  },
+  info: {
+    backgroundColor: theme.palette.primary.dark
+  },
+  success: {
+    backgroundColor: green[600]
   }
 });
 
@@ -138,7 +153,8 @@ class CreatePackage extends Component {
         tags: false
       },
       openModal: false,
-      newDates: []
+      newDates: [],
+      openSnackBar: false
 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -149,6 +165,8 @@ class CreatePackage extends Component {
     this.removeImage = this.removeImage.bind(this);
     this.removeChips = this.removeChips.bind(this);
     this.modalClose = this.modalClose.bind(this);
+    this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
+    this.handleSnackbarOpen = this.handleSnackbarOpen.bind(this);
   }
 
   handleChange(event) {
@@ -180,17 +198,32 @@ class CreatePackage extends Component {
         }
       });
     } else {
-      fetch('/api/package.php', {
-        method: 'POST',
-        body: JSON.stringify(
-          { title, location, tags, timeRange, description, dates, imageUrl })
-      })
-        .then(res => res.json())
-        .then(newPackage => this.props.view('userProfile', this.props.user));
+      if (this.state.imageUrl.length !== 0 && this.state.dates.length !== 0 && this.state.tags.length !== 0) {
+        fetch('/api/package.php', {
+          method: 'POST',
+          body: JSON.stringify(
+            { title, location, tags, timeRange, description, dates, imageUrl })
+        })
+          .then(res => res.json())
+          .then(newPackage => this.props.view('userProfile', this.props.user));
+        this.setState({ openSnackBar: false });
+      }
     }
-
+    if (this.state.imageUrl.length === 0 || this.state.dates.length === 0 || this.state.tags.length === 0) {
+      this.setState({ openSnackBar: true });
+    } else {
+      this.setState({ openSnackBar: false });
+    }
   }
-
+  handleSnackbarClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({ openSnackBar: false });
+  }
+  handleSnackbarOpen() {
+    this.setState({ openSnackBar: true });
+  }
   handleModalClose(dates) {
     this.setState({
       openModal: false,
@@ -228,7 +261,14 @@ class CreatePackage extends Component {
   }
   render() {
     const { classes } = this.props;
-
+    let warning = null;
+    if (this.state.imageUrl.length === 0) {
+      warning = '⛔️ You need to upload images 🎍';
+    } else if (this.state.dates.length === 0) {
+      warning = '⛔️ You need to pick dates 📆';
+    } else if (this.state.tags.length === 0) {
+      warning = '⛔️ You need to pick categories 🍧';
+    }
     return (
       <Container>
         <Typography className={classes.marginTop} variant="h4" align="center" gutterBottom>
@@ -276,14 +316,14 @@ class CreatePackage extends Component {
             <div style={divStyle} className="preview" onClick={this.removeImage}>
               <img id="3" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[3] : null} alt=""/>
             </div>
-            <IconButton aria-label="add" onClick={this.iconClickhandler}>
-              <AddCircleOutline />
+            <IconButton aria-label="add" className={classes.noPadding} onClick={this.iconClickhandler}>
+              <AddCircleOutline style={{ fontSize: 40 }}/>
             </IconButton>
           </Grid>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.timeRange ? 'Please provide duration of tuur' : ' '} error={this.state.inputErrors.timeRange} fullWidth id="input-timeRange" label="Tuur Duration(timeRange)" name="timeRange" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.timeRange ? 'Please provide duration of tuur' : ' '} error={this.state.inputErrors.timeRange} fullWidth id="input-timeRange" label="Tuur Duration (Time range)" name="timeRange" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -291,7 +331,7 @@ class CreatePackage extends Component {
             <Grid item xs={10}>
               <TextField
                 id='outlined-textarea'
-                label='Describe the Tuur(150 characters)'
+                label='Describe the Tuur (150 characters)'
                 required
                 helperText={this.state.inputErrors.description ? 'Please enter a short description about the tuur' : ' '}
                 error={this.state.inputErrors.description}
@@ -329,7 +369,6 @@ class CreatePackage extends Component {
               </Modal>
             </Grid>
           </Grid>
-
           <Grid container>
             {this.state.dates.map((data, index) => {
               let date = data.getDate();
@@ -396,6 +435,30 @@ class CreatePackage extends Component {
             </Grid>
           </Grid>
 
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left'
+            }}
+            variant="info"
+            open={this.state.openSnackBar}
+            autoHideDuration={6000}
+            onClose={this.handleSnackbarClose}
+            ContentProps={{
+              'aria-describedby': 'message-id'
+            }}
+            message={<span id="message-id">{warning}</span>}
+            action={[
+              <IconButton
+                key="close"
+                aria-label="Close"
+                color="inherit"
+                className={classes.close}
+                onClick={() => this.handleSnackbarClose()}>
+                <CloseIcon />
+              </IconButton>
+            ]}
+          />
         </Grid>
       </Container>
     );
