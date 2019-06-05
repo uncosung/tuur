@@ -114,13 +114,10 @@ const styles = theme => ({
     marginBottom: '4px'
   },
   close: {
-    padding: theme.spacing.unit / 2
+    padding: theme.spacing(2)
   },
   info: {
     backgroundColor: theme.palette.primary.dark
-  },
-  success: {
-    backgroundColor: green[600]
   }
 });
 
@@ -355,7 +352,7 @@ class CreatePackage extends Component {
               <CalendarToday onClick={() => this.setState({ openModal: true })}/>
             </Grid>
 
-            <Grid item xs={11} className={classes.marginZero}>
+            <Grid item xs={11} >
               <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
