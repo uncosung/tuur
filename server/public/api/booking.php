@@ -10,7 +10,7 @@ if ( $method === "POST"){
   $output = json_decode( $item , true );
   // TEST OUTPUT ONCE BOOKING FUNCTIONALITY CREATED
   // var_dump( $output );
-  
+
   $query = "INSERT INTO `booking` (`id`, `tuuristId`, `packageId`, `bookedAt`, `dates`, `tuuristEmail`) 
             VALUES (NULL, '{$output['tuuristId']}', '{$output['packageId']} ', CURRENT_TIMESTAMP, '{$output['dates']}', {$email})";
   $result = mysqli_query( $conn, $query );
@@ -30,7 +30,6 @@ if ( $method === "GET"){
 
   while ( $row = mysqli_fetch_assoc( $result) ){
     $output[] = $row;
-    // $output[0]['dates'] = (substr(json_decode( $row['dates'] )[0], 0 , 10));
   }
 
   print_r( json_encode( $output ));
