@@ -75,8 +75,8 @@ class UserProfile extends Component {
           </Grid>
         </Grid>
       </Container>
-      {/* <UpComingTuursList view={this.props.view} user={ this.props.user }/> */}
-      {this.state.isGuide === false
+
+      {this.state.isGuide
         ? <UpComingTuursList view={this.props.view} user={ this.props.user }/>
         : <Typography variant="h5">No Tuurs available</Typography>
       }

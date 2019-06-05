@@ -12,7 +12,13 @@ import LogIn from './log-in';
 import Itinerary from './itinerary';
 import SearchBar from './search-bar';
 import SearchResultGuide from './search-result-guide-list';
+<<<<<<< HEAD
 import Search from './search';
+=======
+
+import Search from './search';
+
+>>>>>>> ce16cfc499f50e209099af9e2959ec5b93c594ad
 import SearchPackages from './search-result-package';
 
 class App extends Component {
@@ -20,7 +26,11 @@ class App extends Component {
     super(props);
     this.state = {
       view: {
+<<<<<<< HEAD
         name: 'logIn'
+=======
+        name: 'signUp'
+>>>>>>> ce16cfc499f50e209099af9e2959ec5b93c594ad
       },
       user: {}
     };
