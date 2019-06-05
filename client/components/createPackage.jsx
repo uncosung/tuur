@@ -16,7 +16,7 @@ import Modal from '@material-ui/core/Modal';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
-import DatePicker from './daterangepicker';
+import DatePicker from './date-multiple-picker';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import green from '@material-ui/core/colors/green';

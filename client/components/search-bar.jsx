@@ -10,6 +10,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
 
 const theme = createMuiTheme({
   palette: {
@@ -99,13 +100,22 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toggle: false
+      toggle: false,
+      openModal: false,
+      dates: []
     };
     this.handdleToggle = this.handdleToggle.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
   }
   handdleToggle(event) {
     let newToggle = this.state.toggle;
     this.setState({ toggle: !newToggle });
+  }
+  handleModalClose(dates) {
+    this.setState({
+      openModal: false,
+      dates: dates
+    });
   }
   render() {
     const { classes } = this.props;
@@ -140,15 +150,29 @@ class SearchBar extends Component {
 
              <Grid container className={classes.buttonContainer}>
                <Grid item xs={3} className={classes.button}>
-                 <Button type="submit" fullWidth variant="contained" color="secondary">Dates</Button>
+                 <Button type="submit" fullWidth variant="contained" color="secondary" onClick={() => this.setState({ openModal: true })}>Dates</Button>
                </Grid>
                <Grid item xs={3}>
                  <Button type="submit" fullWidth variant="contained" color="secondary">Filter</Button>
                </Grid>
              </Grid>
-
            </AppBar>
          </ThemeProvider>
+
+         <Grid item xs={11} className={classes.marginZero}>
+           <Modal
+             aria-labelledby="date-range-picker"
+             aria-describedby="date-range"
+             open={this.state.openModal}
+             onClose={() => this.handleModalClose(this.state.dates)}
+           >
+             <Grid className={classes.paper}>
+               <DateRangePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose}/>
+
+             </Grid>
+           </Modal>
+         </Grid>
+
       </>
     );
   }
