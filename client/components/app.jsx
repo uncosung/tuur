@@ -11,13 +11,14 @@ import UpComingTuursList from './user-upcoming-tuurs-list';
 import CreatePackage from './createPackage';
 import EditPackage from './editPackage';
 import LogIn from './log-in';
+import Itinerary from './itinerary';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-        name: 'createPackage'
+        name: 'itinerary'
       },
       user: {}
     };
@@ -42,7 +43,7 @@ class App extends Component {
         {this.state.view.name === 'userProfile'
           ? <div>
             <UserProfile view={this.setView} user={ this.state.user }/>
-            <UpComingTuursList view={this.setView} />
+            {/* <UpComingTuursList view={this.setView} /> */}
             {/* <BottomNav /> */}
           </div>
           : null
@@ -89,6 +90,13 @@ class App extends Component {
         {this.state.view.name === 'guideProfile'
           ? <div>
             <GuideProfile view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'itinerary'
+          ? <div>
+            <Itinerary view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null
