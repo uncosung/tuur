@@ -16,7 +16,7 @@ import Modal from '@material-ui/core/Modal';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
-import DatePicker from './daterangepicker';
+import DatePicker from './date-multiple-picker';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import green from '@material-ui/core/colors/green';
@@ -114,13 +114,10 @@ const styles = theme => ({
     marginBottom: '4px'
   },
   close: {
-    padding: theme.spacing.unit / 2
+    padding: theme.spacing(2)
   },
   info: {
     backgroundColor: theme.palette.primary.dark
-  },
-  success: {
-    backgroundColor: green[600]
   }
 });
 
@@ -355,7 +352,7 @@ class CreatePackage extends Component {
               <CalendarToday onClick={() => this.setState({ openModal: true })}/>
             </Grid>
 
-            <Grid item xs={11} className={classes.marginZero}>
+            <Grid item xs={11} >
               <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"

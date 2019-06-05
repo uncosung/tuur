@@ -4,7 +4,7 @@ import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import BottomNav from './bottom-nav';
-import DatePicker from './daterangepicker';
+import DatePicker from './date-multiple-picker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
 import CreatePackage from './createPackage';
 import EditPackage from './editPackage';

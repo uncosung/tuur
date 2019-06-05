@@ -10,9 +10,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
+import DateRangePicker from './date-range-picker';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -89,12 +92,26 @@ const styles = theme => ({
     margin: 0,
     paddingLeft: 10
   },
-  button: {
+  buttonDiv: {
     marginLeft: 10,
     marginRight: 10
   },
+  button: {
+    backgroundColor: '#A6C7C8',
+    '&.active, &:hover, &.active:hover': {
+      backgroundColor: '#A6C7C8'
+    }
+  },
   buttonContainer: {
     paddingLeft: 15
+  },
+  paper: {
+    position: 'absolute',
+    width: 380,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: 7,
+    outline: 'none'
   },
   subtitle: {
     fontSize: 20
@@ -120,10 +137,18 @@ class SearchBar extends Component {
     super(props);
     this.state = {
       toggle: false,
-      tags: []
+      openModal: false,
+      tags: [],
+      dates: {
+        start: null,
+        end: null
+      }
     };
     this.handdleToggle = this.handdleToggle.bind(this);
+    this.modalClose = this.modalClose.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
+
   }
 
   handleChange(event) {
@@ -136,6 +161,17 @@ class SearchBar extends Component {
   handdleToggle(event) {
     let newToggle = this.state.toggle;
     this.setState({ toggle: !newToggle });
+  }
+  handleModalClose(dates) {
+    let startDate = dates.start;
+    let endDate = dates.end;
+    this.setState({
+      openModal: false,
+      dates: { start: startDate, end: endDate }
+    }, () => console.log(this.state.dates));
+  }
+  modalClose() {
+    this.setState({ openModal: false });
   }
   render() {
     const { classes } = this.props;
@@ -169,12 +205,12 @@ class SearchBar extends Component {
              </Grid>
 
              <Grid container className={classes.buttonContainer}>
-               <Grid item xs={3} className={classes.button}>
-                 <Button type="submit" fullWidth variant="contained" color="secondary">Dates</Button>
+               <Grid item xs={3} className={classes.buttonDiv}>
+                 <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary" onClick={() => this.setState({ openModal: true })}>Dates</Button>
                </Grid>
 
                <Grid item xs={3}>
-                 <Button type="submit" fullWidth variant="contained" color="secondary">Filter
+                 <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary">Filter
                    <Select
                      className={classes.width}
                      multiple
@@ -192,9 +228,22 @@ class SearchBar extends Component {
                  </Button>
                </Grid>
              </Grid>
-
            </AppBar>
          </ThemeProvider>
+
+         <Grid item xs={10}>
+           <Modal
+             aria-labelledby="date-range-picker"
+             aria-describedby="date-range"
+             open={this.state.openModal}
+             onClose={() => this.handleModalClose(this.state.dates)}
+           >
+             <Grid className={classes.paper}>
+               <DateRangePicker key={this.state.title} close={this.handleModalClose} modalClose={this.modalClose}/>
+             </Grid>
+           </Modal>
+         </Grid>
+
       </>
     );
   }
