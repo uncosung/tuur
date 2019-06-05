@@ -13,7 +13,6 @@ import Itinerary from './itinerary';
 import SearchBar from './search-bar';
 import SearchResultGuide from './search-result-guide-list';
 import Search from './search';
-
 import SearchPackages from './search-result-package';
 
 class App extends Component {

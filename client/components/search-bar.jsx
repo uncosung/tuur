@@ -12,6 +12,10 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import DateRangePicker from './date-range-picker';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -108,8 +112,25 @@ const styles = theme => ({
     boxShadow: theme.shadows[5],
     padding: 7,
     outline: 'none'
+  },
+  subtitle: {
+    fontSize: 20
+  },
+  width: {
+    width: 0,
+    opacity: 0,
+    position: 'absolute'
   }
 });
+
+const categories = [
+  'Food',
+  'Shopping',
+  'Coffee',
+  'Outdoors',
+  'Nightlife',
+  'Activities'
+];
 
 class SearchBar extends Component {
   constructor(props) {
@@ -117,6 +138,7 @@ class SearchBar extends Component {
     this.state = {
       toggle: false,
       openModal: false,
+      tags: [],
       dates: {
         start: null,
         end: null
@@ -125,7 +147,17 @@ class SearchBar extends Component {
     this.handdleToggle = this.handdleToggle.bind(this);
     this.modalClose = this.modalClose.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+
   }
+
+  handleChange(event) {
+    const { value } = event.target;
+    this.setState({
+      tags: value
+    });
+  }
+
   handdleToggle(event) {
     let newToggle = this.state.toggle;
     this.setState({ toggle: !newToggle });
@@ -176,8 +208,24 @@ class SearchBar extends Component {
                <Grid item xs={3} className={classes.buttonDiv}>
                  <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary" onClick={() => this.setState({ openModal: true })}>Dates</Button>
                </Grid>
+
                <Grid item xs={3}>
-                 <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary">Filter</Button>
+                 <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary">Filter
+                   <Select
+                     className={classes.width}
+                     multiple
+                     value={this.state.tags}
+                     onChange={this.handleChange}
+                   >
+                     {categories.map(name => (
+                       <MenuItem key={name} value={name}>
+                         <Typography className={classes.subtitle} variant="subtitle2" align="left" gutterBottom>
+                           {name}
+                         </Typography>
+                       </MenuItem>
+                     ))}
+                   </Select>
+                 </Button>
                </Grid>
              </Grid>
            </AppBar>
