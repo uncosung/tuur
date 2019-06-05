@@ -8,7 +8,7 @@ if ( $method === "POST"){
   $stringQuery = json_decode( $item , true );
   // DUMMY QUERY
   $query = "INSERT INTO `booking` (`id`, `tuuristId`, `packageId`, `bookedAt`, `dates`, `tuuristEmail`) 
-            VALUES (NULL, '3', '52', CURRENT_TIMESTAMP, '[\"2019-06-11T07:00:00.000Z\"]', 'creed@dundermifflin.com')";
+            VALUES (NULL, '3', '52 ', CURRENT_TIMESTAMP, '[\"2019-06-11T07:00:00.000Z\"]', 'creed@dundermifflin.com')";
   $result = mysqli_query( $conn, $query );
   print_r( json_encode( ['auth' => $result]));
 }
