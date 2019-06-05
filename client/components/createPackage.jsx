@@ -329,7 +329,6 @@ class CreatePackage extends Component {
               </Modal>
             </Grid>
           </Grid>
-
           <Grid container>
             {this.state.dates.map((data, index) => {
               let date = data.getDate();

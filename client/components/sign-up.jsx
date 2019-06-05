@@ -87,6 +87,7 @@ class SignUp extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const { name, email, location, bio, image, isGuide } = this.state;
+
     const regexEmail = /[?=@]/g;
     const regexFullName = /[A-Za-z][A-Za-z.'-]+\s[A-Za-z][A-Za-z.'-]+$/g;
     const emailTest = regexEmail.test(email);
@@ -109,10 +110,18 @@ class SignUp extends Component {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
-        } })
-        .then(res => { res.json(); })
-        .then(newUser => this.props.view('userProfile', this.state)
-        );
+        }})
+        .then(res => res.json())
+        .then( newUser => {
+          if ( !newUser.auth ){
+            return this.setState({
+              inputErrors: {
+                email: true
+              }
+            })
+          }
+          this.props.view('userProfile', this.state)
+        });
     }
   }
 

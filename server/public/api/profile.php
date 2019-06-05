@@ -8,17 +8,26 @@ $item = file_get_contents('php://input');
 
 if ($method === 'POST'){
     $output = json_decode($item, true);
-    if ($output['isGuide'] === false){
-        $output['isGuide'] = 0;
+    $emailQuery = "SELECT `email` FROM `profile` WHERE `email` = '{$output['email']}'";
+    $emailExist = mysqli_query( $conn, $emailQuery );
+    $email = mysqli_fetch_assoc( $emailExist );
+    
+    if ( $email !== NULL){
+        print(json_encode(['auth' => false]));
+    } 
+    else {
+        if ($output['isGuide'] === false){
+            $output['isGuide'] = 0;
+        }
+        if ($output['isGuide'] === true){
+            $output['isGuide'] = 1;
+        }
+        $query = "INSERT INTO `profile`(`name`, `email`, `location`, `bio`, `image`, `isGuide`) 
+        VALUES (\"{$output['name']}\", '{$output['email']}', '{$output['location']}', '{$output['bio']}', '{$output['image']}', '{$output['isGuide']}')";
+        $result = mysqli_query($conn, $query);
+        $_SESSION['userEmail'] = $output['email'];
+        print( json_encode( ['auth' => $result]));
     }
-    if ($output['isGuide'] === true){
-        $output['isGuide'] = 1;
-    }
-    $query = "INSERT INTO `profile`(`name`, `email`, `location`, `bio`, `image`, `isGuide`) 
-    VALUES (\"{$output['name']}\", '{$output['email']}', '{$output['location']}', '{$output['bio']}', '{$output['image']}', '{$output['isGuide']}')";
-    $result = mysqli_query($conn, $query);
-    $_SESSION['userEmail'] = $output['email'];
-    print_r($result);
 }
 elseif ($method === 'GET'){
     $email = $_GET['email'];
@@ -41,12 +50,12 @@ elseif ($method === 'GET'){
     print_r($json_output);
 }
 elseif ($method === 'PATCH'){
-    $output = json_decode($item, true);
-    $query = "UPDATE `profile` 
-    SET `name`= '{$output['name']}',`email`='{$output['email']}',`location`='{$output['location']}',`bio`='{$output['bio']}',`image`='{$output['image']}' 
-    WHERE `profile`.`email` = '{$_SESSION['userEmail']}'";
-    $result = mysqli_query($conn, $query);
-    $_SESSION['userEmail'] = $output['email'];
-    print_r($result);
+	$output = json_decode($item, true);
+	$query = "UPDATE `profile` 
+	SET `name`= '{$output['name']}',`email`='{$output['email']}',`location`='{$output['location']}',`bio`='{$output['bio']}',`image`='{$output['image']}' 
+	WHERE `profile`.`email` = '{$_SESSION['userEmail']}'";
+	$result = mysqli_query($conn, $query);
+	$_SESSION['userEmail'] = $output['email'];
+	print_r($result);
 }
 ?>
