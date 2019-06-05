@@ -15,11 +15,11 @@ if ( $method === "GET"){
 
   // package ( title, description, tags , location, timeRange, dates, mainImage , images, guideEmail )
   // booking ( touristEmail from tuuristId, guideImage from packageId -> package -> profile table )
-  "SELECT * FROM `package` AS pack
-  JOIN `profile` AS pro 
-  ON `pro`.email = `pack`.profileEmail
-  WHERE `pack`.profileEmail = 'dPaschal@gmail.com'"
-  
+  SELECT * 
+  FROM `package` AS pack
+  JOIN `profile` AS pro ON pro.email = pack.profileEmail
+  JOIN `booking` AS book ON book.tuuristId = pro.id
+  WHERE pack.profileEmail = 'dPaschal@gmail.com'
 }
 
 ?>
