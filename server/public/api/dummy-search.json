@@ -1,6 +1,6 @@
 [
-  [
     {
+        "id": 1,
         "name": "Tim Davis",
         "email": "timD@gmail.com",
         "location": "Irvine, CA, USA",
@@ -8,6 +8,7 @@
         "bio": "Hi, I'm Tim and I like to code things. My brain is very big."
     },
     {
+        "id": 2,
         "name": "taj",
         "email": "dPaschal@gmail.com",
         "location": "Irvine, California",
@@ -15,6 +16,7 @@
         "bio": "I like codin. My brain "
     },
     {
+        "id": 24,
         "name": "Big Jimbo",
         "email": "bigjim@gmail.com",
         "location": "Kentucky",
@@ -22,6 +24,7 @@
         "bio": "I like moonshine and big women."
     },
     {
+        "id": 35,
         "name": "Pam Beasly",
         "email": "pam@dundermifflin.com",
         "location": "Scranton, Pennsylvania",
@@ -29,11 +32,11 @@
         "bio": "I like paper. "
     },
     {
+        "id": 67,
         "name": "Michael Scott",
         "email": "Michael@dundermifflin.com",
         "location": "Scranton, Pennsylvania",
         "image": "https://upload.wikimedia.org/wikipedia/en/d/dc/MichaelScott.png",
         "bio": "I love paper."
     }
-]
 ]

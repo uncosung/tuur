@@ -6,7 +6,7 @@ header("Content-Type:application/json");
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ( $method === 'GET'){
-  $query = "SELECT `name`, `email`, `location`, `image`, `bio`
+  $query = "SELECT `id`, `name`, `email`, `location`, `image`, `bio`
   FROM `profile` 
   WHERE `isGuide` = 1";
   
@@ -15,6 +15,7 @@ if ( $method === 'GET'){
   while ( $row = mysqli_fetch_assoc( $result )){
     $output[] = $row;
   }
-  print_r( json_encode( $output)  );
+
+  print_r( json_encode( $output ));
 }
 ?>
