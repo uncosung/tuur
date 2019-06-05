@@ -11,13 +11,14 @@ import CreatePackage from './createPackage';
 import EditPackage from './editPackage';
 import LogIn from './log-in';
 import Itinerary from './itinerary';
+import Search from './search';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-        name: 'logIn'
+        name: 'search'
       },
       user: {}
     };
@@ -89,6 +90,13 @@ class App extends Component {
         {this.state.view.name === 'itinerary'
           ? <div>
             <Itinerary view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+         {this.state.view.name === 'search'
+          ? <div>
+            <Search view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null
