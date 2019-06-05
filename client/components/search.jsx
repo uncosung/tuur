@@ -9,8 +9,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 // import Paper from '@material-ui/core/Paper';
 // import InputBase from '@material-ui/core/InputBase';
 import Grid from '@material-ui/core/Grid';
-import MatGeocoder from 'react-mui-mapbox-geocoder'
-
+import MatGeocoder from 'react-mui-mapbox-geocoder';
 
 const theme = createMuiTheme({
   palette: {
@@ -23,10 +22,10 @@ const theme = createMuiTheme({
 
 const styles = theme => ({
   card: {
-    maxWidth: 370,
+    maxWidth: 370
   },
   media: {
-    height: 250,
+    height: 250
   },
   marginTop: {
     marginTop: theme.spacing(8)
@@ -37,7 +36,7 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location:''
+      location: ''
     };
     this.handleInputChange = this.handleInputChange.bind(this);
   }
@@ -57,21 +56,20 @@ class Search extends Component {
     const { classes } = this.props;
     const geocoderApiOptions = {
       country: 'us',
-      proximity: {longitude: -118.243683, latitude: 34.052235},
-    }
-    
+      proximity: { longitude: -118.243683, latitude: 34.052235 }
+    };
 
     return (
     <>
      <Card mt={0}className={classes.card}>
-        <CardActionArea>
-            <CardMedia
-                className={classes.media}
-                component="img"
-                image="https://chopra.com/sites/default/files/field/image/6reasonswhytravelingisgoodforyou.jpg"
-                title="Travel Image"
-            />
-        </CardActionArea>
+       <CardActionArea>
+         <CardMedia
+           className={classes.media}
+           component="img"
+           image="https://chopra.com/sites/default/files/field/image/6reasonswhytravelingisgoodforyou.jpg"
+           title="Travel Image"
+         />
+       </CardActionArea>
      </Card>
 
      {/* <Paper className={classes.root}>
@@ -80,7 +78,7 @@ class Search extends Component {
       <Grid justify="center" className={classes.marginTop} container>
         <MatGeocoder
           inputPlaceholder="Where do you want to go?"
-          accessToken={"pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ"}
+          accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
           // onSelect={result => this._goToGeocoderResult(result)}
           showLoader={true}
           autocomplete={true}
@@ -90,15 +88,15 @@ class Search extends Component {
       </Grid>
 
      <Grid justify="center" container>
-        <Grid className={classes.marginTop} container justify="center" >
-          <ThemeProvider theme={theme}>
-            <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user )}>
-              <Typography variant="body1" gutterBottom>Search</Typography>
-            </Button>
-          </ThemeProvider>
-        </Grid>
-      </Grid>
-      
+       <Grid className={classes.marginTop} container justify="center" >
+         <ThemeProvider theme={theme}>
+           <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user)}>
+             <Typography variant="body1" gutterBottom>Search</Typography>
+           </Button>
+         </ThemeProvider>
+       </Grid>
+     </Grid>
+
     </>
     );
   }

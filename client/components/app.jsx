@@ -94,7 +94,7 @@ class App extends Component {
           </div>
           : null
         }
-         {this.state.view.name === 'search'
+        {this.state.view.name === 'search'
           ? <div>
             <Search view={this.setView} />
             {/* <BottomNav /> */}
