@@ -12,9 +12,9 @@ import { ThemeProvider } from '@material-ui/styles';
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
-    secondary: { main: '#5bd1d7' },
-    lightBeige: { main: '#f1f1f1' },
-    beige: { main: '#f5e1da' }
+    secondary: { main: '#A6C7C8' },
+    inherit: { main: '#A0C3C5' },
+    default: { main: '#f5e1da' }
   }
 });
 
@@ -80,7 +80,7 @@ class UpComingTuursList extends Component {
       return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
     });
     return (
-      
+
       <>
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
@@ -93,14 +93,14 @@ class UpComingTuursList extends Component {
           </GridList>
         </div>
         <Grid justify="center" className={classes.margin} container>
-        <Grid className={classes.marginTop2} container justify="center" >
-          <ThemeProvider theme={theme}>
-            <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user )}>
-              <Typography variant="body1" gutterBottom>Create Package</Typography>
-            </Button>
-          </ThemeProvider>
+          <Grid className={classes.marginTop2} container justify="center" >
+            <ThemeProvider theme={theme}>
+              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user)}>
+                <Typography variant="body1" gutterBottom>Create Package</Typography>
+              </Button>
+            </ThemeProvider>
+          </Grid>
         </Grid>
-      </Grid>
       </>
     );
   }

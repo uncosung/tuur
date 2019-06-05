@@ -11,13 +11,14 @@ import CreatePackage from './createPackage';
 import EditPackage from './editPackage';
 import LogIn from './log-in';
 import Itinerary from './itinerary';
+import SearchBar from './search-bar';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-        name: 'logIn'
+        name: 'searchResult'
       },
       user: {}
     };
@@ -39,6 +40,14 @@ class App extends Component {
     // </Router>
 
       <div>
+        {this.state.view.name === 'searchResult'
+          ? <div>
+            <SearchBar view={this.setView} user={this.state.user}/>
+            {/* <UpComingTuursList view={this.setView} /> */}
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
         {this.state.view.name === 'userProfile'
           ? <div>
             <UserProfile view={this.setView} user={ this.state.user }/>
