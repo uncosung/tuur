@@ -13,13 +13,14 @@ import LogIn from './log-in';
 import Itinerary from './itinerary';
 import SearchBar from './search-bar';
 import SearchResultGuide from './search-result-guide-list';
+import SearchPackages from './search-result-package';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-        name: 'createPackage'
+        name: 'searchResult'
       },
       user: {}
     };
@@ -45,11 +46,13 @@ class App extends Component {
           ? <div>
             <SearchBar view={this.setView} user={this.state.user}/>
             <SearchResultGuide />
+            <SearchPackages />
             {/* <UpComingTuursList view={this.setView} /> */}
             {/* <BottomNav /> */}
           </div>
           : null
         }
+    
         {this.state.view.name === 'userProfile'
           ? <div>
             <UserProfile view={this.setView} user={ this.state.user }/>
