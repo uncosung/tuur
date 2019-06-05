@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import InfiniteCalendar, {
   Calendar,
-  defaultMultipleDateInterpolation,
   withMultipleDates
 } from 'react-infinite-calendar';
 import 'react-infinite-calendar/styles.css'; // only needs to be imported once
@@ -42,13 +41,12 @@ class DatePicker extends Component {
     this.state = {
       dates: this.props.dates
     };
-    this.selectedDate = this.state.dates.length === 0 ? [new Date()] : this.state.dates;
     this.setDate = this.setDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   setDate(date) {
-    let dateArray = defaultMultipleDateInterpolation(date, this.state.dates);
+    let dateArray = this.state.dates.concat(date);
     this.setState({
       dates: dateArray
     });
@@ -57,15 +55,7 @@ class DatePicker extends Component {
     this.state.dates.sort((a, b) => {
       return a.getTime() - b.getTime();
     });
-    console.log(this.state.dates);
     this.props.close(this.state.dates);
-  }
-  componentDidMount() {
-    console.log('yo',this.state.dates)
-    const dateArray = this.selectedDate.concat(this.state.dates);
-    this.setState({
-      dates: dateArray
-    });
   }
   render() {
     const MultipleDatesCalendar = withMultipleDates(Calendar);
@@ -73,7 +63,7 @@ class DatePicker extends Component {
     return (
       <div className={classes.root}>
         <Grid justify="center" alignItems="center" container>
-          <Grid item xs={2} className={classes.paddingRight} onClick={() => this.props.close(this.state.dates)}>
+          <Grid item xs={2} className={classes.paddingRight} onClick={() => this.props.modalClose()}>
             <KeyboardArrowLeft className={classes.fontSize} />
           </Grid>
           <Grid item xs={10} className={classes.paddingLeft}>
@@ -87,8 +77,7 @@ class DatePicker extends Component {
           width={350}
           height={300}
           Component={MultipleDatesCalendar}
-          interpolateSelection={defaultMultipleDateInterpolation}
-          selected={this.selectedDate}
+          selected={this.state.dates}
           onSelect={date => {
             this.setDate(date);
           }}
@@ -99,7 +88,7 @@ class DatePicker extends Component {
         <Grid className={classes.marginLeft} justify="center" alignItems="center" container>
           <Grid item xs={7} >
             <Button onClick = {this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
-              <Typography variant="body1" gutterBottom>submit</Typography>
+              <Typography variant="body1" gutterBottom>Select dates</Typography>
             </Button>
           </Grid>
         </Grid>
