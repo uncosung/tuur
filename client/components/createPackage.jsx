@@ -263,7 +263,7 @@ class CreatePackage extends Component {
     const { classes } = this.props;
     let warning = null;
     if (this.state.imageUrl.length === 0) {
-      warning = '⛔️ You need to upload images ';
+      warning = '⛔️ You need to upload images 🎍';
     } else if (this.state.dates.length === 0) {
       warning = '⛔️ You need to pick dates 📆';
     } else if (this.state.tags.length === 0) {

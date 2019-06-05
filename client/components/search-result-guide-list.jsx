@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import SearchResultGuideItem from './search-result-guide-list-item';
 
 const styles = theme => ({
   marginTop: {
@@ -30,8 +31,8 @@ const styles = theme => ({
   gridList: {
     flexWrap: 'nowrap',
     transform: 'translateZ(0)',
-    margin: theme.spacing(2),
-    height: 260
+    margin: theme.spacing(3),
+    height: 180
   }
 });
 
@@ -39,21 +40,20 @@ class SearchResultGuide extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      profile: []
+      guideProfile: []
     };
   }
-
-  // componentDidMount() {
-  //   fetch('/api/profile.php')
-  //     .then(res => res.json())
-  //     .then(profile => this.setState({ profile: profile }));
-  // }
+  componentDidMount() {
+    fetch('/api/search.php')
+      .then(res => res.json())
+      .then(search => this.setState({ guideProfile: search }, () => console.log(search)));
+  }
 
   render() {
     const { classes } = this.props;
-    // const profile = this.state.profile.map(profile => {
-    //   return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
-    // });
+    const profile = this.state.guideProfile.map(profile => {
+      return <SearchResultGuideItem profile={profile} key={profile.id} />;
+    });
     return (
 
       <>
@@ -64,7 +64,7 @@ class SearchResultGuide extends Component {
         </Container>
         <div className={classes.root}>
           <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-            {/* {packageMap} */}
+            {profile}
           </GridList>
         </div>
       </>

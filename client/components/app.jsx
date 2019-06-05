@@ -3,7 +3,6 @@ import UserProfile from './user-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
-import BottomNav from './bottom-nav';
 // import BottomNav from './bottom-nav';
 import DatePicker from './daterangepicker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
@@ -14,9 +13,13 @@ import Itinerary from './itinerary';
 <<<<<<< HEAD
 import SearchBar from './search-bar';
 import SearchResultGuide from './search-result-guide-list';
+<<<<<<< HEAD
 =======
 import Search from './search';
 >>>>>>> e9102ab7c24161a2f82c09c18f0f798e958f7268
+=======
+import SearchPackages from './search-result-package';
+>>>>>>> e9252b79e0e199d97fe35361411847d041937f78
 
 class App extends Component {
   constructor(props) {
@@ -24,10 +27,14 @@ class App extends Component {
     this.state = {
       view: {
 <<<<<<< HEAD
+<<<<<<< HEAD
         name: 'createPackage'
 =======
         name: 'search'
 >>>>>>> e9102ab7c24161a2f82c09c18f0f798e958f7268
+=======
+        name: 'searchResult'
+>>>>>>> e9252b79e0e199d97fe35361411847d041937f78
       },
       user: {}
     };
@@ -53,11 +60,13 @@ class App extends Component {
           ? <div>
             <SearchBar view={this.setView} user={this.state.user}/>
             <SearchResultGuide />
+            <SearchPackages />
             {/* <UpComingTuursList view={this.setView} /> */}
             {/* <BottomNav /> */}
           </div>
           : null
         }
+    
         {this.state.view.name === 'userProfile'
           ? <div>
             <UserProfile view={this.setView} user={ this.state.user }/>
