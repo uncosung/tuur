@@ -83,11 +83,15 @@ const styles = theme => ({
   display: {
     display: 'inline-block',
     paddingBottom: 10,
-    margin: 0
+    margin: 0,
+    paddingLeft: 10
   },
-  buttonContainer: {
+  button: {
     marginLeft: 10,
     marginRight: 10
+  },
+  buttonContainer: {
+    paddingLeft: 15
   }
 });
 
@@ -110,7 +114,7 @@ class SearchBar extends Component {
          <ThemeProvider theme={theme}>
            <AppBar position="static" color="primary" className={classes.display}>
              <Grid container direction="row" className={classes.grow}>
-               <Grid item xs={9} className={classes.display}>
+               <Grid item xs={8} className={classes.display}>
                  <Toolbar>
                    <div className={classes.search}>
                      <Grid className={classes.searchIcon}>
@@ -134,8 +138,8 @@ class SearchBar extends Component {
                </Grid>
              </Grid>
 
-             <Grid container>
-               <Grid item xs={3} className={classes.buttonContainer}>
+             <Grid container className={classes.buttonContainer}>
+               <Grid item xs={3} className={classes.button}>
                  <Button type="submit" fullWidth variant="contained" color="secondary">Dates</Button>
                </Grid>
                <Grid item xs={3}>
