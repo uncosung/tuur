@@ -3,7 +3,6 @@ import UserProfile from './user-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
-import BottomNav from './bottom-nav';
 // import BottomNav from './bottom-nav';
 import DatePicker from './daterangepicker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
