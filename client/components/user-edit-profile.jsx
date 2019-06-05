@@ -14,9 +14,9 @@ import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
-    secondary: { main: '#5bd1d7' },
-    lightBeige: { main: '#f1f1f1' },
-    beige: { main: '#f5e1da' }
+    secondary: { main: '#A6C7C8' },
+    inherit: { main: '#A0C3C5' },
+    default: { main: '#f5e1da' }
   }
 });
 
@@ -94,7 +94,7 @@ class EditProfile extends Component {
           bio: bio
         })
       })
-      .then(res => res.json())
+        .then(res => res.json());
       this.props.view('userProfile', this.state);
     }
   }

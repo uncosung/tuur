@@ -35,9 +35,9 @@ const imgStyle = {
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
-    secondary: { main: '#5bd1d7' },
-    lightBeige: { main: '#f1f1f1' },
-    beige: { main: '#f5e1da' }
+    secondary: { main: '#A6C7C8' },
+    inherit: { main: '#A0C3C5' },
+    default: { main: '#f5e1da' }
   }
 });
 
@@ -186,16 +186,15 @@ class CreatePackage extends Component {
           { title, location, tags, timeRange, description, dates, imageUrl })
       })
         .then(res => res.json())
-        .then(newPackage => this.props.view( 'userProfile' , this.props.user ));
-      }
-
+        .then(newPackage => this.props.view('userProfile', this.props.user));
     }
-  
+
+  }
 
   handleModalClose(dates) {
     this.setState({
       openModal: false,
-      dates: dates 
+      dates: dates
     });
   }
   modalClose() {
@@ -203,13 +202,13 @@ class CreatePackage extends Component {
   }
   iconClickhandler() {
     let img = document.getElementById('input-imageUrl').value;
-    let imgArray= this.state.imageUrl;
-    if ( img ){
-      if(imgArray.length >= 4) {
+    let imgArray = this.state.imageUrl;
+    if (img) {
+      if (imgArray.length >= 4) {
         document.getElementById('input-imageUrl').value = '';
         return;
       }
-      this.setState({ imageUrl : [...this.state.imageUrl, img]});
+      this.setState({ imageUrl: [...this.state.imageUrl, img] });
       document.getElementById('input-imageUrl').value = '';
     }
   }
