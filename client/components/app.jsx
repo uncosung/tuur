@@ -11,15 +11,23 @@ import CreatePackage from './createPackage';
 import EditPackage from './editPackage';
 import LogIn from './log-in';
 import Itinerary from './itinerary';
+<<<<<<< HEAD
 import SearchBar from './search-bar';
 import SearchResultGuide from './search-result-guide-list';
+=======
+import Search from './search';
+>>>>>>> e9102ab7c24161a2f82c09c18f0f798e958f7268
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
+<<<<<<< HEAD
         name: 'createPackage'
+=======
+        name: 'search'
+>>>>>>> e9102ab7c24161a2f82c09c18f0f798e958f7268
       },
       user: {}
     };
@@ -100,6 +108,13 @@ class App extends Component {
         {this.state.view.name === 'itinerary'
           ? <div>
             <Itinerary view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'search'
+          ? <div>
+            <Search view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null
