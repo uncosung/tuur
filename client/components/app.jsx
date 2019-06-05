@@ -4,20 +4,20 @@ import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 import BottomNav from './bottom-nav';
-import GuideProfile from './guide-profile';
 // import BottomNav from './bottom-nav';
 import DatePicker from './daterangepicker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
 import CreatePackage from './createPackage';
 import EditPackage from './editPackage';
 import LogIn from './log-in';
+import Itinerary from './itinerary';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-        name: 'createPackage'
+        name: 'logIn'
       },
       user: {}
     };
@@ -42,7 +42,7 @@ class App extends Component {
         {this.state.view.name === 'userProfile'
           ? <div>
             <UserProfile view={this.setView} user={ this.state.user }/>
-            <UpComingTuursList view={this.setView} />
+            {/* <UpComingTuursList view={this.setView} /> */}
             {/* <BottomNav /> */}
           </div>
           : null
@@ -60,7 +60,7 @@ class App extends Component {
         }
         {this.state.view.name === 'createPackage'
           ? <div>
-            <CreatePackage view={this.setView} />
+            <CreatePackage view={this.setView} user={ this.state.user} />
             {/* <BottomNav /> */}
           </div>
           : null
@@ -86,23 +86,13 @@ class App extends Component {
           </div>
           : null
         }
-        {this.state.view.name === 'guideProfile'
+        {this.state.view.name === 'itinerary'
           ? <div>
-            <GuideProfile view={this.setView} />
+            <Itinerary view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null
         }
-
-        {/* <CreatePackage /> */}
-        {/* <EditPackage /> */}
-        {/* <EditProfile/> */}
-        {/* <UserProfile/> */}
-        {/* <SignUp /> */}
-        {/* <UpComingTuursList /> */}
-        {/* <DatePicker/> */}
-        {/* <BottomNav /> */}
-        {/* <LogIn /> */}
       </div>
 
     );

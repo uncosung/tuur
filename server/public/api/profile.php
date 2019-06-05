@@ -26,7 +26,6 @@ elseif ($method === 'GET'){
     `profile`.`name`, `profile`.`email`, `profile`.`location`, `profile`.`image`, `profile`.`bio`, `profile`.`isGuide`
     FROM `profile`
     WHERE `profile`.`email` = '{$email}'";
-
     $result = mysqli_query($conn, $query);
     $output = [];
     while ($row = mysqli_fetch_assoc($result)){
