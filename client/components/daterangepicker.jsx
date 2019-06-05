@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import InfiniteCalendar, {
   Calendar,
-  withMultipleDates
+  withMultipleDates,
+  defaultMultipleDateInterpolation
 } from 'react-infinite-calendar';
 import 'react-infinite-calendar/styles.css'; // only needs to be imported once
 import Button from '@material-ui/core/Button';
@@ -46,7 +47,7 @@ class DatePicker extends Component {
   }
 
   setDate(date) {
-    let dateArray = this.state.dates.concat(date);
+    let dateArray = defaultMultipleDateInterpolation(date, this.state.dates);
     this.setState({
       dates: dateArray
     });
