@@ -26,12 +26,13 @@ class Mapbox extends Component {
                 {
                     type: 'Feature',
                     properties: {
-                        title: 'Los Angeles, CA',
+                        title: 'Lincoln Park, Illinois',
                         description: 'A northside park that is home to the Lincoln Park Zoo'
                     },
                     geometry: {
                         coordinates: [
-                            
+                            -87.603735,
+                            41.829985
                         ],
                         type: 'Point'
                     },
