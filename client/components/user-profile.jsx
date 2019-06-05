@@ -30,7 +30,7 @@ const styles = theme => ({
   },
   marginLeft: {
     marginLeft: theme.spacing(2)
-  },
+  }
 });
 
 class UserProfile extends Component {
@@ -46,16 +46,16 @@ class UserProfile extends Component {
 
   componentDidMount() {
 
-    fetch(`api/profile.php?email=${ this.props.user.email }`)
-    .then(res => res.json())
-    .then(response => {
-      return this.setState({
-      name: response.name,
-      location: response.location,
-      image: response.image,
-      isGuide: response.isGuide
-      })
-    });
+    fetch(`api/profile.php?email=${this.props.user.email}`)
+      .then(res => res.json())
+      .then(response => {
+        return this.setState({
+          name: response.name,
+          location: response.location,
+          image: response.image,
+          isGuide: response.isGuide
+        });
+      });
   }
 
   render() {
@@ -85,9 +85,9 @@ class UserProfile extends Component {
           </Grid>
         </Grid>
       </Container>
-      {this.state.isGuide===false
-      ?<UpComingTuursList view={this.props.view} user={ this.props.user }/>
-      :<Typography variant="h5">No Tuurs available</Typography>
+      {this.state.isGuide === false
+        ? <UpComingTuursList view={this.props.view} user={ this.props.user }/>
+        : <Typography variant="h5">No Tuurs available</Typography>
       }
       </>
     );
