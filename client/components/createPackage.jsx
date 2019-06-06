@@ -256,6 +256,36 @@ class CreatePackage extends Component {
     datesArray.splice(dateId, 1);
     this.setState({ dates: datesArray });
   }
+
+  maxDate(){
+    const currentDate = new Date();
+    let month = currentDate.getMonth();
+    let day = currentDate.getDate();
+    let year = currentDate.getFullYear();
+    const maxMonth = this.maxMonth( month );
+    const maxDay = 1;
+    const maxYear = this.maxYear( maxMonth , year );
+    const maxDate = new Date( maxYear, maxMonth, maxDay );
+    const data = {
+      maxDate
+    };
+    return data;
+  }
+
+  maxMonth( currentMonth ){
+    if ( currentMonth >= 10 ){
+      return currentMonth + 2 - 12
+    } 
+    return currentMonth + 2
+  }
+
+  maxYear( month, year ){
+    if ( !month ){
+      return year++
+    }
+    return year
+  }
+
   render() {
     const { classes } = this.props;
     let warning = null;
@@ -360,7 +390,7 @@ class CreatePackage extends Component {
                 onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose}/>
+                  <DatePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.maxDate()} />
 
                 </Grid>
               </Modal>
