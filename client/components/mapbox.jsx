@@ -6,14 +6,25 @@ import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import ReactGeocoder from 'react-map-gl-geocoder';
 import DeckGL, { GeoJsonLayer } from 'deck.gl';
 import SearchBar from './search-bar';
+import { withStyles } from '@material-ui/core/styles';
+import { mergeClasses } from '@material-ui/styles';
+
+const styles = theme => ({
+  mapContainer: {
+    top: 0,
+    position: 'absolute',
+    width: '100%',
+    height: '100%'
+  }
+});
 
 class Mapbox extends Component {
   constructor(props) {
     super(props);
     this.state = {
       viewport: {
-        width: 325,
-        height: 325,
+        width: '100%',
+        height: '705px',
         latitude: this.props.location.coordinates[1],
         longitude: this.props.location.coordinates[0],
         zoom: 12
@@ -105,8 +116,8 @@ class Mapbox extends Component {
         viewport: {
             latitude: location.coordinates[1],
             longitude: location.coordinates[0],
-            width: 325,
-            height: 325,
+            width: '100%',
+            height: '705px',
             zoom: 12
         }
     }, this.filterTuurs)
@@ -157,6 +168,8 @@ class Mapbox extends Component {
   }
 
   render() {
+
+    const { classes } = this.props;
     const markerMap = this.state.filteredTuurs.map(marker => {
       return (
         <Marker key={marker.tuur.id} latitude={marker.coord[1]} longitude={marker.coord[0]}>
@@ -166,7 +179,7 @@ class Mapbox extends Component {
     });
     const { viewport, searchResultLayer } = this.state;
     return (
-      <div style = {{ top: 0, position: 'absolute'}}>
+      <div className={classes.mapContainer}>
         <SearchBar handleGeocoderViewportChange={this.handleGeocoderViewportChange} handleOnResult={this.handleOnResult} handleSearch={this.handleSearch} mapRef={this.state.mapRef} view={this.props.view} user={this.props.user} location={this.props.location}/>
         <ReactMapGL
           ref = {this.mapRef}
@@ -175,17 +188,10 @@ class Mapbox extends Component {
           mapboxApiAccessToken = {TOKEN}
           transitionInterpolator = {new FlyToInterpolator()}
         >
-          {/* <ReactGeocoder
-            mapRef = {this.mapRef}
-            onResult = {this.handleOnResult}
-            onViewportChange = {this.handleGeocoderViewportChange}
-            mapboxApiAccessToken={TOKEN}
-            position = 'top-left'
-          /> */}
           {markerMap}
           <DeckGL {...viewport} layers={[searchResultLayer]} />
 
-          <div style={{ position: 'absolute', bottom: 50, right: 10 }}>
+          <div style={{ position: 'absolute', bottom: 50, right: 10 }} >
             <NavigationControl/>
           </div>
           <div style={{ position: 'absolute', bottom: 50, left: 10 }}>
@@ -198,8 +204,10 @@ class Mapbox extends Component {
             </GeolocateControl>
           </div>
         </ReactMapGL>
+
       </div>
     );
   }
 }
-export default Mapbox;
+
+export default withStyles(styles)(Mapbox);
