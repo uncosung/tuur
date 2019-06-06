@@ -10,14 +10,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-<<<<<<< HEAD
-=======
+
 import Modal from '@material-ui/core/Modal';
 import DateRangePicker from './date-range-picker';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
->>>>>>> abeb62b3ee435546644edd623962aae9c19c12fc
 
 const theme = createMuiTheme({
   palette: {
@@ -100,19 +98,15 @@ const styles = theme => ({
     margin: 0,
     paddingLeft: 30
   },
-<<<<<<< HEAD
-  button: {
-=======
+
   buttonDiv: {
     display: 'inline-block',
->>>>>>> abeb62b3ee435546644edd623962aae9c19c12fc
     marginLeft: 10,
     marginRight: 10
   },
   buttonContainer: {
     paddingLeft: 15
-<<<<<<< HEAD
-=======
+
   },
   paper: {
     position: 'absolute',
@@ -134,7 +128,6 @@ const styles = theme => ({
     fontSize: 30,
     paddingLeft: 10,
     paddingTop: 2
->>>>>>> abeb62b3ee435546644edd623962aae9c19c12fc
   }
 });
 
@@ -179,14 +172,9 @@ class SearchBar extends Component {
                  </Toolbar>
                </Grid>
 
-<<<<<<< HEAD
-               <Grid item xs={3} className={classes.display}>
-                 <FormControlLabel control={
-                   <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} />} label={this.state.toggle ? 'MAP' : 'LIST'} />
-=======
+
                <Grid item xs={2} className={classes.appBar}>
                  <Button type="submit" variant="contained" color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
->>>>>>> abeb62b3ee435546644edd623962aae9c19c12fc
                </Grid>
              </Grid>
 
@@ -200,7 +188,7 @@ class SearchBar extends Component {
 
                <Grid item xs={3} className={classes.display}>
                  <FormControlLabel control={
-                   <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} />} label={this.state.toggle ? 'LIST' : 'MAP'} />
+                   <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} />} label={this.state.toggle ? 'MAP' : 'LIST'} />
                </Grid>
 
              </Grid>

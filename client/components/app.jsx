@@ -16,6 +16,7 @@ import Search from './search';
 import SearchPackages from './search-result-package';
 import Mapbox from './mapbox';
 import DeckGL, {GeoJsonLayer} from 'deck.gl';
+import PackageDetails from './package-details';
 
 class App extends Component {
   constructor(props) {
@@ -131,6 +132,13 @@ class App extends Component {
         {this.state.view.name === 'search'
           ? <div>
             <Search view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'packageDetails'
+          ? <div>
+            <PackageDetails view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null
