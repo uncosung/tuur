@@ -14,13 +14,14 @@ import SearchBar from './search-bar';
 import SearchResultGuide from './search-result-guide-list';
 import Search from './search';
 import SearchPackages from './search-result-package';
+import PackageDetails from './package-details';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-        name: 'itinerary'
+        name: 'packageDetails'
       },
       user: {}
     };
@@ -110,6 +111,13 @@ class App extends Component {
         {this.state.view.name === 'search'
           ? <div>
             <Search view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'packageDetails'
+          ? <div>
+            <PackageDetails view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null
