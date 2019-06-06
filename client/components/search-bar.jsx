@@ -15,6 +15,8 @@ import DateRangePicker from './date-range-picker';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
+import MatGeocoder from 'react-mui-mapbox-geocoder';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -153,15 +155,27 @@ class SearchBar extends Component {
       dates: {
         start: null,
         end: null
-      }
+      },
+      location: {
+        name: '',
+        coordinates: []
+      }    
     };
     this.handdleToggle = this.handdleToggle.bind(this);
     this.modalClose = this.modalClose.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
 
   }
-
+  handleSelect(result) {
+    this.setState ({
+      location: {
+        name: result.place_name,
+        coordinates: result.geometry.coordinates
+      }
+    }, () =>     console.log(this.state.location))
+  }
   handleChange(event) {
     const { value } = event.target;
     this.setState({
@@ -188,7 +202,14 @@ class SearchBar extends Component {
   modalClose() {
     this.setState({ openModal: false });
   }
+  handleSearch () {
+
+  }
   render() {
+    const geocoderApiOptions = {
+      country: 'us',
+      proximity: { longitude: -118.243683, latitude: 34.052235 }
+    };
     const { classes } = this.props;
     return (
       <>
@@ -198,23 +219,32 @@ class SearchBar extends Component {
                <Grid item xs={9} className={classes.appBar}>
                  <Toolbar>
                    <div className={classes.search}>
-                     <Grid className={classes.searchIcon}>
+                     {/* <Grid className={classes.searchIcon}>
                        <SearchIcon className={classes.searchStyle} />
-                     </Grid>
-                     <InputBase
+                     </Grid> */}
+                     <MatGeocoder
+                        inputPlaceholder="Where do you want to go?"
+                        accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
+                        showLoader={true}
+                        autocomplete={true}
+                        fuzzyMatch={true}
+                        {...geocoderApiOptions}
+                        onSelect={this.handleSelect}
+                      />
+                     {/* <InputBase
                        placeholder="Search location "
                        classes={{
                          root: classes.inputRoot,
                          input: classes.inputInput
                        }}
                        inputProps={{ 'aria-label': 'Search' }}
-                     />
+                     /> */}
                    </div>
                  </Toolbar>
                </Grid>
 
                <Grid item xs={2} className={classes.appBar}>
-                 <Button type="submit" variant="contained" color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
+                 <Button type="submit" variant="contained" onClick={() => {this.props.handleSearch(this.state.location)}} color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
                </Grid>
              </Grid>
 

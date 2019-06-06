@@ -4,7 +4,7 @@ import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import BottomNav from './bottom-nav';
-import DatePicker from './date-multiple-picker';
+import DatePicker from './date-range-picker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
 import CreatePackage from './createPackage';
 import EditPackage from './editPackage';
@@ -72,73 +72,66 @@ class App extends Component {
             {/* <UpComingTuursList view={this.setView} /> */}
             {/* <BottomNav /> */}
           </div>
-
+          
         }
-
-        {this.state.view.name === 'userProfile' &&
-          <div>
+    
+        {this.state.view.name === 'userProfile'
+          && <div>
             <UserProfile view={this.setView} user={ this.state.user }/>
             {/* <UpComingTuursList view={this.setView} /> */}
             {/* <BottomNav /> */}
           </div>
-
+          
         }
-        {this.state.view.name === 'signUp' &&
-          <SignUp view={this.setView} status={this.setStatus}/>
-
+        {this.state.view.name === 'signUp'
+          && <SignUp view={this.setView} status={this.setStatus}/>
+          
         }
-        {this.state.view.name === 'editProfile' &&
-          <div>
+        {this.state.view.name === 'editProfile'
+          && <div>
             <EditProfile view={this.setView} user={ this.state.user} />
             {/* <BottomNav /> */}
           </div>
-
+          
         }
-        {this.state.view.name === 'createPackage' &&
-          <div>
+        {this.state.view.name === 'createPackage'
+          && <div>
             <CreatePackage view={this.setView} user={ this.state.user} />
             {/* <BottomNav /> */}
           </div>
-
+          
         }
-        {this.state.view.name === 'editPackage' &&
-          <div>
+        {this.state.view.name === 'editPackage'
+          && <div>
             <EditPackage view={this.setView} />
             {/* <BottomNav /> */}
           </div>
-
+          
         }
-        {this.state.view.name === 'calendar' &&
-          <div>
+        {this.state.view.name === 'calendar'
+          && <div>
             <DatePicker view={this.setView} />
             {/* <BottomNav /> */}
           </div>
-
+          
         }
-        {this.state.view.name === 'logIn' &&
-          <div>
+        {this.state.view.name === 'logIn'
+          && <div>
             <LogIn view={this.setView} />
             {/* <BottomNav /> */}
           </div>
-
+          
         }
-        {this.state.view.name === 'itinerary' &&
-          <div>
+        {this.state.view.name === 'itinerary'
+          && <div>
             <Itinerary view={this.setView} />
             {/* <BottomNav /> */}
           </div>
-
+          
         }
         {this.state.view.name === 'search'
           ? <div>
             <Search view={this.setView} />
-            {/* <BottomNav /> */}
-          </div>
-          : null
-        }
-        {this.state.view.name === 'packageDetails'
-          ? <div>
-            <PackageDetails view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null
