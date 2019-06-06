@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { ThemeProvider } from '@material-ui/styles';
@@ -16,7 +13,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
-
 
 const theme = createMuiTheme({
   palette: {
@@ -133,6 +129,19 @@ const styles = theme => ({
     fontSize: 30,
     paddingLeft: 10,
     paddingTop: 2
+  },
+  textField: {
+    backgroundColor: 'white',
+    padding: 5,
+    marginLeft: 5,
+    borderRadius: '7px'
+  },
+  marginLeft: {
+    marginLeft: 20,
+    paddingTop: 3
+  },
+  inputContainer: {
+    paddingLeft: 15
   }
 });
 
@@ -159,7 +168,7 @@ class SearchBar extends Component {
       location: {
         name: '',
         coordinates: []
-      }    
+      }
     };
     this.handdleToggle = this.handdleToggle.bind(this);
     this.modalClose = this.modalClose.bind(this);
@@ -169,12 +178,12 @@ class SearchBar extends Component {
 
   }
   handleSelect(result) {
-    this.setState ({
+    this.setState({
       location: {
         name: result.place_name,
         coordinates: result.geometry.coordinates
       }
-    }, () =>     console.log(this.state.location))
+    }, () => console.log(this.state.location));
   }
   handleChange(event) {
     const { value } = event.target;
@@ -187,7 +196,7 @@ class SearchBar extends Component {
     let newToggle = this.state.toggle;
     this.setState({ toggle: !newToggle }, () => {
       if (this.state.toggle) {
-        console.log( this.props.location);
+        console.log(this.props.location);
         this.props.view('mapResults', null, this.props.location);
       }
     });
@@ -203,7 +212,7 @@ class SearchBar extends Component {
   modalClose() {
     this.setState({ openModal: false });
   }
-  handleSearch () {
+  handleSearch() {
 
   }
   render() {
@@ -215,37 +224,36 @@ class SearchBar extends Component {
     return (
       <>
          <ThemeProvider theme={theme}>
-           <AppBar position="static" color="primary" className={classes.appBar}>
-             <Grid container direction="row" className={classes.grow}>
-               <Grid item xs={9} className={classes.appBar}>
-                 <Toolbar>
-                   <div className={classes.search}>
-                     {/* <Grid className={classes.searchIcon}>
-                       <SearchIcon className={classes.searchStyle} />
-                     </Grid> */}
-                     <MatGeocoder
-                        inputPlaceholder="Where do you want to go?"
-                        accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
-                        showLoader={true}
-                        autocomplete={true}
-                        fuzzyMatch={true}
-                        {...geocoderApiOptions}
-                        onSelect={this.handleSelect}
-                      />
-                     {/* <InputBase
-                       placeholder="Search location "
-                       classes={{
-                         root: classes.inputRoot,
-                         input: classes.inputInput
-                       }}
-                       inputProps={{ 'aria-label': 'Search' }}
-                     /> */}
-                   </div>
-                 </Toolbar>
+           <AppBar position="static" justify="center" color="primary" className={classes.appBar}>
+             <Grid container className={classes.inputContainer} >
+               <Grid item xs={8} className={classes.appBar} >
+                 <MatGeocoder
+                   inputPlaceholder="Where do you want to go?"
+                   accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
+                   showLoader={true}
+                   autocomplete={true}
+                   fuzzyMatch={true}
+                   {...geocoderApiOptions}
+                   onSelect={this.handleSelect}
+                   inputTextFieldProps={{
+                     fullWidth: true,
+                     classes: {
+                       root: classes.textField
+                     }
+                   }}
+                   showInputContainer={false}
+                   inputClasses={{
+                     root: classes.input
+                   }}
+                   inputContainerProps={{
+                     classes: {
+                       root: classes.textField
+                     }
+                   }}
+                 />
                </Grid>
-
                <Grid item xs={2} className={classes.appBar}>
-                 <Button type="submit" variant="contained" onClick={() => {this.props.handleSearch(this.state.location)}} color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
+                 <Button className={classes.marginLeft} type="submit" variant="contained" onClick={() => { this.props.handleSearch(this.state.location); }} color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
                </Grid>
              </Grid>
 
