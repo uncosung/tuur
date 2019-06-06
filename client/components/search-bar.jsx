@@ -10,13 +10,21 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+<<<<<<< HEAD
+=======
+import Modal from '@material-ui/core/Modal';
+import DateRangePicker from './date-range-picker';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
+>>>>>>> abeb62b3ee435546644edd623962aae9c19c12fc
 
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
     secondary: { main: '#A6C7C8' },
     inherit: { main: '#A0C3C5' },
-    default: { main: '#f5e1da' }
+    default: { main: 'white' }
   }
 });
 
@@ -49,7 +57,6 @@ const styles = theme => ({
     display: 'inline-block'
   },
   searchIcon: {
-    width: theme.spacing(7),
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -80,18 +87,54 @@ const styles = theme => ({
       display: 'none'
     }
   },
+  appBar: {
+    display: 'inline-block',
+    paddingBottom: 8,
+    paddingTop: 5,
+    margin: 0,
+    paddingLeft: 5
+  },
   display: {
     display: 'inline-block',
-    paddingBottom: 10,
+    paddingBottom: 5,
     margin: 0,
-    paddingLeft: 10
+    paddingLeft: 30
   },
+<<<<<<< HEAD
   button: {
+=======
+  buttonDiv: {
+    display: 'inline-block',
+>>>>>>> abeb62b3ee435546644edd623962aae9c19c12fc
     marginLeft: 10,
     marginRight: 10
   },
   buttonContainer: {
     paddingLeft: 15
+<<<<<<< HEAD
+=======
+  },
+  paper: {
+    position: 'absolute',
+    width: 380,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: 7,
+    outline: 'none'
+  },
+  subtitle: {
+    fontSize: 20
+  },
+  width: {
+    width: 0,
+    opacity: 0,
+    position: 'absolute'
+  },
+  searchStyle: {
+    fontSize: 30,
+    paddingLeft: 10,
+    paddingTop: 2
+>>>>>>> abeb62b3ee435546644edd623962aae9c19c12fc
   }
 });
 
@@ -116,16 +159,16 @@ class SearchBar extends Component {
     return (
       <>
          <ThemeProvider theme={theme}>
-           <AppBar position="static" color="primary" className={classes.display}>
+           <AppBar position="static" color="primary" className={classes.appBar}>
              <Grid container direction="row" className={classes.grow}>
-               <Grid item xs={8} className={classes.display}>
+               <Grid item xs={9} className={classes.appBar}>
                  <Toolbar>
                    <div className={classes.search}>
                      <Grid className={classes.searchIcon}>
-                       <SearchIcon style={{ fontSize: 30 }} />
+                       <SearchIcon className={classes.searchStyle} />
                      </Grid>
                      <InputBase
-                       placeholder="Search…"
+                       placeholder="Search location "
                        classes={{
                          root: classes.inputRoot,
                          input: classes.inputInput
@@ -136,9 +179,14 @@ class SearchBar extends Component {
                  </Toolbar>
                </Grid>
 
+<<<<<<< HEAD
                <Grid item xs={3} className={classes.display}>
                  <FormControlLabel control={
                    <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} />} label={this.state.toggle ? 'MAP' : 'LIST'} />
+=======
+               <Grid item xs={2} className={classes.appBar}>
+                 <Button type="submit" variant="contained" color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
+>>>>>>> abeb62b3ee435546644edd623962aae9c19c12fc
                </Grid>
              </Grid>
 
@@ -149,6 +197,12 @@ class SearchBar extends Component {
                <Grid item xs={3}>
                  <Button type="submit" fullWidth variant="contained" color="secondary">Filter</Button>
                </Grid>
+
+               <Grid item xs={3} className={classes.display}>
+                 <FormControlLabel control={
+                   <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} />} label={this.state.toggle ? 'LIST' : 'MAP'} />
+               </Grid>
+
              </Grid>
 
            </AppBar>
