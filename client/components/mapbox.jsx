@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import ReactMapGL, { Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import TOKEN from './mapboxToken';
 
-const TOKEN = 'pk.eyJ1IjoidW5jb3N1bmciLCJhIjoiY2p3aWRvZ2t4MDFjNjRhcGVpZ2pmN3JvMCJ9.z82fIIUAciGedjhFaXAfqA';
+// const TOKEN = 'pk.eyJ1IjoidW5jb3N1bmciLCJhIjoiY2p3aWRvZ2t4MDFjNjRhcGVpZ2pmN3JvMCJ9.z82fIIUAciGedjhFaXAfqA';
 class Map extends Component {
   constructor(props) {
     super(props);
