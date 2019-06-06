@@ -100,7 +100,6 @@ class PackageDetails extends Component {
   }
 
   unavailableDates(){
-
     const currentDate = new Date();
     let month = currentDate.getMonth();
     let day = currentDate.getDate();
@@ -113,7 +112,6 @@ class PackageDetails extends Component {
       disabledList: [],
       maxDate
     }
-    const disabledList = [];
     while ( month !== maxMonth || year !== maxYear ){
       day = this.nextDay( month , day );
       if ( day === 1){
@@ -126,7 +124,6 @@ class PackageDetails extends Component {
         data.disabledList.push( new Date( year, month, day ));
       }
     }
-
     return data;
   }
 
@@ -145,10 +142,11 @@ class PackageDetails extends Component {
   }
 
   checkAvailability( year, month, day ){
-    // dummy data ( expected date format )
+    // dummy data ( expected date format ) ; replace with package data
     const dummyDate = ['Thu Jun 06 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
-    'Fri Jun 07 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
-    'Sat Jun 08 2019 12:24:11 GMT-0700 (Pacific Daylight Time)'];
+    'Tue Jun 11 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
+    'Sun Jun 09 2019 12:24:11 GMT-0700 (Pacific Daylight Time)'];
+
     let matched = false;
     for ( var value of dummyDate ){
       const packageDate = new Date( value ); 
@@ -228,7 +226,7 @@ class PackageDetails extends Component {
                 <Grid container justify="center" >
                   <ThemeProvider theme={theme}>
                     <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({openModal: true })}>
-                      <Typography variant="body1" gutterBottom>Book</Typography>
+                      <Typography variant="body1" gutterBottom>Available Dates</Typography>
                     </Button>
                   </ThemeProvider>
                 </Grid>

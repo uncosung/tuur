@@ -61,7 +61,6 @@ class DatePicker extends Component {
   render() {
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
-    console.log( this.props )
     return (
       <div className={classes.root}>
         <Grid justify="center" alignItems="center" container>
@@ -92,7 +91,7 @@ class DatePicker extends Component {
         <Grid className={classes.marginLeft} justify="center" alignItems="center" container>
           <Grid item xs={7} >
             <Button onClick = {this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
-              <Typography variant="body1" gutterBottom>Select dates</Typography>
+              <Typography variant="body1" gutterBottom>Book</Typography>
             </Button>
           </Grid>
         </Grid>
