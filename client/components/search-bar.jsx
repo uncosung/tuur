@@ -172,8 +172,8 @@ class SearchBar extends Component {
   handdleToggle(event) {
     let newToggle = this.state.toggle;
     this.setState({ toggle: !newToggle }, () => {
-      if (this.state.toggle){
-        this.props.view('mapResults', null, this.props.location)
+      if (this.state.toggle) {
+        this.props.view('mapResults', null, this.props.location);
       }
     });
   }
