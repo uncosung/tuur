@@ -46,7 +46,7 @@ class SearchResultGuide extends Component {
   componentDidMount() {
     fetch('/api/search.php')
       .then(res => res.json())
-      .then(search => this.setState({ guideProfile: search }, () => console.log(search)));
+      .then(search => this.setState({ guideProfile: search }));
   }
 
   render() {
