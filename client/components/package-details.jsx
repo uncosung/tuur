@@ -93,22 +93,16 @@ class PackageDetails extends Component {
                 <LocationOn /> { this.props.item.location }
               </CardContent>
               <CardContent>
+              {/* TRIP DURATION */}
                 {/* <Alarm/> { timeRange } */}
               </CardContent>
               <CardContent>
+
                 <Typography paragraph>Trip:</Typography>
                 <Typography paragraph>
                   { this.props.item.description }
                 </Typography>
-                {/* <Typography paragraph>
-                  Donec in mi sit amet libero vulputate commodo. Morbi porttitor varius sapien, ut viverra risus faucibus vitae. Ut mattis mauris et justo luctus auctor. Nulla tempor quis nisl id pulvinar.
-                </Typography>
-                <Typography paragraph>
-                  Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer ipsum odio, porta quis nibh quis, cursus iaculis orci. Phasellus ut commodo est. Pellentesque faucibus accumsan gravida. Fusce molestie sagittis aliquet.
-                </Typography>
-                <Typography>
-                  Proin vel sapien tincidunt, faucibus tortor et, pulvinar ante.
-                </Typography> */}
+
               </CardContent>
               <Grid justify="center" container>
                 <Grid container justify="center" >
