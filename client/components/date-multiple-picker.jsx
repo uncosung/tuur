@@ -61,6 +61,7 @@ class DatePicker extends Component {
   render() {
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
+    console.log( this.props )
     return (
       <div className={classes.root}>
         <Grid justify="center" alignItems="center" container>
@@ -82,7 +83,9 @@ class DatePicker extends Component {
           onSelect={date => {
             this.setDate(date);
           }}
-          disabledDates = {[]}
+          minDate= { new Date() }
+          maxDate= { this.props.unavailableDates.maxDate }
+          disabledDates = { this.props.unavailableDates.disabledList}
           className={classes.marginBottom}
         />
 

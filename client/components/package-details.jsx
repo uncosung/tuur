@@ -11,6 +11,10 @@ import Button from '@material-ui/core/Button';
 import LocationOn from '@material-ui/icons/LocationOn';
 import Alarm from '@material-ui/icons/Alarm';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import DatePicker from './date-multiple-picker';
+import Modal from '@material-ui/core/Modal';
+import CalendarToday from '@material-ui/icons/CalendarToday';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -51,29 +55,145 @@ const styles = theme => ({
   },
   paddingRight: {
     paddingRight: 20
+  },
+  modalStyle: {
+    top: 5,
+    left: 5
+  },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: 7,
+    outline: 'none'
   }
 });
 
 class PackageDetails extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      openModal: false,
+      newDates: [],
+      dates: []
+    }
     this.clickHandler = this.clickHandler.bind( this );
-    this.bookHandler = this.bookHandler.bind( this );
+    this.handleModalClose = this.handleModalClose.bind(this);
+    this.modalClose = this.modalClose.bind(this);
+
   }
 
   clickHandler(){
     this.props.view( 'result', [] );
   }
 
-  bookHandler(){
-
+  handleModalClose(dates) {
+    this.setState({
+      openModal: false,
+      dates: dates
+    });
   }
 
+  modalClose(){
+    this.setState({ openModal: false });
+  }
 
+  unavailableDates(){
+
+    const currentDate = new Date();
+    let month = currentDate.getMonth();
+    let day = currentDate.getDate();
+    let year = currentDate.getFullYear();
+    const maxMonth = this.maxMonth( month );
+    const maxDay = 1;
+    const maxYear = this.maxYear( maxMonth , year );
+    const maxDate = new Date( maxYear, maxMonth, maxDay );
+    let data = {
+      disabledList: [],
+      maxDate
+    }
+    const disabledList = [];
+    while ( month !== maxMonth || year !== maxYear ){
+      day = this.nextDay( month , day );
+      if ( day === 1){
+        month = month === 11 ? 0 : ++month;
+      }
+      if ( month === 0 && day === 1 ){
+        year = month === 1 ? ++year : year;
+      }
+      if ( !this.checkAvailability( year, month, day ) ){
+        data.disabledList.push( new Date( year, month, day ));
+      }
+    }
+
+    return data;
+  }
+
+  maxMonth( currentMonth ){
+    if ( currentMonth >= 10 ){
+      return currentMonth + 2 - 12
+    } 
+    return currentMonth + 2
+  }
+
+  maxYear( month, year ){
+    if ( !month ){
+      return year++
+    }
+    return year
+  }
+
+  checkAvailability( year, month, day ){
+    // dummy data ( expected date format )
+    const dummyDate = ['Thu Jun 06 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
+    'Fri Jun 07 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
+    'Sat Jun 08 2019 12:24:11 GMT-0700 (Pacific Daylight Time)'];
+    let matched = false;
+    for ( var value of dummyDate ){
+      const packageDate = new Date( value ); 
+      const packageYear = packageDate.getFullYear();
+      const packageMonth = packageDate.getMonth();
+      const packageDay = packageDate.getDate();
+
+      if ( packageYear === year && packageMonth === month && packageDay === day ){
+        return true
+      }
+    }
+    return false;
+  }
+
+  nextDay( month, day ){
+    // last day of month = 31
+    if ( month === 0 && day != 31 ) return ++day
+    // last day of month = 28
+    if ( month === 1  && day !== 28 ) return ++day 
+    // last day of month = 31
+    if ( month === 2  && day !== 31 ) return ++day
+    // last day of month = 30
+    if ( month === 3  && day !== 30 ) return ++day
+    // last day of month = 31
+    if ( month === 4  && day !== 31 ) return ++day      
+    // last day of month = 30
+    if ( month === 5  && day !== 30 ) return ++day       
+    // last day of month = 31
+    if ( month === 6  && day !== 31 ) return ++day       
+    // last day of month = 31
+    if ( month === 7  && day !== 31 ) return ++day       
+    // last day of month = 30
+    if ( month === 8  && day !== 30 ) return ++day       
+    // last day of month = 31
+    if ( month === 9  && day !== 31 ) return ++day      
+    // last day of month = 30
+    if ( month === 10 && day !== 30 ) return ++day    
+    // last day of month = 31
+    if ( month === 11 && day !== 31 ) return ++day  
+    return 1
+  }
 
   render() {
     const { classes } = this.props;
-    console.log( this.props.item );
+    this.unavailableDates();
     return (
             <>
             <Card className={classes.card}>
@@ -107,10 +227,23 @@ class PackageDetails extends Component {
               <Grid justify="center" container>
                 <Grid container justify="center" >
                   <ThemeProvider theme={theme}>
-                    <Button type="submit" fullWidth variant="contained" color="primary" >
+                    <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({openModal: true })}>
                       <Typography variant="body1" gutterBottom>Book</Typography>
                     </Button>
                   </ThemeProvider>
+                </Grid>
+
+                <Grid item xs={11} >
+                  <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.openModal}
+                    onClose={() => this.handleModalClose(this.state.dates)}
+                  >
+                    <Grid className={classes.paper}>
+                      <DatePicker dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                    </Grid>
+                  </Modal>
                 </Grid>
               </Grid>
             </Card>
