@@ -10,6 +10,10 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import SearchPackageItem from './search-result-package-item';
+import SearchResultGuide from './search-result-guide-list';
+import PackageDetails from './package-details';
+
 
 const styles = theme => ({
   marginTop: {
@@ -17,13 +21,6 @@ const styles = theme => ({
   },
   marginBottom: {
     marginBottom: theme.spacing(2)
-  },
-  card: {
-    maxWidth: 400
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%'
   }
 });
 
@@ -31,55 +28,62 @@ class SearchPackages extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
-    };
-    this.handleExpandClick = this.handleExpandClick.bind(this);
+      packages: [],
+      view: {
+        name: 'result',
+        item: []
+      }
+    }
+    this.setView = this.setView.bind( this );
   }
 
-  handleExpandClick() {
-    const { expanded } = this.state;
-    this.setState({
-      expanded: !expanded
-    });
+  setView( name , item ){
+    const view = { name , item };
+    this.setState( { view })
+
   }
+
+  componentDidMount(){
+    fetch( 'api/package.php?id=1' )
+    .then( res => res.json() )
+    .then( packages => this.setState( { packages } ))
+  }
+
+  renderPackage(){
+    const packages = this.state.packages.map( ( item, id ) => {
+      return <SearchPackageItem key={id} item={ item } view={ this.setView }/>
+    })
+    return packages;
+  }
+
 
   render() {
     const { classes } = this.props;
-    return (
-            <>
-            <Container className={classes.marginBottom} >
-              <Typography className={classes.marginTop} variant="h5">
-                    Tuurs
-              </Typography>
-            </Container>
-            <Card className={classes.card}>
-              <CardHeader
-                title="Space Needle"
-                subheader="September 14, 2016"
-              />
-              <CardMedia
-                className={classes.media}
-                image="https://bonneville.com/wp-content/uploads/2015/08/seattle-skyline-1024x516.png"
-                title="Space Needle"
-              />
-              <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum gravida nulla et enim convallis, non suscipit ligula rhoncus. Curabitur consequat magna vel velit tincidunt, eu imperdiet lectus pretium.
-                </Typography>
-              </CardContent>
-              <CardActions disableSpacing>
-                <IconButton aria-label="Add to favorites">
-                  <FavoriteIcon />
-                </IconButton>
-                <IconButton aria-label="Share">
-                  <ShareIcon />
-                </IconButton>
-              </CardActions>
-            </Card>
-            </>
-    );
-  }
+    const { name, item } = this.state.view
 
+    return (
+      <>
+        { name === 'detail' 
+            && <PackageDetails item={ item } view={ this.setView} appView={ this.props.appView } />
+        }
+        { name === 'result'
+            && <>
+                <SearchResultGuide />
+                <Container className={classes.marginBottom} >
+                  <Typography className={classes.marginTop} variant="h5">
+                    Tuurs
+                  </Typography>
+                </Container>
+                { this.state.packages ? this.renderPackage() : 'No available packages'}
+              </>
+        }
+      </>
+      )
+  }
 }
 
 export default withStyles(styles)(SearchPackages);
+
+
+
+
