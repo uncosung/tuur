@@ -105,7 +105,11 @@ class SearchBar extends Component {
   }
   handdleToggle(event) {
     let newToggle = this.state.toggle;
-    this.setState({ toggle: !newToggle });
+    this.setState({ toggle: !newToggle }, () => {
+      if (this.state.toggle){
+        this.props.view('mapResults', null, this.props.location)
+      }
+    });
   }
   render() {
     const { classes } = this.props;
@@ -134,7 +138,7 @@ class SearchBar extends Component {
 
                <Grid item xs={3} className={classes.display}>
                  <FormControlLabel control={
-                   <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} />} label={this.state.toggle ? 'LIST' : 'MAP'} />
+                   <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} />} label={this.state.toggle ? 'MAP' : 'LIST'} />
                </Grid>
              </Grid>
 

@@ -7,7 +7,13 @@ $item = file_get_contents('php://input');
 $email = $_SESSION['userEmail'];
 
 if ( $method === 'GET'){
-  $query = "SELECT * FROM `package` WHERE `profileEmail` = '{$email}'";
+  if (!($_GET['id'])){
+    $where = " WHERE `profileEmail` = '{$email}'";
+  }
+  else {
+    $where = '';
+  }
+  $query = "SELECT * FROM `package`{$where}";
   $result = mysqli_query( $conn , $query );
   $output = [];
   while ( $row = mysqli_fetch_assoc( $result )){

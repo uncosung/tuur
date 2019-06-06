@@ -12,34 +12,36 @@ import LogIn from './log-in';
 import Itinerary from './itinerary';
 import SearchBar from './search-bar';
 import SearchResultGuide from './search-result-guide-list';
-<<<<<<< HEAD
 import Search from './search';
-=======
-
-import Search from './search';
-
->>>>>>> ce16cfc499f50e209099af9e2959ec5b93c594ad
 import SearchPackages from './search-result-package';
+import Mapbox from './mapbox';
+import DeckGL, {GeoJsonLayer} from 'deck.gl';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-<<<<<<< HEAD
         name: 'logIn'
-=======
-        name: 'signUp'
->>>>>>> ce16cfc499f50e209099af9e2959ec5b93c594ad
       },
-      user: {}
+      user: {},
+      location: []
     };
     this.setView = this.setView.bind(this);
   }
 
-  setView(name, user) {
+  setView(name, user, location) {
+    console.log(name, user, location);
     const view = { name };
-    this.setState({ view, user });
+    if (user === null) {
+      this.setState({
+        view, 
+        location: location});
+      return;
+    }
+    else {
+      this.setState({ view, user });
+    }
   }
 
   render() {
@@ -52,9 +54,18 @@ class App extends Component {
     // </Router>
 
       <div>
+        {this.state.view.name === 'mapResults'
+          && <div>
+            {/* <SearchBar view={this.setView} user={this.state.user}/> */}
+            <Mapbox view = {this.setView} user={this.state.user} location={this.state.location}/>
+            {/* <BottomNav /> */}
+          </div>
+          
+        }
+
         {this.state.view.name === 'searchResult'
           && <div>
-            <SearchBar view={this.setView} user={this.state.user}/>
+            <SearchBar view={this.setView} user={this.state.user} location={this.state.location}/>
             <SearchResultGuide />
             <SearchPackages />
             {/* <UpComingTuursList view={this.setView} /> */}
