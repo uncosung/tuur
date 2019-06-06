@@ -5,6 +5,7 @@ import TOKEN from './mapbox-token';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import ReactGeocoder from 'react-map-gl-geocoder';
 import DeckGL, { GeoJsonLayer } from 'deck.gl';
+import SearchBar from './search-bar';
 
 class Mapbox extends Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class Mapbox extends Component {
     this.forwardGeocoder = this.forwardGeocoder.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.fetchLocation = this.fetchLocation.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
 
   }
   componentDidMount() {
@@ -60,13 +62,22 @@ class Mapbox extends Component {
       .then(result => {
         this.setState({
           fetchResult: result
-        }, this.makeMarkers);
+        });
 
       });
 
   }
-  makeMarkers() {
-
+  handleSearch(location) {
+    console.log(location)
+    this.setState ({
+        viewport: {
+            latitude: location.coordinates[1],
+            longitude: location.coordinates[0],
+            width: 325,
+            height: 325,
+            zoom: 12
+        }
+    })
   }
   forwardGeocoder(query) {
     let matchingFeatures = [];
@@ -124,7 +135,8 @@ class Mapbox extends Component {
     });
     const { viewport, searchResultLayer } = this.state;
     return (
-      <div style = {{ height: '100vh' }}>
+      <div style = {{ top: 0, position: 'absolute'}}>
+        <SearchBar handleGeocoderViewportChange={this.handleGeocoderViewportChange} handleOnResult={this.handleOnResult} handleSearch={this.handleSearch} mapRef={this.state.mapRef} view={this.props.view} user={this.props.user} location={this.props.location}/>
         <ReactMapGL
           ref = {this.mapRef}
           {...viewport}
@@ -132,14 +144,13 @@ class Mapbox extends Component {
           mapboxApiAccessToken = {TOKEN}
           transitionInterpolator = {new FlyToInterpolator()}
         >
-          <ReactGeocoder
+          {/* <ReactGeocoder
             mapRef = {this.mapRef}
             onResult = {this.handleOnResult}
             onViewportChange = {this.handleGeocoderViewportChange}
             mapboxApiAccessToken={TOKEN}
             position = 'top-left'
-            // localGeocoder = {this.forwardGeocoder}
-          />
+          /> */}
           {markerMap}
           <DeckGL {...viewport} layers={[searchResultLayer]} />
 
