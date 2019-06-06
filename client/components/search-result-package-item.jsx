@@ -36,7 +36,8 @@ class SearchPackageItem extends Component {
   }
 
   clickHandler(){
-    this.props.view( 'detail' , this.props.item );
+    // this.props.view( 'detail' , this.props.item );
+    this.props.history.push("/packageDetails")
   }
 
   render() {
