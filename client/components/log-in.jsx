@@ -44,7 +44,7 @@ class LogIn extends React.Component {
     event.preventDefault();
     fetch(`/api/profile.php?email=${this.state.email}`)
       .then(res => res.json())
-      .then(data => this.props.view('userProfile', data));
+      .then(data => this.props.view('search', data));
   }
   render() {
     const { classes } = this.props;
