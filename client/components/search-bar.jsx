@@ -10,7 +10,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-
 import Modal from '@material-ui/core/Modal';
 import DateRangePicker from './date-range-picker';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -98,15 +97,19 @@ const styles = theme => ({
     margin: 0,
     paddingLeft: 30
   },
-
   buttonDiv: {
     display: 'inline-block',
     marginLeft: 10,
     marginRight: 10
   },
+  button: {
+    backgroundColor: '#A6C7C8',
+    '&.active, &:hover, &.active:hover': {
+      backgroundColor: '#A6C7C8'
+    }
+  },
   buttonContainer: {
     paddingLeft: 15
-
   },
   paper: {
     position: 'absolute',
@@ -131,14 +134,41 @@ const styles = theme => ({
   }
 });
 
+const categories = [
+  'Food',
+  'Shopping',
+  'Coffee',
+  'Outdoors',
+  'Nightlife',
+  'Activities'
+];
+
 class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toggle: false
+      toggle: false,
+      openModal: false,
+      tags: [],
+      dates: {
+        start: null,
+        end: null
+      }
     };
     this.handdleToggle = this.handdleToggle.bind(this);
+    this.modalClose = this.modalClose.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+
   }
+
+  handleChange(event) {
+    const { value } = event.target;
+    this.setState({
+      tags: value
+    });
+  }
+
   handdleToggle(event) {
     let newToggle = this.state.toggle;
     this.setState({ toggle: !newToggle }, () => {
@@ -146,6 +176,17 @@ class SearchBar extends Component {
         this.props.view('mapResults', null, this.props.location)
       }
     });
+  }
+  handleModalClose(dates) {
+    let startDate = dates.start;
+    let endDate = dates.end;
+    this.setState({
+      openModal: false,
+      dates: { start: startDate, end: endDate }
+    }, () => console.log(this.state.dates));
+  }
+  modalClose() {
+    this.setState({ openModal: false });
   }
   render() {
     const { classes } = this.props;
@@ -172,18 +213,33 @@ class SearchBar extends Component {
                  </Toolbar>
                </Grid>
 
-
                <Grid item xs={2} className={classes.appBar}>
                  <Button type="submit" variant="contained" color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
                </Grid>
              </Grid>
 
              <Grid container className={classes.buttonContainer}>
-               <Grid item xs={3} className={classes.button}>
-                 <Button type="submit" fullWidth variant="contained" color="secondary">Dates</Button>
+               <Grid item xs={3} className={classes.buttonDiv}>
+                 <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary" onClick={() => this.setState({ openModal: true })}>Dates</Button>
                </Grid>
+
                <Grid item xs={3}>
-                 <Button type="submit" fullWidth variant="contained" color="secondary">Filter</Button>
+                 <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary">Filter
+                   <Select
+                     className={classes.width}
+                     multiple
+                     value={this.state.tags}
+                     onChange={this.handleChange}
+                   >
+                     {categories.map(name => (
+                       <MenuItem key={name} value={name}>
+                         <Typography className={classes.subtitle} variant="subtitle2" align="left" gutterBottom>
+                           {name}
+                         </Typography>
+                       </MenuItem>
+                     ))}
+                   </Select>
+                 </Button>
                </Grid>
 
                <Grid item xs={3} className={classes.display}>
@@ -192,9 +248,22 @@ class SearchBar extends Component {
                </Grid>
 
              </Grid>
-
            </AppBar>
          </ThemeProvider>
+
+         <Grid item xs={10}>
+           <Modal
+             aria-labelledby="date-range-picker"
+             aria-describedby="date-range"
+             open={this.state.openModal}
+             onClose={() => this.handleModalClose(this.state.dates)}
+           >
+             <Grid className={classes.paper}>
+               <DateRangePicker key={this.state.title} close={this.handleModalClose} modalClose={this.modalClose}/>
+             </Grid>
+           </Modal>
+         </Grid>
+
       </>
     );
   }
