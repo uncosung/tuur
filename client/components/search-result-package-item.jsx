@@ -20,7 +20,8 @@ const styles = theme => ({
     marginBottom: theme.spacing(2)
   },
   card: {
-    maxWidth: 400
+    maxWidth: 400,
+    marginBottom: theme.spacing(.5),
   },
   media: {
     height: 0,
@@ -31,13 +32,18 @@ const styles = theme => ({
 class SearchPackageItem extends Component {
   constructor(props) {
     super(props);
+    this.clickHandler = this.clickHandler.bind( this );
+  }
+
+  clickHandler(){
+    this.props.view( 'detail' , this.props.item );
   }
 
   render() {
     const { classes } = this.props;
     return (
       <>
-        <Card className={classes.card}>
+        <Card className={classes.card} onClick={ this.clickHandler } >
           <CardHeader
             title={ this.props.item.title }
             // subheader="September 14, 2016"

@@ -29,7 +29,8 @@ const styles = theme => ({
     marginBottom: theme.spacing(2)
   },
   card: {
-    maxWidth: 400
+    maxWidth: 400,
+    marginBottom: theme.spacing(2)
   },
   media: {
     height: 0,
@@ -56,40 +57,50 @@ const styles = theme => ({
 class PackageDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
+    this.clickHandler = this.clickHandler.bind( this );
+    this.bookHandler = this.bookHandler.bind( this );
   }
+
+  clickHandler(){
+    this.props.view( 'result', [] );
+  }
+
+  bookHandler(){
+
+  }
+
+
 
   render() {
     const { classes } = this.props;
+    console.log( this.props.item );
     return (
             <>
             <Card className={classes.card}>
-              <Grid item xs={2} className={classes.paddingRight} onClick={() => this.props.view('searchResult')}>
+              <Grid item xs={2} className={classes.paddingRight} name='back' onClick={ this.clickHandler }>
                 <KeyboardArrowLeft className={classes.fontSize} />
               </Grid>
               <CardMedia
                 className={classes.media}
-                image="https://bonneville.com/wp-content/uploads/2015/08/seattle-skyline-1024x516.png"
+                image={ this.props.item.mainImage }
                 // title="Space Needle"
               />
               <CardHeader
-                title="Space Needle"
+                title={ this.props.item.title }
                 // subheader="September 14, 2016"
               />
               <CardContent>
-                <LocationOn /> Seattle
+                <LocationOn /> { this.props.item.location }
               </CardContent>
               <CardContent>
-                <Alarm/> 2 hours
+                {/* <Alarm/> { timeRange } */}
               </CardContent>
               <CardContent>
                 <Typography paragraph>Trip:</Typography>
                 <Typography paragraph>
-                  Cras et ante bibendum, vehicula elit nec, commodo lectus.
+                  { this.props.item.description }
                 </Typography>
-                <Typography paragraph>
+                {/* <Typography paragraph>
                   Donec in mi sit amet libero vulputate commodo. Morbi porttitor varius sapien, ut viverra risus faucibus vitae. Ut mattis mauris et justo luctus auctor. Nulla tempor quis nisl id pulvinar.
                 </Typography>
                 <Typography paragraph>
@@ -97,12 +108,12 @@ class PackageDetails extends Component {
                 </Typography>
                 <Typography>
                   Proin vel sapien tincidunt, faucibus tortor et, pulvinar ante.
-                </Typography>
+                </Typography> */}
               </CardContent>
               <Grid justify="center" container>
                 <Grid container justify="center" >
                   <ThemeProvider theme={theme}>
-                    <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user)}>
+                    <Button type="submit" fullWidth variant="contained" color="primary" >
                       <Typography variant="body1" gutterBottom>Book</Typography>
                     </Button>
                   </ThemeProvider>

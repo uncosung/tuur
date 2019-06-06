@@ -11,6 +11,8 @@ import ShareIcon from '@material-ui/icons/Share';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import SearchPackageItem from './search-result-package-item';
+import SearchResultGuide from './search-result-guide-list';
+import PackageDetails from './package-details';
 
 
 const styles = theme => ({
@@ -26,30 +28,30 @@ class SearchPackages extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false,
-      packages: []
-    };
-    this.handleExpandClick = this.handleExpandClick.bind(this);
+      packages: [],
+      view: {
+        name: 'result',
+        item: []
+      }
+    }
+    this.setView = this.setView.bind( this );
   }
 
-  handleExpandClick() {
-    const { expanded } = this.state;
-    this.setState({
-      expanded: !expanded
-    });
+  setView( name , item ){
+    const view = { name , item };
+    this.setState( { view })
+
   }
 
   componentDidMount(){
     fetch( 'api/package.php?id=1' )
     .then( res => res.json() )
-    .then( packages => {
-      this.setState( { packages } )
-    })
+    .then( packages => this.setState( { packages } ))
   }
 
   renderPackage(){
     const packages = this.state.packages.map( ( item, id ) => {
-      return <SearchPackageItem key={id} item={ item }/>
+      return <SearchPackageItem key={id} item={ item } view={ this.setView }/>
     })
     return packages;
   }
@@ -57,14 +59,24 @@ class SearchPackages extends Component {
 
   render() {
     const { classes } = this.props;
+    const { name, item } = this.state.view
+
     return (
       <>
-        <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h5">
-            Tuurs
-          </Typography>
-        </Container>
-        { this.state.packages ? this.renderPackage() : 'No available packages'}
+        { name === 'detail' 
+            && <PackageDetails item={ item } view={ this.setView} appView={ this.props.appView } />
+        }
+        { name === 'result'
+            && <>
+                <SearchResultGuide />
+                <Container className={classes.marginBottom} >
+                  <Typography className={classes.marginTop} variant="h5">
+                    Tuurs
+                  </Typography>
+                </Container>
+                { this.state.packages ? this.renderPackage() : 'No available packages'}
+              </>
+        }
       </>
       )
   }

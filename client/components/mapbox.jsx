@@ -114,6 +114,7 @@ class Mapbox extends Component {
   }
 
   render() {
+    console.log( this.state );
     const markerMap = this.state.fetchCoordinates.map(marker => {
       return (
         <Marker key={marker[0].id} latitude={marker[1][1]} longitude={marker[1][0]}>
