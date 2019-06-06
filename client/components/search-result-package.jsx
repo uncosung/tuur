@@ -39,7 +39,7 @@ class SearchPackages extends Component {
 
   setView( name , item ){
     const view = { name , item };
-    this.setState( { view })
+    this.setState( { view }, () => console.log( view ))
 
   }
 
@@ -60,7 +60,6 @@ class SearchPackages extends Component {
   render() {
     const { classes } = this.props;
     const { name, item } = this.state.view
-
     return (
       <>
         { name === 'detail' 

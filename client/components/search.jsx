@@ -53,7 +53,7 @@ class Search extends Component {
         name: result.place_name,
         coordinates: result.geometry.coordinates
       }
-    }, () =>     console.log(this.state.location))
+    })
   }
 
   render() {
@@ -65,41 +65,41 @@ class Search extends Component {
 
     return (
     <>
-     <Card mt={0} className={classes.card}>
-       <CardActionArea>
-         <CardMedia
-           className={classes.media}
-           component="img"
-           image="https://chopra.com/sites/default/files/field/image/6reasonswhytravelingisgoodforyou.jpg"
-           title="Travel Image"
-         />
-       </CardActionArea>
-     </Card>
+    <Card mt={0} className={classes.card}>
+      <CardActionArea>
+        <CardMedia
+          className={classes.media}
+          component="img"
+          image="https://chopra.com/sites/default/files/field/image/6reasonswhytravelingisgoodforyou.jpg"
+          title="Travel Image"
+        />
+      </CardActionArea>
+    </Card>
 
-     {/* <Paper className={classes.root}>
+    {/* <Paper className={classes.root}>
       <InputBase className={classes.input} placeholder="Where do you want to go?" />
      </Paper> */}
-      <Grid justify="center" className={classes.marginTop} container>
-        <MatGeocoder
-          inputPlaceholder="Where do you want to go?"
-          accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
-          showLoader={true}
-          autocomplete={true}
-          fuzzyMatch={true}
-          {...geocoderApiOptions}
-          onSelect={this.handleSelect}
-        />
-      </Grid>
+    <Grid justify="center" className={classes.marginTop} container>
+      <MatGeocoder
+        inputPlaceholder="Where do you want to go?"
+        accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
+        showLoader={true}
+        autocomplete={true}
+        fuzzyMatch={true}
+        {...geocoderApiOptions}
+        onSelect={this.handleSelect}
+      />
+    </Grid>
 
-     <Grid justify="center" container>
-       <Grid className={classes.marginTop} container justify="center" >
-         <ThemeProvider theme={theme}>
-           <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}>
-             <Typography variant="body1" gutterBottom>Search</Typography>
-           </Button>
-         </ThemeProvider>
-       </Grid>
-     </Grid>
+    <Grid justify="center" container>
+      <Grid className={classes.marginTop} container justify="center" >
+        <ThemeProvider theme={theme}>
+          <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}>
+            <Typography variant="body1" gutterBottom>Search</Typography>
+          </Button>
+        </ThemeProvider>
+      </Grid>
+    </Grid>
 
     </>
     );

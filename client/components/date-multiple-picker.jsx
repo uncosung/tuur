@@ -82,14 +82,16 @@ class DatePicker extends Component {
           onSelect={date => {
             this.setDate(date);
           }}
-          disabledDates = {[]}
+          minDate= { new Date() }
+          maxDate= { this.props.unavailableDates.maxDate }
+          disabledDates = { this.props.unavailableDates.disabledList}
           className={classes.marginBottom}
         />
 
         <Grid className={classes.marginLeft} justify="center" alignItems="center" container>
           <Grid item xs={7} >
             <Button onClick = {this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
-              <Typography variant="body1" gutterBottom>Select dates</Typography>
+              <Typography variant="body1" gutterBottom>Book</Typography>
             </Button>
           </Grid>
         </Grid>

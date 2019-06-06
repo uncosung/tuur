@@ -31,7 +31,6 @@ class App extends Component {
   }
 
   setView(name, user, location) {
-    console.log(name, user, location);
     const view = { name };
     if (user === null) {
       this.setState({
