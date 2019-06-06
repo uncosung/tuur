@@ -14,6 +14,9 @@ import SearchBar from './search-bar';
 import SearchResultGuide from './search-result-guide-list';
 import Search from './search';
 import SearchPackages from './search-result-package';
+import Mapbox from './mapbox';
+import DeckGL, {GeoJsonLayer} from 'deck.gl';
+import PackageDetails from './package-details';
 
 class App extends Component {
   constructor(props) {
@@ -22,14 +25,24 @@ class App extends Component {
       view: {
         name: 'searchResult'
       },
-      user: {}
+      user: {},
+      location: []
     };
     this.setView = this.setView.bind(this);
   }
 
-  setView(name, user) {
+  setView(name, user, location) {
+    console.log(name, user, location);
     const view = { name };
-    this.setState({ view, user });
+    if (user === null) {
+      this.setState({
+        view, 
+        location: location});
+      return;
+    }
+    else {
+      this.setState({ view, user });
+    }
   }
 
   render() {
@@ -42,9 +55,18 @@ class App extends Component {
     // </Router>
 
       <div>
-        {this.state.view.name === 'searchResult' &&
-          <div>
-            <SearchBar view={this.setView} user={this.state.user}/>
+        {this.state.view.name === 'mapResults'
+          && <div>
+            {/* <SearchBar view={this.setView} user={this.state.user}/> */}
+            <Mapbox view = {this.setView} user={this.state.user} location={this.state.location}/>
+            {/* <BottomNav /> */}
+          </div>
+          
+        }
+
+        {this.state.view.name === 'searchResult'
+          && <div>
+            <SearchBar view={this.setView} user={this.state.user} location={this.state.location}/>
             <SearchResultGuide />
             <SearchPackages />
             {/* <UpComingTuursList view={this.setView} /> */}
@@ -110,6 +132,13 @@ class App extends Component {
         {this.state.view.name === 'search'
           ? <div>
             <Search view={this.setView} />
+            {/* <BottomNav /> */}
+          </div>
+          : null
+        }
+        {this.state.view.name === 'packageDetails'
+          ? <div>
+            <PackageDetails view={this.setView} />
             {/* <BottomNav /> */}
           </div>
           : null

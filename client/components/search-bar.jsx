@@ -16,13 +16,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 
-
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
     secondary: { main: '#A6C7C8' },
     inherit: { main: '#A0C3C5' },
-    default: { main: '#f5e1da' }
+    default: { main: 'white' }
   }
 });
 
@@ -55,7 +54,6 @@ const styles = theme => ({
     display: 'inline-block'
   },
   searchIcon: {
-    width: theme.spacing(7),
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -86,13 +84,21 @@ const styles = theme => ({
       display: 'none'
     }
   },
+  appBar: {
+    display: 'inline-block',
+    paddingBottom: 8,
+    paddingTop: 5,
+    margin: 0,
+    paddingLeft: 5
+  },
   display: {
     display: 'inline-block',
-    paddingBottom: 10,
+    paddingBottom: 5,
     margin: 0,
-    paddingLeft: 10
+    paddingLeft: 30
   },
   buttonDiv: {
+    display: 'inline-block',
     marginLeft: 10,
     marginRight: 10
   },
@@ -120,6 +126,11 @@ const styles = theme => ({
     width: 0,
     opacity: 0,
     position: 'absolute'
+  },
+  searchStyle: {
+    fontSize: 30,
+    paddingLeft: 10,
+    paddingTop: 2
   }
 });
 
@@ -160,7 +171,11 @@ class SearchBar extends Component {
 
   handdleToggle(event) {
     let newToggle = this.state.toggle;
-    this.setState({ toggle: !newToggle });
+    this.setState({ toggle: !newToggle }, () => {
+      if (this.state.toggle) {
+        this.props.view('mapResults', null, this.props.location);
+      }
+    });
   }
   handleModalClose(dates) {
     let startDate = dates.start;
@@ -178,16 +193,16 @@ class SearchBar extends Component {
     return (
       <>
          <ThemeProvider theme={theme}>
-           <AppBar position="static" color="primary" className={classes.display}>
+           <AppBar position="static" color="primary" className={classes.appBar}>
              <Grid container direction="row" className={classes.grow}>
-               <Grid item xs={8} className={classes.display}>
+               <Grid item xs={9} className={classes.appBar}>
                  <Toolbar>
                    <div className={classes.search}>
                      <Grid className={classes.searchIcon}>
-                       <SearchIcon style={{ fontSize: 30 }} />
+                       <SearchIcon className={classes.searchStyle} />
                      </Grid>
                      <InputBase
-                       placeholder="Search…"
+                       placeholder="Search location "
                        classes={{
                          root: classes.inputRoot,
                          input: classes.inputInput
@@ -198,9 +213,8 @@ class SearchBar extends Component {
                  </Toolbar>
                </Grid>
 
-               <Grid item xs={3} className={classes.display}>
-                 <FormControlLabel control={
-                   <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} />} label={this.state.toggle ? 'LIST' : 'MAP'} />
+               <Grid item xs={2} className={classes.appBar}>
+                 <Button type="submit" variant="contained" color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
                </Grid>
              </Grid>
 
@@ -227,6 +241,12 @@ class SearchBar extends Component {
                    </Select>
                  </Button>
                </Grid>
+
+               <Grid item xs={3} className={classes.display}>
+                 <FormControlLabel control={
+                   <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} />} label={this.state.toggle ? 'MAP' : 'LIST'} />
+               </Grid>
+
              </Grid>
            </AppBar>
          </ThemeProvider>
