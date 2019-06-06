@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import ReactMapGL, {Marker, GeolocateControl, FlyToInterpolator, NavigationControl} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import TOKEN from './mapbox-token';
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import ReactGeocoder from 'react-map-gl-geocoder';
 import DeckGL, {GeoJsonLayer} from 'deck.gl';
 
-const token = 'pk.eyJ1IjoidW5jb3N1bmciLCJhIjoiY2p3aWRvZ2t4MDFjNjRhcGVpZ2pmN3JvMCJ9.z82fIIUAciGedjhFaXAfqA'
 class Mapbox extends Component {
     constructor (props) {
         super(props);
@@ -44,21 +44,18 @@ class Mapbox extends Component {
                     tuurs: tuurs
                 }, this.fetchLocation)
             })
-        console.log(this.props)
     }
     fetchLocation() {
-        console.log('stateystatestate', this.state)
         this.state.tuurs.map(tuur => {
-            fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${tuur.location}.json?access_token=${token}`)
+            fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${tuur.location}.json?access_token=${TOKEN}`)
                 .then(res => res.json())
                 .then((result) => {
-                    console.log(result);
                     this.setState ({
                         fetchCoordinates: [...this.state.fetchCoordinates, [tuur, result.features[0].center]]
-                    }, () => console.log('these are the coordinates', this.state))
+                    }, console.log( 'center error', result))
                 })
         })
-        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${token}`)
+        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
             .then(res => res.json())
             .then((result) => {
                 this.setState ({
@@ -83,7 +80,6 @@ class Mapbox extends Component {
                 matchingFeatures.push(feature);
                 }
         }
-        console.log(matchingFeatures)
         return matchingFeatures
     }
     handleViewPortChange (viewport) {
@@ -99,9 +95,9 @@ class Mapbox extends Component {
         return this.handleViewPortChange({
             ...viewport
         });
+
     };
     handleOnResult (event) {
-        console.log(event);
         this.setState ({
             searchResultLayer: new GeoJsonLayer({
                 id: 'search-result',
@@ -120,7 +116,6 @@ class Mapbox extends Component {
     
     render () {
         const markerMap = this.state.fetchCoordinates.map(marker => {
-            console.log(marker);
             return(
                 <Marker key={marker[0].id} latitude={marker[1][1]} longitude={marker[1][0]}>
                     <div>{marker[0].title}</div>
@@ -134,16 +129,16 @@ class Mapbox extends Component {
                     ref = {this.mapRef}
                     {...viewport}
                     onViewportChange= {this.handleViewPortChange}
-                    mapboxApiAccessToken = {token}
+                    mapboxApiAccessToken = {TOKEN}
                     transitionInterpolator = {new FlyToInterpolator()}
                 >
                     <ReactGeocoder
                         mapRef = {this.mapRef}
                         onResult = {this.handleOnResult}
                         onViewportChange = {this.handleGeocoderViewportChange}
-                        mapboxApiAccessToken={token}
+                        mapboxApiAccessToken={TOKEN}
                         position = 'top-left'
-                        localGeocoder = {this.forwardGeocoder}
+                        // localGeocoder = {this.forwardGeocoder}
                     />
                     {markerMap}
                     <DeckGL {...viewport} layers={[searchResultLayer]} />
@@ -162,7 +157,7 @@ class Mapbox extends Component {
                     </div>
                 </ReactMapGL>
             </div>
-          );
+        );
     }
 }
 export default Mapbox;
