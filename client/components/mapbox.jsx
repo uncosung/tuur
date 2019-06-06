@@ -24,8 +24,11 @@ class Mapbox extends Component {
         longitude: null
       },
       tuurs: [],
+      filteredTuurs: [],
       fetchResult: null,
-      fetchCoordinates: []
+      fetchCoordinates: [],
+      initialCoordinates: [this.props.location.coordinates[0], this.props.location.coordinates[1]],
+      bbox: [(this.props.location.coordinates[0]-1), (this.props.location.coordinates[1]-0.1), (this.props.location.coordinates[0]+1), (this.props.location.coordinates[1]+0.1) ]
 
     };
     this.mapRef = React.createRef();
@@ -36,6 +39,7 @@ class Mapbox extends Component {
     this.componentDidMount = this.componentDidMount.bind(this);
     this.fetchLocation = this.fetchLocation.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.filterTuurs = this.filterTuurs.bind(this);
 
   }
   componentDidMount() {
@@ -47,28 +51,56 @@ class Mapbox extends Component {
         }, this.fetchLocation);
       });
   }
-  fetchLocation() {
-    this.state.tuurs.map(tuur => {
-      fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${tuur.location}.json?access_token=${TOKEN}`)
-        .then(res => res.json())
-        .then(result => {
-          this.setState({
-            fetchCoordinates: [...this.state.fetchCoordinates, [tuur, result.features[0].center]]
-          }, console.log('center error', result));
-        });
+  filterTuurs() {
+      let filterTuurs = [];
+      let tooFar = [];
+        for (let i = 0; i < this.state.fetchCoordinates.length; i++){
+            if (this.state.fetchCoordinates[i].coord[0] < this.state.viewport.longitude-1 || this.state.fetchCoordinates[i].coord[0] > this.state.viewport.longitude+1 || this.state.fetchCoordinates[i].coord[1] < this.state.viewport.latitude-0.2 || this.state.fetchCoordinates[i].coord[1] > this.state.viewport.latitude+0.2){
+                tooFar = [...tooFar, this.state.fetchCoordinates[i]];
+            }
+            else {
+                filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];        
+            }
+        }
+        this.setState({
+            filteredTuurs: filterTuurs
+        })
+
+  }
+
+  async getTuurLocationData(tuur){
+    const resp = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${tuur.location}.json?access_token=${TOKEN}`);
+
+    const respJson = await resp.json();
+
+    return  {
+        tuur,
+        coord: respJson.features[0].center
+    }
+  }
+
+  mapTuurs () {
+    let mapArray = this.state.tuurs.map(this.getTuurLocationData);
+
+    Promise.all(mapArray).then((tuurCoordinates)=> {
+        this.setState({
+            fetchCoordinates: tuurCoordinates
+        }, this.filterTuurs)
     });
+      
+  }
+  fetchLocation() {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
       .then(res => res.json())
       .then(result => {
         this.setState({
           fetchResult: result
-        });
+        }, this.mapTuurs);
 
       });
 
   }
   handleSearch(location) {
-    console.log(location)
     this.setState ({
         viewport: {
             latitude: location.coordinates[1],
@@ -77,7 +109,7 @@ class Mapbox extends Component {
             height: 325,
             zoom: 12
         }
-    })
+    }, this.filterTuurs)
   }
   forwardGeocoder(query) {
     let matchingFeatures = [];
@@ -99,7 +131,7 @@ class Mapbox extends Component {
         latitude: viewport.latitude,
         longitude: viewport.longitude
       }
-    });
+    }, this.filterTuurs);
   }
   handleGeocoderViewportChange(viewport) {
     return this.handleViewPortChange({
@@ -125,10 +157,10 @@ class Mapbox extends Component {
   }
 
   render() {
-    const markerMap = this.state.fetchCoordinates.map(marker => {
+    const markerMap = this.state.filteredTuurs.map(marker => {
       return (
-        <Marker key={marker[0].id} latitude={marker[1][1]} longitude={marker[1][0]}>
-          <div>{marker[0].title}</div>
+        <Marker key={marker.tuur.id} latitude={marker.coord[1]} longitude={marker.coord[0]}>
+          <div>{marker.tuur.title}</div>
         </Marker>
       );
     });
