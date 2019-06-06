@@ -31,43 +31,26 @@ const styles = theme => ({
 class SearchPackageItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
-    this.handleExpandClick = this.handleExpandClick.bind(this);
-  }
-
-  handleExpandClick() {
-    const { expanded } = this.state;
-    this.setState({
-      expanded: !expanded
-    });
   }
 
   render() {
     const { classes } = this.props;
-
     return (
       <>
-        <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h5">
-            Tuurs
-              </Typography>
-        </Container>
         <Card className={classes.card}>
           <CardHeader
-            title="Space Needle"
-            subheader="September 14, 2016"
+            title={ this.props.item.title }
+            // subheader="September 14, 2016"
           />
           <CardMedia
             className={classes.media}
-            image="https://bonneville.com/wp-content/uploads/2015/08/seattle-skyline-1024x516.png"
-            title="Space Needle"
+            image={ this.props.item.mainImage }
+            title={ this.props.item.title }
           />
           <CardContent>
             <Typography variant="body2" color="textSecondary" component="p">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum gravida nulla et enim convallis, non suscipit ligula rhoncus. Curabitur consequat magna vel velit tincidunt, eu imperdiet lectus pretium.
-                </Typography>
+              { this.props.item.description }
+            </Typography>
           </CardContent>
           <CardActions disableSpacing>
             <IconButton aria-label="Add to favorites">

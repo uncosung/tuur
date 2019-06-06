@@ -19,13 +19,6 @@ const styles = theme => ({
   },
   marginBottom: {
     marginBottom: theme.spacing(2)
-  },
-  card: {
-    maxWidth: 400
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%'
   }
 });
 
@@ -55,7 +48,7 @@ class SearchPackages extends Component {
   }
 
   renderPackage(){
-    const packages = packageItem.map( ( item, id ) => {
+    const packages = this.state.packages.map( ( item, id ) => {
       return <SearchPackageItem key={id} item={ item }/>
     })
     return packages;
@@ -63,48 +56,22 @@ class SearchPackages extends Component {
 
 
   render() {
-    console.log( this );
-    console.log( 'state', this.state.packages )
     const { classes } = this.props;
     return (
-      { this.state.packages ? this.renderPackage : null}
-      // { this.renderPackage() }
-      // <SearchPackageItem />
-      // { this.state.packages }
-            // <>
-            // <Container className={classes.marginBottom} >
-            //   <Typography className={classes.marginTop} variant="h5">
-            //         Tuurs
-            //   </Typography>
-            // </Container>
-            // <Card className={classes.card}>
-            //   <CardHeader
-            //     title="Space Needle"
-            //     subheader="September 14, 2016"
-            //   />
-            //   <CardMedia
-            //     className={classes.media}
-            //     image="https://bonneville.com/wp-content/uploads/2015/08/seattle-skyline-1024x516.png"
-            //     title="Space Needle"
-            //   />
-            //   <CardContent>
-            //     <Typography variant="body2" color="textSecondary" component="p">
-            //         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum gravida nulla et enim convallis, non suscipit ligula rhoncus. Curabitur consequat magna vel velit tincidunt, eu imperdiet lectus pretium.
-            //     </Typography>
-            //   </CardContent>
-            //   <CardActions disableSpacing>
-            //     <IconButton aria-label="Add to favorites">
-            //       <FavoriteIcon />
-            //     </IconButton>
-            //     <IconButton aria-label="Share">
-            //       <ShareIcon />
-            //     </IconButton>
-            //   </CardActions>
-            // </Card>
-            // </>
-    );
+      <>
+        <Container className={classes.marginBottom} >
+          <Typography className={classes.marginTop} variant="h5">
+            Tuurs
+          </Typography>
+        </Container>
+        { this.state.packages ? this.renderPackage() : 'No available packages'}
+      </>
+      )
   }
-
 }
 
 export default withStyles(styles)(SearchPackages);
+
+
+
+
