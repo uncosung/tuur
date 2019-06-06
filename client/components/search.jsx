@@ -65,7 +65,7 @@ class Search extends Component {
 
     return (
     <>
-     <Card mt={0}className={classes.card}>
+     <Card mt={0} className={classes.card}>
        <CardActionArea>
          <CardMedia
            className={classes.media}

@@ -173,6 +173,7 @@ class SearchBar extends Component {
     let newToggle = this.state.toggle;
     this.setState({ toggle: !newToggle }, () => {
       if (this.state.toggle) {
+        console.log( this.props.location);
         this.props.view('mapResults', null, this.props.location);
       }
     });

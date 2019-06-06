@@ -11,19 +11,18 @@ import EditPackage from './editPackage';
 import LogIn from './log-in';
 import Itinerary from './itinerary';
 import SearchBar from './search-bar';
-import SearchResultGuide from './search-result-guide-list';
+// import SearchResultGuide from './search-result-guide-list';
 import Search from './search';
 import SearchPackages from './search-result-package';
 import Mapbox from './mapbox';
 import DeckGL, {GeoJsonLayer} from 'deck.gl';
-import PackageDetails from './package-details';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-        name: 'searchResult'
+        name: 'logIn'
       },
       user: {},
       location: []
@@ -67,8 +66,8 @@ class App extends Component {
         {this.state.view.name === 'searchResult'
           && <div>
             <SearchBar view={this.setView} user={this.state.user} location={this.state.location}/>
-            <SearchResultGuide />
-            <SearchPackages />
+            {/* <SearchResultGuide /> */}
+            <SearchPackages appView={ this.setView } />
             {/* <UpComingTuursList view={this.setView} /> */}
             {/* <BottomNav /> */}
           </div>
@@ -136,13 +135,7 @@ class App extends Component {
           </div>
           : null
         }
-        {this.state.view.name === 'packageDetails'
-          ? <div>
-            <PackageDetails view={this.setView} />
-            {/* <BottomNav /> */}
-          </div>
-          : null
-        }
+        
       </div>
     );
   }
