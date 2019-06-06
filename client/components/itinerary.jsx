@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import Container from '@material-ui/core/Container';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -11,9 +12,18 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 // import Clear from '@material-ui/icons/Clear';
 
-
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#3A8288' },
+    secondary: { main: '#5bd1d7' },
+    lightBeige: { main: '#f1f1f1' },
+    beige: { main: '#f5e1da' }
+  }
+});
 
 const styles = theme => ({
   marginTop: {
@@ -100,15 +110,24 @@ class Itinerary extends Component {
                   Cras et ante bibendum, vehicula elit nec, commodo lectus.
                   </Typography>
                   <Typography paragraph>
-                  Donec in mi sit amet libero vulputate commodo. Morbi porttitor varius sapien, ut viverra risus faucibus vitae. Ut mattis mauris et justo luctus auctor. Nulla tempor quis nisl id pulvinar. Proin id faucibus turpis. Proin ut condimentum justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis sollicitudin libero odio, sit amet aliquet est iaculis sed. Vivamus vel lacus ac lacus elementum hendrerit vitae eget tellus. Cras in placerat sem. In congue sagittis eros sit amet aliquet. Nunc sit amet ex ac magna malesuada accumsan.
+                  Donec in mi sit amet libero vulputate commodo. Morbi porttitor varius sapien, ut viverra risus faucibus vitae. Ut mattis mauris et justo luctus auctor. Nulla tempor quis nisl id pulvinar.
                   </Typography>
                   <Typography paragraph>
-                  Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer ipsum odio, porta quis nibh quis, cursus iaculis orci. Phasellus ut commodo est. Pellentesque faucibus accumsan gravida. Fusce molestie sagittis aliquet. Quisque posuere elementum leo et cursus. Nam blandit, nulla ac suscipit luctus, diam dui tempus quam, ut cursus ligula magna ultricies tellus. Nam massa velit, sagittis nec cursus at, euismod vitae sem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed a blandit tellus. Integer quis tellus et magna volutpat placerat.
+                  Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer ipsum odio, porta quis nibh quis, cursus iaculis orci. Phasellus ut commodo est. Pellentesque faucibus accumsan gravida. Fusce molestie sagittis aliquet.
                   </Typography>
                   <Typography>
                   Proin vel sapien tincidunt, faucibus tortor et, pulvinar ante.
                   </Typography>
                 </CardContent>
+                <Grid justify="center" container>
+                  <Grid container justify="center" >
+                    <ThemeProvider theme={theme}>
+                      <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user)}>
+                        <Typography variant="body1" gutterBottom>Book</Typography>
+                      </Button>
+                    </ThemeProvider>
+                  </Grid>
+                </Grid>
               </Collapse>
             </Card>
             </>
