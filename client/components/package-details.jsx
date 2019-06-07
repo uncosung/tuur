@@ -212,15 +212,15 @@ class PackageDetails extends Component {
               </Grid>
               <CardMedia
                 className={classes.media}
-                image={ this.state.item.mainImage }
+                image={ this.state.item ? this.state.item.mainImage : null}
                 // title="Space Needle"
               />
               <CardHeader
-                title={ this.state.item.title }
+                title={ this.state.item ? this.state.item.title : null }
                 // subheader="September 14, 2016"
               />
               <CardContent>
-                <LocationOn /> { this.state.item.location }
+                <LocationOn /> { this.state.item ? this.state.item.location : null }
               </CardContent>
               <CardContent>
               {/* TRIP DURATION */}
@@ -230,7 +230,7 @@ class PackageDetails extends Component {
 
                 <Typography paragraph>Trip:</Typography>
                 <Typography paragraph>
-                  { this.state.item.description }
+                  { this.state.item ? this.state.item.description : null }
                 </Typography>
 
               </CardContent>
