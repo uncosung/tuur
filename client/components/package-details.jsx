@@ -147,7 +147,8 @@ class PackageDetails extends Component {
     // dummy data ( expected date format ) ; replace with package data
     // const dummyDate = ['Thu Jun 06 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
     // 'Tue Jun 11 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
-    // 'Sun Jun 09 2019 12:24:11 GMT-0700 (Pacific Daylight Time)'];
+    // 'Sun Jun 09 2019 12:24:11 GMT-0700 (Pacific Daylight Time)']
+    
     const packageDates = JSON.parse(this.props.item.dates);
     let matched = false;
     for ( var value of packageDates ){
@@ -191,24 +192,31 @@ class PackageDetails extends Component {
     return 1
   }
 
-  bookHandler( dates ){
-    // fetch('api/booking.php', {
-    //   body: JSON.stringify({ tuuristId, packageId, tuuristEmail, dates })
-    // })
+  bookHandler( dateArray ){
+    // console.log( this.state)
+    const packageId = this.state.item.id;
+    const dates = dateArray;
+    console.log( dates )
+    fetch('api/booking.php', {
+      method: 'POST',
+      body: JSON.stringify({ packageId , dates })
+    })
+    .then( res => res.json() )
+    .then( data => console.log( data ))
   }
 
   componentDidMount(){
-    fetch( `api/package.php?id=${this.props.item.id}`)
+    fetch( `/api/package.php?id=${this.props.item.id}`)
     .then( res => res.json() )
     .then( item => this.setState( {item: item[0] } ))
   }
 
   render() {
     const { classes } = this.props;
-    console.log(this.props.item);
-    if (!this.state.status) {
-      return null;
-    }
+    console.log( 'inside package detail ', this.state );
+    // if (!this.state.status) {
+    //   return null;
+    // }
     return (
             <>
 
@@ -218,7 +226,7 @@ class PackageDetails extends Component {
               </Grid>
               <CardMedia
                 className={classes.media}
-                image={ this.state.item ? this.state.item.mainImage : null}
+                image={ this.state.item ? this.state.item.mainImage : null }
                 // title="Space Needle"
               />
               <CardHeader

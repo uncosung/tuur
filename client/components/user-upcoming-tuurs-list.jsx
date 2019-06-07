@@ -69,9 +69,9 @@ class UpComingTuursList extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/package.php')
+    fetch('/api/booking.php')
       .then(res => res.json())
-      .then(packages => this.setState({ packages: packages }));
+      .then(packages => this.setState({ packages: packages }), () => console.log( this.state.packages ));
   }
 
   render() {
