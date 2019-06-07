@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import SearchPackageItem from './search-result-package-item';
 import SearchResultGuide from './search-result-guide-list';
 import PackageDetails from './package-details';
+import { Link } from '@material-ui/core';
 
 
 const styles = theme => ({
@@ -68,7 +69,7 @@ class SearchPackages extends Component {
         }
         { name === 'result'
             && <>
-                <SearchResultGuide />
+                {/* <SearchResultGuide /> */}
                 <Container className={classes.marginBottom} >
                   <Typography className={classes.marginTop} variant="h5">
                     Tuurs

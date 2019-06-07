@@ -12,11 +12,11 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import UserProfile from './user-profile';
 import UpComingTuursList from './user-upcoming-tuurs-list';
 import Search from './search';
-import Itinerary from './itinerary'
+import Itinerary from './itinerary';
 
 const styles = theme => ({
   root: {
-    width: '90%',
+    width: '100%',
     position: 'fixed',
     bottom: 0,
     padding: 10
@@ -27,35 +27,9 @@ class BottomNav extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0,
+      value: 0
     };
   }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.path !== this.state.path) {
-  //     this.setState({this.state.path});
-  //   }
-  // }
-
-  // static getDerivedStateFromProps(nextProps, prevState){
-  //   if(nextProps.path!==prevState.path){
-  //     return {path : nextProps.path};
-  //   }
-  //   else return null;
-  // }
-
-  // componentWillReceiveProps(newProps) {
-  //   const {pathname} = newProps.location;
-  //   const {pathMap} = this.state;
-
-  //   const value = pathMap.indexOf(pathname);
-
-  //   if (value > -1) {
-  //     this.setState({
-  //       value
-  //     });
-  //   }
-  // }
 
   handleChange(event, value) {
     this.setState({ value });

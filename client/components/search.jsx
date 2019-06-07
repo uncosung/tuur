@@ -10,7 +10,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 // import InputBase from '@material-ui/core/InputBase';
 import Grid from '@material-ui/core/Grid';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
-import { withRouter } from "react-router";
+import { withRouter } from 'react-router';
 
 const theme = createMuiTheme({
   palette: {
@@ -55,12 +55,12 @@ class Search extends Component {
     e.preventDefault();
   }
   handleSelect(result) {
-    this.setState ({
+    this.setState({
       location: {
         name: result.place_name,
         coordinates: result.geometry.coordinates
       }
-    }, () =>     console.log(this.state.location))
+    }, () => console.log(this.state.location));
   }
 
   render() {
@@ -102,7 +102,7 @@ class Search extends Component {
        <Grid className={classes.marginTop} container justify="center" >
          <ThemeProvider theme={theme}>
            <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}>
-            {/* <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}> */}
+             {/* <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}> */}
              <Typography variant="body1" gutterBottom>Search</Typography>
            </Button>
          </ThemeProvider>

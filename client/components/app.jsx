@@ -47,14 +47,24 @@ class App extends Component {
   // }
 
   render() {
-    const{user}=this.state;
     return (
       <div>
         <Switch>
-            <Route exact path="/" component={Search}/>
-            <Route exact path="/itinerary" component={Itinerary}/>
+            <Route exact path="/" render={props=>
+              <div>
+                <Search />, 
+                <BottomNav />
+              </div>
+              }/>
+            <Route exact path="/itinerary" render={props=>
+              <div>
+                <Itinerary />,
+                <BottomNav />
+              </div>
+              }/>
             <Route exact path="/user-profile" 
-            render={(props) => <UserProfile {...props} isAuthed={true}/>}/>
+            render={(props) => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
+            
             <Route path="/results" render={props=>
               <div>
                 <SearchBar />, 
@@ -63,17 +73,13 @@ class App extends Component {
                 <BottomNav />
               </div>
               }/>
-            <Route exact path="/package-details" component={PackageDetails}/>
+            <Route exact path="/package-details/:id" 
+            render={(props) => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
+
         </Switch>
-        {/* <BottomNav /> */}
       </div>
       
-    // <Router>
-    //   <div>
-    //     <Route path="/" component={CreatePackage} />
-    //     <BottomNav />
-    //   </div>
-    // </Router>
+    
 
       // <div>
       //   {this.state.view.name === 'mapResults'
