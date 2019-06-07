@@ -191,7 +191,6 @@ class PackageDetails extends Component {
   }
 
   bookHandler( dates ){
-    console.log( this.props );
     // fetch('api/booking.php', {
     //   body: JSON.stringify({ tuuristId, packageId, tuuristEmail, dates })
     // })
@@ -200,11 +199,10 @@ class PackageDetails extends Component {
   componentDidMount(){
     fetch( `api/package.php?id=${this.props.item.id}`)
     .then( res => res.json() )
-    .then( item => this.setState( {item: item[0] } , () => console.log( this.state.item)))
+    .then( item => this.setState( {item: item[0] } ))
   }
 
   render() {
-    console.log( 'props', this.props )
     const { classes } = this.props;
     return (
             <>

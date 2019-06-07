@@ -46,7 +46,7 @@ class SearchPackages extends Component {
   componentDidMount(){
     fetch( 'api/package.php?id' )
     .then( res => res.json() )
-    .then( packages => this.setState( { packages } , () => console.log( packages )))
+    .then( packages => this.setState( { packages } ))
   }
 
   renderPackage(){
