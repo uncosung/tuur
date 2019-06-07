@@ -54,7 +54,7 @@ class Mapbox extends Component {
 
   }
   componentDidMount() {
-    fetch('/api/package.php?id=1')
+    fetch('/api/package.php')
       .then(res => res.json())
       .then(tuurs => {
         this.setState({

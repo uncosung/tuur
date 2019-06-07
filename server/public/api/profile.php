@@ -45,8 +45,9 @@ elseif ($method === 'GET'){
         $output['bio'] = $row['bio'];
         $output['isGuide'] = $row['isGuide'] ? true : false;
     }
-    $_SESSION['userEmail'] = $email;
     $json_output = json_encode($output);
+    $_SESSION['userEmail'] = $email;
+    // $_SESSION['userData'] = $json_output;
     print_r($json_output);
 }
 elseif ($method === 'PATCH'){

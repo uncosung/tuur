@@ -212,24 +212,29 @@ class CreatePackage extends Component {
       this.setState({ openSnackBar: false });
     }
   }
+
   handleSnackbarClose(event, reason) {
     if (reason === 'clickaway') {
       return;
     }
     this.setState({ openSnackBar: false });
   }
+
   handleSnackbarOpen() {
     this.setState({ openSnackBar: true });
   }
+
   handleModalClose(dates) {
     this.setState({
       openModal: false,
       dates: dates
     });
   }
+
   modalClose() {
     this.setState({ openModal: false });
   }
+
   iconClickhandler() {
     let img = document.getElementById('input-imageUrl').value;
     let imgArray = this.state.imageUrl;
@@ -242,6 +247,7 @@ class CreatePackage extends Component {
       document.getElementById('input-imageUrl').value = '';
     }
   }
+
   removeImage(e) {
     let id = e.target.id;
     id = parseInt(id);
@@ -249,6 +255,7 @@ class CreatePackage extends Component {
     imgArray.splice(id, 1);
     this.setState({ imageUrl: imgArray });
   }
+
   removeChips(e) {
     let dateId = e.currentTarget.id;
     dateId = parseInt(dateId);

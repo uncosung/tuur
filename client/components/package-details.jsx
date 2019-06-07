@@ -76,7 +76,8 @@ class PackageDetails extends Component {
     this.state = {
       openModal: false,
       newDates: [],
-      dates: []
+      dates: [],
+      item: {}
     }
     this.clickHandler = this.clickHandler.bind( this );
     this.handleModalClose = this.handleModalClose.bind(this);
@@ -143,12 +144,12 @@ class PackageDetails extends Component {
 
   checkAvailability( year, month, day ){
     // dummy data ( expected date format ) ; replace with package data
-    const dummyDate = ['Thu Jun 06 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
-    'Tue Jun 11 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
-    'Sun Jun 09 2019 12:24:11 GMT-0700 (Pacific Daylight Time)'];
-
+    // const dummyDate = ['Thu Jun 06 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
+    // 'Tue Jun 11 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
+    // 'Sun Jun 09 2019 12:24:11 GMT-0700 (Pacific Daylight Time)'];
+    const packageDates = JSON.parse(this.props.item.dates);
     let matched = false;
-    for ( var value of dummyDate ){
+    for ( var value of packageDates ){
       const packageDate = new Date( value ); 
       const packageYear = packageDate.getFullYear();
       const packageMonth = packageDate.getMonth();
@@ -189,9 +190,22 @@ class PackageDetails extends Component {
     return 1
   }
 
+  bookHandler( dates ){
+    console.log( this.props );
+    // fetch('api/booking.php', {
+    //   body: JSON.stringify({ tuuristId, packageId, tuuristEmail, dates })
+    // })
+  }
+
+  componentDidMount(){
+    fetch( `api/package.php?id=${this.props.item.id}`)
+    .then( res => res.json() )
+    .then( item => this.setState( {item: item[0] } , () => console.log( this.state.item)))
+  }
+
   render() {
+    console.log( 'props', this.props )
     const { classes } = this.props;
-    this.unavailableDates();
     return (
             <>
             <Card className={classes.card}>
@@ -200,15 +214,15 @@ class PackageDetails extends Component {
               </Grid>
               <CardMedia
                 className={classes.media}
-                image={ this.props.item.mainImage }
+                image={ this.state.item.mainImage }
                 // title="Space Needle"
               />
               <CardHeader
-                title={ this.props.item.title }
+                title={ this.state.item.title }
                 // subheader="September 14, 2016"
               />
               <CardContent>
-                <LocationOn /> { this.props.item.location }
+                <LocationOn /> { this.state.item.location }
               </CardContent>
               <CardContent>
               {/* TRIP DURATION */}
@@ -218,7 +232,7 @@ class PackageDetails extends Component {
 
                 <Typography paragraph>Trip:</Typography>
                 <Typography paragraph>
-                  { this.props.item.description }
+                  { this.state.item.description }
                 </Typography>
 
               </CardContent>
@@ -239,7 +253,13 @@ class PackageDetails extends Component {
                     onClose={() => this.handleModalClose(this.state.dates)}
                   >
                     <Grid className={classes.paper}>
-                      <DatePicker dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                      <DatePicker 
+                        dates={this.state.dates} 
+                        close={this.handleModalClose} 
+                        modalClose={this.modalClose} 
+                        unavailableDates={ this.unavailableDates()}
+                        booking={ this.bookHandler }
+                        />
                     </Grid>
                   </Modal>
                 </Grid>
