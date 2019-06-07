@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import ReactMapGL, { Marker, GeolocateControl, FlyToInterpolator, NavigationControl } from 'react-map-gl';
+import ReactMapGL, { Popup, Marker, GeolocateControl, FlyToInterpolator, NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import TOKEN from './mapbox-token';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import ReactGeocoder from 'react-map-gl-geocoder';
 import DeckGL, { GeoJsonLayer } from 'deck.gl';
-import SearchBar from './search-bar';
 import { withStyles } from '@material-ui/core/styles';
 import { mergeClasses } from '@material-ui/styles';
+import TuurPin from './tuur-pin';
+import PopupInfo from './popup-info';
 
 const styles = theme => ({
   mapContainer: {
     top: 0,
-    position: 'absolute',
+    position: 'relative',
     width: '100%',
     height: '100%'
   }
@@ -39,18 +39,15 @@ class Mapbox extends Component {
       fetchResult: null,
       fetchCoordinates: [],
       initialCoordinates: [this.props.location.coordinates[0], this.props.location.coordinates[1]],
-      bbox: [(this.props.location.coordinates[0]-1), (this.props.location.coordinates[1]-0.1), (this.props.location.coordinates[0]+1), (this.props.location.coordinates[1]+0.1) ]
+      popupInfo: null
 
     };
     this.mapRef = React.createRef();
     this.handleViewPortChange = this.handleViewPortChange.bind(this);
-    this.handleGeocoderViewportChange = this.handleGeocoderViewportChange.bind(this);
-    this.handleOnResult = this.handleOnResult.bind(this);
-    this.forwardGeocoder = this.forwardGeocoder.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.fetchLocation = this.fetchLocation.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
     this.filterTuurs = this.filterTuurs.bind(this);
+    this.clickPin = this.clickPin.bind(this);
 
   }
   componentDidMount() {
@@ -81,9 +78,7 @@ class Mapbox extends Component {
 
   async getTuurLocationData(tuur){
     const resp = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${tuur.location}.json?access_token=${TOKEN}`);
-
     const respJson = await resp.json();
-
     return  {
         tuur,
         coord: respJson.features[0].center
@@ -107,33 +102,8 @@ class Mapbox extends Component {
         this.setState({
           fetchResult: result
         }, this.mapTuurs);
-
       });
 
-  }
-  handleSearch(location) {
-    this.setState ({
-        viewport: {
-            latitude: location.coordinates[1],
-            longitude: location.coordinates[0],
-            width: '100%',
-            height: '705px',
-            zoom: 12
-        }
-    }, this.filterTuurs)
-  }
-  forwardGeocoder(query) {
-    let matchingFeatures = [];
-    for (let i = 0; i < this.state.tuurs.length; i++) {
-      let feature = this.state.tuurs[i];
-      if (feature.properties.title.toLowerCase().search(query.toLowerCase()) !== -1) {
-        feature['place_name'] = '🌲 ' + feature.properties.title;
-        feature['center'] = feature.geometry.coordinates;
-        feature['place_type'] = ['park'];
-        matchingFeatures.push(feature);
-      }
-    }
-    return matchingFeatures;
   }
   handleViewPortChange(viewport) {
     this.setState({
@@ -144,53 +114,52 @@ class Mapbox extends Component {
       }
     }, this.filterTuurs);
   }
-  handleGeocoderViewportChange(viewport) {
-    return this.handleViewPortChange({
-      ...viewport
-    });
 
+  clickPin(tuur) {
+    console.log('click', tuur)
   }
-  handleOnResult(event) {
-    this.setState({
-      searchResultLayer: new GeoJsonLayer({
-        id: 'search-result',
-        data: event.result.geometry,
-        getFillColor: [255, 0, 0, 128],
-        getRadius: 1000,
-        pointRadiusMinPixels: 10,
-        pointRadiusMaxPixels: 10
-      }),
-      result: {
-        latitude: event.result.center[1],
-        longitude: event.result.center[0]
-      }
-    });
-  }
+  renderPopup() {
+      console.log('popup info', this.state.popupInfo)
+      const {popupInfo} = this.state;
 
+      return (
+          popupInfo && (
+          <Popup
+            tipSize={5}
+            anchor='top'
+            longitude={popupInfo.coord[0]}
+            latitude={popupInfo.coord[1]}
+            closeOnClick={false}
+            onClose={() => this.setState({popupInfo:null})}
+          >
+            <PopupInfo view={this.props.view} info={popupInfo.tuur}/>
+          </Popup>
+          )
+      )
+  }
   render() {
 
     const { classes } = this.props;
     const markerMap = this.state.filteredTuurs.map(marker => {
       return (
-        <Marker key={marker.tuur.id} latitude={marker.coord[1]} longitude={marker.coord[0]}>
-          <div>{marker.tuur.title}</div>
+        <Marker onClick={this.clickPin} key={marker.tuur.id} latitude={marker.coord[1]} longitude={marker.coord[0]}>
+            <TuurPin tuur={marker} onClick={() => this.setState({popupInfo: marker}, () => console.log(this.state.popupInfo))} size={20} />
         </Marker>
       );
     });
     const { viewport, searchResultLayer } = this.state;
     return (
       <div className={classes.mapContainer}>
-        <SearchBar handleGeocoderViewportChange={this.handleGeocoderViewportChange} handleOnResult={this.handleOnResult} handleSearch={this.handleSearch} mapRef={this.state.mapRef} view={this.props.view} user={this.props.user} location={this.props.location}/>
         <ReactMapGL
           ref = {this.mapRef}
           {...viewport}
           onViewportChange= {this.handleViewPortChange}
           mapboxApiAccessToken = {TOKEN}
           transitionInterpolator = {new FlyToInterpolator()}
+          mapStyle = 'mapbox://styles/mapbox/streets-v11'
         >
           {markerMap}
-          <DeckGL {...viewport} layers={[searchResultLayer]} />
-
+          {this.renderPopup()}
           <div style={{ position: 'absolute', bottom: 50, right: 10 }} >
             <NavigationControl/>
           </div>

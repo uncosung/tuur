@@ -28,6 +28,7 @@ class App extends Component {
       location: []
     };
     this.setView = this.setView.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   setView(name, user, location) {
@@ -35,13 +36,24 @@ class App extends Component {
     if (user === null) {
       this.setState({
         view, 
-        location: location});
+        location: {
+          name: location.name,
+          coordinates: location.coordinates,
+          toggleStatus: !location.toggleStatus
+        }});
       return;
     }
     else {
       this.setState({ view, user });
     }
 
+  }
+
+  handleSearch(prop){
+    console.log('searched')
+    this.setState({
+      location: prop
+    }, () => console.log(this.state.location))
   }
 
   render() {
@@ -56,8 +68,8 @@ class App extends Component {
       <div>
         {this.state.view.name === 'mapResults'
           && <div>
-            {/* <SearchBar view={this.setView} user={this.state.user}/> */}
-            <Mapbox view = {this.setView} user={this.state.user} location={this.state.location}/>
+            <SearchBar toggleStatus={this.state.location.toggleStatus} handleSearch={this.handleSearch} view={this.setView} user={this.state.user} location={this.state.location}/>
+            <Mapbox key={this.state.location.name}handleSearch={this.handleSearch} view = {this.setView} user={this.state.user} location={this.state.location}/>
             {/* <BottomNav /> */}
           </div>
           
@@ -65,7 +77,7 @@ class App extends Component {
 
         {this.state.view.name === 'searchResult'
           && <div>
-            <SearchBar view={this.setView} user={this.state.user} location={this.state.location}/>
+            <SearchBar toggleStatus={this.state.location.toggleStatus} handleSearch={this.handleSearch} view={this.setView} user={this.state.user} location={this.state.location}/>
             {/* <SearchResultGuide /> */}
             <SearchPackages appView={ this.setView } />
             {/* <UpComingTuursList view={this.setView} /> */}
