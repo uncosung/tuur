@@ -18,6 +18,14 @@ const styles = theme => ({
   }
 });
 
+const imgStyle = {
+  width: '100%',
+  height: '100%',
+  backgroundRepeat: 'norepeat',
+  backgroundSize: '100% 100%',
+  borderRadius: '50%'
+};
+
 class Mapbox extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +47,7 @@ class Mapbox extends Component {
       fetchResult: null,
       fetchCoordinates: [],
       initialCoordinates: [this.props.location.coordinates[0], this.props.location.coordinates[1]],
-      bbox: [(this.props.location.coordinates[0]-1), (this.props.location.coordinates[1]-0.1), (this.props.location.coordinates[0]+1), (this.props.location.coordinates[1]+0.1) ]
+      bbox: [(this.props.location.coordinates[0] - 1), (this.props.location.coordinates[1] - 0.1), (this.props.location.coordinates[0] + 1), (this.props.location.coordinates[1] + 0.1) ]
 
     };
     this.mapRef = React.createRef();
@@ -63,42 +71,41 @@ class Mapbox extends Component {
       });
   }
   filterTuurs() {
-      let filterTuurs = [];
-      let tooFar = [];
-        for (let i = 0; i < this.state.fetchCoordinates.length; i++){
-            if (this.state.fetchCoordinates[i].coord[0] < this.state.viewport.longitude-1 || this.state.fetchCoordinates[i].coord[0] > this.state.viewport.longitude+1 || this.state.fetchCoordinates[i].coord[1] < this.state.viewport.latitude-0.2 || this.state.fetchCoordinates[i].coord[1] > this.state.viewport.latitude+0.2){
-                tooFar = [...tooFar, this.state.fetchCoordinates[i]];
-            }
-            else {
-                filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];        
-            }
-        }
-        this.setState({
-            filteredTuurs: filterTuurs
-        })
+    let filterTuurs = [];
+    let tooFar = [];
+    for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
+      if (this.state.fetchCoordinates[i].coord[0] < this.state.viewport.longitude - 1 || this.state.fetchCoordinates[i].coord[0] > this.state.viewport.longitude + 1 || this.state.fetchCoordinates[i].coord[1] < this.state.viewport.latitude - 0.2 || this.state.fetchCoordinates[i].coord[1] > this.state.viewport.latitude + 0.2) {
+        tooFar = [...tooFar, this.state.fetchCoordinates[i]];
+      } else {
+        filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];
+      }
+    }
+    this.setState({
+      filteredTuurs: filterTuurs
+    });
 
   }
 
-  async getTuurLocationData(tuur){
+  async getTuurLocationData(tuur) {
     const resp = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${tuur.location}.json?access_token=${TOKEN}`);
 
     const respJson = await resp.json();
 
-    return  {
-        tuur,
-        coord: respJson.features[0].center
-    }
+    return {
+      tuur,
+      coord: respJson.features[0].center
+    };
   }
 
-  mapTuurs () {
+  mapTuurs() {
     let mapArray = this.state.tuurs.map(this.getTuurLocationData);
 
-    Promise.all(mapArray).then((tuurCoordinates)=> {
-        this.setState({
-            fetchCoordinates: tuurCoordinates
-        }, this.filterTuurs)
+    Promise.all(mapArray).then(tuurCoordinates => {
+      this.setState({
+        fetchCoordinates: tuurCoordinates
+      }, this.filterTuurs);
     });
-      
+
   }
   fetchLocation() {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
@@ -112,15 +119,15 @@ class Mapbox extends Component {
 
   }
   handleSearch(location) {
-    this.setState ({
-        viewport: {
-            latitude: location.coordinates[1],
-            longitude: location.coordinates[0],
-            width: '100%',
-            height: '705px',
-            zoom: 12
-        }
-    }, this.filterTuurs)
+    this.setState({
+      viewport: {
+        latitude: location.coordinates[1],
+        longitude: location.coordinates[0],
+        width: '100%',
+        height: '705px',
+        zoom: 12
+      }
+    }, this.filterTuurs);
   }
   forwardGeocoder(query) {
     let matchingFeatures = [];
@@ -171,8 +178,12 @@ class Mapbox extends Component {
 
     const { classes } = this.props;
     const markerMap = this.state.filteredTuurs.map(marker => {
+      console.log('marker', marker);
       return (
         <Marker key={marker.tuur.id} latitude={marker.coord[1]} longitude={marker.coord[0]}>
+          <div style={{width: '30px', height: '30px'}}>
+            <img id={marker.tuur.title} style={imgStyle} src={marker.tuur.mainImage ? marker.tuur.mainImage  : null} alt={marker.tuur.title}/>
+          </div>
           <div>{marker.tuur.title}</div>
         </Marker>
       );

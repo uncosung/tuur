@@ -13,8 +13,26 @@ import Alarm from '@material-ui/icons/Alarm';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import DatePicker from './date-multiple-picker';
 import Modal from '@material-ui/core/Modal';
-import CalendarToday from '@material-ui/icons/CalendarToday';
 
+const divStyle = {
+  width: '47px',
+  height: '40px',
+  border: '1px solid gray',
+  marginRight: '5px',
+  '&:hover': {
+    opacity: 1
+  }
+};
+
+const imgStyle = {
+  width: '100%',
+  height: '100%',
+  backgroundRepeat: 'norepeat',
+  backgroundSize: '100% 100%',
+  '&:hover': {
+    opacity: 1
+  }
+};
 
 const theme = createMuiTheme({
   palette: {
@@ -67,6 +85,22 @@ const styles = theme => ({
     boxShadow: theme.shadows[5],
     padding: 7,
     outline: 'none'
+  },
+  previewContainer: {
+    width: '160px',
+    height: '60px',
+    display: 'flex',
+    justifyContent: 'center',
+    margin: ' auto auto 10px auto'
+  },
+  productPreview: {
+    width: '50px',
+    height: '50px',
+    margin: '5px',
+    opacity: 0.5,
+    '&:hover': {
+      opacity: 1
+    }
   }
 });
 
@@ -76,16 +110,18 @@ class PackageDetails extends Component {
     this.state = {
       openModal: false,
       newDates: [],
-      dates: []
-    }
-    this.clickHandler = this.clickHandler.bind( this );
+      dates: [],
+      images: [],
+      cardImg: this.props.item.mainImage
+    };
+    this.clickHandler = this.clickHandler.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
     this.modalClose = this.modalClose.bind(this);
-
+    this.changeImage = this.changeImage.bind(this);
   }
 
-  clickHandler(){
-    this.props.view( 'result', [] );
+  clickHandler() {
+    this.props.view('result', []);
   }
 
   handleModalClose(dates) {
@@ -95,103 +131,117 @@ class PackageDetails extends Component {
     });
   }
 
-  modalClose(){
+  modalClose() {
     this.setState({ openModal: false });
   }
 
-  unavailableDates(){
+  unavailableDates() {
     const currentDate = new Date();
     let month = currentDate.getMonth();
     let day = currentDate.getDate();
     let year = currentDate.getFullYear();
-    const maxMonth = this.maxMonth( month );
+    const maxMonth = this.maxMonth(month);
     const maxDay = 1;
-    const maxYear = this.maxYear( maxMonth , year );
-    const maxDate = new Date( maxYear, maxMonth, maxDay );
+    const maxYear = this.maxYear(maxMonth, year);
+    const maxDate = new Date(maxYear, maxMonth, maxDay);
     let data = {
       disabledList: [],
       maxDate
-    }
-    while ( month !== maxMonth || year !== maxYear ){
-      day = this.nextDay( month , day );
-      if ( day === 1){
+    };
+    while (month !== maxMonth || year !== maxYear) {
+      day = this.nextDay(month, day);
+      if (day === 1) {
         month = month === 11 ? 0 : ++month;
       }
-      if ( month === 0 && day === 1 ){
+      if (month === 0 && day === 1) {
         year = month === 1 ? ++year : year;
       }
-      if ( !this.checkAvailability( year, month, day ) ){
-        data.disabledList.push( new Date( year, month, day ));
+      if (!this.checkAvailability(year, month, day)) {
+        data.disabledList.push(new Date(year, month, day));
       }
     }
     return data;
   }
 
-  maxMonth( currentMonth ){
-    if ( currentMonth >= 10 ){
-      return currentMonth + 2 - 12
-    } 
-    return currentMonth + 2
-  }
-
-  maxYear( month, year ){
-    if ( !month ){
-      return year++
+  maxMonth(currentMonth) {
+    if (currentMonth >= 10) {
+      return currentMonth + 2 - 12;
     }
-    return year
+    return currentMonth + 2;
   }
 
-  checkAvailability( year, month, day ){
+  maxYear(month, year) {
+    if (!month) {
+      return year++;
+    }
+    return year;
+  }
+
+  checkAvailability(year, month, day) {
     // dummy data ( expected date format ) ; replace with package data
     const dummyDate = ['Thu Jun 06 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
-    'Tue Jun 11 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
-    'Sun Jun 09 2019 12:24:11 GMT-0700 (Pacific Daylight Time)'];
+      'Tue Jun 11 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
+      'Sun Jun 09 2019 12:24:11 GMT-0700 (Pacific Daylight Time)'];
 
     let matched = false;
-    for ( var value of dummyDate ){
-      const packageDate = new Date( value ); 
+    for (var value of dummyDate) {
+      const packageDate = new Date(value);
       const packageYear = packageDate.getFullYear();
       const packageMonth = packageDate.getMonth();
       const packageDay = packageDate.getDate();
 
-      if ( packageYear === year && packageMonth === month && packageDay === day ){
-        return true
+      if (packageYear === year && packageMonth === month && packageDay === day) {
+        return true;
       }
     }
     return false;
   }
-
-  nextDay( month, day ){
-    // last day of month = 31
-    if ( month === 0 && day != 31 ) return ++day
-    // last day of month = 28
-    if ( month === 1  && day !== 28 ) return ++day 
-    // last day of month = 31
-    if ( month === 2  && day !== 31 ) return ++day
-    // last day of month = 30
-    if ( month === 3  && day !== 30 ) return ++day
-    // last day of month = 31
-    if ( month === 4  && day !== 31 ) return ++day      
-    // last day of month = 30
-    if ( month === 5  && day !== 30 ) return ++day       
-    // last day of month = 31
-    if ( month === 6  && day !== 31 ) return ++day       
-    // last day of month = 31
-    if ( month === 7  && day !== 31 ) return ++day       
-    // last day of month = 30
-    if ( month === 8  && day !== 30 ) return ++day       
-    // last day of month = 31
-    if ( month === 9  && day !== 31 ) return ++day      
-    // last day of month = 30
-    if ( month === 10 && day !== 30 ) return ++day    
-    // last day of month = 31
-    if ( month === 11 && day !== 31 ) return ++day  
-    return 1
+  changeImage(e) {
+    let id = e.target.id;
+    id = parseInt(id);
+    console.log(id);
+    let imgArray = this.state.images;
+    let newMainImg = imgArray[id];
+    this.setState({ cardImg: newMainImg });
   }
 
+  nextDay(month, day) {
+    // last day of month = 31
+    if (month === 0 && day != 31) return ++day;
+    // last day of month = 28
+    if (month === 1 && day !== 28) return ++day;
+    // last day of month = 31
+    if (month === 2 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 3 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 4 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 5 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 6 && day !== 31) return ++day;
+    // last day of month = 31
+    if (month === 7 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 8 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 9 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 10 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 11 && day !== 31) return ++day;
+    return 1;
+  }
+  componentDidMount() {
+    let images = JSON.parse(this.props.item.images);
+    let mainImage = this.props.item.mainImage;
+    images.unshift(mainImage);
+    this.setState({ images });
+  }
   render() {
     const { classes } = this.props;
     this.unavailableDates();
+    console.log(this.props.item);
     return (
             <>
             <Card className={classes.card}>
@@ -200,51 +250,63 @@ class PackageDetails extends Component {
               </Grid>
               <CardMedia
                 className={classes.media}
-                image={ this.props.item.mainImage }
-                // title="Space Needle"
+                image={ this.state.cardImg }
               />
-              <CardHeader
-                title={ this.props.item.title }
-                // subheader="September 14, 2016"
-              />
-              <CardContent>
-                <LocationOn /> { this.props.item.location }
-              </CardContent>
-              <CardContent>
-              {/* TRIP DURATION */}
-                {/* <Alarm/> { timeRange } */}
-              </CardContent>
-              <CardContent>
-
-                <Typography paragraph>Trip:</Typography>
-                <Typography paragraph>
-                  { this.props.item.description }
-                </Typography>
-
-              </CardContent>
-              <Grid justify="center" container>
-                <Grid container justify="center" >
-                  <ThemeProvider theme={theme}>
-                    <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({openModal: true })}>
-                      <Typography variant="body1" gutterBottom>Available Dates</Typography>
-                    </Button>
-                  </ThemeProvider>
-                </Grid>
-
-                <Grid item xs={11} >
-                  <Modal
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                    open={this.state.openModal}
-                    onClose={() => this.handleModalClose(this.state.dates)}
-                  >
-                    <Grid className={classes.paper}>
-                      <DatePicker dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
-                    </Grid>
-                  </Modal>
-                </Grid>
-              </Grid>
             </Card>
+            <Grid container justify="center" direction="row">
+              <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
+                <img id="0" style={imgStyle} src={this.state.images ? this.state.images[0] : null} alt={this.props.item.title}/>
+              </div>
+              <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
+                <img id="1" style={imgStyle} src={this.state.images ? this.state.images[1] : null} alt={this.props.item.title}/>
+              </div>
+              <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
+                <img id="2" style={imgStyle} src={this.state.images ? this.state.images[2] : null} alt={this.props.item.title}/>
+              </div>
+              <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
+                <img id="3" style={imgStyle} src={this.state.images ? this.state.images[3] : null} alt={this.props.item.title}/>
+              </div>
+            </Grid>
+          <Card>
+            <CardHeader
+              title={ this.props.item.title }
+            />
+            <CardContent>
+              <LocationOn /> { this.props.item.location }
+            </CardContent>
+            {/* <CardContent>
+              TRIP DURATION
+              <Alarm/> { timeRange }
+            </CardContent> */}
+            <CardContent>
+              <Typography paragraph>Trip:</Typography>
+              <Typography paragraph>
+                { this.props.item.description }
+              </Typography>
+            </CardContent>
+            <Grid justify="center" container>
+              <Grid container justify="center" >
+                <ThemeProvider theme={theme}>
+                  <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({ openModal: true })}>
+                    <Typography variant="body1" gutterBottom>Available Dates</Typography>
+                  </Button>
+                </ThemeProvider>
+              </Grid>
+
+              <Grid item xs={11} >
+                <Modal
+                  aria-labelledby="simple-modal-title"
+                  aria-describedby="simple-modal-description"
+                  open={this.state.openModal}
+                  onClose={() => this.handleModalClose(this.state.dates)}
+                >
+                  <Grid className={classes.paper}>
+                    <DatePicker dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                  </Grid>
+                </Modal>
+              </Grid>
+            </Grid>
+          </Card>
             </>
     );
   }

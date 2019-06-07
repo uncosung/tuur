@@ -48,12 +48,12 @@ class Search extends Component {
     e.preventDefault();
   }
   handleSelect(result) {
-    this.setState ({
+    this.setState({
       location: {
         name: result.place_name,
         coordinates: result.geometry.coordinates
       }
-    })
+    });
   }
 
   render() {
@@ -105,5 +105,4 @@ class Search extends Component {
     );
   }
 }
-
 export default withStyles(styles)(Search);

@@ -11,7 +11,6 @@ import ShareIcon from '@material-ui/icons/Share';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 
-
 const styles = theme => ({
   marginTop: {
     marginTop: theme.spacing(3)
@@ -21,7 +20,7 @@ const styles = theme => ({
   },
   card: {
     maxWidth: 400,
-    marginBottom: theme.spacing(.5),
+    marginBottom: theme.spacing(0.5)
   },
   media: {
     height: 0,
@@ -32,11 +31,11 @@ const styles = theme => ({
 class SearchPackageItem extends Component {
   constructor(props) {
     super(props);
-    this.clickHandler = this.clickHandler.bind( this );
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
-  clickHandler(){
-    this.props.view( 'detail' , this.props.item );
+  clickHandler() {
+    this.props.view('detail', this.props.item);
   }
 
   render() {
@@ -68,8 +67,7 @@ class SearchPackageItem extends Component {
           </CardActions>
         </Card>
       </>
-    )
+    );
   }
 }
-
 export default withStyles(styles)(SearchPackageItem);

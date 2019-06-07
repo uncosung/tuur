@@ -15,14 +15,14 @@ import SearchBar from './search-bar';
 import Search from './search';
 import SearchPackages from './search-result-package';
 import Mapbox from './mapbox';
-import DeckGL, {GeoJsonLayer} from 'deck.gl';
+import DeckGL, { GeoJsonLayer } from 'deck.gl';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-        name: 'logIn'
+        name: 'search'
       },
       user: {},
       location: []
@@ -34,11 +34,10 @@ class App extends Component {
     const view = { name };
     if (user === null) {
       this.setState({
-        view, 
-        location: location});
-      return;
-    }
-    else {
+        view,
+        location: location });
+
+    } else {
       this.setState({ view, user });
     }
   }
@@ -53,79 +52,79 @@ class App extends Component {
     // </Router>
 
       <div>
-        {this.state.view.name === 'mapResults'
-          && <div>
+        {this.state.view.name === 'mapResults' &&
+          <div>
             {/* <SearchBar view={this.setView} user={this.state.user}/> */}
             <Mapbox view = {this.setView} user={this.state.user} location={this.state.location}/>
             {/* <BottomNav /> */}
           </div>
-          
+
         }
 
-        {this.state.view.name === 'searchResult'
-          && <div>
+        {this.state.view.name === 'searchResult' &&
+          <div>
             <SearchBar view={this.setView} user={this.state.user} location={this.state.location}/>
             {/* <SearchResultGuide /> */}
             <SearchPackages appView={ this.setView } />
             {/* <UpComingTuursList view={this.setView} /> */}
             {/* <BottomNav /> */}
           </div>
-          
+
         }
-    
-        {this.state.view.name === 'userProfile'
-          && <div>
+
+        {this.state.view.name === 'userProfile' &&
+          <div>
             <UserProfile view={this.setView} user={ this.state.user }/>
             {/* <UpComingTuursList view={this.setView} /> */}
             {/* <BottomNav /> */}
           </div>
-          
+
         }
-        {this.state.view.name === 'signUp'
-          && <SignUp view={this.setView} status={this.setStatus}/>
-          
+        {this.state.view.name === 'signUp' &&
+          <SignUp view={this.setView} status={this.setStatus}/>
+
         }
-        {this.state.view.name === 'editProfile'
-          && <div>
+        {this.state.view.name === 'editProfile' &&
+          <div>
             <EditProfile view={this.setView} user={ this.state.user} />
             {/* <BottomNav /> */}
           </div>
-          
+
         }
-        {this.state.view.name === 'createPackage'
-          && <div>
+        {this.state.view.name === 'createPackage' &&
+          <div>
             <CreatePackage view={this.setView} user={ this.state.user} />
             {/* <BottomNav /> */}
           </div>
-          
+
         }
-        {this.state.view.name === 'editPackage'
-          && <div>
+        {this.state.view.name === 'editPackage' &&
+          <div>
             <EditPackage view={this.setView} />
             {/* <BottomNav /> */}
           </div>
-          
+
         }
-        {this.state.view.name === 'calendar'
-          && <div>
+        {this.state.view.name === 'calendar' &&
+          <div>
             <DatePicker view={this.setView} />
             {/* <BottomNav /> */}
           </div>
-          
+
         }
-        {this.state.view.name === 'logIn'
-          && <div>
+        {this.state.view.name === 'logIn' &&
+          <div>
             <LogIn view={this.setView} />
             {/* <BottomNav /> */}
           </div>
-          
+
         }
-        {this.state.view.name === 'itinerary'
-          && <div>
+        {this.state.view.name === 'itinerary' &&
+          <div>
             <Itinerary view={this.setView} />
             {/* <BottomNav /> */}
           </div>
-          
+
         }
         {this.state.view.name === 'search'
           ? <div>
