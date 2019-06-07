@@ -41,13 +41,17 @@ class SearchPackages extends Component {
     const view = { item };
     this.setState( { view } )
 
-  }
+  } 
 
   componentDidMount(){
+
+    fetch( '/api/package.php?id' )
+
     // fetch( 'api/package.php?id=1' )
     fetch( 'api/package.php' )
+
     .then( res => res.json() )
-    .then( packages => this.setState( { packages } ))
+    .then( packages => this.setState( { packages } ) )
   }
 
   renderPackage() {
@@ -70,7 +74,7 @@ class SearchPackages extends Component {
         } */}
         {/* { name === 'result' && */}
             <>
-                {/* <SearchResultGuide /> */}
+                <SearchResultGuide />
                 <Container className={classes.marginBottom} >
                   <Typography className={classes.marginTop} variant="h5">
                     Tuurs

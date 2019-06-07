@@ -32,12 +32,13 @@ if ($method === 'POST'){
 elseif ($method === 'GET'){
     $email = $_GET['email'];
     $query = "SELECT
-    `profile`.`name`, `profile`.`email`, `profile`.`location`, `profile`.`image`, `profile`.`bio`, `profile`.`isGuide`
+    `profile`.`id`, `profile`.`name`, `profile`.`email`, `profile`.`location`, `profile`.`image`, `profile`.`bio`, `profile`.`isGuide`
     FROM `profile`
     WHERE `profile`.`email` = '{$email}'";
     $result = mysqli_query($conn, $query);
     $output = [];
     while ($row = mysqli_fetch_assoc($result)){
+        $output['id'] = $row['id'];
         $output['name'] = $row['name'];
         $output['email'] = $row['email'];
         $output['location'] = $row['location'];
@@ -47,6 +48,8 @@ elseif ($method === 'GET'){
     }
     $json_output = json_encode($output);
     $_SESSION['userEmail'] = $email;
+    $_SESSION['id'] = $output['id'];
+    
     // $_SESSION['userData'] = $json_output;
     print_r($json_output);
 }

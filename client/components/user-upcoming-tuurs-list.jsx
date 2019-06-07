@@ -69,9 +69,9 @@ class UpComingTuursList extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/package.php')
+    fetch('/api/booking.php')
       .then(res => res.json())
-      .then(packages => this.setState({ packages: packages }));
+      .then(packages => this.setState({ packages: packages }), () => console.log( this.state.packages ));
   }
 
   render() {
@@ -95,6 +95,7 @@ class UpComingTuursList extends Component {
         <Grid justify="center" className={classes.margin} container>
           <Grid className={classes.marginTop2} container justify="center" >
             <ThemeProvider theme={theme}>
+            {/* IF GUIDE, INCLUDE CREATE PACKAGE BUTTON */}
               <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user)}>
                 <Typography variant="body1" gutterBottom>Create Package</Typography>
               </Button>

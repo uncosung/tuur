@@ -32,20 +32,25 @@ const styles = theme => ({
 class SearchPackageItem extends Component {
   constructor(props) {
     super(props);
-    // this.clickHandler = this.clickHandler.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
-  // clickHandler() {
-  // this.props.view( 'detail' , this.props.item );
-  //   this.props.history.push("/package-details")
+  clickHandler() {
+    // evt.preventDefault();
 
-  // }
+    console.log('onclick to package detail', this.props);
+    this.props.view( 'detail' , this.props.item );
+    // this.props.history.push("/package-details")
+
+  }
 
   render() {
     const { classes } = this.props;
+    // console.log( 'inside search package item ', this.props )
     return (
       <>
-        <Card className={classes.card} component={Link} to={'/package-details/' + this.props.item.id}>
+        <Card className={classes.card} onClick={ this.clickHandler } >	 
+        {/* <Card className={classes.card} component={Link} to={'/package-details/' + this.props.item.id}> */}
           <CardHeader
             title={ this.props.item.title }
             // subheader="September 14, 2016"
