@@ -80,9 +80,8 @@ class App extends Component {
               <BottomNav />
             </div>
           }/>
-          <Route exact path="/package-details/:id"
+          <Route path="/package-details/:id"
             render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
-
         </Switch>
       </div>
 

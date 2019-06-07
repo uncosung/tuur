@@ -77,7 +77,7 @@ class PackageDetails extends Component {
       openModal: false,
       newDates: [],
       dates: [],
-      item: {},
+      item: null,
       status: null
     }
     this.clickHandler = this.clickHandler.bind( this );
@@ -198,17 +198,18 @@ class PackageDetails extends Component {
   }
 
   componentDidMount(){
-    fetch( `api/package.php?id=${this.props.item.id}`)
+    console.log(this.props.match.params)
+    const id=this.props.match.params.id
+    fetch( "/api/package.php?id=" + id)
     .then( res => res.json() )
     .then( item => this.setState( {item: item[0] } ))
+    // .then( item => this.setState( {item} ))
   }
 
   render() {
     const { classes } = this.props;
-    console.log(this.props.item);
-    if (!this.state.status) {
-      return null;
-    }
+    if (!this.state.item) return null;
+    
     return (
             <>
 
