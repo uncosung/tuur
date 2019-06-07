@@ -57,9 +57,9 @@ const styles = theme => ({
 class PackageDetails extends Component {
   constructor(props) {
     super(props);
-    this.state={
-        status: null,
-    }
+    this.state = {
+      status: null
+    };
     this.clickHandler = this.clickHandler.bind(this);
     this.bookHandler = this.bookHandler.bind(this);
   }
@@ -75,12 +75,12 @@ class PackageDetails extends Component {
   render() {
     const { classes } = this.props;
     console.log(this.props.item);
-    if(!this.state.status){
-        return null
+    if (!this.state.status) {
+      return null;
     }
     return (
             <>
-           
+
             <Card className={classes.card}>
               <Grid item xs={2} className={classes.paddingRight} name='back' onClick={ this.clickHandler }>
                 <KeyboardArrowLeft className={classes.fontSize} />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import{Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -36,7 +36,7 @@ class SearchPackageItem extends Component {
   }
 
   // clickHandler() {
-    // this.props.view( 'detail' , this.props.item );
+  // this.props.view( 'detail' , this.props.item );
   //   this.props.history.push("/package-details")
 
   // }
@@ -45,7 +45,7 @@ class SearchPackageItem extends Component {
     const { classes } = this.props;
     return (
       <>
-        <Card className={classes.card} component={Link} to={'/package-details/'+this.props.item.id}>
+        <Card className={classes.card} component={Link} to={'/package-details/' + this.props.item.id}>
           <CardHeader
             title={ this.props.item.title }
             // subheader="September 14, 2016"

@@ -15,7 +15,6 @@ import SearchResultGuide from './search-result-guide-list';
 import PackageDetails from './package-details';
 import { Link } from '@material-ui/core';
 
-
 const styles = theme => ({
   marginTop: {
     marginTop: theme.spacing(3)
@@ -34,41 +33,40 @@ class SearchPackages extends Component {
         name: 'result',
         item: []
       }
-    }
-    this.setView = this.setView.bind( this );
+    };
+    this.setView = this.setView.bind(this);
   }
 
-  setView( name , item ){
-    const view = { name , item };
-    this.setState( { view })
+  setView(name, item) {
+    const view = { name, item };
+    this.setState({ view });
 
   }
 
-  componentDidMount(){
-    fetch( 'api/package.php?id=1' )
-    .then( res => res.json() )
-    .then( packages => this.setState( { packages } ))
+  componentDidMount() {
+    fetch('api/package.php?id=1')
+      .then(res => res.json())
+      .then(packages => this.setState({ packages }));
   }
 
-  renderPackage(){
-    const packages = this.state.packages.map( ( item, id ) => {
-      return <SearchPackageItem key={id} item={ item } view={ this.setView }/>
-    })
+  renderPackage() {
+    const packages = this.state.packages.map((item, id) => {
+      return <SearchPackageItem key={id} item={ item } view={ this.setView }/>;
+    });
     return packages;
   }
 
-
   render() {
     const { classes } = this.props;
-    const { name, item } = this.state.view
+    const { name, item } = this.state.view;
 
     return (
       <>
-        { name === 'detail' 
-            && <PackageDetails item={ item } view={ this.setView} appView={ this.props.appView } />
+        { name === 'detail' &&
+            <PackageDetails item={ item } view={ this.setView} appView={ this.props.appView } />
         }
-        { name === 'result'
-            && <>
+        { name === 'result' &&
+            <>
                 {/* <SearchResultGuide /> */}
                 <Container className={classes.marginBottom} >
                   <Typography className={classes.marginTop} variant="h5">
@@ -79,12 +77,8 @@ class SearchPackages extends Component {
               </>
         }
       </>
-      )
+    );
   }
 }
 
 export default withStyles(styles)(SearchPackages);
-
-
-
-
