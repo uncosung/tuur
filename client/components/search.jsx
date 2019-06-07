@@ -51,7 +51,8 @@ class Search extends Component {
     this.setState ({
       location: {
         name: result.place_name,
-        coordinates: result.geometry.coordinates
+        coordinates: result.geometry.coordinates,
+        toggleStatus: true
       }
     })
   }
