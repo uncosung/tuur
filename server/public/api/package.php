@@ -7,8 +7,8 @@ $item = file_get_contents('php://input');
 $email = $_SESSION['userEmail'];
 
 if ( $method === 'GET'){
-  $id = $_GET['id'];
-  if ( $id ){
+  if ( isset($_GET['id'])){
+    $id=$_GET['id'];
     $where = " WHERE `id` = '{$id}'";
   }
   else {
