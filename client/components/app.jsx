@@ -22,7 +22,7 @@ class App extends Component {
     super(props);
     this.state = {
       view: {
-        name: 'logIn'
+        name: 'search'
       },
       user: {},
       location: []
@@ -41,6 +41,7 @@ class App extends Component {
     else {
       this.setState({ view, user });
     }
+
   }
 
   render() {

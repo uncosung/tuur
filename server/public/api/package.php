@@ -7,8 +7,9 @@ $item = file_get_contents('php://input');
 $email = $_SESSION['userEmail'];
 
 if ( $method === 'GET'){
-  if (!($_GET['id'])){
-    $where = " WHERE `profileEmail` = '{$email}'";
+  $id = $_GET['id'];
+  if ( $id ){
+    $where = " WHERE `id` = '{$id}'";
   }
   else {
     $where = '';
@@ -30,7 +31,9 @@ if ( $method === 'POST'){
   $query = "INSERT INTO `package`(`title`, `description`, `tags`, `location`, `timeRange`, `dates`, `mainImage`, `images`, `profileEmail`)
             VALUES ('{$package['title']}', '{$package['description']}', '{$tags}',  '{$package['location']}', '{$package['timeRange']}', 
             '{$dates}', '{$package['imageUrl'][0]}', '{$images}', '{$email}')";
+
   $result = mysqli_query($conn, $query);
+
   print_r( $result );
 }
 if ( $method === 'PATCH'){

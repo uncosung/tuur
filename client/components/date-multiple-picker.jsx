@@ -44,6 +44,7 @@ class DatePicker extends Component {
     };
     this.setDate = this.setDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleBooking = this.handleBooking.bind( this );
   }
 
   setDate(date) {
@@ -52,13 +53,25 @@ class DatePicker extends Component {
       dates: dateArray
     });
   }
+
   handleSubmit() {
     this.state.dates.sort((a, b) => {
       return a.getTime() - b.getTime();
     });
     this.props.close(this.state.dates);
   }
+
+  handleBooking(){
+    this.props.booking( this.state.dates );
+  }
+
+
   render() {
+    console.log( 'inside date picker file: PROPS: ',  this.props );
+    console.log( 'inside date picker file: STATE: ',  this.state );
+
+
+
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
     return (
@@ -84,15 +97,20 @@ class DatePicker extends Component {
           }}
           minDate= { new Date() }
           maxDate= { this.props.unavailableDates.maxDate }
-          disabledDates = { this.props.unavailableDates.disabledList}
+          disabledDates = { (this.props.unavailableDates) ? this.props.unavailableDates.disabledList : null }
           className={classes.marginBottom}
         />
 
         <Grid className={classes.marginLeft} justify="center" alignItems="center" container>
           <Grid item xs={7} >
-            <Button onClick = {this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
-              <Typography variant="body1" gutterBottom>Book</Typography>
-            </Button>
+          { this.props.unavailableDates.disabledList 
+            ? <Button onClick = {this.handleBooking } type="button" className={classes.margin} fullWidth variant="contained" color="primary">
+                <Typography variant="body1" gutterBottom>Book</Typography>
+              </Button>
+            : <Button onClick = {this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
+                <Typography variant="body1" gutterBottom>Select Dates</Typography>
+              </Button>
+          }
           </Grid>
         </Grid>
       </div>

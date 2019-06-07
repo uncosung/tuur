@@ -39,12 +39,12 @@ class SearchPackages extends Component {
 
   setView( name , item ){
     const view = { name , item };
-    this.setState( { view }, () => console.log( view ))
+    this.setState( { view } )
 
   }
 
   componentDidMount(){
-    fetch( 'api/package.php?id=1' )
+    fetch( 'api/package.php?id' )
     .then( res => res.json() )
     .then( packages => this.setState( { packages } ))
   }
