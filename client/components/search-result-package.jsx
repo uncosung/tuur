@@ -37,14 +37,19 @@ class SearchPackages extends Component {
     this.setView = this.setView.bind(this);
   }
 
-  setView( name , item ){
-    const view = { name , item };
+  setView( item ){
+    const view = { item };
     this.setState( { view } )
 
   } 
 
   componentDidMount(){
+
     fetch( '/api/package.php?id' )
+
+    // fetch( 'api/package.php?id=1' )
+    fetch( 'api/package.php' )
+
     .then( res => res.json() )
     .then( packages => this.setState( { packages } ) )
   }
@@ -53,18 +58,21 @@ class SearchPackages extends Component {
     const packages = this.state.packages.map((item, id) => {
       return <SearchPackageItem key={id} item={ item } view={ this.setView }/>;
     });
+    // const packages = this.state.packages.map(item => {
+    //     return <SearchPackageItem key={item.id} item={item } view={ this.setView }/>;
+    //   });
     return packages;
   }
 
   render() {
     const { classes } = this.props;
-    const { name, item } = this.state.view
+    const { item } = this.state.view
     return (
       <>
-        { name === 'detail' &&
+        {/* { name === 'detail' &&
             <PackageDetails item={ item } view={ this.setView} appView={ this.props.appView } />
-        }
-        { name === 'result' &&
+        } */}
+        {/* { name === 'result' && */}
             <>
                 <SearchResultGuide />
                 <Container className={classes.marginBottom} >
@@ -74,7 +82,7 @@ class SearchPackages extends Component {
                 </Container>
                 { this.state.packages ? this.renderPackage() : 'No available packages'}
               </>
-        }
+        {/* } */}
       </>
     );
   }

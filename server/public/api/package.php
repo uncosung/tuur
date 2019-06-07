@@ -8,8 +8,8 @@ $email = $_SESSION['userEmail'];
 $tuuristId = $_SESSION['id'];
 
 if ( $method === 'GET'){
-  $id = $_GET['id'];
-  if ( $id ){
+  if ( isset($_GET['id'])){
+    $id=$_GET['id'];
     $where = " WHERE `id` = '{$id}'";
   }
   else {
