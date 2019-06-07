@@ -67,11 +67,6 @@ class DatePicker extends Component {
 
 
   render() {
-    console.log( 'inside date picker file: PROPS: ',  this.props );
-    console.log( 'inside date picker file: STATE: ',  this.state );
-
-
-
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
     return (

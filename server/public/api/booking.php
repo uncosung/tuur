@@ -13,7 +13,23 @@ if ( $method === "POST"){
   $query = "INSERT INTO `booking` (`id`, `tuuristId`, `packageId`, `bookedAt`, `dates`, `tuuristEmail`) 
             VALUES (NULL, '{$tuuristId}', '{$output['packageId']}', CURRENT_TIMESTAMP, '{$dates}', '{$email}')";
   $result = mysqli_query( $conn, $query );
-  print_r( json_encode( ['auth' => $result]));
+  // print_r( json_encode( ['auth' => $result]));
+  $date = [];
+  if ( $result ){
+    // FIND PACKAGE AND DATE
+    // REMOVE PICKED DATES
+    $query = "SELECT dates FROM package WHERE package.id = {$output['packageId']}";
+    $result = mysqli_query( $conn, $query );
+    while ( $row = mysqli_fetch_assoc( $result )){
+      $date[] = $row;
+    }
+
+    for ( $index = 0; $index < count( $dates ); $index++){
+      // print_r( $dates[$index] );
+    }
+  }
+
+  
 }
 if ( $method === "GET"){
   $query = "SELECT `book`.id, `pack`.title, `pack`.description, `pack`.tags, 
@@ -30,7 +46,7 @@ if ( $method === "GET"){
   while ( $row = mysqli_fetch_assoc( $result) ){
     $output[] = $row;
   }
-  
+
   print_r( json_encode( $output ));
 }
 
