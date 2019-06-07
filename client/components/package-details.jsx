@@ -77,16 +77,17 @@ class PackageDetails extends Component {
       openModal: false,
       newDates: [],
       dates: [],
-      item: {}
+      item: {},
+      status: null
     }
     this.clickHandler = this.clickHandler.bind( this );
     this.handleModalClose = this.handleModalClose.bind(this);
     this.modalClose = this.modalClose.bind(this);
-
+    this.bookHandler = this.bookHandler.bind(this);
   }
 
-  clickHandler(){
-    this.props.view( 'result', [] );
+  clickHandler() {
+    this.props.view('result', []);
   }
 
   handleModalClose(dates) {
@@ -204,8 +205,13 @@ class PackageDetails extends Component {
 
   render() {
     const { classes } = this.props;
+    console.log(this.props.item);
+    if (!this.state.status) {
+      return null;
+    }
     return (
             <>
+
             <Card className={classes.card}>
               <Grid item xs={2} className={classes.paddingRight} name='back' onClick={ this.clickHandler }>
                 <KeyboardArrowLeft className={classes.fontSize} />

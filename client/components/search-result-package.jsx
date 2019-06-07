@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import SearchPackageItem from './search-result-package-item';
 import SearchResultGuide from './search-result-guide-list';
 import PackageDetails from './package-details';
-
+import { Link } from '@material-ui/core';
 
 const styles = theme => ({
   marginTop: {
@@ -33,8 +33,8 @@ class SearchPackages extends Component {
         name: 'result',
         item: []
       }
-    }
-    this.setView = this.setView.bind( this );
+    };
+    this.setView = this.setView.bind(this);
   }
 
   setView( name , item ){
@@ -49,25 +49,24 @@ class SearchPackages extends Component {
     .then( packages => this.setState( { packages } ))
   }
 
-  renderPackage(){
-    const packages = this.state.packages.map( ( item, id ) => {
-      return <SearchPackageItem key={id} item={ item } view={ this.setView }/>
-    })
+  renderPackage() {
+    const packages = this.state.packages.map((item, id) => {
+      return <SearchPackageItem key={id} item={ item } view={ this.setView }/>;
+    });
     return packages;
   }
-
 
   render() {
     const { classes } = this.props;
     const { name, item } = this.state.view
     return (
       <>
-        { name === 'detail' 
-            && <PackageDetails item={ item } view={ this.setView} appView={ this.props.appView } />
+        { name === 'detail' &&
+            <PackageDetails item={ item } view={ this.setView} appView={ this.props.appView } />
         }
-        { name === 'result'
-            && <>
-                <SearchResultGuide />
+        { name === 'result' &&
+            <>
+                {/* <SearchResultGuide /> */}
                 <Container className={classes.marginBottom} >
                   <Typography className={classes.marginTop} variant="h5">
                     Tuurs
@@ -77,12 +76,8 @@ class SearchPackages extends Component {
               </>
         }
       </>
-      )
+    );
   }
 }
 
 export default withStyles(styles)(SearchPackages);
-
-
-
-

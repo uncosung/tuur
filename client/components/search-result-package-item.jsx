@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -11,7 +12,6 @@ import ShareIcon from '@material-ui/icons/Share';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 
-
 const styles = theme => ({
   marginTop: {
     marginTop: theme.spacing(3)
@@ -21,7 +21,7 @@ const styles = theme => ({
   },
   card: {
     maxWidth: 400,
-    marginBottom: theme.spacing(.5),
+    marginBottom: theme.spacing(0.5)
   },
   media: {
     height: 0,
@@ -32,18 +32,20 @@ const styles = theme => ({
 class SearchPackageItem extends Component {
   constructor(props) {
     super(props);
-    this.clickHandler = this.clickHandler.bind( this );
+    // this.clickHandler = this.clickHandler.bind(this);
   }
 
-  clickHandler(){
-    this.props.view( 'detail' , this.props.item );
-  }
+  // clickHandler() {
+  // this.props.view( 'detail' , this.props.item );
+  //   this.props.history.push("/package-details")
+
+  // }
 
   render() {
     const { classes } = this.props;
     return (
       <>
-        <Card className={classes.card} onClick={ this.clickHandler } >
+        <Card className={classes.card} component={Link} to={'/package-details/' + this.props.item.id}>
           <CardHeader
             title={ this.props.item.title }
             // subheader="September 14, 2016"
@@ -68,7 +70,7 @@ class SearchPackageItem extends Component {
           </CardActions>
         </Card>
       </>
-    )
+    );
   }
 }
 
