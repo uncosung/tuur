@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import SearchResultGuideItem from './search-result-guide-list-item';
+import SearchResultGuideItem from '../search-result-guide-list-item';
 
 const styles = theme => ({
   marginTop: {

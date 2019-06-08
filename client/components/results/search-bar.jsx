@@ -8,11 +8,13 @@ import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
-import DateRangePicker from './date-range-picker';
+import DateRangePicker from '../date-range-picker';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
+import { Link } from 'react-router-dom';
+import Mapbox from './mapbox';
 
 const theme = createMuiTheme({
   palette: {
@@ -159,8 +161,8 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // toggle: false,
-      toggle: this.props.toggleStatus,
+      // toggle: this.props.toggleStatus,
+      toggle: this.props.location.toggleStatus,
       openModal: false,
       tags: [],
       dates: {
@@ -187,7 +189,6 @@ class SearchBar extends Component {
         coordinates: result.geometry.coordinates
       }
     }, () => {
-      console.log(this.state.location);
       this.props.handleSearch(this.state.location);
     });
   }
@@ -199,17 +200,45 @@ class SearchBar extends Component {
   }
 
   handleToggle(event) {
-    let newToggle = this.state.toggle;
-    this.setState({ toggle: !newToggle }, () => {
-      if (this.state.toggle ) {
-        console.log(this.props.location);
-        this.props.view('mapResults', null, this.props.location);
-      } else {
-        console.log('going back to search', this.props.location);
-        this.props.view('searchResult', null, this.props.location);
+    // let newToggle = this.state.toggle;
+    // this.setState({ toggle: !newToggle }, () => {
+    //   if (this.state.toggle ) {
+    //     console.log(this.props.location);
+    //     this.props.view('mapResults', null, this.props.location);
+    //   } else {
+    //     console.log('going back to search', this.props.location);
+    //     this.props.view('searchResult', null, this.props.location);
+    let newState = {
+      ...this.state,
+      location: {
+        ...this.state.location,
+        toggleStatus: !this.state.location.toggleStatus
       }
-    });
+    };
+
+    this.setState(newState, () => { console.log(this.state); });
+    if (this.state.location.toggleStatus) {
+      // console.log(this.props.location);
+      // this.props.view('mapResults', null, this.props.location);
+      <Link to={{
+        pathname: '/mapbox/' + this.state.location.name,
+        state: {
+          location: this.state.location
+        }
+      }}>Mapbox</Link>;
+    } else {
+      // console.log('going back to search', this.props.location)
+      <Link to={{
+        pathname: '/results/' + this.state.location.name,
+        state: {
+          location: this.state.location
+        }
+      }}>Results</Link>;
+      // this.props.view('searchResult', null, this.props.location);
+    }
+    // });
   }
+
   handleModalClose(dates) {
     let startDate = dates.start;
     let endDate = dates.end;
@@ -225,7 +254,6 @@ class SearchBar extends Component {
 
   }
   render() {
-
     const geocoderApiOptions = {
       country: 'us',
       proximity: { longitude: -118.243683, latitude: 34.052235 }
@@ -293,7 +321,7 @@ class SearchBar extends Component {
 
                <Grid item xs={3} className={classes.display}>
                  <FormControlLabel control={
-                   <Switch checked={this.state.toggle} onChange={() => this.handleToggle(event)} />} label={this.state.toggle ? 'TO LIST' : 'TO MAP'} />
+                   <Switch checked={this.state.toggle} onChange={event => this.handleToggle(event)} />} label={this.state.toggle ? 'TO LIST' : 'TO MAP'} />
                </Grid>
              </Grid>
            </AppBar>
@@ -311,7 +339,7 @@ class SearchBar extends Component {
              </Grid>
            </Modal>
          </Grid>
-
+         { !this.state.location.toggleStatus ? <Mapbox location={this.props.location} /> : '' }
       </>
     );
   }

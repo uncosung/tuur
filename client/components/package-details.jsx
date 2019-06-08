@@ -14,6 +14,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import DatePicker from './date-multiple-picker';
 import Modal from '@material-ui/core/Modal';
 import CalendarToday from '@material-ui/icons/CalendarToday';
+import carouselImage from './package-detail-carousel-item';
 
 const divStyle = {
   width: '47px',
@@ -136,7 +137,6 @@ class PackageDetails extends Component {
   changeImage(e) {
     let id = e.target.id;
     id = parseInt(id);
-    console.log(id);
     let imgArray = this.state.images;
     let newMainImg = imgArray[id];
     this.setState({ cardImg: newMainImg });
@@ -242,45 +242,45 @@ class PackageDetails extends Component {
   }
 
   bookHandler( dates){
+    console.log( 'bookHandler' , dates );
     const packageId = this.state.item.id;
-    // for ( const dates of dateArray ){
-      // console.log( dates );
-      fetch('api/booking.php', {
-        method: 'POST',
-        body: JSON.stringify({ packageId , dates })
-      })
-      .then( res => res.json() )
-      .then( data => console.log( data ))
-    // }
+    fetch('api/booking.php', {
+      method: 'POST',
+      body: JSON.stringify({ packageId , dates })
+    })
+    .then( res => res.json() )
+    .then( data => console.log( data ))
   }
 
   componentDidMount(){
-
-    fetch( `/api/package.php?id=${this.props.item.id}`)
-    // console.log(this.props.match.params)
-    // const id=this.props.match.params.id
-    // fetch( "/api/package.php?id=" + id)
+    // fetch( `/api/package.php?id=${this.props.item.id}`)
+    console.log(this.props.match.params)
+    const id=this.props.match.params.id
+    fetch( "/api/package.php?id=" + id)
     .then( res => res.json() )
     .then( item => this.setState( {item: item[0] } ))
 
     let images = JSON.parse(this.props.item.images);
-    let mainImage = this.props.item.mainImage;
-    images.unshift(mainImage);
+    // let mainImage = this.props.item.mainImage;
+    // images.unshift(mainImage);
     this.setState({ images });
 
     fetch(`api/profile.php?email=${this.props.item.profileEmail}`)
       .then(res => res.json())
       .then(response => {
-        this.setState({ package: response }, () => console.log(response));
-        console.log('this.state.package on componentDidMount:', this.state.package);
+        this.setState({ package: response } );
+        // console.log('this.state.package on componentDidMount:', this.state.package);
     })
-    // .then( item => this.setState( {item} ))
+  }
+
+  carouselImage(){
+    console.log( this.state.images );
   }
 
   render() {
     const { classes } = this.props;
     // if (!this.state.item) return null;
-    console.log( 'inside packagedetails ', this.state.item);
+    console.log( 'inside packagedetails ', this.state.images);
     return (
       <>
             <Card className={classes.card}>
@@ -368,7 +368,13 @@ class PackageDetails extends Component {
                   onClose={() => this.handleModalClose(this.state.dates)}
                 >
                   <Grid className={classes.paper}>
-                    <DatePicker dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                    <DatePicker 
+                    dates={this.state.dates} 
+                    close={this.handleModalClose} 
+                    modalClose={this.modalClose} 
+                    unavailableDates={ this.unavailableDates() }
+                    booking={ this.bookHandler }
+                  />
                   </Grid>
                 </Modal>
               </Grid>

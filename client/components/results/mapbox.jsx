@@ -49,7 +49,7 @@ class Mapbox extends Component {
 
   }
   componentDidMount() {
-    fetch('/api/package.php?id')
+    fetch('/api/package.php')
       .then(res => res.json())
       .then(tuurs => {
         this.setState({
@@ -116,7 +116,6 @@ class Mapbox extends Component {
     console.log('click', tuur);
   }
   renderPopup() {
-    console.log('popup info', this.state.popupInfo);
     const { popupInfo } = this.state;
 
     return (
@@ -140,7 +139,7 @@ class Mapbox extends Component {
     const markerMap = this.state.filteredTuurs.map(marker => {
       return (
         <Marker onClick={this.clickPin} key={marker.tuur.id} latitude={marker.coord[1]} longitude={marker.coord[0]}>
-          <TuurPin tuur={marker} onClick={() => this.setState({ popupInfo: marker }, () => console.log(this.state.popupInfo))} size={20} />
+          <TuurPin tuur={marker} onClick={() => this.setState({ popupInfo: marker }) } size={20} />
         </Marker>
       );
     });
