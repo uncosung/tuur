@@ -20,6 +20,7 @@ const styles = theme => ({
 
 class Mapbox extends Component {
   constructor(props) {
+    debugger;
     super(props);
     this.state = {
       viewport: {
@@ -60,40 +61,39 @@ class Mapbox extends Component {
       });
   }
   filterTuurs() {
-      let filterTuurs = [];
-      let tooFar = [];
-        for (let i = 0; i < this.state.fetchCoordinates.length; i++){
-            if (this.state.fetchCoordinates[i].coord[0] < this.state.viewport.longitude-1 || this.state.fetchCoordinates[i].coord[0] > this.state.viewport.longitude+1 || this.state.fetchCoordinates[i].coord[1] < this.state.viewport.latitude-0.2 || this.state.fetchCoordinates[i].coord[1] > this.state.viewport.latitude+0.2){
-                tooFar = [...tooFar, this.state.fetchCoordinates[i]];
-            }
-            else {
-                filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];        
-            }
-        }
-        this.setState({
-            filteredTuurs: filterTuurs
-        })
+    let filterTuurs = [];
+    let tooFar = [];
+    for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
+      if (this.state.fetchCoordinates[i].coord[0] < this.state.viewport.longitude - 1 || this.state.fetchCoordinates[i].coord[0] > this.state.viewport.longitude + 1 || this.state.fetchCoordinates[i].coord[1] < this.state.viewport.latitude - 0.2 || this.state.fetchCoordinates[i].coord[1] > this.state.viewport.latitude + 0.2) {
+        tooFar = [...tooFar, this.state.fetchCoordinates[i]];
+      } else {
+        filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];
+      }
+    }
+    this.setState({
+      filteredTuurs: filterTuurs
+    });
 
   }
 
-  async getTuurLocationData(tuur){
+  async getTuurLocationData(tuur) {
     const resp = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${tuur.location}.json?access_token=${TOKEN}`);
     const respJson = await resp.json();
-    return  {
-        tuur,
-        coord: respJson.features[0].center
-    }
+    return {
+      tuur,
+      coord: respJson.features[0].center
+    };
   }
 
-  mapTuurs () {
+  mapTuurs() {
     let mapArray = this.state.tuurs.map(this.getTuurLocationData);
 
-    Promise.all(mapArray).then((tuurCoordinates)=> {
-        this.setState({
-            fetchCoordinates: tuurCoordinates
-        }, this.filterTuurs)
+    Promise.all(mapArray).then(tuurCoordinates => {
+      this.setState({
+        fetchCoordinates: tuurCoordinates
+      }, this.filterTuurs);
     });
-      
+
   }
   fetchLocation() {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
@@ -116,26 +116,26 @@ class Mapbox extends Component {
   }
 
   clickPin(tuur) {
-    console.log('click', tuur)
+    console.log('click', tuur);
   }
   renderPopup() {
-      console.log('popup info', this.state.popupInfo)
-      const {popupInfo} = this.state;
+    console.log('popup info', this.state.popupInfo);
+    const { popupInfo } = this.state;
 
-      return (
-          popupInfo && (
-          <Popup
-            tipSize={5}
-            anchor='top'
-            longitude={popupInfo.coord[0]}
-            latitude={popupInfo.coord[1]}
-            closeOnClick={false}
-            onClose={() => this.setState({popupInfo:null})}
-          >
-            <PopupInfo view={this.props.view} info={popupInfo.tuur}/>
-          </Popup>
-          )
+    return (
+      popupInfo && (
+        <Popup
+          tipSize={5}
+          anchor='top'
+          longitude={popupInfo.coord[0]}
+          latitude={popupInfo.coord[1]}
+          closeOnClick={false}
+          onClose={() => this.setState({ popupInfo: null })}
+        >
+          <PopupInfo view={this.props.view} info={popupInfo.tuur}/>
+        </Popup>
       )
+    );
   }
   render() {
 
@@ -143,7 +143,7 @@ class Mapbox extends Component {
     const markerMap = this.state.filteredTuurs.map(marker => {
       return (
         <Marker onClick={this.clickPin} key={marker.tuur.id} latitude={marker.coord[1]} longitude={marker.coord[0]}>
-            <TuurPin tuur={marker} onClick={() => this.setState({popupInfo: marker}, () => console.log(this.state.popupInfo))} size={20} />
+          <TuurPin tuur={marker} onClick={() => this.setState({ popupInfo: marker }, () => console.log(this.state.popupInfo))} size={20} />
         </Marker>
       );
     });

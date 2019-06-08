@@ -14,7 +14,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import DatePicker from './date-multiple-picker';
 import Modal from '@material-ui/core/Modal';
 import CalendarToday from '@material-ui/icons/CalendarToday';
-
+import { Link } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -79,16 +79,16 @@ class PackageDetails extends Component {
       dates: [],
       item: null,
       status: null
-    }
-    this.clickHandler = this.clickHandler.bind( this );
+    };
+    // this.clickHandler = this.clickHandler.bind( this );
     this.handleModalClose = this.handleModalClose.bind(this);
     this.modalClose = this.modalClose.bind(this);
     this.bookHandler = this.bookHandler.bind(this);
   }
 
-  clickHandler() {
-    this.props.view('result', []);
-  }
+  // clickHandler() {
+  //   this.props.view('result', []);
+  // }
 
   handleModalClose(dates) {
     this.setState({
@@ -97,141 +97,136 @@ class PackageDetails extends Component {
     });
   }
 
-  modalClose(){
+  modalClose() {
     this.setState({ openModal: false });
   }
 
-  unavailableDates(){
+  unavailableDates() {
     const currentDate = new Date();
     let month = currentDate.getMonth();
     let day = currentDate.getDate();
     let year = currentDate.getFullYear();
-    const maxMonth = this.maxMonth( month );
+    const maxMonth = this.maxMonth(month);
     const maxDay = 1;
-    const maxYear = this.maxYear( maxMonth , year );
-    const maxDate = new Date( maxYear, maxMonth, maxDay );
+    const maxYear = this.maxYear(maxMonth, year);
+    const maxDate = new Date(maxYear, maxMonth, maxDay);
     let data = {
       disabledList: [],
       maxDate
-    }
-    while ( month !== maxMonth || year !== maxYear ){
-      day = this.nextDay( month , day );
-      if ( day === 1){
+    };
+    while (month !== maxMonth || year !== maxYear) {
+      day = this.nextDay(month, day);
+      if (day === 1) {
         month = month === 11 ? 0 : ++month;
       }
-      if ( month === 0 && day === 1 ){
+      if (month === 0 && day === 1) {
         year = month === 1 ? ++year : year;
       }
-      if ( !this.checkAvailability( year, month, day ) ){
-        data.disabledList.push( new Date( year, month, day ));
+      if (!this.checkAvailability(year, month, day)) {
+        data.disabledList.push(new Date(year, month, day));
       }
     }
     return data;
   }
 
-  maxMonth( currentMonth ){
-    if ( currentMonth >= 10 ){
-      return currentMonth + 2 - 12
-    } 
-    return currentMonth + 2
-  }
-
-  maxYear( month, year ){
-    if ( !month ){
-      return year++
+  maxMonth(currentMonth) {
+    if (currentMonth >= 10) {
+      return currentMonth + 2 - 12;
     }
-    return year
+    return currentMonth + 2;
   }
 
-  checkAvailability( year, month, day ){
+  maxYear(month, year) {
+    if (!month) {
+      return year++;
+    }
+    return year;
+  }
+
+  checkAvailability(year, month, day) {
     // dummy data ( expected date format ) ; replace with package data
     // const dummyDate = ['Thu Jun 06 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
     // 'Tue Jun 11 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
     // 'Sun Jun 09 2019 12:24:11 GMT-0700 (Pacific Daylight Time)']
-    
-    const packageDates = JSON.parse(this.props.item.dates);
+
+    const packageDates = JSON.parse(this.state.item.dates);
     let matched = false;
-    for ( var value of packageDates ){
-      const packageDate = new Date( value ); 
+    for (var value of packageDates) {
+      const packageDate = new Date(value);
       const packageYear = packageDate.getFullYear();
       const packageMonth = packageDate.getMonth();
       const packageDay = packageDate.getDate();
 
-      if ( packageYear === year && packageMonth === month && packageDay === day ){
-        return true
+      if (packageYear === year && packageMonth === month && packageDay === day) {
+        return true;
       }
     }
     return false;
   }
 
-  nextDay( month, day ){
+  nextDay(month, day) {
     // last day of month = 31
-    if ( month === 0 && day != 31 ) return ++day
+    if (month === 0 && day != 31) return ++day;
     // last day of month = 28
-    if ( month === 1  && day !== 28 ) return ++day 
+    if (month === 1 && day !== 28) return ++day;
     // last day of month = 31
-    if ( month === 2  && day !== 31 ) return ++day
+    if (month === 2 && day !== 31) return ++day;
     // last day of month = 30
-    if ( month === 3  && day !== 30 ) return ++day
+    if (month === 3 && day !== 30) return ++day;
     // last day of month = 31
-    if ( month === 4  && day !== 31 ) return ++day      
+    if (month === 4 && day !== 31) return ++day;
     // last day of month = 30
-    if ( month === 5  && day !== 30 ) return ++day       
+    if (month === 5 && day !== 30) return ++day;
     // last day of month = 31
-    if ( month === 6  && day !== 31 ) return ++day       
+    if (month === 6 && day !== 31) return ++day;
     // last day of month = 31
-    if ( month === 7  && day !== 31 ) return ++day       
+    if (month === 7 && day !== 31) return ++day;
     // last day of month = 30
-    if ( month === 8  && day !== 30 ) return ++day       
+    if (month === 8 && day !== 30) return ++day;
     // last day of month = 31
-    if ( month === 9  && day !== 31 ) return ++day      
+    if (month === 9 && day !== 31) return ++day;
     // last day of month = 30
-    if ( month === 10 && day !== 30 ) return ++day    
+    if (month === 10 && day !== 30) return ++day;
     // last day of month = 31
-    if ( month === 11 && day !== 31 ) return ++day  
-    return 1
+    if (month === 11 && day !== 31) return ++day;
+    return 1;
   }
 
-  bookHandler( dateArray ){
+  bookHandler(dateArray) {
     const packageId = this.state.item.id;
-    for ( const dates of dateArray ){
-    fetch('api/booking.php', {
-      method: 'POST',
-      body: JSON.stringify({ packageId , dates })
-    })
-    .then( res => res.json() )
-    .then( data => console.log( data ))
+    for (const dates of dateArray) {
+      fetch('api/booking.php', {
+        method: 'POST',
+        body: JSON.stringify({ packageId, dates })
+      })
+        .then(res => res.json())
+        .then(data => console.log(data));
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
 
-    fetch( `/api/package.php?id=${this.props.item.id}`)
+    // fetch( `/api/package.php?id=${this.props.item.id}`)
 
-    console.log(this.props.match.params)
-    const id=this.props.match.params.id
-    fetch( "/api/package.php?id=" + id)
+    console.log(this.props.match.params);
+    const id = this.props.match.params.id;
+    fetch('/api/package.php?id=' + id)
 
-    .then( res => res.json() )
-    .then( item => this.setState( {item: item[0] } ))
+      .then(res => res.json())
+      .then(item => this.setState({ item: item[0] }));
     // .then( item => this.setState( {item} ))
   }
 
   render() {
     const { classes } = this.props;
 
-    // if (!this.state.status) {
-    //   return null;
-    // }
-
     if (!this.state.item) return null;
-    
 
     return (
             <>
 
             <Card className={classes.card}>
-              <Grid item xs={2} className={classes.paddingRight} name='back' onClick={ this.clickHandler }>
+              <Grid item xs={2} className={classes.paddingRight} name='back' component={Link} to={'/results/'}>
                 <KeyboardArrowLeft className={classes.fontSize} />
               </Grid>
               <CardMedia
@@ -247,7 +242,7 @@ class PackageDetails extends Component {
                 <LocationOn /> { this.state.item ? this.state.item.location : null }
               </CardContent>
               <CardContent>
-              {/* TRIP DURATION */}
+                {/* TRIP DURATION */}
                 {/* <Alarm/> { timeRange } */}
               </CardContent>
               <CardContent>
@@ -261,7 +256,7 @@ class PackageDetails extends Component {
               <Grid justify="center" container>
                 <Grid container justify="center" >
                   <ThemeProvider theme={theme}>
-                    <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({openModal: true })}>
+                    <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({ openModal: true })}>
                       <Typography variant="body1" gutterBottom>Available Dates</Typography>
                     </Button>
                   </ThemeProvider>
@@ -275,13 +270,13 @@ class PackageDetails extends Component {
                     onClose={() => this.handleModalClose(this.state.dates)}
                   >
                     <Grid className={classes.paper}>
-                      <DatePicker 
-                        dates={this.state.dates} 
-                        close={this.handleModalClose} 
-                        modalClose={this.modalClose} 
+                      <DatePicker
+                        dates={this.state.dates}
+                        close={this.handleModalClose}
+                        modalClose={this.modalClose}
                         unavailableDates={ this.unavailableDates()}
                         booking={ this.bookHandler }
-                        />
+                      />
                     </Grid>
                   </Modal>
                 </Grid>

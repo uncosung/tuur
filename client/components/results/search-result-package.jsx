@@ -37,26 +37,26 @@ class SearchPackages extends Component {
     this.setView = this.setView.bind(this);
   }
 
-  setView( item ){
+  setView(item) {
     const view = { item };
-    this.setState( { view } )
+    this.setState({ view });
 
-  } 
+  }
 
-  componentDidMount(){
+  componentDidMount() {
 
-    fetch( '/api/package.php?id' )
+    // fetch( '/api/package.php?id' )
 
     // fetch( 'api/package.php?id=1' )
-    fetch( 'api/package.php' )
+    fetch('/api/package.php')
 
-    .then( res => res.json() )
-    .then( packages => this.setState( { packages } ) )
+      .then(res => res.json())
+      .then(packages => this.setState({ packages }));
   }
 
   renderPackage() {
     const packages = this.state.packages.map((item, id) => {
-      return <SearchPackageItem key={id} item={ item } view={ this.setView }/>;
+      return <SearchPackageItem key={id} item={ item } />;
     });
     // const packages = this.state.packages.map(item => {
     //     return <SearchPackageItem key={item.id} item={item } view={ this.setView }/>;
@@ -66,7 +66,7 @@ class SearchPackages extends Component {
 
   render() {
     const { classes } = this.props;
-    const { item } = this.state.view
+    // const { item } = this.state.view
     return (
       <>
         {/* { name === 'detail' &&
@@ -74,7 +74,7 @@ class SearchPackages extends Component {
         } */}
         {/* { name === 'result' && */}
             <>
-                <SearchResultGuide />
+                {/* <SearchResultGuide /> */}
                 <Container className={classes.marginBottom} >
                   <Typography className={classes.marginTop} variant="h5">
                     Tuurs

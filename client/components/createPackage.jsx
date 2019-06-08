@@ -16,7 +16,7 @@ import Modal from '@material-ui/core/Modal';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
-import DatePicker from './date-multiple-picker';
+import DatePicker from './results/date-multiple-picker';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import green from '@material-ui/core/colors/green';
@@ -264,33 +264,33 @@ class CreatePackage extends Component {
     this.setState({ dates: datesArray });
   }
 
-  maxDate(){
+  maxDate() {
     const currentDate = new Date();
     let month = currentDate.getMonth();
     let day = currentDate.getDate();
     let year = currentDate.getFullYear();
-    const maxMonth = this.maxMonth( month );
+    const maxMonth = this.maxMonth(month);
     const maxDay = 1;
-    const maxYear = this.maxYear( maxMonth , year );
-    const maxDate = new Date( maxYear, maxMonth, maxDay );
+    const maxYear = this.maxYear(maxMonth, year);
+    const maxDate = new Date(maxYear, maxMonth, maxDay);
     const data = {
       maxDate
     };
     return data;
   }
 
-  maxMonth( currentMonth ){
-    if ( currentMonth >= 10 ){
-      return currentMonth + 2 - 12
-    } 
-    return currentMonth + 2
+  maxMonth(currentMonth) {
+    if (currentMonth >= 10) {
+      return currentMonth + 2 - 12;
+    }
+    return currentMonth + 2;
   }
 
-  maxYear( month, year ){
-    if ( !month ){
-      return year++
+  maxYear(month, year) {
+    if (!month) {
+      return year++;
     }
-    return year
+    return year;
   }
 
   render() {

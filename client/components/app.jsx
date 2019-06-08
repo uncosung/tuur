@@ -3,60 +3,63 @@ import UserProfile from './user-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 import { Route, Switch, Redirect } from 'react-router-dom';
-// import { Route } from 'react-router-dom';
 import BottomNav from './bottom-nav';
-import DatePicker from './date-multiple-picker';
+import DatePicker from './results/date-multiple-picker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
 import CreatePackage from './createPackage';
 import EditPackage from './editPackage';
 import LogIn from './log-in';
 import Itinerary from './itinerary';
-import SearchBar from './search-bar';
-import SearchResultGuide from './search-result-guide-list';
+import Results from './results';
+import SearchBar from './results/search-bar';
+import SearchResultGuide from './results/search-result-guide-list';
 import Search from './search';
-import SearchPackages from './search-result-package';
-import Mapbox from './mapbox';
+import SearchPackages from './results/search-result-package';
+import Mapbox from './results/mapbox';
 import DeckGL, { GeoJsonLayer } from 'deck.gl';
-import PackageDetails from './package-details';
+import PackageDetails from './results/package-details';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-          name: 'logIn'
-        },
-        user: {},
-        location: []
-      };
-      this.setView = this.setView.bind(this);
-      this.handleSearch = this.handleSearch.bind(this);
+        name: 'logIn'
+      },
+      user: {},
+      location: []
+    };
+    this.setView = this.setView.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   setView(name, user, location) {
     const view = { name };
     if (user === null) {
       this.setState({
-        view,
-        location: location});
-      return;
-    }
-    else {
-      this.setState({ view, user });
+        // view,
+        location: location
+      });
+
+    } else {
+      this.setState({ location, user });
     }
   }
 
-  handleSearch(prop){
-    console.log('searched')
+  handleSearch(prop) {
+    console.log('searched');
     this.setState({
       location: prop
-    }, () => console.log(this.state.location))
+    }, () => console.log(this.state.location));
   }
 
   render() {
     return (
       <div>
         <Switch>
+          <Route exact path="/login"
+            render={props => <LogIn {...props} isAuthed={true}/>}/>
+
           <Route exact path="/" render={props =>
             <div>
               <Search />,
@@ -74,14 +77,18 @@ class App extends Component {
 
           <Route path="/results" render={props =>
             <div>
-              <SearchBar />,
+              {/* <Mapbox location={this.state.location}{...props} /> */}
+              {/* <SearchBar />,
               <SearchResultGuide />,
-              <SearchPackages />,
+              <SearchPackages />, */}
+              <Results location={this.state.location} />
               <BottomNav />
             </div>
           }/>
           <Route path="/package-details/:id"
             render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
+          {/* <Route path="/mapbox"
+            render={props => <Mapbox location={this.state.location}{...props} isAuthed={true}/>}/> */}
         </Switch>
       </div>
 
@@ -95,95 +102,95 @@ class App extends Component {
     //   </div>
 
     // <div>
-    <div>
-      {this.state.view.name === 'mapResults'
-        && <div>
-          <SearchBar view={this.setView} user={this.state.user}/> 
-          <Mapbox view = {this.setView} user={this.state.user} location={this.state.location}/>
-          {/* <BottomNav />  */}
-        </div>
+    // <div>
+    //   {this.state.view.name === 'mapResults'
+    //     && <div>
+    //       <SearchBar view={this.setView} user={this.state.user}/>
+    //       <Mapbox view = {this.setView} user={this.state.user} location={this.state.location}/>
+    //       {/* <BottomNav />  */}
+    //     </div>
 
-    }
+    // }
 
-    {this.state.view.name === 'searchResult'
-      && <div>
-        <SearchBar view={this.setView} user={this.state.user} location={this.state.location}/>
-        {/* <SearchResultGuide /> */}
-        <SearchPackages />
-        <UpComingTuursList view={this.setView} /> 
-        {/* <BottomNav />  */}
-      </div>
-    }
+    // {this.state.view.name === 'searchResult'
+    //   && <div>
+    //     <SearchBar view={this.setView} user={this.state.user} location={this.state.location}/>
+    //     {/* <SearchResultGuide /> */}
+    //     <SearchPackages />
+    //     <UpComingTuursList view={this.setView} />
+    //     {/* <BottomNav />  */}
+    //   </div>
+    // }
 
-    {this.state.view.name === 'userProfile' &&
-      <div>
-        <UserProfile view={this.setView} user={ this.state.user }/>
-        <UpComingTuursList view={this.setView} /> 
-        {/* <BottomNav />  */}
-      </div>
+    // {this.state.view.name === 'userProfile' &&
+    //   <div>
+    //     <UserProfile view={this.setView} user={ this.state.user }/>
+    //     <UpComingTuursList view={this.setView} />
+    //     {/* <BottomNav />  */}
+    //   </div>
 
-    }
-    {this.state.view.name === 'signUp' &&
+    // }
+    /* {this.state.view.name === 'signUp' &&
       <SignUp view={this.setView} status={this.setStatus}/>
 
     }
     {this.state.view.name === 'editProfile' &&
       <div>
         <EditProfile view={this.setView} user={ this.state.user} />
-        {/* <BottomNav />  */}
-      </div>
+        {/* <BottomNav />  */
+    // </div>
 
-    }
-    {this.state.view.name === 'createPackage' &&
-      <div>
-        <CreatePackage view={this.setView} user={ this.state.user} />
-        {/* <BottomNav />  */}
-      </div>
+    // }
+    // {this.state.view.name === 'createPackage' &&
+    //   <div>
+    //     <CreatePackage view={this.setView} user={ this.state.user} />
+    /* <BottomNav />  */
+    // </div>
 
-    }
-    {this.state.view.name === 'editPackage' &&
-      <div>
-        <EditPackage view={this.setView} />
-        {/* <BottomNav />  */}
-      </div>
+    // }
+    // {this.state.view.name === 'editPackage' &&
+    //   <div>
+    //     <EditPackage view={this.setView} />
+    /* <BottomNav />  */
+    // </div>
 
-    }
-    {this.state.view.name === 'calendar' &&
-      <div>
-        <DatePicker view={this.setView} />
-        {/* <BottomNav />  */}
-      </div>
+    // }
+    // {this.state.view.name === 'calendar' &&
+    //   <div>
+    //     <DatePicker view={this.setView} />
+    /* <BottomNav />  */
+    // </div>
 
-    }
-    {this.state.view.name === 'logIn' &&
-      <div>
-        <LogIn view={this.setView} />
-        {/* <BottomNav />  */}
-      </div>
+    // }
+    // {this.state.view.name === 'logIn' &&
+    //   <div>
+    //     <LogIn view={this.setView} />
+    /* <BottomNav />  */
+    //   </div>
 
-    }
-    {this.state.view.name === 'itinerary' &&
-      <div>
-        <Itinerary view={this.setView} />
-        {/* <BottomNav /> */}
-      </div>
+    // }
+    // {this.state.view.name === 'itinerary' &&
+    //   <div>
+    //     <Itinerary view={this.setView} />
+    /* <BottomNav /> */
+    //   </div>
 
-    }
-    {this.state.view.name === 'search'
-    && <div>
-        <Search view={this.setView} />
-        {/* <BottomNav /> */}
-      </div>
+    // }
+    // {this.state.view.name === 'search'
+    // && <div>
+    //     <Search view={this.setView} />
+    /* <BottomNav /> */
+    //   </div>
 
-    }
-    {this.state.view.name === 'packageDetails'
-      && <div>
-          <PackageDetails view={this.setView} />
-          {/* <BottomNav /> */}
-        </div>
-    }
+    // }
+    // {this.state.view.name === 'packageDetails'
+    //   && <div>
+    //       <PackageDetails view={this.setView} />
+    /* <BottomNav /> */
+    // </div>
+    // }
 
-    </div>
+    // </div> */}
     );
   }
 }

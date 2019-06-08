@@ -39,7 +39,7 @@ class SearchPackageItem extends Component {
     // evt.preventDefault();
 
     console.log('onclick to package detail', this.props);
-    this.props.view( 'detail' , this.props.item );
+    this.props.view('detail', this.props.item);
     // this.props.history.push("/package-details")
 
   }
@@ -49,8 +49,8 @@ class SearchPackageItem extends Component {
     // console.log( 'inside search package item ', this.props )
     return (
       <>
-        <Card className={classes.card} onClick={ this.clickHandler } >	 
-        {/* <Card className={classes.card} component={Link} to={'/package-details/' + this.props.item.id}> */}
+        {/* <Card className={classes.card} onClick={ this.clickHandler } >	  */}
+        <Card className={classes.card} component={Link} to={'/package-details/' + this.props.item.id}>
           <CardHeader
             title={ this.props.item.title }
             // subheader="September 14, 2016"
