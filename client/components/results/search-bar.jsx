@@ -161,7 +161,7 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // toggle: this.props.location.toggleStatus,
+      toggle: this.props.location.toggleStatus,
       openModal: false,
       tags: [],
       dates: {

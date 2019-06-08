@@ -3,9 +3,7 @@ import ReactMapGL, { Popup, Marker, GeolocateControl, FlyToInterpolator, Navigat
 import 'mapbox-gl/dist/mapbox-gl.css';
 import TOKEN from './mapbox-token';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import DeckGL, { GeoJsonLayer } from 'deck.gl';
 import { withStyles } from '@material-ui/core/styles';
-import { mergeClasses } from '@material-ui/styles';
 import TuurPin from './tuur-pin';
 import PopupInfo from './popup-info';
 
@@ -20,7 +18,6 @@ const styles = theme => ({
 
 class Mapbox extends Component {
   constructor(props) {
-    debugger;
     super(props);
     this.state = {
       viewport: {
@@ -52,7 +49,7 @@ class Mapbox extends Component {
 
   }
   componentDidMount() {
-    fetch('/api/package.php')
+    fetch('/api/package.php?id')
       .then(res => res.json())
       .then(tuurs => {
         this.setState({

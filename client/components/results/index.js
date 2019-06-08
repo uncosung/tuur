@@ -6,7 +6,7 @@ import SearchPackages from './search-result-package';
 export default props => {
   return (
     <Fragment>
-      <SearchBar location={props.location} />
+      <SearchBar location={props.location} handleSearch={props.search}/>
       <SearchResultGuide />
       <SearchPackages />
     </Fragment>

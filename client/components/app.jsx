@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UserProfile from './user-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import BottomNav from './bottom-nav';
 import DatePicker from './results/date-multiple-picker';
 import UpComingTuursList from './user-upcoming-tuurs-list';
@@ -23,9 +23,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: {
-        name: 'logIn'
-      },
+      view: '',
       user: {},
       location: []
     };
@@ -33,20 +31,31 @@ class App extends Component {
     this.handleSearch = this.handleSearch.bind(this);
   }
 
-  setView(name, user, location) {
-    const view = { name };
-    if (user === null) {
-      this.setState({
-        // view,
-        location: location
-      });
-
-    } else {
-      this.setState({ location, user });
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.view !== prevState.view) {
+      this.props.history.push(this.state.view);
     }
   }
 
+  setView(name, user, location) {
+    // debugger;
+    // const view = { name };
+    // if (user === null) {
+      this.setState({
+        view: name,
+        location: {
+          name: location.name,
+          coordinates: location.coordinates,
+          toggleStatus: !location.toggleStatus
+        } 
+      });
+    // } else {
+    //   this.setState({ view, user });
+    // }
+  }
+
   handleSearch(prop) {
+    debugger;
     console.log('searched');
     this.setState({
       location: prop
@@ -62,7 +71,7 @@ class App extends Component {
 
           <Route exact path="/" render={props =>
             <div>
-              <Search />,
+              <Search search={this.setView} />,
               <BottomNav />
             </div>
           }/>
@@ -81,7 +90,7 @@ class App extends Component {
               {/* <SearchBar />,
               <SearchResultGuide />,
               <SearchPackages />, */}
-              <Results location={this.state.location} />
+              <Results location={this.state.location} search={this.handleSearch}/>
               <BottomNav />
             </div>
           }/>
@@ -195,4 +204,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);
