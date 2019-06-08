@@ -5,7 +5,8 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 const styles = theme => ({
   tile: {
-    width: 200
+    width: 200,
+    height: '100%'
   },
   font: {
     fontFamily: 'Roboto',

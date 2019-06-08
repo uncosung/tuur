@@ -15,6 +15,25 @@ import DatePicker from './date-multiple-picker';
 import Modal from '@material-ui/core/Modal';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 
+const divStyle = {
+  width: '47px',
+  height: '40px',
+  border: '1px solid gray',
+  marginRight: '5px',
+  '&:hover': {
+    opacity: 1
+  }
+};
+
+const imgStyle = {
+  width: '100%',
+  height: '100%',
+  backgroundRepeat: 'norepeat',
+  backgroundSize: '100% 100%',
+  '&:hover': {
+    opacity: 1
+  }
+};
 
 const theme = createMuiTheme({
   palette: {
@@ -22,7 +41,8 @@ const theme = createMuiTheme({
     secondary: { main: '#5bd1d7' },
     lightBeige: { main: '#f1f1f1' },
     beige: { main: '#f5e1da' }
-  }
+  },
+  
 });
 
 const styles = theme => ({
@@ -67,6 +87,26 @@ const styles = theme => ({
     boxShadow: theme.shadows[5],
     padding: 7,
     outline: 'none'
+  },
+  previewContainer: {
+    width: '160px',
+    height: '60px',
+    display: 'flex',
+    justifyContent: 'center',
+    margin: ' auto auto 10px auto'
+  },
+  productPreview: {
+    width: '50px',
+    height: '50px',
+    margin: '5px',
+    opacity: 0.5,
+    '&:hover': {
+      opacity: 1
+    }
+  },
+  cover: {
+    width: '100%',
+    height: '100%'
   }
 });
 
@@ -78,8 +118,11 @@ class PackageDetails extends Component {
       newDates: [],
       dates: [],
       item: null,
-      status: null
-    }
+      status: null,
+      images: [],
+      cardImg: this.props.item.mainImage
+    };
+    this.changeImage = this.changeImage.bind(this);
     this.clickHandler = this.clickHandler.bind( this );
     this.handleModalClose = this.handleModalClose.bind(this);
     this.modalClose = this.modalClose.bind(this);
@@ -88,6 +131,15 @@ class PackageDetails extends Component {
 
   clickHandler() {
     this.props.view('result', []);
+  }
+
+  changeImage(e) {
+    let id = e.target.id;
+    id = parseInt(id);
+    console.log(id);
+    let imgArray = this.state.images;
+    let newMainImg = imgArray[id];
+    this.setState({ cardImg: newMainImg });
   }
 
   handleModalClose(dates) {
@@ -145,9 +197,9 @@ class PackageDetails extends Component {
 
   checkAvailability( year, month, day ){
     if ( this.state.item ){
-      const packageDates = JSON.parse(this.state.item.dates);
+      const packageDatesArray = JSON.parse(this.state.item.dates);
       let matched = false;
-      for ( var value of packageDates ){
+      for ( var value of packageDatesArray ){
         const packageDate = new Date( value ); 
         const packageYear = packageDate.getFullYear();
         const packageMonth = packageDate.getMonth();
@@ -211,6 +263,17 @@ class PackageDetails extends Component {
     .then( res => res.json() )
     .then( item => this.setState( {item: item[0] } ))
 
+    let images = JSON.parse(this.props.item.images);
+    let mainImage = this.props.item.mainImage;
+    images.unshift(mainImage);
+    this.setState({ images });
+
+    fetch(`api/profile.php?email=${this.props.item.profileEmail}`)
+      .then(res => res.json())
+      .then(response => {
+        this.setState({ package: response }, () => console.log(response));
+        console.log('this.state.package on componentDidMount:', this.state.package);
+    })
     // .then( item => this.setState( {item} ))
   }
 
@@ -219,65 +282,98 @@ class PackageDetails extends Component {
     // if (!this.state.item) return null;
     console.log( 'inside packagedetails ', this.state.item);
     return (
-            <>
-
+      <>
             <Card className={classes.card}>
               <Grid item xs={2} className={classes.paddingRight} name='back' onClick={ this.clickHandler }>
                 <KeyboardArrowLeft className={classes.fontSize} />
               </Grid>
               <CardMedia
                 className={classes.media}
-                image={ this.state.item ? this.state.item.mainImage : null }
-                // title="Space Needle"
+                image={ this.state.cardImg }
               />
-              <CardHeader
-                title={ this.state.item ? this.state.item.title : null }
-                // subheader="September 14, 2016"
-              />
-              <CardContent>
-                <LocationOn /> { this.state.item ? this.state.item.location : null }
-              </CardContent>
-              <CardContent>
-              {/* TRIP DURATION */}
-                {/* <Alarm/> { timeRange } */}
-              </CardContent>
-              <CardContent>
-
-                <Typography paragraph>Trip:</Typography>
-                <Typography paragraph>
-                  { this.state.item ? this.state.item.description : null }
-                </Typography>
-
-              </CardContent>
-              <Grid justify="center" container>
-                <Grid container justify="center" >
-                  <ThemeProvider theme={theme}>
-                    <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({openModal: true })}>
-                      <Typography variant="body1" gutterBottom>Available Dates</Typography>
-                    </Button>
-                  </ThemeProvider>
-                </Grid>
-
-                <Grid item xs={11} >
-                  <Modal
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                    open={this.state.openModal}
-                    onClose={() => this.handleModalClose(this.state.dates)}
-                  >
-                    <Grid className={classes.paper}>
-                      <DatePicker 
-                        dates={this.state.dates} 
-                        close={this.handleModalClose} 
-                        modalClose={this.modalClose} 
-                        unavailableDates={ this.unavailableDates()}
-                        booking={ this.bookHandler }
-                        />
-                    </Grid>
-                  </Modal>
-                </Grid>
-              </Grid>
             </Card>
+            <Grid container justify="center" direction="row">
+              <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
+                <img id="0" style={imgStyle} src={this.state.images ? this.state.images[0] : null} alt={this.props.item.title}/>
+              </div>
+              <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
+                <img id="1" style={imgStyle} src={this.state.images ? this.state.images[1] : null} alt={this.props.item.title}/>
+              </div>
+              <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
+                <img id="2" style={imgStyle} src={this.state.images ? this.state.images[2] : null} alt={this.props.item.title}/>
+              </div>
+              <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
+                <img id="3" style={imgStyle} src={this.state.images ? this.state.images[3] : null} alt={this.props.item.title}/>
+              </div>
+            </Grid>
+          <Card>
+            <CardHeader
+              title={ this.props.item.title }
+            />
+            <CardContent>
+              <LocationOn /> { this.props.item.location }
+            </CardContent>
+            <CardContent>
+              <Alarm/> Trip duration: { this.props.item.timeRange }
+            </CardContent>
+            <CardContent>
+              <Typography paragraph>Trip Summary:</Typography>
+              <Typography paragraph>
+                { this.props.item.description }
+              </Typography>
+            </CardContent>
+            <CardContent>
+              <Card className={classes.card}>
+                <Grid container>
+                  <Grid item xs={4}>
+                    <CardMedia
+                      className={classes.cover}
+                      image={ this.state.package ? this.state.package.image : null}
+                    />
+                  </Grid>
+                  <Grid item xs={8}>
+                    <CardContent>
+                      <Typography variant="body1">
+                        Meet your Guide
+                      </Typography>
+                      <Typography variant="h5">
+                        {this.state.package ? this.state.package.name : null }
+                      </Typography>
+                    </CardContent>
+
+                    <CardContent>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {this.state.package ? this.state.package.bio : null}
+                      </Typography>
+                    </CardContent>
+                  </Grid>
+                </Grid>
+              </Card>
+            </CardContent>
+
+            <Grid justify="center" container>
+              <Grid container justify="center" >
+                <ThemeProvider theme={theme}>
+                  <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({ openModal: true })}>
+                    <Typography variant="body1" gutterBottom>Available Dates</Typography>
+                  </Button>
+                </ThemeProvider>
+              </Grid>
+
+              <Grid item xs={11} >
+                <Modal
+                  aria-labelledby="simple-modal-title"
+                  aria-describedby="simple-modal-description"
+                  open={this.state.openModal}
+                  onClose={() => this.handleModalClose(this.state.dates)}
+                >
+                  <Grid className={classes.paper}>
+                    <DatePicker dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                  </Grid>
+                </Modal>
+              </Grid>
+            </Grid>
+          </Card>
             </>
     );
   }

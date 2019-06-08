@@ -36,12 +36,7 @@ class SearchPackageItem extends Component {
   }
 
   clickHandler() {
-    // evt.preventDefault();
-
-    console.log('onclick to package detail', this.props.item);
-    this.props.view( 'detail' , this.props.item );
-    // this.props.history.push("/package-details")
-
+    this.props.view('detail', this.props.item);
   }
 
   render() {
@@ -78,5 +73,4 @@ class SearchPackageItem extends Component {
     );
   }
 }
-
 export default withStyles(styles)(SearchPackageItem);

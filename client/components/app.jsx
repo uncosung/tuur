@@ -38,10 +38,14 @@ class App extends Component {
     if (user === null) {
       this.setState({
         view,
-        location: location});
-      return;
-    }
-    else {
+
+        location: {
+          name: location.name,
+          coordinates: location.coordinates,
+          toggleStatus: !location.toggleStatus
+        } });
+
+    } else {
       this.setState({ view, user });
     }
   }
@@ -51,6 +55,7 @@ class App extends Component {
     this.setState({
       location: prop
     }, () => console.log(this.state.location))
+
   }
 
   render() {
@@ -95,7 +100,7 @@ class App extends Component {
     //   </div>
 
     // <div>
-    <div>
+    <>
       {this.state.view.name === 'mapResults'
         && <div>
           <SearchBar view={this.setView} user={this.state.user}/> 
@@ -123,17 +128,19 @@ class App extends Component {
       </div>
 
     }
+
     {this.state.view.name === 'signUp' &&
       <SignUp view={this.setView} status={this.setStatus}/>
 
     }
+    
     {this.state.view.name === 'editProfile' &&
       <div>
         <EditProfile view={this.setView} user={ this.state.user} />
         {/* <BottomNav />  */}
       </div>
-
     }
+
     {this.state.view.name === 'createPackage' &&
       <div>
         <CreatePackage view={this.setView} user={ this.state.user} />
@@ -141,6 +148,7 @@ class App extends Component {
       </div>
 
     }
+
     {this.state.view.name === 'editPackage' &&
       <div>
         <EditPackage view={this.setView} />
@@ -148,6 +156,7 @@ class App extends Component {
       </div>
 
     }
+
     {this.state.view.name === 'calendar' &&
       <div>
         <DatePicker view={this.setView} />
@@ -155,13 +164,14 @@ class App extends Component {
       </div>
 
     }
+
     {this.state.view.name === 'logIn' &&
       <div>
         <LogIn view={this.setView} />
         {/* <BottomNav />  */}
       </div>
-
     }
+
     {this.state.view.name === 'itinerary' &&
       <div>
         <Itinerary view={this.setView} />
@@ -169,21 +179,23 @@ class App extends Component {
       </div>
 
     }
+
     {this.state.view.name === 'search'
-    && <div>
+      ? <div>
         <Search view={this.setView} />
         {/* <BottomNav /> */}
       </div>
-
+      : null
     }
+
     {this.state.view.name === 'packageDetails'
       && <div>
           <PackageDetails view={this.setView} />
           {/* <BottomNav /> */}
         </div>
     }
+    </>
 
-    </div>
     );
   }
 }

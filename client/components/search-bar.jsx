@@ -94,7 +94,7 @@ const styles = theme => ({
     paddingBottom: 5,
     margin: 0,
     paddingLeft: 30,
-    whiteSpace:'nowrap'
+    whiteSpace: 'nowrap'
   },
   buttonDiv: {
     display: 'inline-block',
@@ -159,7 +159,8 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // toggle: this.props.location.toggleStatus,
+      // toggle: false,
+      toggle: this.props.toggleStatus,
       openModal: false,
       tags: [],
       dates: {
@@ -186,8 +187,8 @@ class SearchBar extends Component {
         coordinates: result.geometry.coordinates
       }
     }, () => {
-      console.log('props', this.props)
-      this.props.handleSearch(this.state.location)
+      console.log(this.state.location);
+      this.props.handleSearch(this.state.location);
     });
   }
   handleChange(event) {
@@ -200,12 +201,11 @@ class SearchBar extends Component {
   handleToggle(event) {
     let newToggle = this.state.toggle;
     this.setState({ toggle: !newToggle }, () => {
-      if (this.state.toggle) {
+      if (this.state.toggle ) {
         console.log(this.props.location);
         this.props.view('mapResults', null, this.props.location);
-      }
-      else {
-        console.log('going back to search', this.props.location)
+      } else {
+        console.log('going back to search', this.props.location);
         this.props.view('searchResult', null, this.props.location);
       }
     });
@@ -221,8 +221,11 @@ class SearchBar extends Component {
   modalClose() {
     this.setState({ openModal: false });
   }
+  handleSearch() {
+
+  }
   render() {
-    console.log('togglestatus', this.state.toggle)
+
     const geocoderApiOptions = {
       country: 'us',
       proximity: { longitude: -118.243683, latitude: 34.052235 }
@@ -288,11 +291,10 @@ class SearchBar extends Component {
                  </Button>
                </Grid>
 
-               <Grid  item xs={3} className={classes.display}>
+               <Grid item xs={3} className={classes.display}>
                  <FormControlLabel control={
-                   <Switch  checked={this.state.toggle} onChange={() => this.handleToggle(event)} />} label={this.state.toggle ? 'TO LIST' : 'TO MAP'} />
+                   <Switch checked={this.state.toggle} onChange={() => this.handleToggle(event)} />} label={this.state.toggle ? 'TO LIST' : 'TO MAP'} />
                </Grid>
-
              </Grid>
            </AppBar>
          </ThemeProvider>

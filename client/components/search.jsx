@@ -61,7 +61,7 @@ class Search extends Component {
         coordinates: result.geometry.coordinates,
         toggleStatus: true
       }
-    })
+    });
   }
 
   render() {
@@ -114,5 +114,4 @@ class Search extends Component {
     );
   }
 }
-
-export default withRouter(withStyles(styles)(Search));
+export default withStyles(styles)(Search);

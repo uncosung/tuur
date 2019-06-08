@@ -44,23 +44,23 @@ class SearchPackages extends Component {
   } 
 
   componentDidMount(){
-
     fetch( '/api/package.php?id' )
-
     // fetch( 'api/package.php?id=1' )
     // fetch( 'api/package.php' )
-
     .then( res => res.json() )
     .then( packages => this.setState( { packages } ) )
-  }
 
+  // componentDidMount() {
+  //   fetch('api/package.php?id=1')
+  //     .then(res => res.json())
+  //     .then(packages => this.setState({ packages }));
+  // }
+  }
+  
   renderPackage() {
     const packages = this.state.packages.map((item, id) => {
       return <SearchPackageItem key={id} item={ item } view={ this.setView }/>;
     });
-    // const packages = this.state.packages.map(item => {
-    //     return <SearchPackageItem key={item.id} item={item } view={ this.setView }/>;
-    //   });
     return packages;
   }
 
