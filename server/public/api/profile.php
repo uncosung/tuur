@@ -22,7 +22,7 @@ if ($method === 'POST'){
         if ($output['isGuide'] === true){
             $output['isGuide'] = 1;
         }
-        $query = "INSERT INTO `profile`(`name`, `email`, `location`, `bio`, `image`, `isGuide`) 
+        $query = "INSERT INTO `profile`(`name`, `email`, `loßcation`, `bio`, `image`, `isGuide`) 
         VALUES (\"{$output['name']}\", '{$output['email']}', '{$output['location']}', '{$output['bio']}', '{$output['image']}', '{$output['isGuide']}')";
         $result = mysqli_query($conn, $query);
         $_SESSION['userEmail'] = $output['email'];
@@ -63,3 +63,4 @@ elseif ($method === 'PATCH'){
 	print_r($result);
 }
 ?>
+

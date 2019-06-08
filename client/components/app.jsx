@@ -55,35 +55,35 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <Switch>
-          <Route exact path="/" render={props =>
-            <div>
-              <Search />,
-              <BottomNav />
-            </div>
-          }/>
-          <Route exact path="/itinerary" render={props =>
-            <div>
-              <Itinerary />,
-              <BottomNav />
-            </div>
-          }/>
-          <Route exact path="/user-profile"
-            render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
+      // <div>
+      //   <Switch>
+      //     <Route exact path="/" render={props =>
+      //       <div>
+      //         <Search />,
+      //         <BottomNav />
+      //       </div>
+      //     }/>
+      //     <Route exact path="/itinerary" render={props =>
+      //       <div>
+      //         <Itinerary />,
+      //         <BottomNav />
+      //       </div>
+      //     }/>
+      //     <Route exact path="/user-profile"
+      //       render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
 
-          <Route path="/results" render={props =>
-            <div>
-              <SearchBar />,
-              <SearchResultGuide />,
-              <SearchPackages />,
-              <BottomNav />
-            </div>
-          }/>
-          <Route path="/package-details/:id"
-            render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
-        </Switch>
-      </div>
+      //     <Route path="/results" render={props =>
+      //       <div>
+      //         <SearchBar />,
+      //         <SearchResultGuide />,
+      //         <SearchPackages />,
+      //         <BottomNav />
+      //       </div>
+      //     }/>
+      //     <Route path="/package-details/:id"
+      //       render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
+      //   </Switch>
+      // </div>
 
     // <div>
     //   {this.state.view.name === 'mapResults'
