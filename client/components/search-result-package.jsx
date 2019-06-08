@@ -37,8 +37,8 @@ class SearchPackages extends Component {
     this.setView = this.setView.bind(this);
   }
 
-  setView( item ){
-    const view = { item };
+  setView( name, item ){
+    const view = { name, item };
     this.setState( { view } )
 
   } 
@@ -48,7 +48,7 @@ class SearchPackages extends Component {
     fetch( '/api/package.php?id' )
 
     // fetch( 'api/package.php?id=1' )
-    fetch( 'api/package.php' )
+    // fetch( 'api/package.php' )
 
     .then( res => res.json() )
     .then( packages => this.setState( { packages } ) )
@@ -66,13 +66,13 @@ class SearchPackages extends Component {
 
   render() {
     const { classes } = this.props;
-    const { item } = this.state.view
+    const { item, name } = this.state.view
     return (
       <>
-        {/* { name === 'detail' &&
+        { name === 'detail' &&
             <PackageDetails item={ item } view={ this.setView} appView={ this.props.appView } />
-        } */}
-        {/* { name === 'result' && */}
+        } 
+        { name === 'result' && 
             <>
                 <SearchResultGuide />
                 <Container className={classes.marginBottom} >
@@ -81,8 +81,8 @@ class SearchPackages extends Component {
                   </Typography>
                 </Container>
                 { this.state.packages ? this.renderPackage() : 'No available packages'}
-              </>
-        {/* } */}
+            </>
+        }
       </>
     );
   }

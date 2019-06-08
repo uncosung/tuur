@@ -195,16 +195,18 @@ class CreatePackage extends Component {
         }
       });
     } else {
-      if (this.state.imageUrl.length !== 0 && this.state.dates.length !== 0 && this.state.tags.length !== 0) {
-        fetch('/api/package.php', {
-          method: 'POST',
-          body: JSON.stringify(
-            { title, location, tags, timeRange, description, dates, imageUrl })
-        })
-          .then(res => res.json())
-          .then(newPackage => this.props.view('userProfile', this.props.user));
-        this.setState({ openSnackBar: false });
-      }
+      // for ( var value of dates ){
+        if (this.state.imageUrl.length !== 0 && this.state.dates.length !== 0 && this.state.tags.length !== 0) {
+          fetch('/api/package.php', {
+            method: 'POST',
+            body: JSON.stringify(
+              { title, location, tags, timeRange, description, dates, imageUrl })
+          })
+            .then(res => res.json())
+            .then(newPackage => this.props.view('userProfile', this.props.user));
+          this.setState({ openSnackBar: false });
+        }
+      // }
     }
     if (this.state.imageUrl.length === 0 || this.state.dates.length === 0 || this.state.tags.length === 0) {
       this.setState({ openSnackBar: true });

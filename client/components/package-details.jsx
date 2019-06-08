@@ -144,24 +144,21 @@ class PackageDetails extends Component {
   }
 
   checkAvailability( year, month, day ){
-    // dummy data ( expected date format ) ; replace with package data
-    // const dummyDate = ['Thu Jun 06 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
-    // 'Tue Jun 11 2019 12:24:11 GMT-0700 (Pacific Daylight Time)',
-    // 'Sun Jun 09 2019 12:24:11 GMT-0700 (Pacific Daylight Time)']
-    
-    const packageDates = JSON.parse(this.props.item.dates);
-    let matched = false;
-    for ( var value of packageDates ){
-      const packageDate = new Date( value ); 
-      const packageYear = packageDate.getFullYear();
-      const packageMonth = packageDate.getMonth();
-      const packageDay = packageDate.getDate();
-
+    if ( this.state.item ){
+      const packageDates = JSON.parse(this.state.item.dates);
+      let matched = false;
+      for ( var value of packageDates ){
+        const packageDate = new Date( value ); 
+        const packageYear = packageDate.getFullYear();
+        const packageMonth = packageDate.getMonth();
+        const packageDay = packageDate.getDate();
       if ( packageYear === year && packageMonth === month && packageDay === day ){
         return true
       }
     }
     return false;
+    }
+    
   }
 
   nextDay( month, day ){
@@ -192,41 +189,35 @@ class PackageDetails extends Component {
     return 1
   }
 
-  bookHandler( dateArray ){
+  bookHandler( dates){
     const packageId = this.state.item.id;
-    for ( const dates of dateArray ){
-    fetch('api/booking.php', {
-      method: 'POST',
-      body: JSON.stringify({ packageId , dates })
-    })
-    .then( res => res.json() )
-    .then( data => console.log( data ))
-    }
+    // for ( const dates of dateArray ){
+      // console.log( dates );
+      fetch('api/booking.php', {
+        method: 'POST',
+        body: JSON.stringify({ packageId , dates })
+      })
+      .then( res => res.json() )
+      .then( data => console.log( data ))
+    // }
   }
 
   componentDidMount(){
 
     fetch( `/api/package.php?id=${this.props.item.id}`)
-
-    console.log(this.props.match.params)
-    const id=this.props.match.params.id
-    fetch( "/api/package.php?id=" + id)
-
+    // console.log(this.props.match.params)
+    // const id=this.props.match.params.id
+    // fetch( "/api/package.php?id=" + id)
     .then( res => res.json() )
     .then( item => this.setState( {item: item[0] } ))
+
     // .then( item => this.setState( {item} ))
   }
 
   render() {
     const { classes } = this.props;
-
-    // if (!this.state.status) {
-    //   return null;
-    // }
-
-    if (!this.state.item) return null;
-    
-
+    // if (!this.state.item) return null;
+    console.log( 'inside packagedetails ', this.state.item);
     return (
             <>
 
