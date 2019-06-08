@@ -10,6 +10,7 @@ $tuuristId = $_SESSION['id'];
 if ( $method === "POST"){
   $output = json_decode( $item , true );
   $pickedDates = json_encode( $output['dates']);
+  print_r( $pickedDates );
   $query = "INSERT INTO `booking` (`id`, `tuuristId`, `packageId`, `bookedAt`, `dates`, `tuuristEmail`) 
             VALUES (NULL, '{$tuuristId}', '{$output['packageId']}', CURRENT_TIMESTAMP, '{$pickedDates}', '{$email}')";
   $result = mysqli_query( $conn, $query );
