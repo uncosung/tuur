@@ -218,8 +218,6 @@ class SearchBar extends Component {
 
     this.setState(newState, () => { console.log(this.state); });
     if (this.state.location.toggleStatus) {
-      // console.log(this.props.location);
-      // this.props.view('mapResults', null, this.props.location);
       <Link to={{
         pathname: '/mapbox/' + this.state.location.name,
         state: {
@@ -227,16 +225,13 @@ class SearchBar extends Component {
         }
       }}>Mapbox</Link>;
     } else {
-      // console.log('going back to search', this.props.location)
       <Link to={{
         pathname: '/results/' + this.state.location.name,
         state: {
           location: this.state.location
         }
       }}>Results</Link>;
-      // this.props.view('searchResult', null, this.props.location);
     }
-    // });
   }
 
   handleModalClose(dates) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UserProfile from './user-profile';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import BottomNav from './bottom-nav';
 import LogIn from './log-in';
 import Itinerary from './itinerary';
@@ -66,9 +66,10 @@ class App extends Component {
               <BottomNav />
             </div>
           }/>
+          <Route exact path="/user-profile/:email"
+            render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
           <Route exact path="/user-profile"
             render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
-
           <Route path="/results" render={props =>
             <div>
               <Results location={this.state.location} search={this.handleSearch}/>

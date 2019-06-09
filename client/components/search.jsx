@@ -6,11 +6,8 @@ import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
-// import Paper from '@material-ui/core/Paper';
-// import InputBase from '@material-ui/core/InputBase';
 import Grid from '@material-ui/core/Grid';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
-import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 
 const theme = createMuiTheme({
@@ -45,14 +42,7 @@ class Search extends Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
-
-    // this.routeChange=this.routeChange.bind(this);
   }
-
-  // routeChange(){
-  //   let path = `newPath`;
-  //   this.props.history.push(path);
-  // }
 
   handleClick() {
     this.props.search('/results', null, this.state.location);
