@@ -87,28 +87,28 @@ class Search extends Component {
     {/* <Paper className={classes.root}>
       <InputBase className={classes.input} placeholder="Where do you want to go?" />
      </Paper> */}
-    <Grid justify="center" className={classes.marginTop} container>
-      <MatGeocoder
-        inputPlaceholder="Where do you want to go?"
-        accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
-        showLoader={true}
-        autocomplete={true}
-        fuzzyMatch={true}
-        {...geocoderApiOptions}
-        onSelect={this.handleSelect}
-      />
-    </Grid>
+      <Grid justify="center" className={classes.marginTop} container>
+        <MatGeocoder
+          inputPlaceholder="Where do you want to go?"
+          accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
+          showLoader={true}
+          autocomplete={true}
+          fuzzyMatch={true}
+          {...geocoderApiOptions}
+          onSelect={this.handleSelect}
+        />
+      </Grid>
 
-     <Grid justify="center" container>
-       <Grid className={classes.marginTop} container justify="center" >
-         <ThemeProvider theme={theme}>
-           <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}>
-             {/* <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}> */}
-             <Typography variant="body1" gutterBottom>Search</Typography>
-           </Button>
-         </ThemeProvider>
-       </Grid>
-     </Grid>
+      <Grid justify="center" container>
+        <Grid className={classes.marginTop} container justify="center" >
+          <ThemeProvider theme={theme}>
+            <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}>
+              {/* <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}> */}
+              <Typography variant="body1" gutterBottom>Search</Typography>
+            </Button>
+          </ThemeProvider>
+        </Grid>
+      </Grid>
 
     </>
     );

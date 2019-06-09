@@ -13,7 +13,7 @@ if ($method === 'POST'){
     $email = mysqli_fetch_assoc( $emailExist );
     
     if ( $email !== NULL){
-        print(json_encode(['auth' => false]));
+        print(json_encode(['auth' => true]));
     } 
     else {
         if ($output['isGuide'] === false){
