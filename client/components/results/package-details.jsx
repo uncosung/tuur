@@ -266,10 +266,10 @@ class PackageDetails extends Component {
   render() {
     let carousel = [];
     const { classes } = this.props;
-    if ( this.state.images ){
-      carousel = this.state.images.map( (image, id) => {
-        return <CarouselImage key={ id } id={ id } click={ this.changeImage } images={image} />
-      })
+    if (this.state.images) {
+      carousel = this.state.images.map((image, id) => {
+        return <CarouselImage key={ id } id={ id } click={ this.changeImage } images={image} />;
+      });
     }
     if (!this.state.item) return null;
     return (
@@ -284,7 +284,7 @@ class PackageDetails extends Component {
           />
         </Card>
           <Grid container justify="center" direction="row">
-            { this.state.images ? carousel: null}
+            { this.state.images ? carousel : null}
           </Grid>
         <Card>
           <CardHeader
@@ -303,7 +303,8 @@ class PackageDetails extends Component {
             </Typography>
           </CardContent>
           <CardContent>
-            <Card className={classes.card}>
+
+            <Card className={classes.card} component={Link} to={'/user-profile/' + this.props.location.state.item.profileEmail}>
               <Grid container>
                 <Grid item xs={4}>
                   <CardMedia
