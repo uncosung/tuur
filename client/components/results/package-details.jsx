@@ -15,6 +15,7 @@ import DatePicker from './date-multiple-picker';
 import Modal from '@material-ui/core/Modal';
 // import CalendarToday from '@material-ui/icons/CalendarToday';
 import { Link } from 'react-router-dom';
+import CarouselImage from './package-detail-carousel-item';
 
 const divStyle = {
   width: '47px',
@@ -121,7 +122,7 @@ class PackageDetails extends Component {
       item: null,
       status: null,
       images: [],
-      cardImg: null
+      cardImg: this.props.location.state.item.mainImage
     };
     this.changeImage = this.changeImage.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
@@ -238,38 +239,38 @@ class PackageDetails extends Component {
 
   bookHandler(dates) {
     const packageId = this.state.item.id;
-    // for ( const dates of dateArray ){
-    // console.log( dates );
-    fetch('api/booking.php', {
+    fetch('/api/booking.php', {
       method: 'POST',
       body: JSON.stringify({ packageId, dates })
     })
       .then(res => res.json())
       .then(data => console.log(data));
-    // }
   }
 
   componentDidMount() {
-    fetch(`api/profile.php?email=${this.props.location.state.item.profileEmail}`)
+    fetch(`/api/profile.php?email=${this.props.location.state.item.profileEmail}`)
       .then(res => res.json())
       .then(response => this.setState({ package: response }));
 
     const id = this.props.match.params.id;
     fetch('/api/package.php?id=' + id)
       .then(res => res.json())
-      .then(item => this.setState({ item: item[0] }, () => this.getImages));
+      .then(item => this.setState({ item: item[0] }, () => this.getImages()));
   }
 
   getImages() {
     let images = JSON.parse(this.state.item.images);
-    let mainImage = this.state.item.mainImage;
-    images.unshift(mainImage);
     this.setState({ images });
   }
 
   render() {
-    console.log(' PROPS', this.props.location.state.item);
+    let carousel = [];
     const { classes } = this.props;
+    if ( this.state.images ){
+      carousel = this.state.images.map( (image, id) => {
+        return <CarouselImage key={ id } id={ id } click={ this.changeImage } images={image} />
+      })
+    }
     if (!this.state.item) return null;
     return (
       <>
@@ -283,18 +284,7 @@ class PackageDetails extends Component {
           />
         </Card>
           <Grid container justify="center" direction="row">
-            <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
-              <img id="0" style={imgStyle} src={this.state.images ? this.state.images[0] : null} alt={this.props.location.state.item.title}/>
-            </div>
-            <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
-              <img id="1" style={imgStyle} src={this.state.images ? this.state.images[1] : null} alt={this.props.location.state.item.title}/>
-            </div>
-            <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
-              <img id="2" style={imgStyle} src={this.state.images ? this.state.images[2] : null} alt={this.props.location.state.item.title}/>
-            </div>
-            <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
-              <img id="3" style={imgStyle} src={this.state.images ? this.state.images[3] : null} alt={this.props.location.state.item.title}/>
-            </div>
+            { this.state.images ? carousel: null}
           </Grid>
         <Card>
           <CardHeader
@@ -358,7 +348,7 @@ class PackageDetails extends Component {
                 onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                  <DatePicker booking={ this.bookHandler } dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
                 </Grid>
               </Modal>
             </Grid>
