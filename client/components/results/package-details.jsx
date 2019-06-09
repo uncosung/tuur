@@ -42,8 +42,8 @@ const theme = createMuiTheme({
     secondary: { main: '#5bd1d7' },
     lightBeige: { main: '#f1f1f1' },
     beige: { main: '#f5e1da' }
-  },
-  
+  }
+
 });
 
 const styles = theme => ({
@@ -190,22 +190,22 @@ class PackageDetails extends Component {
     return year;
   }
 
-  checkAvailability( year, month, day ){
-    if ( this.state.item ){
+  checkAvailability(year, month, day) {
+    if (this.state.item) {
       const packageDatesArray = JSON.parse(this.state.item.dates);
       let matched = false;
-      for ( var value of packageDatesArray ){
-        const packageDate = new Date( value ); 
+      for (var value of packageDatesArray) {
+        const packageDate = new Date(value);
         const packageYear = packageDate.getFullYear();
         const packageMonth = packageDate.getMonth();
         const packageDay = packageDate.getDate();
-      if ( packageYear === year && packageMonth === month && packageDay === day ){
-        return true
+        if (packageYear === year && packageMonth === month && packageDay === day) {
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-    }
-    
+
   }
 
   nextDay(month, day) {
@@ -236,31 +236,31 @@ class PackageDetails extends Component {
     return 1;
   }
 
-  bookHandler( dates){
+  bookHandler(dates) {
     const packageId = this.state.item.id;
     // for ( const dates of dateArray ){
-      // console.log( dates );
-      fetch('api/booking.php', {
-        method: 'POST',
-        body: JSON.stringify({ packageId , dates })
-      })
-      .then( res => res.json() )
-      .then( data => console.log( data ))
+    // console.log( dates );
+    fetch('api/booking.php', {
+      method: 'POST',
+      body: JSON.stringify({ packageId, dates })
+    })
+      .then(res => res.json())
+      .then(data => console.log(data));
     // }
   }
 
   componentDidMount() {
     fetch(`api/profile.php?email=${this.props.location.state.item.profileEmail}`)
       .then(res => res.json())
-      .then(response => this.setState({ package: response }))
+      .then(response => this.setState({ package: response }));
 
     const id = this.props.match.params.id;
     fetch('/api/package.php?id=' + id)
       .then(res => res.json())
-      .then(item => this.setState({ item: item[0] }, () => this.getImages ))
+      .then(item => this.setState({ item: item[0] }, () => this.getImages));
   }
 
-  getImages(){
+  getImages() {
     let images = JSON.parse(this.state.item.images);
     let mainImage = this.state.item.mainImage;
     images.unshift(mainImage);
@@ -268,7 +268,7 @@ class PackageDetails extends Component {
   }
 
   render() {
-    console.log(" PROPS", this.props.location.state.item)
+    console.log(' PROPS', this.props.location.state.item);
     const { classes } = this.props;
     if (!this.state.item) return null;
     return (
@@ -280,8 +280,8 @@ class PackageDetails extends Component {
           <CardMedia
             className={classes.media}
             image={ this.state.cardImg }
-            />
-          </Card>
+          />
+        </Card>
           <Grid container justify="center" direction="row">
             <div style={divStyle} className={classes.productPreview} onClick={this.changeImage}>
               <img id="0" style={imgStyle} src={this.state.images ? this.state.images[0] : null} alt={this.props.location.state.item.title}/>
@@ -321,49 +321,49 @@ class PackageDetails extends Component {
                     image={ this.state.package ? this.state.package.image : null}
                   />
                 </Grid>
-              <Grid item xs={8}>
-                <CardContent>
-                  <Typography variant="body1">
+                <Grid item xs={8}>
+                  <CardContent>
+                    <Typography variant="body1">
                     Meet your Guide
-                  </Typography>
-                  <Typography variant="h5">
-                    {this.state.package ? this.state.package.name : null }
-                  </Typography>
-                </CardContent>
+                    </Typography>
+                    <Typography variant="h5">
+                      {this.state.package ? this.state.package.name : null }
+                    </Typography>
+                  </CardContent>
 
-                <CardContent>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    {this.state.package ? this.state.package.bio : null}
-                  </Typography>
-                </CardContent>
+                  <CardContent>
+                    <Typography variant="subtitle1" color="textSecondary">
+                      {this.state.package ? this.state.package.bio : null}
+                    </Typography>
+                  </CardContent>
+                </Grid>
               </Grid>
+            </Card>
+          </CardContent>
+
+          <Grid justify="center" container>
+            <Grid container justify="center" >
+              <ThemeProvider theme={theme}>
+                <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({ openModal: true })}>
+                  <Typography variant="body1" gutterBottom>Available Dates</Typography>
+                </Button>
+              </ThemeProvider>
             </Grid>
-          </Card>
-        </CardContent>
 
-        <Grid justify="center" container>
-          <Grid container justify="center" >
-            <ThemeProvider theme={theme}>
-              <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({ openModal: true })}>
-                <Typography variant="body1" gutterBottom>Available Dates</Typography>
-              </Button>
-            </ThemeProvider>
+            <Grid item xs={11} >
+              <Modal
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+                open={this.state.openModal}
+                onClose={() => this.handleModalClose(this.state.dates)}
+              >
+                <Grid className={classes.paper}>
+                  <DatePicker dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                </Grid>
+              </Modal>
+            </Grid>
           </Grid>
-
-          <Grid item xs={11} >
-            <Modal
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-              open={this.state.openModal}
-              onClose={() => this.handleModalClose(this.state.dates)}
-            >
-              <Grid className={classes.paper}>
-                <DatePicker dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
-              </Grid>
-            </Modal>
-          </Grid>
-        </Grid>
-      </Card>
+        </Card>
       </>
     );
   }

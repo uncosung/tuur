@@ -27,14 +27,14 @@ class App extends Component {
   }
 
   setView(name, user, location) {
-      this.setState({
-        view: name,
-        location: {
-          name: location.name,
-          coordinates: location.coordinates,
-          toggleStatus: !location.toggleStatus
-        } 
-      });
+    this.setState({
+      view: name,
+      location: {
+        name: location.name,
+        coordinates: location.coordinates,
+        toggleStatus: !location.toggleStatus
+      }
+    });
 
   }
 
@@ -43,7 +43,7 @@ class App extends Component {
     console.log('searched');
     this.setState({
       location: prop
-    })
+    });
 
   }
 

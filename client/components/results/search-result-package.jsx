@@ -5,7 +5,6 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import SearchPackageItem from './search-result-package-item';
 
-
 const styles = theme => ({
   marginTop: {
     marginTop: theme.spacing(3)
@@ -44,16 +43,15 @@ class SearchPackages extends Component {
   //   .then( res => res.json() )
   //   .then( packages => this.setState( { packages } ) )
 
-    componentDidMount() {
+  componentDidMount() {
     fetch('/api/package.php')
       .then(res => res.json())
       .then(packages => this.setState({ packages }));
-    }
-  
-  
+  }
+
   renderPackage() {
     const packages = this.state.packages.map((item, id) => {
-      return <SearchPackageItem key={id} item={ item } />
+      return <SearchPackageItem key={id} item={ item } />;
     });
     return packages;
   }

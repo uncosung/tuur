@@ -65,6 +65,15 @@ class DatePicker extends Component {
     this.props.booking(this.state.dates);
   }
 
+  nextDay() {
+    let today = new Date();
+    const dd = today.getDate() + 1;
+    const mm = today.getMonth() + 1;
+    const yyyy = today.getFullYear();
+    today = `${mm}/${dd}/${yyyy}`;
+    return today;
+  }
+
   render() {
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
@@ -89,7 +98,7 @@ class DatePicker extends Component {
           onSelect={date => {
             this.setDate(date);
           }}
-          minDate= { new Date() }
+          minDate= { new Date(this.nextDay())}
           maxDate= { this.props.unavailableDates.maxDate }
           disabledDates = { (this.props.unavailableDates) ? this.props.unavailableDates.disabledList : null }
           className={classes.marginBottom}
