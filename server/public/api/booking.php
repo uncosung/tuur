@@ -1,20 +1,21 @@
 <?php
 require_once 'db_connection.php';
+require_once 'functions.php';
 session_start();
 header("Content-Type:application/json");
 $method = $_SERVER['REQUEST_METHOD'];
 $item = file_get_contents('php://input');
 $email = $_SESSION['userEmail'];
 $tuuristId = $_SESSION['id'];
+$email = 'pam@dundermifflin.com';
 
 if ( $method === "POST"){
   $output = json_decode( $item , true );
   $pickedDates = json_encode( $output['dates']);
-  print_r( $pickedDates );
-  $query = "INSERT INTO `booking` (`id`, `tuuristId`, `packageId`, `bookedAt`, `dates`, `tuuristEmail`) 
+
+  $query = "INSERT INTO  `booking` (`id`, `tuuristId`, `packageId`, `bookedAt`, `dates`, `tuuristEmail`) 
             VALUES (NULL, '{$tuuristId}', '{$output['packageId']}', CURRENT_TIMESTAMP, '{$pickedDates}', '{$email}')";
   $result = mysqli_query( $conn, $query );
-  // print_r( json_encode( ['auth' => $result]));
 
   if ( $result ){
     $getQuery = "SELECT `dates` from `package` WHERE `id` = {$output['packageId']}";
@@ -42,47 +43,55 @@ if ( $method === "POST"){
         }
       }
     }
-    }
-    $packageDates = join( ',', $packageDates );
-    $updateQuery = "UPDATE `package`
-    SET `dates`= '[" . $packageDates . "]'
-    WHERE `id` = {$output['packageId']}";
-    $updateResult = mysqli_query( $conn , $updateQuery );
-    print_r ( json_encode( ['auth' => $result ]));
-
-
-
-
-    // print_r( $updateQuery );
-    // $updateResult = mysqli_query( $conn, $updateQuery );
-    // print_r( $updateResult );
-
+    print_r( json_encode( ['auth' => $result]));
   }
-  // if ( $result ){
-  //   $query = "DELETE FROM `package` WHERE id = {$output['packageId']}";
-  //   $result = mysqli_query( $conn, $query );
-  // }
-  // print_r( json_encode( ['auth' => $result]));
-
-// }
-
+  $packageDates = join( ',', $packageDates );
+  $updateQuery = "UPDATE `package`
+  SET `dates`= '[" . $packageDates . "]'
+  WHERE `id` = {$output['packageId']}";
+  $updateResult = mysqli_query( $conn , $updateQuery );
+  print_r ( json_encode( ['auth' => $result ]));
+}
 if ( $method === "GET"){
-  $query = "SELECT `book`.id, `pack`.title, `pack`.description, `pack`.tags, 
-  `pack`.location, `pack`.timeRange, `pack`.mainImage, `pack`.images, `pack`.profileEmail AS guideEmail,
-  `book`.tuuristEmail, `book`.dates, 
-  `pro`.image AS guideImage
-  FROM `package` AS pack
-  JOIN booking AS book on `book`.packageId = `pack`.id 
-  JOIN profile AS pro on `pack`.profileEmail = `pro`.email 
-  WHERE `book`.tuuristEmail = '{$email}'";
-  $result = mysqli_query( $conn , $query );
-  $output = [];
+  if ( isset( $_GET['id'] ) ){
+    $bookedPackageQuery = "SELECT `book`.packageId, `pack`.title, `pack`.description, `pack`.tags, `pack`.location, `pack`.timeRange ,
+    GROUP_CONCAT( `book`.dates ORDER BY `book`.dates DESC SEPARATOR ', ' ) AS dates, `pack`.mainImage, `pack`.images, `pack`.profileEmail 
+    FROM `booking` AS book JOIN `package` AS pack ON `book`.packageId = `pack`.id 
+    GROUP BY `book`.packageId
+    -- WHERE `book`.tuuristEmail = $email
+    ";
+    $result = mysqli_query( $conn , $bookedPackageQuery );
+    if ( !$result ){
+      mysqli_error( $conn );
+    }
 
+    while ( $row = mysqli_fetch_assoc( $result )){
+      $bookedPackages[] = $row;
+    }
+    print_r( json_encode($bookedPackages) );
+  } else {
+    $query = "SELECT `book`.id, `pack`.id AS packageId, `pack`.title, `pack`.description, `pack`.tags, 
+    `pack`.location, `pack`.timeRange, `pack`.mainImage, `pack`.images, `pack`.profileEmail AS guideEmail,
+    `book`.tuuristEmail, `book`.dates, 
+    `pro`.image AS guideImage
+    FROM `package` AS pack
+    JOIN booking AS book on `book`.packageId = `pack`.id 
+    JOIN profile AS pro on `pack`.profileEmail = `pro`.email 
+    WHERE `book`.tuuristEmail = '{$email}'";
+    $result = mysqli_query( $conn , $query );
+    $output = [];
+
+  if ( !$result ){
+    mysqli_error( $conn );
+    throw new Exception('Error ', $result );
+  }
+  
   while ( $row = mysqli_fetch_assoc( $result) ){
     $output[] = $row;
   }
 
   print_r( json_encode( $output ));
+  }
 }
 
 ?>

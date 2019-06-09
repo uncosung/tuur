@@ -238,9 +238,8 @@ class PackageDetails extends Component {
 
   bookHandler(dates) {
     const packageId = this.state.item.id;
-    // for ( const dates of dateArray ){
-    // console.log( dates );
-    fetch('api/booking.php', {
+    console.log( dates );
+    fetch('/api/booking.php', {
       method: 'POST',
       body: JSON.stringify({ packageId, dates })
     })
@@ -250,7 +249,7 @@ class PackageDetails extends Component {
   }
 
   componentDidMount() {
-    fetch(`api/profile.php?email=${this.props.location.state.item.profileEmail}`)
+    fetch(`/api/profile.php?email=${this.props.location.state.item.profileEmail}`)
       .then(res => res.json())
       .then(response => this.setState({ package: response }));
 
@@ -358,7 +357,7 @@ class PackageDetails extends Component {
                 onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                  <DatePicker booking={ this.bookHandler } dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
                 </Grid>
               </Modal>
             </Grid>
