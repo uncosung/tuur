@@ -45,7 +45,7 @@ class Search extends Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
-    
+
     // this.routeChange=this.routeChange.bind(this);
   }
 
@@ -109,7 +109,7 @@ class Search extends Component {
            {/* <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/results/' + this.state.location}> */}
            <Button type="button" fullWidth variant="contained" color="primary" component={Link} onClick={this.handleClick}>
              {/* <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}> */}
-            <Typography variant="body1" gutterBottom>Search</Typography>
+             <Typography variant="body1" gutterBottom>Search</Typography>
            </Button>
          </ThemeProvider>
        </Grid>
