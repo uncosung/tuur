@@ -238,15 +238,12 @@ class PackageDetails extends Component {
 
   bookHandler(dates) {
     const packageId = this.state.item.id;
-    // for ( const dates of dateArray ){
-    // console.log( dates );
     fetch('api/booking.php', {
       method: 'POST',
       body: JSON.stringify({ packageId, dates })
     })
       .then(res => res.json())
       .then(data => console.log(data));
-    // }
   }
 
   componentDidMount() {
@@ -268,7 +265,6 @@ class PackageDetails extends Component {
   }
 
   render() {
-    console.log(' PROPS', this.props.location.state.item);
     const { classes } = this.props;
     if (!this.state.item) return null;
     return (

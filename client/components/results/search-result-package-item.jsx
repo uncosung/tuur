@@ -31,19 +31,12 @@ const styles = theme => ({
 class SearchPackageItem extends Component {
   constructor(props) {
     super(props);
-    this.clickHandler = this.clickHandler.bind(this);
-  }
-
-  clickHandler() {
-    this.props.view('detail', this.props.item);
   }
 
   render() {
     const { classes } = this.props;
-    // console.log( 'inside search package item ', this.props.item )
     return (
       <>
-        {/* <Card className={classes.card} onClick={ this.clickHandler } >	  */}
         <Card className={classes.card} component={Link} to={{ pathname: `/package-details/ ${this.props.item.id}`, state: { item: this.props.item } }} >
           <CardHeader
             title={ this.props.item.title }

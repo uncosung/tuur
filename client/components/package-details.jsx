@@ -13,8 +13,8 @@ import Alarm from '@material-ui/icons/Alarm';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import DatePicker from './date-multiple-picker';
 import Modal from '@material-ui/core/Modal';
-import CalendarToday from '@material-ui/icons/CalendarToday';
-import carouselImage from './package-detail-carousel-item';
+// import CalendarToday from '@material-ui/icons/CalendarToday';
+// import carouselImage from './package-detail-carousel-item';
 
 const divStyle = {
   width: '47px',
@@ -253,7 +253,6 @@ class PackageDetails extends Component {
   }
 
   componentDidMount() {
-    // fetch( `/api/package.php?id=${this.props.item.id}`)
     console.log(this.props.match.params);
     const id = this.props.match.params.id;
     fetch('/api/package.php?id=' + id)
@@ -269,7 +268,6 @@ class PackageDetails extends Component {
       .then(res => res.json())
       .then(response => {
         this.setState({ package: response });
-        // console.log('this.state.package on componentDidMount:', this.state.package);
       });
   }
 
@@ -279,8 +277,7 @@ class PackageDetails extends Component {
 
   render() {
     const { classes } = this.props;
-    // if (!this.state.item) return null;
-    console.log('inside packagedetails ', this.state.images);
+    if (!this.state.item) return null;
     return (
       <>
             <Card className={classes.card}>
