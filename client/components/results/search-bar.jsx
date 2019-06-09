@@ -261,85 +261,85 @@ class SearchBar extends Component {
     const { classes } = this.props;
     return (
       <>
-        <ThemeProvider theme={theme}>
-          <AppBar position="static" justify="center" color="primary" className={classes.appBar}>
-            <Grid container className={classes.inputContainer} >
-              <Grid item xs={8} className={classes.appBar} >
-                <MatGeocoder
-                  inputPlaceholder="Where do you want to go?"
-                  accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
-                  showLoader={true}
-                  autocomplete={true}
-                  fuzzyMatch={true}
-                  {...geocoderApiOptions}
-                  onSelect={this.handleSelect}
-                  inputTextFieldProps={{
-                    fullWidth: true,
-                    classes: {
-                      root: classes.textField
-                    }
-                  }}
-                  showInputContainer={false}
-                  inputClasses={{
-                    root: classes.input
-                  }}
-                  inputContainerProps={{
-                    classes: {
-                      root: classes.textField
-                    }
-                  }}
-                />
-              </Grid>
-              <Grid item xs={2} className={classes.appBar}>
-                <Button className={classes.marginLeft} type="submit" variant="contained" onClick={() => { this.props.handleSearch(this.state.location); }} color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
-              </Grid>
-            </Grid>
+         <ThemeProvider theme={theme}>
+           <AppBar position="static" justify="center" color="primary" className={classes.appBar}>
+             <Grid container className={classes.inputContainer} >
+               <Grid item xs={8} className={classes.appBar} >
+                 <MatGeocoder
+                   inputPlaceholder="Where do you want to go?"
+                   accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
+                   showLoader={true}
+                   autocomplete={true}
+                   fuzzyMatch={true}
+                   {...geocoderApiOptions}
+                   onSelect={this.handleSelect}
+                   inputTextFieldProps={{
+                     fullWidth: true,
+                     classes: {
+                       root: classes.textField
+                     }
+                   }}
+                   showInputContainer={false}
+                   inputClasses={{
+                     root: classes.input
+                   }}
+                   inputContainerProps={{
+                     classes: {
+                       root: classes.textField
+                     }
+                   }}
+                 />
+               </Grid>
+               <Grid item xs={2} className={classes.appBar}>
+                 <Button className={classes.marginLeft} type="submit" variant="contained" onClick={() => { this.props.handleSearch(this.state.location); }} color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
+               </Grid>
+             </Grid>
 
-            <Grid container className={classes.buttonContainer}>
-              <Grid item xs={3} className={classes.buttonDiv}>
-                <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary" onClick={() => this.setState({ openModal: true })}>Dates</Button>
-              </Grid>
+             <Grid container className={classes.buttonContainer}>
+               <Grid item xs={3} className={classes.buttonDiv}>
+                 <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary" onClick={() => this.setState({ openModal: true })}>Dates</Button>
+               </Grid>
 
-              <Grid item xs={3}>
-                <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary">Filter
-                  <Select
-                    className={classes.width}
-                    multiple
-                    value={this.state.tags}
-                    onChange={this.handleChange}
-                  >
-                    {categories.map(name => (
-                      <MenuItem key={name} value={name}>
-                        <Typography className={classes.subtitle} variant="subtitle2" align="left" gutterBottom>
-                          {name}
-                        </Typography>
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Button>
-              </Grid>
+               <Grid item xs={3}>
+                 <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary">Filter
+                   <Select
+                     className={classes.width}
+                     multiple
+                     value={this.state.tags}
+                     onChange={this.handleChange}
+                   >
+                     {categories.map(name => (
+                       <MenuItem key={name} value={name}>
+                         <Typography className={classes.subtitle} variant="subtitle2" align="left" gutterBottom>
+                           {name}
+                         </Typography>
+                       </MenuItem>
+                     ))}
+                   </Select>
+                 </Button>
+               </Grid>
 
-              <Grid item xs={3} className={classes.display}>
-                <FormControlLabel control={
-                  <Switch checked={this.state.toggle} onChange={event => this.handleToggle(event)} />} label={this.state.toggle ? 'TO LIST' : 'TO MAP'} />
-              </Grid>
-            </Grid>
-          </AppBar>
-        </ThemeProvider>
+               <Grid item xs={3} className={classes.display}>
+                 <FormControlLabel control={
+                   <Switch checked={this.state.toggle} onChange={event => this.handleToggle(event)} />} label={this.state.toggle ? 'TO LIST' : 'TO MAP'} />
+               </Grid>
+             </Grid>
+           </AppBar>
+         </ThemeProvider>
 
-        <Grid item xs={10}>
-          <Modal
-            aria-labelledby="date-range-picker"
-            aria-describedby="date-range"
-            open={this.state.openModal}
-            onClose={() => this.handleModalClose(this.state.dates)}
-          >
-            <Grid className={classes.paper}>
-              <DateRangePicker key={this.state.title} close={this.handleModalClose} modalClose={this.modalClose}/>
-            </Grid>
-          </Modal>
-        </Grid>
-        { !this.state.location.toggleStatus ? <Mapbox location={this.props.location} /> : '' }
+         <Grid item xs={10}>
+           <Modal
+             aria-labelledby="date-range-picker"
+             aria-describedby="date-range"
+             open={this.state.openModal}
+             onClose={() => this.handleModalClose(this.state.dates)}
+           >
+             <Grid className={classes.paper}>
+               <DateRangePicker key={this.state.title} close={this.handleModalClose} modalClose={this.modalClose}/>
+             </Grid>
+           </Modal>
+         </Grid>
+         { !this.state.location.toggleStatus ? <Mapbox location={this.props.location} /> : '' }
       </>
     );
   }

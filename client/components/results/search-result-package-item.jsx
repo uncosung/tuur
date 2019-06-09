@@ -39,7 +39,7 @@ class SearchPackageItem extends Component {
   }
 
   render() {
-    const { classes } = this.props;«
+    const { classes } = this.props;
     // console.log( 'inside search package item ', this.props.item )
     return (
       <>

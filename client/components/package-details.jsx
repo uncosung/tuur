@@ -253,16 +253,16 @@ class PackageDetails extends Component {
   }
 
   componentDidMount(){
-    fetch( `/api/package.php?id=${this.props.item.id}`)
-    // console.log(this.props.match.params)
-    // const id=this.props.match.params.id
-    // fetch( "/api/package.php?id=" + id)
+    // fetch( `/api/package.php?id=${this.props.item.id}`)
+    console.log(this.props.match.params)
+    const id=this.props.match.params.id
+    fetch( "/api/package.php?id=" + id)
     .then( res => res.json() )
     .then( item => this.setState( {item: item[0] } ))
 
     let images = JSON.parse(this.props.item.images);
-    let mainImage = this.props.item.mainImage;
-    images.unshift(mainImage);
+    // let mainImage = this.props.item.mainImage;
+    // images.unshift(mainImage);
     this.setState({ images });
 
     fetch(`api/profile.php?email=${this.props.item.profileEmail}`)

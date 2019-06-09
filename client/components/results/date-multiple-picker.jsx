@@ -44,7 +44,7 @@ class DatePicker extends Component {
     };
     this.setDate = this.setDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleBooking = this.handleBooking.bind( this );
+    this.handleBooking = this.handleBooking.bind(this);
   }
 
   setDate(date) {
@@ -61,8 +61,8 @@ class DatePicker extends Component {
     this.props.close(this.state.dates);
   }
 
-  handleBooking(){
-    this.props.booking( this.state.dates );
+  handleBooking() {
+    this.props.booking(this.state.dates);
   }
 
   nextDay(){
@@ -107,14 +107,14 @@ class DatePicker extends Component {
 
         <Grid className={classes.marginLeft} justify="center" alignItems="center" container>
           <Grid item xs={7} >
-          { this.props.unavailableDates.disabledList 
-            ? <Button onClick = {this.handleBooking } type="button" className={classes.margin} fullWidth variant="contained" color="primary">
+            { this.props.unavailableDates.disabledList
+              ? <Button onClick = {this.handleBooking } type="button" className={classes.margin} fullWidth variant="contained" color="primary">
                 <Typography variant="body1" gutterBottom>Book</Typography>
               </Button>
-            : <Button onClick = {this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
+              : <Button onClick = {this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
                 <Typography variant="body1" gutterBottom>Select Dates</Typography>
               </Button>
-          }
+            }
           </Grid>
         </Grid>
       </div>

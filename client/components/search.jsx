@@ -11,6 +11,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -42,7 +43,9 @@ class Search extends Component {
         coordinates: []
       }
     };
+    this.handleClick = this.handleClick.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    
     // this.routeChange=this.routeChange.bind(this);
   }
 
@@ -51,8 +54,8 @@ class Search extends Component {
   //   this.props.history.push(path);
   // }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  handleClick() {
+    this.props.search('/results', null, this.state.location);
   }
   handleSelect(result) {
     this.setState({
@@ -99,16 +102,18 @@ class Search extends Component {
         />
       </Grid>
 
-      <Grid justify="center" container>
-        <Grid className={classes.marginTop} container justify="center" >
-          <ThemeProvider theme={theme}>
-            <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}>
-              {/* <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}> */}
-              <Typography variant="body1" gutterBottom>Search</Typography>
-            </Button>
-          </ThemeProvider>
-        </Grid>
-      </Grid>
+     <Grid justify="center" container>
+       <Grid className={classes.marginTop} container justify="center" >
+         <ThemeProvider theme={theme}>
+
+           {/* <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/results/' + this.state.location}> */}
+           <Button type="button" fullWidth variant="contained" color="primary" component={Link} onClick={this.handleClick}>
+             {/* <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}> */}
+            <Typography variant="body1" gutterBottom>Search</Typography>
+           </Button>
+         </ThemeProvider>
+       </Grid>
+     </Grid>
 
     </>
     );
