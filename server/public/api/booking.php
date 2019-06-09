@@ -10,11 +10,9 @@ $tuuristId = $_SESSION['id'];
 if ( $method === "POST"){
   $output = json_decode( $item , true );
   $pickedDates = json_encode( $output['dates']);
-  print_r( $pickedDates );
   $query = "INSERT INTO `booking` (`id`, `tuuristId`, `packageId`, `bookedAt`, `dates`, `tuuristEmail`) 
             VALUES (NULL, '{$tuuristId}', '{$output['packageId']}', CURRENT_TIMESTAMP, '{$pickedDates}', '{$email}')";
   $result = mysqli_query( $conn, $query );
-  // print_r( json_encode( ['auth' => $result]));
 
   if ( $result ){
     $getQuery = "SELECT `dates` from `package` WHERE `id` = {$output['packageId']}";
@@ -51,20 +49,8 @@ if ( $method === "POST"){
     print_r ( json_encode( ['auth' => $result ]));
 
 
-
-
-    // print_r( $updateQuery );
-    // $updateResult = mysqli_query( $conn, $updateQuery );
-    // print_r( $updateResult );
-
   }
-  // if ( $result ){
-  //   $query = "DELETE FROM `package` WHERE id = {$output['packageId']}";
-  //   $result = mysqli_query( $conn, $query );
-  // }
-  // print_r( json_encode( ['auth' => $result]));
 
-// }
 
 if ( $method === "GET"){
   $query = "SELECT `book`.id, `pack`.title, `pack`.description, `pack`.tags, 
