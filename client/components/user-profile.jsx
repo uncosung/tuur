@@ -35,8 +35,8 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-
-    fetch(`api/profile.php?email=${this.props.email}`)
+    const email = this.props.match.params.email;
+    fetch('/api/profile.php?email='+ email)
       .then(res => res.json())
       .then(response => {
         return this.setState({

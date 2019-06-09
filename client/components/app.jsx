@@ -66,7 +66,7 @@ class App extends Component {
               <BottomNav />
             </div>
           }/>
-          <Route exact path="/user-profile"
+          <Route exact path="/user-profile/:email"
             render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
 
           <Route path="/results" render={props =>
