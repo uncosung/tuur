@@ -3,16 +3,15 @@ import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 
 class CarouselImage extends Component {
   constructor( props ){
-    this.super( props );
+    super( props );
   }
 
   render(){
-    console.log( 'carousel', this.props );
     const { classes } = this.props;
 
     return (
       <div style={divStyle} className={classes.productPreview} onClick={this.props.click }>
-        <img id="0" style={imgStyle} src={this.state.images ? this.state.images[0] : null} alt={this.props.item.title}/>
+        <img id={ this.props.id } style={imgStyle} src={ this.props.images }/>
       </div>
     )
   }
