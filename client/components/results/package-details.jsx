@@ -304,7 +304,7 @@ class PackageDetails extends Component {
           </CardContent>
           <CardContent>
 
-            <Card className={classes.card} component={Link} to={'/user-profile/' + this.props.location.state.item.profileEmail}>
+            <Card className={classes.card} component={Link} style={{ textDecoration: 'none' }} to={'/user-profile/' + this.props.location.state.item.profileEmail}>
               <Grid container>
                 <Grid item xs={4}>
                   <CardMedia
