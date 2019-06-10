@@ -35,16 +35,20 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    const email = this.props.match.params.email;
+    let email = this.props.match.params.email;
+    if ( !email ){
+      email = '';
+    }
     fetch('/api/profile.php?email='+ email)
       .then(res => res.json())
       .then(response => {
-        this.setState({
-          name: response.name,
-          location: response.location,
-          image: response.image,
-          isGuide: response.isGuide
-        });
+        console.log( response );
+        // this.setState({
+        //   name: response.name,
+        //   location: response.location,
+        //   image: response.image,
+        //   isGuide: response.isGuide
+        // });
       });
   }
 
