@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+
 import ItineraryItem from './itinerary-package-item';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 
 class Itinerary extends Component {
   constructor(props) {
@@ -12,6 +16,7 @@ class Itinerary extends Component {
   }
 
   packageCondition(){
+    console.log( this.state.packages );
     const packageArray = this.state.packages.map( (item , id ) => {
       if ( typeof item.dates === 'string'){
         const date = item.dates.replace( /[^a-zA-Z0-9-_.,:]/g,"");
@@ -20,7 +25,9 @@ class Itinerary extends Component {
         dateArray = this.dateCompleted( dateArray );
         item.dates = dateArray;
       }
-      item = this.dateCompleted( item.dates );
+      
+      item.dates = this.dateCompleted( item.dates );
+      console.log( 'item', item );
       return <ItineraryItem key={id} item={item} /> 
     })
     return packageArray;
@@ -42,11 +49,37 @@ class Itinerary extends Component {
       .then( packages => this.setState( { packages } ))
   }
 
-  render() {
-    return this.state.packages ? this.packageCondition() : null 
-
+  componentDidUpdate(){
+    fetch('/api/booking.php?id')
+      .then( res => res.json() )
+      .then( packages => this.setState( { packages } ))
   }
 
+  render() {
+    const { classes } = this.props;
+    console.log( this.state.packages )
+    return (
+      <>
+      <Container className={classes.marginBottom} >
+        <Typography className={classes.marginTop} variant="h4">
+          Booked Tuurs
+        </Typography>
+      </Container>
+      {this.state.packages ? this.packageCondition() : null}
+      </>
+    )
+  }
 }
 
-export default Itinerary;
+
+const styles = theme => ({
+  marginTop: {
+    marginTop: theme.spacing(3)
+  },
+  marginBottom: {
+    marginBottom: theme.spacing(2)
+  }
+});
+
+export default withStyles(styles)(Itinerary);
+

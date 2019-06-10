@@ -162,7 +162,6 @@ class SearchBar extends Component {
     super(props);
     this.state = {
       // toggle: this.props.toggleStatus,
-      toggle: this.props.location.toggleStatus,
       openModal: false,
       tags: [],
       dates: {
@@ -170,9 +169,13 @@ class SearchBar extends Component {
         end: null
       },
       location: {
+        name: this.props.location.name,
+        coordinates: this.props.location.coordinates,
+        toggleStatus: !this.props.location.toggleStatus
+      },
+      searchParameters: {
         name: '',
         coordinates: [],
-        toggleStatus: true
       }
     };
     this.handleToggle = this.handleToggle.bind(this);
@@ -180,16 +183,16 @@ class SearchBar extends Component {
     this.handleModalClose = this.handleModalClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
 
   }
   handleSelect(result) {
     this.setState({
-      location: {
+      searchParameters: {
         name: result.place_name,
-        coordinates: result.geometry.coordinates
+        coordinates: result.geometry.coordinates,
+        toggleStatus: !this.state.location.toggleStatus
       }
-    }, () => {
-      this.props.handleSearch(this.state.location);
     });
   }
   handleChange(event) {
@@ -212,7 +215,7 @@ class SearchBar extends Component {
       ...this.state,
       location: {
         ...this.state.location,
-        toggleStatus: !this.state.location.toggleStatus
+        toggleStatus: !this.state.location.toggleStatus      
       }
     };
 
@@ -246,9 +249,24 @@ class SearchBar extends Component {
     this.setState({ openModal: false });
   }
   handleSearch() {
-
+    console.log('search location', this.state)
+    if (this.state.tags.length === 0 ){
+      return
+    }
+    this.setState({
+      location: {
+        tags: this.state.tags
+      }
+    }, () => {
+      this.props.handleSearch(this.state.searchParameters, this.state.tags)
+    })
+    
+  }
+  componentDidMount() {
+    console.log('mounteddddd', this.props)
   }
   render() {
+    console.log('rendered', this.state, this.props)
     const geocoderApiOptions = {
       country: 'us',
       proximity: { longitude: -118.243683, latitude: 34.052235 }
@@ -286,7 +304,7 @@ class SearchBar extends Component {
                  />
                </Grid>
                <Grid item xs={2} className={classes.appBar}>
-                 <Button className={classes.marginLeft} type="submit" variant="contained" onClick={() => { this.props.handleSearch(this.state.location); }} color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
+                 <Button className={classes.marginLeft} type="submit" variant="contained" onClick={this.handleSearch} color="default" style={{ fontSize: '1.1rem', padding: 3 }}>Go</Button>
                </Grid>
              </Grid>
 
@@ -334,7 +352,7 @@ class SearchBar extends Component {
              </Grid>
            </Modal>
          </Grid>
-         { !this.state.location.toggleStatus ? <Mapbox location={this.props.location} /> : '' }
+         { !this.state.location.toggleStatus ? <Mapbox tags={this.props.tags} location={this.props.location} /> : '' }
       </>
     );
   }

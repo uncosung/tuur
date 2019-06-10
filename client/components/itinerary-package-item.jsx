@@ -30,16 +30,20 @@ class ItineraryItem extends Component {
     });
   }
 
+  currentDate(){
+    const firstDate = new Date(this.props.item.dates[0])
+    const yyyy = firstDate.getFullYear();
+    const mm = firstDate.getMonth();
+    const dd = firstDate.getDate();
+    const day = String(firstDate).slice( 0, 3)
+    return `${day}, ${mm}-${dd}-${yyyy}`
+  }
+
   render() {
     const { classes } = this.props;
     const { title, timeRange, tags, profileEmail, mainImage, location, images, description, dates } = this.props.item;
     return (
       <>
-        <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h4">
-            Booked Tuurs
-          </Typography>
-        </Container>
         <Card className={classes.card}>
           <CardHeader
             title={title}
@@ -47,7 +51,7 @@ class ItineraryItem extends Component {
           />
           <CardMedia
             className={classes.media}
-            image={images}
+            image={mainImage}
             title={title}
           />
           <CardContent>
@@ -69,7 +73,7 @@ class ItineraryItem extends Component {
           </CardActions>
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              <Typography paragraph>Trip:</Typography>
+              <Typography paragraph>Trip: {this.currentDate()}</Typography>
               <Typography paragraph>
                 {description}
             </Typography>
@@ -91,12 +95,6 @@ const theme = createMuiTheme({
 });
 
 const styles = theme => ({
-  marginTop: {
-    marginTop: theme.spacing(3)
-  },
-  marginBottom: {
-    marginBottom: theme.spacing(2)
-  },
   card: {
     maxWidth: 400
   },

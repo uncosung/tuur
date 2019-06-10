@@ -28,7 +28,7 @@ class SearchPackages extends Component {
   }
 
   componentDidMount() {
-    console.log('mounted', this.props)
+    console.log('mounted', this.state)
 
     fetch('/api/package.php')
       .then(res => res.json())
@@ -37,7 +37,6 @@ class SearchPackages extends Component {
 
   renderPackage() {
     const packages = this.state.filteredTuurs.map((item, id) => {
-      console.log('finding details', item, id)
       return <SearchPackageItem key={id} item={ item.tuur } />;
     });
     return packages;
@@ -71,7 +70,6 @@ class SearchPackages extends Component {
 
   }
   filterTuurs() {
-    console.log('filtering', this.state)
     let filterTuurs = [];
     let tooFar = [];
     for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
@@ -83,11 +81,44 @@ class SearchPackages extends Component {
     }
     this.setState({
       filteredTuurs: filterTuurs
-    }, () => console.log('filtered!', this.state.filteredTuurs));
+    }, () => {
+      if (this.props.tags.length > 0){
+        this.filterTags();
+      }
+    });
 
   }
-
+  filterTags () {
+    let tagArray = [];
+    for (let i = 0; i < this.state.filteredTuurs.length; i++){
+      for (let j = 0; j < this.props.tags.length; j++){
+        for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
+          if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
+            tagArray = [...tagArray, this.state.filteredTuurs[i]]
+          }
+        }
+      }
+    }
+    for (let h = 0; h < tagArray.length; h++){
+      for (let g = h+1; g < tagArray.length; g++){
+        if (tagArray[h] === tagArray[g]){
+          console.log('this tuur already exists')
+          tagArray.splice(g, 1)
+        }
+      }
+    }
+    if (tagArray.length === 0){
+      return
+    }
+    this.setState ({
+      filteredTuurs: tagArray
+    }, () => console.log('final filter', this.state.filteredTuurs))
+  }
+  componentDidUpdate() {
+    console.log('results updated', this.props, this.state)
+  }
   render() {
+    console.log('result props', this.props)
     const { classes } = this.props;
     return (
       <>

@@ -14,8 +14,9 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import DatePicker from './date-multiple-picker';
 import Modal from '@material-ui/core/Modal';
 // import CalendarToday from '@material-ui/icons/CalendarToday';
-import { Link } from 'react-router-dom';
 import CarouselImage from './package-detail-carousel-item';
+import { Link } from 'react-router-dom';
+
 
 const divStyle = {
   width: '47px',
@@ -122,7 +123,7 @@ class PackageDetails extends Component {
       item: null,
       status: null,
       images: [],
-      cardImg: this.props.location.state.item.mainImage
+      cardImg: this.props.location.state.item.mainImage,
     };
     this.changeImage = this.changeImage.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
@@ -239,12 +240,16 @@ class PackageDetails extends Component {
 
   bookHandler(dates) {
     const packageId = this.state.item.id;
-    fetch('/api/booking.php', {
-      method: 'POST',
-      body: JSON.stringify({ packageId, dates })
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));
+    if ( dates ){
+      console.log( 'inside package detail', dates );
+      fetch('/api/booking.php', {
+        method: 'POST',
+        body: JSON.stringify({ packageId, dates })
+      })
+        .then(res => res.json())
+        .then(data => console.log( data ));
+    }
+
   }
 
   componentDidMount() {
