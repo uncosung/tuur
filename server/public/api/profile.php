@@ -1,6 +1,8 @@
 <?php
 
 require_once 'db_connection.php';
+require_once 'functions.php';
+set_exception_handler( 'error_handler');
 session_start();
 header("Content-Type:application/json");
 $method = $_SERVER['REQUEST_METHOD'];
@@ -31,6 +33,9 @@ if ($method === 'POST'){
 }
 elseif ($method === 'GET'){
     $email = $_GET['email'];
+    if ( empty( $email )){ 
+        print_r( json_encode( ['auth' => false] ) );
+    } else {
     $query = "SELECT
     `profile`.`id`, `profile`.`name`, `profile`.`email`, `profile`.`location`, `profile`.`image`, `profile`.`bio`, `profile`.`isGuide`
     FROM `profile`
@@ -49,9 +54,9 @@ elseif ($method === 'GET'){
     $json_output = json_encode($output);
     $_SESSION['userEmail'] = $email;
     $_SESSION['id'] = $output['id'];
-    
     // $_SESSION['userData'] = $json_output;
     print_r($json_output);
+    }
 }
 elseif ($method === 'PATCH'){
 	$output = json_decode($item, true);
