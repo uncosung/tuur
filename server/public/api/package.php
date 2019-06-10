@@ -9,13 +9,9 @@ $tuuristId = $_SESSION['id'];
 $email = 'dPaschal@gmail.com';
 
 if ( $method === 'GET'){
-  // if ( $id ){
     if ( isset($_GET['id'])){
       $id=$_GET['id'];
       $where = " WHERE `id` = '{$id}'";
-    // SELECT id, title, description, tags, location,timeRange, mainImage, images, profileEmail, GROUP_CONCAT( dates ) FROM `package` 
-    // WHERE title = 'TEST' 
-    // GROUP BY id
   }
   else {
     $where = '';
@@ -40,8 +36,5 @@ if ( $method === 'POST'){
 
   $result = mysqli_query($conn, $query);
   print_r( $result );
-}
-if ( $method === 'PATCH'){
-
 }
 ?>
