@@ -24,11 +24,11 @@ class BottomNav extends Component {
 
   render() {
     const { classes } = this.props;
-    let path=null;
-    if(!this.props.user){
-      path='/login'
-    }else{
-      path='/user-view-profile'
+    let path = null;
+    if (!this.props.user) {
+      path = '/login';
+    } else {
+      path = '/user-view-profile';
     }
     return (
       <BottomNavigation

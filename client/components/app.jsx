@@ -28,11 +28,11 @@ class App extends Component {
   }
 
   setView(name, user, location) {
-    if(!location){
+    if (!location) {
       this.setState({
         user
-      })
-      return
+      });
+      return;
     }
     this.setState({
       view: name,
@@ -76,14 +76,13 @@ class App extends Component {
           }/>
           <Route exact path="/user-view-profile/:email"
             render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav user={this.state.user}/></div>}/>
-          
-          <Route exact path="/user-profile/:email"
-            render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>, 
-            <BottomNav user={this.state.user} />
-            </div>}
-            /> 
 
-          
+          <Route exact path="/user-profile/:email"
+            render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>,
+              <BottomNav user={this.state.user} />
+            </div>}
+          />
+
           <Route path="/results" render={props =>
             <div>
               <Results location={this.state.location} search={this.handleSearch}/>

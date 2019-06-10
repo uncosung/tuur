@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import {Route, Redirect} from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 const styles = theme => ({
   marginTop: {
@@ -32,7 +32,7 @@ class UserProfile extends Component {
       location: '',
       image: '',
       isGuide: undefined,
-      auth:''
+      auth: ''
     };
   }
 
@@ -45,21 +45,20 @@ class UserProfile extends Component {
       .then(res => res.json())
       .then(response => {
         console.log(response);
-          this.setState({
-            name: response.name,
-            location: response.location,
-            image: response.image,
-            isGuide: response.isGuide,
-            auth:response.auth
-          });    
+        this.setState({
+          name: response.name,
+          location: response.location,
+          image: response.image,
+          isGuide: response.isGuide,
+          auth: response.auth
+        });
       });
   }
-
 
   render() {
     const { classes } = this.props;
 
-    console.log(this.props)
+    console.log(this.props);
     return (
       <>
       <Container className={classes.marginBottom} >
