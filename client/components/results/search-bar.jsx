@@ -316,7 +316,7 @@ class SearchBar extends Component {
 
                <Grid item xs={3} className={classes.display}>
                  <FormControlLabel control={
-                   <Switch checked={this.state.toggle} onChange={event => this.handleToggle(event)} />} label={this.state.toggle ? 'TO LIST' : 'TO MAP'} />
+                   <Switch checked={!this.state.location.toggleStatus} onChange={event => this.handleToggle(event)} />} label={this.state.location.toggleStatus ? 'TO MAP' : 'TO LIST'} />
                </Grid>
              </Grid>
            </AppBar>
