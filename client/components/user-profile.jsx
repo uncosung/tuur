@@ -43,12 +43,12 @@ class UserProfile extends Component {
       .then(res => res.json())
       .then(response => {
         console.log( response );
-        // this.setState({
-        //   name: response.name,
-        //   location: response.location,
-        //   image: response.image,
-        //   isGuide: response.isGuide
-        // });
+        this.setState({
+          name: response.name,
+          location: response.location,
+          image: response.image,
+          isGuide: response.isGuide
+        });
       });
   }
 
