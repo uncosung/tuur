@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import {Redirect} from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -29,7 +30,9 @@ class LogIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: ''
+      email: '',
+      auth:false,
+      user:null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -44,10 +47,24 @@ class LogIn extends React.Component {
     event.preventDefault();
     fetch(`/api/profile.php?email=${this.state.email}`)
       .then(res => res.json())
-      .then(data => this.props.view('search', data));
+      .then(data => {
+        if(data.auth){
+          this.setState({
+            auth:true,
+            email:data.email,
+            user:data
+          }, ()=>this.props.view(null,this.state.user, null))
+          
+        }
+      }
+      )
   }
   render() {
     const { classes } = this.props;
+    let path=null;
+    if(this.state.auth){
+        return <Redirect to={'/user-profile/' + this.state.email}/>
+    }
     return (
     <>
       <Grid justify="center" alignItems="center" container>
@@ -65,7 +82,7 @@ class LogIn extends React.Component {
       <Grid className={classes.marginTop} container justify="center" alignItems="flex-end">
         <Grid item xs={8}>
           <ThemeProvider theme={theme}>
-            <Button type="submit" className={classes.marginTop} onClick={ this.handleSubmit } fullWidth variant="contained" color="primary">
+            <Button type="submit" className={classes.marginTop} onClick={ this.handleSubmit }  fullWidth variant="contained" color="primary">
               <Typography variant="body1" gutterBottom>log in</Typography>
             </Button>
           </ThemeProvider>
