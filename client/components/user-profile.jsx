@@ -36,13 +36,13 @@ class UserProfile extends Component {
 
   componentDidMount() {
     let email = this.props.match.params.email;
-    if ( !email ){
+    if (!email) {
       email = '';
     }
-    fetch('/api/profile.php?email='+ email)
+    fetch('/api/profile.php?email=' + email)
       .then(res => res.json())
       .then(response => {
-        console.log( response );
+        console.log(response);
         this.setState({
           name: response.name,
           location: response.location,
