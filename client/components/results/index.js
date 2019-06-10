@@ -7,9 +7,9 @@ export default props => {
   console.log('props yo', props)
   return (
     <Fragment>
-      <SearchBar location={props.location} handleSearch={props.search}/>
+      <SearchBar tags={props.tags} location={props.location} handleSearch={props.search}/>
       <SearchResultGuide location={props.location} handleSearch={props.search}/>
-      <SearchPackages location={props.location} handleSearch={props.search}/>
+      <SearchPackages tags={props.tags} location={props.location} handleSearch={props.search}/>
     </Fragment>
   );
 };
