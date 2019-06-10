@@ -40,6 +40,7 @@ class UserProfile extends Component {
       .then(res => res.json())
       .then(response => {
         this.setState({
+      
           name: response.name,
           location: response.location,
           image: response.image,

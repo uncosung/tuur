@@ -37,7 +37,6 @@ class SearchPackages extends Component {
 
   renderPackage() {
     const packages = this.state.filteredTuurs.map((item, id) => {
-      console.log('finding details', item, id)
       return <SearchPackageItem key={id} item={ item.tuur } />;
     });
     return packages;
@@ -81,9 +80,7 @@ class SearchPackages extends Component {
         filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];
       }
     }
-    this.setState({
-      filteredTuurs: filterTuurs
-    }, () => console.log('filtered!', this.state.filteredTuurs));
+    this.setState({ filteredTuurs: filterTuurs});
 
   }
 
