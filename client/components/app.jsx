@@ -7,6 +7,7 @@ import Itinerary from './itinerary';
 import Results from './results';
 import Search from './search';
 import PackageDetails from './results/package-details';
+import UserViewProfile from './user-view-profile';
 
 class App extends Component {
   constructor(props) {
@@ -67,10 +68,11 @@ class App extends Component {
             </div>
           }/>
           <Route exact path="/user-profile/:email"
-            render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
+            render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
+          {/* render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/> */}
           <Route exact path="/user-profile"
             render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
-          
+
           <Route path="/results" render={props =>
             <div>
               <Results location={this.state.location} search={this.handleSearch}/>
