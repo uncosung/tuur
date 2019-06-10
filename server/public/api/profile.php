@@ -50,6 +50,7 @@ elseif ($method === 'GET'){
         $output['image'] = $row['image'];
         $output['bio'] = $row['bio'];
         $output['isGuide'] = $row['isGuide'] ? true : false;
+        $output['auth'] = true;
     }
     $json_output = json_encode($output);
     $_SESSION['userEmail'] = $email;

@@ -42,7 +42,7 @@ if ( $method === "POST"){
         }
       }
     }
-    print_r( json_encode( ['auth' => $result]));
+    // print_r( json_encode( ['auth' => $result]));
   }
   $packageDates = join( ',', $packageDates );
   $updateQuery = "UPDATE `package`

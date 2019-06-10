@@ -44,6 +44,7 @@ class UserProfile extends Component {
       .then(response => {
         console.log(response);
         this.setState({
+      
           name: response.name,
           location: response.location,
           image: response.image,
