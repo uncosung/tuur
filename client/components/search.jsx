@@ -19,6 +19,16 @@ const theme = createMuiTheme({
   }
 });
 
+const imgStyle = {
+  width: '100%',
+  height: '70px',
+  backgroundRepeat: 'norepeat',
+  backgroundSize: '100% 100%',
+  '&:hover': {
+    opacity: 1
+  }
+};
+
 const styles = theme => ({
   card: {
     maxWidth: 370
@@ -66,6 +76,7 @@ class Search extends Component {
 
     return (
     <>
+    <img style={imgStyle} src="https://files.slack.com/files-pri/T1EHQUJ8J-FKDRN6G4D/my_post__2_.png" alt="logo"/>
     <Card mt={0} className={classes.card}>
       <CardActionArea>
         <CardMedia
