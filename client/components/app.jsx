@@ -14,7 +14,7 @@ class App extends Component {
     super(props);
     this.state = {
       view: '',
-      user: {},
+      user: null,
       location: [],
       tags: []
     };
@@ -29,8 +29,15 @@ class App extends Component {
   }
 
   setView(name, user, location) {
+    if (!location) {
+      this.setState({
+        user
+      });
+      return;
+    }
     this.setState({
       view: name,
+      user,
       location: {
         name: location.name,
         coordinates: location.coordinates,
@@ -64,30 +71,33 @@ class App extends Component {
       <div>
         <Switch>
           <Route exact path="/login"
-            render={props => <LogIn {...props} isAuthed={true}/>}/>
+            render={props => <LogIn {...props} view={this.setView} isAuthed={true}/>}/>
 
           <Route exact path="/" render={props =>
             <div>
               <Search search={this.setView} />,
-              <BottomNav />
+              <BottomNav user={this.state.user}/>
             </div>
           }/>
           <Route exact path="/itinerary" render={props =>
             <div>
               <Itinerary />,
-              <BottomNav />
+              <BottomNav user={this.state.user}/>
             </div>
           }/>
+          <Route exact path="/user-view-profile/:email"
+            render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav user={this.state.user}/></div>}/>
+
           <Route exact path="/user-profile/:email"
-            render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
-          {/* render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/> */}
-          <Route exact path="/user-profile"
-            render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
+            render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>,
+              <BottomNav user={this.state.user} />
+            </div>}
+          />
 
           <Route path="/results" render={props =>
             <div>
               <Results key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
-              <BottomNav />
+              <BottomNav user={this.state.user}/>
             </div>
           }/>
           <Route path="/package-details/:id"

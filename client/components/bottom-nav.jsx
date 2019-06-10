@@ -19,10 +19,17 @@ const styles = theme => ({
 class BottomNav extends Component {
   constructor(props) {
     super(props);
+
   }
 
   render() {
     const { classes } = this.props;
+    let path = null;
+    if (!this.props.user) {
+      path = '/login';
+    } else {
+      path = '/user-view-profile';
+    }
     return (
       <BottomNavigation
         onChange={this.handleChange}
@@ -31,7 +38,7 @@ class BottomNav extends Component {
       >
         <BottomNavigationAction label="Home" icon={<Home />} component={Link} to={'/results'} />
         <BottomNavigationAction label="Itinerary" icon={<CardTravel />} component={Link} to={'/itinerary'} />
-        <BottomNavigationAction label="Account" icon={<AccountCircle />} component={Link} to={'/user-profile'} />
+        <BottomNavigationAction label="Account" icon={<AccountCircle />} component={Link} to={path} />
       </BottomNavigation>
     );
   }
