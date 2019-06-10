@@ -69,6 +69,13 @@ class Mapbox extends Component {
     }
     this.setState({
       filteredTuurs: filterTuurs
+    }, () => {
+      if (this.props.tags.length > 0){
+        this.filterTags();
+      }
+      else {
+        console.log('all filtered!', this.state.filteredTuurs)
+      }
     });
 
   }
@@ -91,6 +98,32 @@ class Mapbox extends Component {
       }, this.filterTuurs);
     });
 
+  }
+  filterTags () {
+    let tagArray = [];
+    for (let i = 0; i < this.state.filteredTuurs.length; i++){
+      for (let j = 0; j < this.props.tags.length; j++){
+        for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
+          if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
+            tagArray = [...tagArray, this.state.filteredTuurs[i]]
+          }
+        }
+      }
+    }
+    for (let h = 0; h < tagArray.length; h++){
+      for (let g = h+1; g < tagArray.length; g++){
+        if (tagArray[h] === tagArray[g]){
+          console.log('this tuur already exists', tagArray)
+          tagArray.splice(g, 1)
+        }
+      }
+    }
+    if (tagArray.length === 0){
+      return
+    }
+    this.setState ({
+      filteredTuurs: tagArray
+    }, () => console.log('map final filter' , this.state.filteredTuurs))
   }
   fetchLocation() {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
@@ -134,11 +167,10 @@ class Mapbox extends Component {
     );
   }
   render() {
-
     const { classes } = this.props;
-    const markerMap = this.state.filteredTuurs.map(marker => {
+    const markerMap = this.state.filteredTuurs.map((marker, index) => {
       return (
-        <Marker onClick={this.clickPin} key={marker.tuur.id} latitude={marker.coord[1]} longitude={marker.coord[0]}>
+        <Marker onClick={this.clickPin} key={index} latitude={marker.coord[1]} longitude={marker.coord[0]}>
           <TuurPin tuur={marker} onClick={() => this.setState({ popupInfo: marker }) } size={20} />
         </Marker>
       );
