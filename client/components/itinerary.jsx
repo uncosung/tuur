@@ -49,6 +49,12 @@ class Itinerary extends Component {
       .then( packages => this.setState( { packages } ))
   }
 
+  componentDidUpdate(){
+    fetch('/api/booking.php?id')
+      .then( res => res.json() )
+      .then( packages => this.setState( { packages } ))
+  }
+
   render() {
     const { classes } = this.props;
     console.log( this.state.packages )
