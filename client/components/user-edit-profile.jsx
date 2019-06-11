@@ -71,7 +71,7 @@ class EditProfile extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    const { name, email, location, bio, image } = this.state;
+    // const { name, email, location, bio, image } = this.state;
     if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length) {
       this.setState({
         inputErrors: {
@@ -84,7 +84,7 @@ class EditProfile extends Component {
       });
     } else {
       const { name, email, location, bio, image } = this.state;
-      fetch(`api/profile.php?email=${this.state.email}`, {
+      fetch('/api/profile.php?email=' + email, {
         method: 'PATCH',
         body: JSON.stringify({
           name: name,
@@ -95,13 +95,26 @@ class EditProfile extends Component {
         })
       })
         .then(res => res.json());
-      this.props.view('userProfile', this.state);
+      this.props.edit(this.state);
     }
+  }
+
+  componentDidMount() {
+    let { name, email, location, image, bio } = this.props.user;
+
+    this.setState({
+      name: name,
+      email: email,
+      location: location,
+      image: image,
+      bio: bio
+    });
   }
 
   render() {
     const { classes } = this.props;
-
+    console.log(this.props);
+    // if(!this.state) return null
     return (
             <>
             <Container className={classes.marginBottom} >
@@ -130,7 +143,7 @@ class EditProfile extends Component {
                     <AccountCircle fontSize='inherit' />
                   </Grid>
                   <Grid item xs={10}>
-                    <TextField required fullWidth id="input-name" label="Name" name="name" defaultValue={this.props.user.name} onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-name" label="Name" name="name" value={this.state.name} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
                 <Grid className={classes.margin} container alignItems="flex-end">
@@ -138,7 +151,7 @@ class EditProfile extends Component {
                     <Email fontSize='inherit' />
                   </Grid>
                   <Grid item xs={10}>
-                    <TextField required fullWidth id="input-email" label="Email" name="email" value={this.props.user.email} onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-email" label="Email" name="email" value={this.state.email} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
 
@@ -147,13 +160,13 @@ class EditProfile extends Component {
                     <LocationOn fontSize='inherit'/>
                   </Grid>
                   <Grid item xs={10}>
-                    <TextField required fullWidth id="input-location" label="location" name="location" value={this.props.user.location} onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-location" label="location" name="location" value={this.state.location} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
 
                 <Grid className={classes.margin} container alignItems="flex-end">
                   <Grid item xs={12}>
-                    <TextField required fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" value={this.props.user.image} onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" value={this.state.image} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
 
@@ -163,7 +176,7 @@ class EditProfile extends Component {
                       id='outlined-textarea'
                       label='Tell us about yourself'
                       required
-                      value={this.props.user.bio}
+                      value={this.state.bio}
                       multiline
                       fullWidth
                       rowsMax={3}
