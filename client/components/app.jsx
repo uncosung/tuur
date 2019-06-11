@@ -9,6 +9,8 @@ import Search from './search';
 import PackageDetails from './results/package-details';
 import UserViewProfile from './user-view-profile';
 import EditProfile from './user-edit-profile';
+import SignUp from './sign-up';
+
 
 class App extends Component {
   constructor(props) {
@@ -54,11 +56,10 @@ class App extends Component {
       console.log('location not set');
       this.setState({
         tags: tags
-      }, () => console.log('location not set state', this.state))
-      return
-    }
-    else if (!location.name && !tags){
-      return
+      }, () => console.log('location not set state', this.state));
+      return;
+    } else if (!location.name && !tags) {
+      return;
     }
     this.setState({
       location: location,
@@ -83,6 +84,12 @@ class App extends Component {
           <Route exact path="/itinerary" render={props =>
             <div>
               <Itinerary />,
+              <BottomNav user={this.state.user}/>
+            </div>
+          }/>
+          <Route exact path="/sign-up" render={props =>
+            <div>
+              <SignUp />,
               <BottomNav user={this.state.user}/>
             </div>
           }/>

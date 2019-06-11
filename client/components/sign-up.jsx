@@ -110,17 +110,18 @@ class SignUp extends Component {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
-        }})
+        } })
         .then(res => res.json())
-        .then( newUser => {
-          if ( !newUser.auth ){
+        .then(newUser => {
+          console.log(newUser, 'newUser');
+          if (!newUser.auth) {
             return this.setState({
               inputErrors: {
                 email: true
               }
-            })
+            });
           }
-          this.props.view('userProfile', this.state)
+          this.props.view('userProfile', this.state);
         });
     }
   }
