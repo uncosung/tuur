@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { Route, Redirect } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
 const styles = theme => ({
   marginTop: {
@@ -32,7 +32,8 @@ class UserProfile extends Component {
       location: '',
       image: '',
       isGuide: undefined,
-      auth: ''
+      auth: '',
+      email:''
     };
   }
 
@@ -51,7 +52,8 @@ class UserProfile extends Component {
           location: response.location,
           image: response.image,
           isGuide: response.isGuide,
-          auth: response.auth
+          auth: response.auth,
+          email:response.email
         });
       });
   }
@@ -79,7 +81,8 @@ class UserProfile extends Component {
             <Avatar alt="avatar" src={this.props.user.image} className={classes.avatar} />
           </Grid>
           <Grid item xs={6}>
-            <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile', this.props.user)} >
+            {/* <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile', this.props.user)} > */}
+            <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.email} > 
               <Typography variant="button">Edit</Typography>
             </Button>
           </Grid>

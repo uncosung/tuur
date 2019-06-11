@@ -8,6 +8,7 @@ import Results from './results';
 import Search from './search';
 import PackageDetails from './results/package-details';
 import UserViewProfile from './user-view-profile';
+import EditProfile from './user-edit-profile';
 
 class App extends Component {
   constructor(props) {
@@ -90,6 +91,12 @@ class App extends Component {
 
           <Route exact path="/user-profile/:email"
             render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>,
+              <BottomNav user={this.state.user} />
+            </div>}
+          />
+
+        <Route exact path="/edit-profile/:email"
+            render={props => <div><EditProfile user={this.state.user} {...props} isAuthed={true}/>,
               <BottomNav user={this.state.user} />
             </div>}
           />
