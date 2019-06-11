@@ -123,26 +123,9 @@ class SignUp extends Component {
               }
             });
           } else {
-            this.props.history.push({
-              pathname: '/user-profile/' + email,
-              state: { email, name, location, bio, image, isGuide }
-            });
+            this.props.logIn(this.state);
           }
-          this.setState({
-            user: { name,
-              email,
-              location,
-              bio,
-              image,
-              isGuide
-            }
-          });
-          this.props.search(null, this.state.user, null);
         });
-    //   fetch(`/api/profile.php?email=${this.state.email}`)
-    //     .then(res => res.json())
-    //     .then(data => this.props.search(null, data, null));
-    // }
     }
   }
 

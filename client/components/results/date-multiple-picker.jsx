@@ -10,8 +10,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import { Link, withRouter, Route } from 'react-router-dom';
-
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   root: {
@@ -42,7 +41,7 @@ class DatePicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dates: this.props.dates,
+      dates: this.props.dates
     };
     this.setDate = this.setDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -64,9 +63,7 @@ class DatePicker extends Component {
   }
 
   handleBooking() {
-    let path = '/itinerary';
-    if ( this.state.dates.length ){
-      console.log( 'inside dates', this.state.dates.length );
+    if (this.state.dates.length) {
       this.props.booking(this.state.dates);
       this.props.history.push('../itinerary');
     }
@@ -82,7 +79,6 @@ class DatePicker extends Component {
   }
 
   render() {
-    console.log( 'props', this.props.history );
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
     return (
@@ -116,11 +112,11 @@ class DatePicker extends Component {
           <Grid item xs={7} >
             { this.props.unavailableDates.disabledList
               ? <Button onClick = {this.handleBooking } type="button" className={classes.margin} fullWidth variant="contained" color="primary" >
-                  <Typography variant="body1" gutterBottom>Book</Typography>
-                </Button>
+                <Typography variant="body1" gutterBottom>Book</Typography>
+              </Button>
               : <Button onClick = {this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
-                  <Typography variant="body1" gutterBottom>Select Dates</Typography>
-                </Button>
+                <Typography variant="body1" gutterBottom>Select Dates</Typography>
+              </Button>
             }
           </Grid>
         </Grid>

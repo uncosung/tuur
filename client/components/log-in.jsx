@@ -49,11 +49,7 @@ class LogIn extends React.Component {
       .then(res => res.json())
       .then(data => {
         if (data.auth) {
-          this.setState({
-            auth: true,
-            email: data.email,
-            user: data
-          }, () => this.props.view(null, data, null));
+          this.props.logIn(data);
         }
       }
       );

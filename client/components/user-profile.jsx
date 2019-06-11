@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   marginTop: {
@@ -28,54 +27,34 @@ class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      location: '',
-      image: '',
-      isGuide: undefined,
-      auth: '',
-      email: ''
+      user: null
     };
   }
 
   componentDidMount() {
-
-    let email = this.props.match.params.email;
-    if (!email) {
-      email = '';
-    }
-    // else {
-    //   email = this.props.user.email;
-    // }
-    fetch(`/api/profile.php?email=${email}`)
-      // .then(res => console.log(res));
-      .then(res => res.json())
-      .then(response => {
-        this.setState({
-          name: response.name,
-          location: response.location,
-          image: response.image,
-          isGuide: response.isGuide,
-          auth: response.auth,
-          email: response.email
+    if (!this.props.user || this.props.match.params.email !== this.props.user.email) {
+      fetch('/api/profile.php?email=' + this.props.match.params.email)
+        .then(res => res.json())
+        .then(response => {
+          this.setState({ user: response });
         });
-      });
+    } else {
+      this.setState({ user: this.props.user });
+    }
   }
-
   render() {
     const { classes } = this.props;
-    // const newUser = this.props.history.location.state.user.user;
-    // const newUser2 = this.props.user;
-    // console.log('newUser', newUser, 'newUser2', newUser2);
-    let user = this.props.location.state; //! sign works
-    console.log('userprofile in render,  state : ', this.state, 'props ; ', this.props.location.state, 'this.props.user: ', this.props.user);
+    if (!this.state.user) {
+      return null;
+    }
     return (
     <>
     <Container className={classes.marginBottom} >
       <Typography className={classes.marginTop} variant="h4">
-        {user.name }
+        {this.state.user.name }
       </Typography>
       <Typography className={classes.marginLeft} variant="subtitle1">
-        {user.location}
+        {this.state.user.location}
       </Typography>
     </Container>
     <Container>
@@ -84,18 +63,18 @@ class UserProfile extends Component {
         justify="center"
         alignItems="center">
         <Grid item xs={4}>
-          <Avatar alt="avatar" src={user.image} className={classes.avatar} />
+          <Avatar alt="avatar" src={this.state.user.image} className={classes.avatar} />
         </Grid>
         <Grid item xs={6}>
-          <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view(null, user, null)} >
+          <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view(null, this.state.user, null)} >
             <Typography variant="button">Edit</Typography>
           </Button>
         </Grid>
       </Grid>
     </Container>
 
-      {this.state.isGuide
-        ? <UpComingTuursList view={this.props.view} user={ user }/>
+      {this.state.user.isGuide
+        ? <UpComingTuursList view={this.props.view} user={ this.state.user }/>
         : <Typography variant="h5">No Tuurs available</Typography>
       }
       </>
