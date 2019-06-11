@@ -171,7 +171,7 @@ class SearchBar extends Component {
       location: {
         name: this.props.location.name,
         coordinates: this.props.location.coordinates,
-        toggleStatus: !this.props.location.toggleStatus
+        toggleStatus: this.props.toggleStatus
       },
       searchParameters: {
         name: '',
@@ -190,8 +190,7 @@ class SearchBar extends Component {
     this.setState({
       searchParameters: {
         name: result.place_name,
-        coordinates: result.geometry.coordinates,
-        toggleStatus: !this.state.location.toggleStatus
+        coordinates: result.geometry.coordinates
       }
     });
   }
@@ -203,14 +202,6 @@ class SearchBar extends Component {
   }
 
   handleToggle(event) {
-    // let newToggle = this.state.toggle;
-    // this.setState({ toggle: !newToggle }, () => {
-    //   if (this.state.toggle ) {
-    //     console.log(this.props.location);
-    //     this.props.view('mapResults', null, this.props.location);
-    //   } else {
-    //     console.log('going back to search', this.props.location);
-    //     this.props.view('searchResult', null, this.props.location);
     let newState = {
       ...this.state,
       location: {
@@ -219,7 +210,7 @@ class SearchBar extends Component {
       }
     };
 
-    this.setState(newState, () => { console.log(this.state); });
+    this.setState(newState);
     if (this.state.location.toggleStatus) {
       <Link to={{
         pathname: '/mapbox/' + this.state.location.name,
@@ -249,24 +240,15 @@ class SearchBar extends Component {
     this.setState({ openModal: false });
   }
   handleSearch() {
-    console.log('search location', this.state)
-    if (this.state.tags.length === 0 ){
-      return
-    }
     this.setState({
-      location: {
-        tags: this.state.tags
-      }
+      location: { ...this.state.location, tags: this.state.tags }
     }, () => {
-      this.props.handleSearch(this.state.searchParameters, this.state.tags)
+      let locationParam = this.state.searchParameters.name ? this.state.searchParameters : this.state.location
+      this.props.handleSearch(locationParam, this.state.tags)
     })
     
   }
-  componentDidMount() {
-    console.log('mounteddddd', this.props)
-  }
   render() {
-    console.log('rendered', this.state, this.props)
     const geocoderApiOptions = {
       country: 'us',
       proximity: { longitude: -118.243683, latitude: 34.052235 }
@@ -334,7 +316,7 @@ class SearchBar extends Component {
 
                <Grid item xs={3} className={classes.display}>
                  <FormControlLabel control={
-                   <Switch checked={!this.state.location.toggleStatus} onChange={event => this.handleToggle(event)} />} label={this.state.location.toggleStatus ? 'TO MAP' : 'TO LIST'} />
+                   <Switch checked={this.state.location.toggleStatus} onChange={event => this.handleToggle(event)} />} label={this.state.location.toggleStatus ? 'TO MAP' : 'TO LIST'} />
                </Grid>
              </Grid>
            </AppBar>
@@ -352,7 +334,7 @@ class SearchBar extends Component {
              </Grid>
            </Modal>
          </Grid>
-         { !this.state.location.toggleStatus ? <Mapbox tags={this.props.tags} location={this.props.location} /> : '' }
+         { this.state.location.toggleStatus ? <Mapbox tags={this.props.tags} location={this.props.location} /> : '' }
       </>
     );
   }

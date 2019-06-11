@@ -98,20 +98,23 @@ class EditProfile extends Component {
       this.props.view('userProfile', this.state);
     }
   }
-  componentDidMount() {
-    // const email = 'dPaschal@gmail.com';
-    fetch(`api/profile.php?email=${this.props.user.email}`)
-      .then(res => res.json())
-      .then(response => this.setState({
-        name: response.name,
-        email: response.email,
-        location: response.location,
-        image: response.image,
-        bio: response.bio
-      }));
-  }
+  // componentDidMount() {
+  //   // const email = 'dPaschal@gmail.com';
+  //   const email=this.props.match.params.email
+  //   fetch('api/profile.php?email='+email)
+  //     .then(res => res.json())
+  //     .then(response => this.setState({
+  //       name: response.name,
+  //       email: response.email,
+  //       location: response.location,
+  //       image: response.image,
+  //       bio: response.bio
+  //     }));
+  // }
   render() {
     const { classes } = this.props;
+    console.log(this.props)
+    // if(!this.state) return null
     return (
             <>
             <Container className={classes.marginBottom} >
@@ -128,7 +131,7 @@ class EditProfile extends Component {
                 justify="center"
                 alignItems="center">
                 <Grid item >
-                  <Avatar alt="avatar" src={this.state.image} className={classes.avatar} />
+                  <Avatar alt="avatar" src={this.props.user.image} className={classes.avatar} />
                 </Grid>
               </Grid>
             </Container>
@@ -140,7 +143,7 @@ class EditProfile extends Component {
                     <AccountCircle fontSize='inherit' />
                   </Grid>
                   <Grid item xs={10}>
-                    <TextField required fullWidth id="input-name" label="Name" name="name" value={this.state.name} onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-name" label="Name" name="name" value={this.props.user.name} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
                 <Grid className={classes.margin} container alignItems="flex-end">
@@ -148,7 +151,7 @@ class EditProfile extends Component {
                     <Email fontSize='inherit' />
                   </Grid>
                   <Grid item xs={10}>
-                    <TextField required fullWidth id="input-email" label="Email" name="email" value={this.state.email} onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-email" label="Email" name="email" value={this.props.user.email} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
 
@@ -157,13 +160,13 @@ class EditProfile extends Component {
                     <LocationOn fontSize='inherit'/>
                   </Grid>
                   <Grid item xs={10}>
-                    <TextField required fullWidth id="input-location" label="location" name="location" value={this.state.location} onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-location" label="location" name="location" value={this.props.user.location} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
 
                 <Grid className={classes.margin} container alignItems="flex-end">
                   <Grid item xs={12}>
-                    <TextField required fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" value={this.state.image} onChange={this.handleInputChange} />
+                    <TextField required fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" value={this.props.user.image} onChange={this.handleInputChange} />
                   </Grid>
                 </Grid>
 
@@ -173,7 +176,7 @@ class EditProfile extends Component {
                       id='outlined-textarea'
                       label='Tell us about yourself'
                       required
-                      value={this.state.bio}
+                      value={this.props.user.bio}
                       multiline
                       fullWidth
                       rowsMax={3}

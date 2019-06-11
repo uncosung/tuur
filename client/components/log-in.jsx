@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import { Redirect, Link } from 'react-router-dom';
-
+console.log('test');
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
