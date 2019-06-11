@@ -19,7 +19,7 @@ const styles = theme => ({
 class BottomNav extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {};
   }
 
   render() {
@@ -28,7 +28,7 @@ class BottomNav extends Component {
     if (!this.props.user) {
       path = '/login';
     } else {
-      path = '/user-view-profile';
+      path = '/user-view-profile/' + this.props.user.email;
     }
     return (
       <BottomNavigation

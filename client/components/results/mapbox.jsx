@@ -70,7 +70,7 @@ class Mapbox extends Component {
     this.setState({
       filteredTuurs: filterTuurs
     }, () => {
-      if (this.props.tags.length > 0){
+      if (this.props.tags.length > 0) {
         this.filterTags();
       }
     });
@@ -96,33 +96,33 @@ class Mapbox extends Component {
     });
 
   }
-  filterTags () {
+  filterTags() {
     let tagArray = [];
-    for (let i = 0; i < this.state.filteredTuurs.length; i++){
-      for (let j = 0; j < this.props.tags.length; j++){
-        for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
-          if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
-            tagArray = [...tagArray, this.state.filteredTuurs[i]]
+    for (let i = 0; i < this.state.filteredTuurs.length; i++) {
+      for (let j = 0; j < this.props.tags.length; j++) {
+        for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++) {
+          if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]) {
+            tagArray = [...tagArray, this.state.filteredTuurs[i]];
           }
         }
       }
     }
-    for (let h = 0; h < tagArray.length; h++){
-      for (let g = h+1; g < tagArray.length; g++){
-        if (tagArray[h] === tagArray[g]){
-          tagArray.splice(g, 1)
+    for (let h = 0; h < tagArray.length; h++) {
+      for (let g = h + 1; g < tagArray.length; g++) {
+        if (tagArray[h] === tagArray[g]) {
+          tagArray.splice(g, 1);
         }
       }
     }
-    if (tagArray.length === 0){
+    if (tagArray.length === 0) {
       this.setState({
         filteredTuurs: []
-      })
-      return
+      });
+      return;
     }
-    this.setState ({
+    this.setState({
       filteredTuurs: tagArray
-    })
+    });
   }
   fetchLocation() {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)

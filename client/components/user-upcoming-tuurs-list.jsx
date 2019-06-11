@@ -71,7 +71,7 @@ class UpComingTuursList extends Component {
   componentDidMount() {
     fetch('/api/booking.php')
       .then(res => res.json())
-      .then(packages => this.setState({ packages: packages }), () => console.log(this.state.packages));
+      .then(packages => this.setState({ packages: packages }));
   }
 
   render() {
@@ -80,7 +80,6 @@ class UpComingTuursList extends Component {
       return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
     });
     return (
-
       <>
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
