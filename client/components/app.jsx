@@ -61,7 +61,7 @@ class App extends Component {
     this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
   }
 
-  edit(user){
+  edit(user) {
     this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
   }
 
@@ -80,13 +80,13 @@ class App extends Component {
       });
     }
   }
-  handleDates (dates) {
-    this.setState ({
+  handleDates(dates) {
+    this.setState({
       dates: {
         start: dates.start,
         end: dates.end
       }
-    }, () => console.log('these are the dates', this.state))
+    }, () => console.log('these are the dates', this.state));
   }
 
   render() {

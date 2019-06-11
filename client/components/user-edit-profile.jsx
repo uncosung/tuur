@@ -99,7 +99,7 @@ class EditProfile extends Component {
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     let { name, email, location, image, bio } = this.props.user;
 
     this.setState({
@@ -110,10 +110,10 @@ class EditProfile extends Component {
       bio: bio
     });
   }
- 
+
   render() {
     const { classes } = this.props;
-    console.log(this.props)
+    console.log(this.props);
     // if(!this.state) return null
     return (
             <>
