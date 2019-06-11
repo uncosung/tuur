@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -96,7 +96,7 @@ class LogIn extends React.Component {
         </Grid>
         <Grid item xs={3}>
           <ThemeProvider theme={theme}>
-            <Typography className={classes.marginLeft} color="primary" variant="button" align="center" onClick={() => this.props.view('signUp')}>sign up</Typography>
+            <Typography className={classes.marginLeft} color="primary" variant="button" align="center" component={Link} style={{ textDecoration: 'none' }} to={'/sign-up'}>sign up</Typography>
           </ThemeProvider>
         </Grid>
       </Grid>
