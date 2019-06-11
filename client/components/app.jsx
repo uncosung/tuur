@@ -29,6 +29,7 @@ class App extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleDates = this.handleDates.bind(this);
     this.logIn = this.logIn.bind(this);
+    this.edit = this.edit.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -55,7 +56,12 @@ class App extends Component {
       }
     });
   }
+
   logIn(user) {
+    this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
+  }
+
+  edit(user){
     this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
   }
 
@@ -123,7 +129,7 @@ class App extends Component {
           />
 
           <Route exact path="/edit-profile/:email"
-            render={props => <div><EditProfile user={this.state.user} {...props} isAuthed={true}/>,
+            render={props => <div><EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>,
               <BottomNav user={this.state.user} />
             </div>}
           />
