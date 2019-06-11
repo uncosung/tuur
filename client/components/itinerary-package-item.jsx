@@ -31,9 +31,9 @@ class ItineraryItem extends Component {
   }
 
   bookedDate(){
-    let dateDisplay = ''
+    let dateDisplay = '';
     for ( let index = 0; index < this.props.item.dates.length; index++ ){
-      const firstDate = new Date(this.props.item.dates[0])
+      const firstDate = new Date(this.props.item.dates[index])
       const yyyy = firstDate.getFullYear();
       const mm = firstDate.getMonth() + 1;
       const dd = firstDate.getDate();
@@ -41,11 +41,11 @@ class ItineraryItem extends Component {
       if ( !index ){
         dateDisplay += `${day}, ${mm}-${dd}-${yyyy}`
       } else {
-        dateDisplay += `,${day}, ${mm}-${dd}-${yyyy}`
+        dateDisplay += `, ${day}, ${mm}-${dd}-${yyyy}`
       }
-      
     }
-    
+    console.log( dateDisplay)
+    return dateDisplay;
   }
 
   render() {
@@ -83,7 +83,7 @@ class ItineraryItem extends Component {
           </CardActions>
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              <Typography paragraph>Booked Dates: {this.currentDate()}</Typography>
+              <Typography paragraph>Booked Dates: {this.bookedDate()}</Typography>
               <Typography paragraph>
                 {description}
             </Typography>
