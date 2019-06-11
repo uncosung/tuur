@@ -38,7 +38,6 @@ class App extends Component {
   }
 
   setView(name, user, location) {
-    debugger;
     if (!location) {
       this.setState({
         user
@@ -74,13 +73,13 @@ class App extends Component {
       });
     }
   }
-  handleDates (dates) {
-    this.setState ({
+  handleDates(dates) {
+    this.setState({
       dates: {
         start: dates.start,
         end: dates.end
       }
-    }, () => console.log('these are the dates', this.state))
+    }, () => console.log('these are the dates', this.state));
   }
 
   render() {
