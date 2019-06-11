@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import { Link} from 'react-router-dom';
 
 const styles = theme => ({
   marginTop: {
@@ -30,7 +31,9 @@ class UserProfile extends Component {
       name: '',
       location: '',
       image: '',
-      isGuide: undefined
+      isGuide: undefined,
+      auth: '',
+      email:''
     };
   }
 
@@ -48,22 +51,25 @@ class UserProfile extends Component {
           name: response.name,
           location: response.location,
           image: response.image,
-          isGuide: response.isGuide
+          isGuide: response.isGuide,
+          auth: response.auth,
+          email:response.email
         });
       });
   }
 
   render() {
     const { classes } = this.props;
-    if (!this.state) return null;
+
+    console.log(this.props);
     return (
       <>
       <Container className={classes.marginBottom} >
         <Typography className={classes.marginTop} variant="h4">
-          {this.state.name}
+          {this.props.user.name}
         </Typography>
         <Typography className={classes.marginLeft} variant="subtitle1">
-          {this.state.location}
+          {this.props.user.location}
         </Typography>
       </Container>
       <Container>
@@ -72,10 +78,11 @@ class UserProfile extends Component {
           justify="center"
           alignItems="center">
           <Grid item xs={4}>
-            <Avatar alt="avatar" src={this.state.image} className={classes.avatar} />
+            <Avatar alt="avatar" src={this.props.user.image} className={classes.avatar} />
           </Grid>
           <Grid item xs={6}>
-            <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile', this.props.user)} >
+            {/* <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile', this.props.user)} > */}
+            <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.email} > 
               <Typography variant="button">Edit</Typography>
             </Button>
           </Grid>

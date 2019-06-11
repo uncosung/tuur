@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import { Redirect, Link } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -29,7 +30,9 @@ class LogIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: ''
+      email: '',
+      auth: false,
+      user: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -44,10 +47,24 @@ class LogIn extends React.Component {
     event.preventDefault();
     fetch(`/api/profile.php?email=${this.state.email}`)
       .then(res => res.json())
-      .then(data => this.props.view('search', data));
+      .then(data => {
+        if (data.auth) {
+          this.setState({
+            auth: true,
+            email: data.email,
+            user: data
+          }, () => this.props.view(null, this.state.user, null));
+
+        }
+      }
+      );
   }
   render() {
     const { classes } = this.props;
+    let path = null;
+    if (this.state.auth) {
+      return <Redirect to={'/user-profile/' + this.state.email}/>;
+    }
     return (
     <>
       <Grid justify="center" alignItems="center" container>
@@ -79,7 +96,7 @@ class LogIn extends React.Component {
         </Grid>
         <Grid item xs={3}>
           <ThemeProvider theme={theme}>
-            <Typography className={classes.marginLeft} color="primary" variant="button" align="center" onClick={() => this.props.view('signUp')}>sign up</Typography>
+            <Typography className={classes.marginLeft} color="primary" variant="button" align="center" component={Link} style={{ textDecoration: 'none' }} to={'/sign-up'}>sign up</Typography>
           </ThemeProvider>
         </Grid>
       </Grid>

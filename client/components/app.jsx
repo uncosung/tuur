@@ -8,13 +8,16 @@ import Results from './results';
 import Search from './search';
 import PackageDetails from './results/package-details';
 import UserViewProfile from './user-view-profile';
+import EditProfile from './user-edit-profile';
+import SignUp from './sign-up';
+
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       view: '',
-      user: {},
+      user: null,
       location: [],
       tags: [],
       toggleStatus: false
@@ -30,8 +33,15 @@ class App extends Component {
   }
 
   setView(name, user, location) {
+    if (!location) {
+      this.setState({
+        user
+      });
+      return;
+    }
     this.setState({
       view: name,
+      user,
       location: {
         name: location.name,
         coordinates: location.coordinates,
@@ -50,6 +60,7 @@ class App extends Component {
     }
     else if (!location.name && !tags){
       return
+
     }
     else {
       this.setState({
@@ -65,30 +76,46 @@ class App extends Component {
       <div>
         <Switch>
           <Route exact path="/login"
-            render={props => <LogIn {...props} isAuthed={true}/>}/>
+            render={props => <LogIn {...props} view={this.setView} isAuthed={true}/>}/>
 
           <Route exact path="/" render={props =>
             <div>
               <Search search={this.setView} />,
-              <BottomNav />
+              <BottomNav user={this.state.user}/>
             </div>
           }/>
           <Route exact path="/itinerary" render={props =>
             <div>
               <Itinerary />,
-              <BottomNav />
+              <BottomNav user={this.state.user}/>
             </div>
           }/>
+          <Route exact path="/sign-up" render={props =>
+            <div>
+              <SignUp />,
+              <BottomNav user={this.state.user}/>
+            </div>
+          }/>
+          <Route exact path="/user-view-profile/:email"
+            render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav user={this.state.user}/></div>}/>
+
           <Route exact path="/user-profile/:email"
-            render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
-          {/* render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/> */}
-          <Route exact path="/user-profile"
-            render={props => <div><UserProfile {...props} isAuthed={true}/>, <BottomNav /></div>}/>
+            render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>,
+              <BottomNav user={this.state.user} />
+            </div>}
+          />
+
+        <Route exact path="/edit-profile/:email"
+            render={props => <div><EditProfile user={this.state.user} {...props} isAuthed={true}/>,
+              <BottomNav user={this.state.user} />
+            </div>}
+          />
 
           <Route path="/results" render={props =>
             <div>
               <Results toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
-              <BottomNav />
+              <BottomNav user={this.state.user}/>
+
             </div>
           }/>
           <Route path="/package-details/:id"
