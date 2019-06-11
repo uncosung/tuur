@@ -39,7 +39,6 @@ class App extends Component {
   }
 
   setView(name, user, location) {
-    debugger;
     if (!location) {
       this.setState({
         user
