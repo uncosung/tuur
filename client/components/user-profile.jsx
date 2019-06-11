@@ -37,16 +37,19 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
+
     let email = this.props.match.params.email;
     if (!email) {
       email = '';
+    } else {
+      email = this.props.user.email;
     }
-    fetch('/api/profile.php?email=' + email)
+    fetch(`/api/profile.php?email=${email}`)
+      // .then(res => console.log(res));
       .then(res => res.json())
       .then(response => {
         console.log(response);
         this.setState({
-      
           name: response.name,
           location: response.location,
           image: response.image,
@@ -56,18 +59,21 @@ class UserProfile extends Component {
       });
   }
 
+
   render() {
     const { classes } = this.props;
-
-    console.log(this.props);
+    const newUser = this.props.history.location.state.user.user;
+    const newUser2 = this.props.user;
+    console.log('newUser',newUser, 'newUser2', newUser2)
+    console.log('in render state', this.state, 'props', this.props, 'new', newUser);
     return (
       <>
       <Container className={classes.marginBottom} >
         <Typography className={classes.marginTop} variant="h4">
-          {this.props.user.name}
+          {newUser ? newUser.name : newUser2.name }
         </Typography>
         <Typography className={classes.marginLeft} variant="subtitle1">
-          {this.props.user.location}
+          {newUser ? newUser.location : newUser2.location}
         </Typography>
       </Container>
       <Container>
@@ -76,10 +82,10 @@ class UserProfile extends Component {
           justify="center"
           alignItems="center">
           <Grid item xs={4}>
-            <Avatar alt="avatar" src={this.props.user.image} className={classes.avatar} />
+            <Avatar alt="avatar" src={newUser ? newUser.image : newUser2.image} className={classes.avatar} />
           </Grid>
           <Grid item xs={6}>
-            <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile', this.props.user)} >
+            <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view(null, newUser.user ? newUser : newUser2, null)} >
               <Typography variant="button">Edit</Typography>
             </Button>
           </Grid>
@@ -87,7 +93,7 @@ class UserProfile extends Component {
       </Container>
 
       {this.state.isGuide
-        ? <UpComingTuursList view={this.props.view} user={ this.props.user }/>
+        ? <UpComingTuursList view={this.props.view} user={ newUser }/>
         : <Typography variant="h5">No Tuurs available</Typography>
       }
       </>

@@ -92,7 +92,7 @@ class App extends Component {
           }/>
           <Route exact path="/sign-up" render={props =>
             <div>
-              <SignUp />,
+              <SignUp search={this.setView}/>,
               <BottomNav user={this.state.user}/>
             </div>
           }/>
@@ -100,7 +100,7 @@ class App extends Component {
             render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav user={this.state.user}/></div>}/>
 
           <Route exact path="/user-profile/:email"
-            render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>,
+            render={props => <div><UserProfile user={this.state.user} view={this.setView} {...props} isAuthed={true}/>,
               <BottomNav user={this.state.user} />
             </div>}
           />

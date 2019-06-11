@@ -19,16 +19,17 @@ const styles = theme => ({
 class BottomNav extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {};
   }
 
   render() {
     const { classes } = this.props;
     let path = null;
+    console.log(this.props.user);
     if (!this.props.user) {
       path = '/login';
     } else {
-      path = '/user-view-profile';
+      path = '/user-view-profile/' + this.props.user.email;
     }
     return (
       <BottomNavigation
