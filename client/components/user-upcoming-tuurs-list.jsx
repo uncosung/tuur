@@ -71,10 +71,15 @@ class UpComingTuursList extends Component {
   componentDidMount() {
     fetch('/api/booking.php')
       .then(res => res.json())
-      .then(packages => this.setState({ packages: packages }), () => console.log(this.state.packages));
+      .then(packages => this.setState({ packages: packages }));
+    // fetch('/api/profile.php?email=' + email)
+    //   .then(res => res.json())
+    //   .then(response => {
+    //     console.log(response);
   }
 
   render() {
+    // console.log(this.props, '<props  state>', this.state);
     const { classes } = this.props;
     const packageMap = this.state.packages.map(packageItem => {
       return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
