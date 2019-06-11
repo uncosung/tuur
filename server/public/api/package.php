@@ -6,12 +6,14 @@ $method = $_SERVER['REQUEST_METHOD'];
 $item = file_get_contents('php://input');
 // $email = $_SESSION['userEmail'];
 $tuuristId = $_SESSION['id'];
-$email = 'dPaschal@gmail.com';
+// $email = 'dPaschal@gmail.com';
 
 if ( $method === 'GET'){
-    if ( isset($_GET['id'])){
-      $id=$_GET['id'];
-      $where = " WHERE `id` = '{$id}'";
+
+
+  if ( isset($_GET['id'])){
+    $id=$_GET['id'];
+    $where = " WHERE `id` = '{$id}'";
   }
   else {
     $where = '';
