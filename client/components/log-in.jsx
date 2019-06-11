@@ -48,20 +48,14 @@ class LogIn extends React.Component {
     fetch(`/api/profile.php?email=${this.state.email}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data, this.state, 'moocow');
         if (data.auth) {
-          this.setState({
-            auth: true,
-            email: data.email,
-            user: data
-          }, () => this.props.view(null, this.state.user, null));
+          this.props.logIn(data);
         }
       }
       );
   }
   render() {
     const { classes } = this.props;
-    console.log(this.state);
     if (this.state.auth) {
       return <Redirect to={{
         pathname: '/user-profile/' + this.state.email,

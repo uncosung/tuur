@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 export default class CityInfo extends PureComponent {
 
   render() {
-    console.log('popup info', this.props.info);
     const { info } = this.props;
     const displayName = `${info.title}, ${info.location}`;
 
