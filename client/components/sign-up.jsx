@@ -68,7 +68,8 @@ class SignUp extends Component {
         location: false,
         image: false,
         bio: false
-      }
+      },
+      user: null
 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -122,12 +123,8 @@ class SignUp extends Component {
               }
             });
           } else {
-            this.props.history.push({
-              pathname: '/user-profile/' + email,
-              state: { email, name, location, bio, image, isGuide }
-            });
+            this.props.logIn(this.state);
           }
-          this.props.search(null, newUser, null);
         });
     }
   }

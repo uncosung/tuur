@@ -184,6 +184,7 @@ class SearchBar extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleDates = this.handleDates.bind(this);
 
   }
   handleSelect(result) {
@@ -234,10 +235,13 @@ class SearchBar extends Component {
     this.setState({
       openModal: false,
       dates: { start: startDate, end: endDate }
-    }, () => console.log(this.state.dates));
+    }, this.handleDates);
   }
   modalClose() {
     this.setState({ openModal: false });
+  }
+  handleDates () {
+    this.props.handleDates(this.state.dates);
   }
   handleSearch() {
     this.setState({

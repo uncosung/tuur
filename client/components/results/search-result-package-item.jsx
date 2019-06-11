@@ -40,7 +40,6 @@ class SearchPackageItem extends Component {
         <Card className={classes.card} style={{ textDecoration: 'none' }} component={Link} to={{ pathname: `/package-details/ ${this.props.item.id}`, state: { item: this.props.item } }} >
           <CardHeader
             title={ this.props.item.title }
-            // subheader="September 14, 2016"
           />
           <CardMedia
             className={classes.media}

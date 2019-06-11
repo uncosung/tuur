@@ -25,7 +25,6 @@ class BottomNav extends Component {
   render() {
     const { classes } = this.props;
     let path = null;
-    console.log(this.props.user);
     if (!this.props.user) {
       path = '/login';
     } else {

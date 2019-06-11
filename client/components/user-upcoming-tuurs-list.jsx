@@ -80,13 +80,11 @@ class UpComingTuursList extends Component {
   }
 
   render() {
-    // console.log(this.props, '<props  state>', this.state);
     const { classes } = this.props;
     const packageMap = this.state.packages.map(packageItem => {
       return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
     });
     return (
-
       <>
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">

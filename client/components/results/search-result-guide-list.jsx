@@ -4,8 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
-// import Grid from '@material-ui/core/Grid';
-// import Button from '@material-ui/core/Button';
 import SearchResultGuideItem from './search-result-guide-list-item';
 import TOKEN from './mapbox-token';
 
@@ -54,7 +52,7 @@ class SearchResultGuide extends Component {
   componentDidMount() {
     this.fetchProfiles();
   }
-  fetchProfiles(){
+  fetchProfiles() {
     fetch('/api/search.php')
       .then(res => res.json())
       .then(search => this.setState({ guideProfile: search }, this.fetchLocation));
@@ -97,7 +95,7 @@ class SearchResultGuide extends Component {
     }
     this.setState({
       filteredGuides: filterGuides
-    })
+    });
   }
   render() {
     const { classes } = this.props;
@@ -105,7 +103,6 @@ class SearchResultGuide extends Component {
       return <SearchResultGuideItem profile={profile.guide} key={profile.guide.id} />;
     });
     return (
-
       <>
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h5">

@@ -14,7 +14,6 @@ import { Link, withRouter, Route } from 'react-router-dom';
 import Modal from '@material-ui/core/Modal';
 import SimpleModal from '../book-modal';
 
-
 const styles = theme => ({
   root: {
     margin: theme.spacing(0.5),
@@ -52,7 +51,7 @@ class DatePicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dates: this.props.dates,
+      dates: this.props.dates
     };
     this.setDate = this.setDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -74,9 +73,7 @@ class DatePicker extends Component {
   }
 
   handleBooking() {
-    let path = '/itinerary';
     if (this.state.dates.length) {
-      console.log('inside dates', this.state.dates.length);
       this.props.booking(this.state.dates);
       this.props.history.push('../itinerary');
     }
@@ -93,7 +90,6 @@ class DatePicker extends Component {
 
   render() {
     let item;
-
     if ( this.props.location.state.item ){
       item = this.props.location.state.item
     }
