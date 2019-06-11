@@ -11,7 +11,6 @@ import UserViewProfile from './user-view-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -33,6 +32,7 @@ class App extends Component {
   }
 
   setView(name, user, location) {
+    debugger;
     if (!location) {
       this.setState({
         user
@@ -56,7 +56,7 @@ class App extends Component {
       this.setState({
         tags: tags
       })
-      return
+      
     }
     else if (!location.name && !tags){
       return
@@ -110,7 +110,7 @@ class App extends Component {
             </div>}
           />
 
-        <Route exact path="/edit-profile/:email"
+          <Route exact path="/edit-profile/:email"
             render={props => <div><EditProfile user={this.state.user} {...props} isAuthed={true}/>,
               <BottomNav user={this.state.user} />
             </div>}

@@ -68,7 +68,8 @@ class SignUp extends Component {
         location: false,
         image: false,
         bio: false
-      }
+      },
+      user: null
 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -127,8 +128,21 @@ class SignUp extends Component {
               state: { email, name, location, bio, image, isGuide }
             });
           }
-          this.props.search(null, newUser, null);
+          this.setState({
+            user: { name,
+              email,
+              location,
+              bio,
+              image,
+              isGuide
+            }
+          });
+          this.props.search(null, this.state.user, null);
         });
+    //   fetch(`/api/profile.php?email=${this.state.email}`)
+    //     .then(res => res.json())
+    //     .then(data => this.props.search(null, data, null));
+    // }
     }
   }
 
