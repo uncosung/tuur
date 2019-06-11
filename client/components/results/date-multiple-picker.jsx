@@ -10,7 +10,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter, Route } from 'react-router-dom';
+import Modal from '@material-ui/core/Modal';
+import SimpleModal from '../book-modal';
 
 const styles = theme => ({
   root: {
@@ -34,6 +36,14 @@ const styles = theme => ({
   },
   paddingLeft: {
     paddingLeft: 20
+  },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(4),
+    outline: 'none',
   }
 });
 
@@ -79,6 +89,11 @@ class DatePicker extends Component {
   }
 
   render() {
+    let item;
+    if ( this.props.location.state.item ){
+      item = this.props.location.state.item
+    }
+    console.log( item );
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
     return (
@@ -89,7 +104,7 @@ class DatePicker extends Component {
           </Grid>
           <Grid item xs={10} className={classes.paddingLeft}>
             <Typography className={classes.marginTop} variant="h4" gutterBottom>
-            Select dates
+              Select dates
             </Typography>
           </Grid>
         </Grid>
@@ -102,19 +117,23 @@ class DatePicker extends Component {
           onSelect={date => {
             this.setDate(date);
           }}
-          minDate= { new Date(this.nextDay())}
-          maxDate= { this.props.unavailableDates.maxDate }
-          disabledDates = { (this.props.unavailableDates) ? this.props.unavailableDates.disabledList : null }
+          minDate={new Date(this.nextDay())}
+          maxDate={this.props.unavailableDates.maxDate}
+          disabledDates={(this.props.unavailableDates) ? this.props.unavailableDates.disabledList : null}
           className={classes.marginBottom}
         />
 
         <Grid className={classes.marginLeft} justify="center" alignItems="center" container>
           <Grid item xs={7} >
-            { this.props.unavailableDates.disabledList
-              ? <Button onClick = {this.handleBooking } type="button" className={classes.margin} fullWidth variant="contained" color="primary" >
-                <Typography variant="body1" gutterBottom>Book</Typography>
-              </Button>
-              : <Button onClick = {this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
+            {this.props.unavailableDates.disabledList
+              ?
+              <div>
+                {/* <Button onClick={this.handleBooking} type="button" className={classes.margin} fullWidth variant="contained" color="primary" >
+                  <Typography variant="body1" gutterBottom>Book</Typography>
+                </Button> */}
+                <SimpleModal item={item } booking={ this.handleBooking } dates={ this.state.dates } />
+              </div>
+              : <Button onClick={this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
                 <Typography variant="body1" gutterBottom>Select Dates</Typography>
               </Button>
             }

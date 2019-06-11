@@ -30,16 +30,26 @@ class ItineraryItem extends Component {
     });
   }
 
-  currentDate(){
-    const firstDate = new Date(this.props.item.dates[0])
-    const yyyy = firstDate.getFullYear();
-    const mm = firstDate.getMonth();
-    const dd = firstDate.getDate();
-    const day = String(firstDate).slice( 0, 3)
-    return `${day}, ${mm}-${dd}-${yyyy}`
+  bookedDate(){
+    let dateDisplay = '';
+    for ( let index = 0; index < this.props.item.dates.length; index++ ){
+      const firstDate = new Date(this.props.item.dates[index])
+      const yyyy = firstDate.getFullYear();
+      const mm = firstDate.getMonth() + 1;
+      const dd = firstDate.getDate();
+      const day = String(firstDate).slice( 0, 3)
+      if ( !index ){
+        dateDisplay += `${day}, ${mm}-${dd}-${yyyy}`
+      } else {
+        dateDisplay += `, ${day}, ${mm}-${dd}-${yyyy}`
+      }
+    }
+    console.log( dateDisplay)
+    return dateDisplay;
   }
 
   render() {
+    console.log( this.props );
     const { classes } = this.props;
     const { title, timeRange, tags, profileEmail, mainImage, location, images, description, dates } = this.props.item;
     return (
@@ -73,7 +83,7 @@ class ItineraryItem extends Component {
           </CardActions>
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              <Typography paragraph>Trip: {this.currentDate()}</Typography>
+              <Typography paragraph>Booked Dates: {this.bookedDate()}</Typography>
               <Typography paragraph>
                 {description}
             </Typography>

@@ -64,14 +64,19 @@ class UpComingTuursList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      packages: []
+      packages: [],
+      booked: []
     };
   }
 
   componentDidMount() {
-    fetch('/api/booking.php')
+    fetch('/api/booking.php?id')
       .then(res => res.json())
-      .then(packages => this.setState({ packages: packages }));
+      .then(packages => this.setState({ packages }));
+
+    fetch("/api/package.php?id")
+      .then(res => res.json())
+      .then(booked => this.setState({ booked }))
   }
 
   render() {

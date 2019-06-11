@@ -16,7 +16,6 @@ class Itinerary extends Component {
   }
 
   packageCondition(){
-    console.log( this.state.packages );
     const packageArray = this.state.packages.map( (item , id ) => {
       if ( typeof item.dates === 'string'){
         const date = item.dates.replace( /[^a-zA-Z0-9-_.,:]/g,"");
@@ -27,7 +26,6 @@ class Itinerary extends Component {
       }
       
       item.dates = this.dateCompleted( item.dates );
-      console.log( 'item', item );
       return <ItineraryItem key={id} item={item} /> 
     })
     return packageArray;
@@ -50,14 +48,16 @@ class Itinerary extends Component {
   }
 
   componentDidUpdate(){
-    fetch('/api/booking.php?id')
+    if ( this.state.package ){
+      fetch('/api/booking.php?id')
       .then( res => res.json() )
       .then( packages => this.setState( { packages } ))
+    }
+    
   }
 
   render() {
     const { classes } = this.props;
-    console.log( this.state.packages )
     return (
       <>
       <Container className={classes.marginBottom} >

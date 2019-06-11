@@ -354,7 +354,7 @@ class PackageDetails extends Component {
                 onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker booking={ this.bookHandler } dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                  <DatePicker item={this.state} booking={ this.bookHandler } dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
                 </Grid>
               </Modal>
             </Grid>
