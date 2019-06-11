@@ -71,7 +71,12 @@ class App extends Component {
       <div>
         <Switch>
           <Route exact path="/login"
-            render={props => <LogIn {...props} view={this.setView} isAuthed={true}/>}/>
+            render={props =>
+              <div>
+                <LogIn {...props} view={this.setView} isAuthed={true}/>
+                <BottomNav user={this.state.user}/>
+              </div>
+            }/>
 
           <Route exact path="/" render={props =>
             <div>
