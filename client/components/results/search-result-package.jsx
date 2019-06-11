@@ -23,10 +23,15 @@ class SearchPackages extends Component {
       packages: [],
       fetchResult: null,
       fetchCoordinates: [],
-      filteredTuurs: []
+      filteredTuurs: [],
+      dates: {}
     };
     
     this.fetchPackages = this.fetchPackages.bind(this);
+    this.filterDates = this.filterDates.bind(this);
+    this.filterTags = this.filterTags.bind(this);
+    this.filterTuurs = this.filterTuurs.bind(this);
+    this.checkAvailability = this.checkAvailability.bind(this);
   }
 
   componentDidMount() {
@@ -34,7 +39,6 @@ class SearchPackages extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    debugger;
     if (prevProps.tags.toString() !== this.props.tags.toString()) {
       this.fetchPackages();
     }
@@ -126,11 +130,103 @@ class SearchPackages extends Component {
     }
     this.setState ({
       filteredTuurs: tagArray
-    })
+    }, this.filterDates)
   }
+  filterDates () {
+    debugger;
+    console.log('yoyoyo', this.props.dates)
+    // console.log(this.props.dates.end / .start )
+    const endDate = new Date( this.props.dates.end );
+    const begDate = new Date( this.props.dates.start );
+    let begDateYear = begDate.getFullYear();
+    let begDateMonth = begDate.getMonth();
+    let begDateDay = begDate.getDate();
+    const endDateYear = endDate.getFullYear();
+    const endDateMonth = endDate.getMonth();
+    const endDateDay = endDate.getDate();
+    let dateArray = []
+    let availablePackage = []
+    let availableTuur = [];
+    dateArray.push( new Date( begDateYear, begDateMonth, begDateDay));
+    while (begDateMonth !== endDateMonth || begDateDay !== endDateDay) {
+      begDateDay = this.nextDay(begDateMonth, begDateDay);
+      if (begDateDay === 1) {
+        begDateMonth = begDateMonth === 11 ? 0 : ++begDateMonth;
+      }
+      if (begDateMonth === 0 && begDateDay === 1) {
+        begDateYear = begDateMonth === 1 ? ++begDateYear : begDateYear;
+      }  
+      availableTuur = this.checkAvailability(begDateYear, begDateMonth, begDateDay )
+      if ( availableTuur ){
+        availablePackage.push( availableTuur );
+      }
+      console.log('date filtered tuurs', availablePackage)
+      // dateArray.push(new Date(begDateYear, begDateMonth, begDateDay));
+    }
+
+    if ( begDateMonth === endDateMonth && begDateDay === endDateDay){
+      availableTuur = this.checkAvailability(begDateYear, begDateMonth, begDateDay )
+      if ( availableTuur ){
+        availablePackage.push( availableTuur );
+      }
+    }
+    console.log('date filtered tuurs', availablePackage)
+
+    this.setState({
+      filteredTuurs: availablePackage
+    });
+  }
+
+  checkAvailability( year, month, day) {
+    debugger;
+    for (let i = 0; i < this.state.filteredTuurs.length; i++){
+      console.log(this.state.filteredTuurs[i])
+      let parseDate = JSON.parse(this.state.filteredTuurs[i].tuur.dates)
+      for (var value of parseDate) {
+        const packageDate = new Date(value);
+        const packageYear = packageDate.getFullYear();
+        const packageMonth = packageDate.getMonth();
+        const packageDay = packageDate.getDate();
+        if (packageYear === year && packageMonth === month && packageDay === day) {
+          return this.state.filteredTuurs[i];
+        }
+      }
+    }
+
+  }
+
+  
+
+  nextDay(month, day) {
+    // last day of month = 31
+    if (month === 0 && day != 31) return ++day;
+    // last day of month = 28
+    if (month === 1 && day !== 28) return ++day;
+    // last day of month = 31
+    if (month === 2 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 3 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 4 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 5 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 6 && day !== 31) return ++day;
+    // last day of month = 31
+    if (month === 7 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 8 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 9 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 10 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 11 && day !== 31) return ++day;
+    return 1;
+  }
+
   
   render() {
-    console.log('filtered check', this.state.filteredTuurs)
     const { classes } = this.props;
     return (
       <>

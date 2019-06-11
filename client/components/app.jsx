@@ -19,10 +19,15 @@ class App extends Component {
       user: null,
       location: [],
       tags: [],
-      toggleStatus: false
+      toggleStatus: false,
+      dates: {
+        start: null,
+        end: null
+      }
     };
     this.setView = this.setView.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleDates = this.handleDates.bind(this);
     this.logIn = this.logIn.bind(this);
   }
 
@@ -68,7 +73,14 @@ class App extends Component {
         tags: tags
       });
     }
-
+  }
+  handleDates (dates) {
+    this.setState ({
+      dates: {
+        start: dates.start,
+        end: dates.end
+      }
+    }, () => console.log('these are the dates', this.state))
   }
 
   render() {
@@ -118,7 +130,7 @@ class App extends Component {
 
           <Route path="/results" render={props =>
             <div>
-              <Results toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
+              <Results dates={this.state.dates} handleDates={this.handleDates} toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
               <BottomNav user={this.state.user}/>
 
             </div>
