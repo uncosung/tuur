@@ -25,16 +25,27 @@ class SearchPackages extends Component {
       fetchCoordinates: [],
       filteredTuurs: []
     };
+    
+    this.fetchPackages = this.fetchPackages.bind(this);
   }
 
   componentDidMount() {
-    console.log('mounted', this.state)
+    this.fetchPackages();
+  }
 
+  componentDidUpdate(prevProps) {
+    debugger;
+    if (prevProps.tags.toString() !== this.props.tags.toString()) {
+      this.fetchPackages();
+    }
+  }
+
+  fetchPackages() {
     fetch('/api/package.php')
       .then(res => res.json())
       .then(packages => this.setState({ packages }, this.fetchLocation));
   }
-
+  
   renderPackage() {
     const packages = this.state.filteredTuurs.map((item, id) => {
       return <SearchPackageItem key={id} item={ item.tuur } />;
@@ -89,6 +100,7 @@ class SearchPackages extends Component {
 
   }
   filterTags () {
+    debugger;
     let tagArray = [];
     for (let i = 0; i < this.state.filteredTuurs.length; i++){
       for (let j = 0; j < this.props.tags.length; j++){
@@ -102,23 +114,23 @@ class SearchPackages extends Component {
     for (let h = 0; h < tagArray.length; h++){
       for (let g = h+1; g < tagArray.length; g++){
         if (tagArray[h] === tagArray[g]){
-          console.log('this tuur already exists')
           tagArray.splice(g, 1)
         }
       }
     }
     if (tagArray.length === 0){
+      this.setState({
+        filteredTuurs: []
+      })
       return
     }
     this.setState ({
       filteredTuurs: tagArray
-    }, () => console.log('final filter', this.state.filteredTuurs))
+    })
   }
-  componentDidUpdate() {
-    console.log('results updated', this.props, this.state)
-  }
+  
   render() {
-    console.log('result props', this.props)
+    console.log('filtered check', this.state.filteredTuurs)
     const { classes } = this.props;
     return (
       <>
@@ -127,7 +139,7 @@ class SearchPackages extends Component {
               Tuurs
             </Typography>
           </Container>
-          { this.state.packages ? this.renderPackage() : 'No available packages'}
+          { this.state.filteredTuurs.length === 0 ? "There are no tuurs that match the search criteria" : this.renderPackage() }
       </>
     );
   }

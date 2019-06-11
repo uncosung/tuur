@@ -16,7 +16,8 @@ class App extends Component {
       view: '',
       user: {},
       location: [],
-      tags: []
+      tags: [],
+      toggleStatus: false
     };
     this.setView = this.setView.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
@@ -41,21 +42,21 @@ class App extends Component {
   }
 
   handleSearch(location, tags) {
-    console.log('searched', location, tags);
     if (!location.name && tags) {
-      console.log('location not set');
       this.setState({
         tags: tags
-      }, () => console.log('location not set state', this.state))
+      })
       return
     }
     else if (!location.name && !tags){
       return
     }
-    this.setState({
-      location: location,
-      tags: tags
-    });
+    else {
+      this.setState({
+        location: location,
+        tags: tags
+      });
+    }
 
   }
 
@@ -86,7 +87,7 @@ class App extends Component {
 
           <Route path="/results" render={props =>
             <div>
-              <Results key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
+              <Results toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
               <BottomNav />
             </div>
           }/>

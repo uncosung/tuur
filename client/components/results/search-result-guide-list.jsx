@@ -7,6 +7,7 @@ import GridList from '@material-ui/core/GridList';
 // import Grid from '@material-ui/core/Grid';
 // import Button from '@material-ui/core/Button';
 import SearchResultGuideItem from './search-result-guide-list-item';
+import TOKEN from './mapbox-token';
 
 const styles = theme => ({
   marginTop: {
@@ -40,19 +41,68 @@ class SearchResultGuide extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      guideProfile: []
+      guideProfile: [],
+      fetchResult: [],
+      fetchCoordinates: [],
+      filteredGuides: []
     };
+    this.fetchProfiles = this.fetchProfiles.bind(this);
+    this.fetchLocation = this.fetchLocation.bind(this);
+    this.mapGuides = this.mapGuides.bind(this);
+    this.filterGuides = this.filterGuides.bind(this);
   }
   componentDidMount() {
+    this.fetchProfiles();
+  }
+  fetchProfiles(){
     fetch('/api/search.php')
       .then(res => res.json())
-      .then(search => this.setState({ guideProfile: search }));
+      .then(search => this.setState({ guideProfile: search }, this.fetchLocation));
   }
+  fetchLocation() {
+    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
+      .then(res => res.json())
+      .then(result => {
+        this.setState({
+          fetchResult: result
+        }, this.mapGuides);
+      });
+  }
+  async getGuideLocationData(guide) {
+    const resp = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${guide.location}.json?access_token=${TOKEN}`);
+    const respJson = await resp.json();
+    return {
+      guide,
+      coord: respJson.features[0].center
+    };
+  }
+  mapGuides() {
+    let mapArray = this.state.guideProfile.map(this.getGuideLocationData);
 
+    Promise.all(mapArray).then(guideCoordinates => {
+      this.setState({
+        fetchCoordinates: guideCoordinates
+      }, this.filterGuides);
+    });
+  }
+  filterGuides() {
+    let filterGuides = [];
+    let tooFar = [];
+    for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
+      if (this.state.fetchCoordinates[i].coord[0] < this.props.location.coordinates[0] - 1 || this.state.fetchCoordinates[i].coord[0] > this.props.location.coordinates[0] + 1 || this.state.fetchCoordinates[i].coord[1] < this.props.location.coordinates[1] - 0.2 || this.state.fetchCoordinates[i].coord[1] > this.props.location.coordinates[1] + 0.2) {
+        tooFar = [...tooFar, this.state.fetchCoordinates[i]];
+      } else {
+        filterGuides = [...filterGuides, this.state.fetchCoordinates[i]];
+      }
+    }
+    this.setState({
+      filteredGuides: filterGuides
+    })
+  }
   render() {
     const { classes } = this.props;
-    const profile = this.state.guideProfile.map(profile => {
-      return <SearchResultGuideItem profile={profile} key={profile.id} />;
+    const profile = this.state.filteredGuides.map(profile => {
+      return <SearchResultGuideItem profile={profile.guide} key={profile.guide.id} />;
     });
     return (
 

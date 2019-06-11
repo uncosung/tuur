@@ -73,9 +73,6 @@ class Mapbox extends Component {
       if (this.props.tags.length > 0){
         this.filterTags();
       }
-      else {
-        console.log('all filtered!', this.state.filteredTuurs)
-      }
     });
 
   }
@@ -113,17 +110,19 @@ class Mapbox extends Component {
     for (let h = 0; h < tagArray.length; h++){
       for (let g = h+1; g < tagArray.length; g++){
         if (tagArray[h] === tagArray[g]){
-          console.log('this tuur already exists', tagArray)
           tagArray.splice(g, 1)
         }
       }
     }
     if (tagArray.length === 0){
+      this.setState({
+        filteredTuurs: []
+      })
       return
     }
     this.setState ({
       filteredTuurs: tagArray
-    }, () => console.log('map final filter' , this.state.filteredTuurs))
+    })
   }
   fetchLocation() {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
@@ -146,7 +145,6 @@ class Mapbox extends Component {
   }
 
   clickPin(tuur) {
-    console.log('click', tuur);
   }
   renderPopup() {
     const { popupInfo } = this.state;
