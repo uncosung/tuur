@@ -113,9 +113,11 @@ class Search extends Component {
     if (this.state.package) {
       packages = this.state.package.map((article, index) => {
         return (
+
           <Grid key={index} component={Link} to={{ pathname: '/package-details/' + article.id, state: { item: article }}}>
             <img src={article.mainImage} alt={article.title} style={{ height: '120px' }} />
           </Grid>
+
         );
       });
     }

@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import UpComingTuursList from './user-upcoming-tuurs-list';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#3A8288' },
+    secondary: { main: '#5bd1d7' },
+    lightBeige: { main: '#f1f1f1' },
+    beige: { main: '#f5e1da' }
+  }
+});
 
 const styles = theme => ({
   marginTop: {
@@ -67,9 +77,11 @@ class UserProfile extends Component {
           <Avatar alt="avatar" src={this.state.user.image} className={classes.avatar} />
         </Grid>
         <Grid item xs={6}>
-          <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.user.email} >
-            <Typography variant="button">Edit</Typography>
-          </Button>
+          <ThemeProvider theme={theme}>
+            <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.user.email} >
+              <Typography variant="button">Edit</Typography>
+            </Button>
+          </ThemeProvider>
         </Grid>
       </Grid>
     </Container>
