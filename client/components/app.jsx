@@ -40,6 +40,7 @@ class App extends Component {
   }
 
   setView(name, user, location) {
+    console
     if (!location) {
       this.setState({
         user
