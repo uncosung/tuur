@@ -17,7 +17,6 @@ import Modal from '@material-ui/core/Modal';
 import CarouselImage from './package-detail-carousel-item';
 import { Link } from 'react-router-dom';
 
-
 const divStyle = {
   width: '47px',
   height: '40px',
@@ -123,7 +122,7 @@ class PackageDetails extends Component {
       item: null,
       status: null,
       images: [],
-      cardImg: this.props.location.state.item.mainImage,
+      cardImg: this.props.location.state.item.mainImage
     };
     this.changeImage = this.changeImage.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
@@ -240,14 +239,14 @@ class PackageDetails extends Component {
 
   bookHandler(dates) {
     const packageId = this.state.item.id;
-    if ( dates ){
-      console.log( 'inside package detail', dates );
+    if (dates) {
+      console.log('inside package detail', dates);
       fetch('/api/booking.php', {
         method: 'POST',
         body: JSON.stringify({ packageId, dates })
       })
         .then(res => res.json())
-        .then(data => console.log( data ));
+        .then(data => console.log(data));
     }
 
   }
@@ -337,8 +336,8 @@ class PackageDetails extends Component {
             </Card>
           </CardContent>
 
-          <Grid justify="center" container>
-            <Grid container justify="center" >
+          <Grid justify="center" container style={{ marginBottom: '100px' }}>
+            <Grid item xs={9} >
               <ThemeProvider theme={theme}>
                 <Button type="submit" fullWidth variant="contained" color="primary" onClick={() => this.setState({ openModal: true })}>
                   <Typography variant="body1" gutterBottom>Available Dates</Typography>

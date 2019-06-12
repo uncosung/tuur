@@ -20,8 +20,7 @@ function getModalStyle() {
   return {
     top: `${top}%`,
     left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-    height: '55%'
+    transform: `translate(-${top}%, -${left}%)`
   };
 }
 
@@ -98,30 +97,28 @@ function SimpleModal(props) {
   console.log(props);
   return (
     <div>
-      <ThemeProvider theme={theme}>
-        <Button onClick={ props.dates.length ? handleOpen : null} type="button" className={classes.margin} fullWidth variant="contained" color="primary" >
-          <Typography variant="body1" gutterBottom>Book</Typography>
-        </Button>
-        {/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
-        {/* <Button onClick={handleOpen}>Open Modal</Button> */}
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={open}
-          onClose={handleClose}
-        >
-          <div style={modalStyle} className={classes.paper}>
-            <Typography className={classes.marginBottom} variant="h5" id="modal-title" color="primary" align="center">
-            Booking Confirmation
-            </Typography>
-            <img src={props.item.mainImage} className={classes.marginBottom} style={{ width: '100%', height: '200px' }} alt={props.item.title}/>
-            <Typography variant="h6" id="simple-modal-description">
-              { props.item.title }
-            </Typography>
-            <Typography variant="subtitle1" id="simple-modal-description">
-              { props.item.location }
-            </Typography>
-            <Typography className={classes.marginBottom} variant="subtitle1" id="simple-modal-description">
+      <Button onClick={ props.dates.length ? handleOpen : null} type="button" className={classes.margin} fullWidth variant="contained" color="primary" >
+        <Typography variant="body1" gutterBottom>Book</Typography>
+      </Button>
+      {/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
+      {/* <Button onClick={handleOpen}>Open Modal</Button> */}
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={open}
+        onClose={handleClose}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <Typography variant="h6" id="modal-title">
+            Confirmation
+          </Typography>
+          <Typography variant="subtitle1" id="simple-modal-description">
+            { props.item.title }
+          </Typography>
+          <Typography variant="subtitle1" id="simple-modal-description">
+            { props.item.location }
+          </Typography>
+          <Typography variant="subtitle1" id="simple-modal-description">
             Booked for the following dates:
             </Typography>
             <Button type="button" className={classes.margin} fullWidth variant="contained" color="primary" onClick={handleClose}>
