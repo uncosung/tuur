@@ -11,6 +11,7 @@ import BorderColor from '@material-ui/icons/BorderColor';
 import Fab from '@material-ui/core/Fab';
 import { ThemeProvider } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
+import BookedTuurs from './user-booked-tuurs-list-item';
 
 const theme = createMuiTheme({
   palette: {
@@ -79,36 +80,59 @@ class UpComingTuursList extends Component {
     };
   }
 
-  componentDidMount() {
-    let email = '';
-    console.log( 'lksjdflksdjflsdkjfdslfjsdklfsjl', this.props.user );
-
-    fetch('/api/booking.php?email')
+  getBooked(){
+    fetch('/api/booked.php')
       .then(res => res.json())
-      .then(packages => this.setState({ packages }));
+      .then(booked => this.setState({ booked }));
+  }
 
-// <<<<<<< HEAD
+  getCreatedPackages(){
     fetch("/api/package.php?email")
       .then(res => res.json())
-      .then(booked => this.setState({ booked }), () => console.log( booked ));
-// =======
-//     fetch('/api/package.php?id')
-//       .then(res => res.json())
-//       .then(booked => this.setState({ booked }));
-// >>>>>>> d55e6d71d16630ed9c37f5dc3ebf40aa00822a7c
+      .then(packages => this.setState({ packages }));
+  }
+
+  componentDidMount() {
+    this.getBooked();
+    this.getCreatedPackages();
+
+  }
+
+  componentDidUpdate(){
+    this.getBooked();
+    this.getCreatedPackages();
   }
 
   render() {
-    // console.log('0000', this.props );
+    console.log('0000', this.props );
     const { classes } = this.props;
-    const packageMap = this.state.booked.map((packageItem, id) => {
+    const bookedMap = this.state.booked.map((bookedItem, id) => {
+      return <BookedTuurs key={id} booked={bookedItem} />
+    })
+    const packageMap = this.state.packages.map((packageItem, id) => {
       return <UpComingTuurItem key={id} package={packageItem} key={packageItem.id} />;
     });
     return (
       <>
+        {/* BOOKED PACKAGES */}
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
-            Upcoming Tuurs
+            Booked Packages
+          </Typography>
+        </Container>
+        <div className={classes.root}>
+          <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
+          {bookedMap}
+          </GridList>
+        </div>
+
+
+        {/* CREATED PACKAGES BY GUIDES */}
+        { this.props.user.isGuide ? 
+        <>
+        <Container className={classes.marginBottom} >
+          <Typography className={classes.marginTop} variant="h4">
+            Packages
           </Typography>
         </Container>
         <div className={classes.root}>
@@ -126,12 +150,15 @@ class UpComingTuursList extends Component {
             <ThemeProvider theme={theme}>
               <Fab color="primary" variant="extended" aria-label="create" className={classes.fab} component={Link} to={'/create-package'} >
                 <BorderColor className={classes.extendedIcon} />
-                  Create Package
+                Create Package
               </Fab>
             </ThemeProvider>
             {/* </ThemeProvider> */}
           </Grid>
         </Grid>
+        </>
+        : null
+        }
       </>
     );
   }

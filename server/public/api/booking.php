@@ -54,9 +54,10 @@ if ( $method === "GET"){
   if ( isset( $_GET['id'] ) ){
     $bookedPackageQuery = "SELECT `book`.packageId, `pack`.title, `pack`.description, `pack`.tags, `pack`.location, `pack`.timeRange ,
     GROUP_CONCAT( `book`.dates ORDER BY `book`.dates DESC SEPARATOR ', ' ) AS dates, `pack`.mainImage, `pack`.images, `pack`.profileEmail 
-    FROM `booking` AS book JOIN `package` AS pack ON `book`.packageId = `pack`.id 
+    FROM `booking` AS book 
+    JOIN `package` AS pack ON `book`.packageId = `pack`.id 
     GROUP BY `book`.packageId
-    -- WHERE `book`.tuuristEmail = $email
+    WHERE `book`.tuuristEmail = $email
     ";
     $result = mysqli_query( $conn , $bookedPackageQuery );
     if ( !$result ){
@@ -66,7 +67,8 @@ if ( $method === "GET"){
       $bookedPackages[] = $row;
     }
     print_r( json_encode($bookedPackages) );
-  } else {
+  } 
+  else {
     $query = "SELECT `book`.id, `pack`.id AS packageId, `pack`.title, `pack`.description, `pack`.tags, 
     `pack`.location, `pack`.timeRange, `pack`.mainImage, `pack`.images, `pack`.profileEmail AS guideEmail,
     `book`.tuuristEmail, `book`.dates, 
