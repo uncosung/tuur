@@ -90,7 +90,8 @@ class DatePicker extends Component {
 
   render() {
     let item;
-    if ( this.props.location.state.item ){
+
+    if ( this.props.location.state ){
       item = this.props.location.state.item
     }
     console.log( item );

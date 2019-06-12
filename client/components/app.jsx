@@ -57,7 +57,14 @@ class App extends Component {
   }
 
   logIn(user) {
-    this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
+    this.setState({ user }, () => {
+      console.log( 'in login' , user )
+      this.props.history.push(
+      
+      {pathname: '/user-profile/' + user.email,
+      state: { user }
+    })}
+    );
   }
 
   edit(user) {
@@ -118,7 +125,7 @@ class App extends Component {
             render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav user={this.state.user}/></div>}/>
 
           <Route exact path="/user-profile/:email"
-            render={props => <div><UserProfile user={this.state.user} view={this.setView} {...props} isAuthed={true}/>,
+            render={props => <div><UserProfile user={this.state.user} view={this.setView} {...props} isAuthed={true} />>,
             </div>}
           />
 
