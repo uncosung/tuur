@@ -38,6 +38,7 @@ class SearchPackages extends Component {
   }
 
   componentDidMount() {
+    debugger;
     this.fetchPackages();
   }
 
@@ -95,6 +96,15 @@ class SearchPackages extends Component {
     this.props.tags.length === 0 && this.props.dates.start !== null ? this.filterDates(filterTuurs) : this.filterTags(filterTuurs);
 
   }
+
+//   filterTags () {
+//     let tagArray = [];
+//     for (let i = 0; i < this.state.filteredTuurs.length; i++){
+//       for (let j = 0; j < this.props.tags.length; j++){
+//         for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
+//           if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
+//             tagArray = [...tagArray, this.state.filteredTuurs[i]]
+
   filterTags (filterTuurs) {
       if (this.props.tags.length === 0){
         this.setState({
@@ -129,6 +139,7 @@ class SearchPackages extends Component {
         filteredTuurs: filterTuurs
       })
   }
+
   filterDates (tagArray) {
     const endDate = new Date( this.props.dates.end );
     const begDate = new Date( this.props.dates.start );
@@ -168,10 +179,17 @@ class SearchPackages extends Component {
     });
   }
 
+
+//   checkAvailability( year, month, day) {
+//     for (let i = 0; i < this.state.filteredTuurs.length; i++){
+//       console.log(this.state.filteredTuurs[i])
+//       let parseDate = JSON.parse(this.state.filteredTuurs[i].tuur.dates)
+
   checkAvailability(tagArray, year, month, day) {
     debugger;
     for (let i = 0; i < tagArray.length; i++){
       let parseDate = JSON.parse(tagArray[i].tuur.dates)
+
       for (var value of parseDate) {
         const packageDate = new Date(value);
         const packageYear = packageDate.getFullYear();

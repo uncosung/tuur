@@ -40,6 +40,7 @@ class App extends Component {
   }
 
   setView(name, user, location) {
+    debugger;
     if (!location) {
       this.setState({
         user
@@ -72,8 +73,8 @@ class App extends Component {
     this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
   }
 
+
   handleSearch(location, tags, dates) {
-    console.log('searched!', location, tags, dates)
     if (!location.name && tags) {
       this.setState({
         tags: tags
@@ -142,8 +143,7 @@ class App extends Component {
             </div>
           }/>
           <Route path="/package-details/:id"
-            render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
-
+            render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>} />
         </Switch>
         <BottomNav user={this.state.user}/>
       </div>

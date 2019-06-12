@@ -105,16 +105,16 @@ class Search extends Component {
       speed: 2000,
       autoplaySpeed: 3000,
       cssEase: 'linear',
-      adaptiveHeight: true
-
+      adaptiveHeight: true,
     };
     let packages = '';
     if (this.state.package) {
       packages = this.state.package.map((article, index) => {
+        debugger;
         return (
-          <div key={index} >
+          <Grid key={index} component={Link} to={{ pathname: '/package-details/' + article.id, state: { item: article }}}>
             <img src={article.mainImage} alt={article.title} style={{ height: '120px' }} />
-          </div>
+          </Grid>
         );
       });
     }
@@ -161,12 +161,11 @@ class Search extends Component {
         <Typography variant="h6" align="center">
              Popular tuurs
         </Typography>
-        <div style={{ height: '120px', width: '85%', margin: 'auto' }}>
+        <Grid style={{ height: '120px', width: '85%', margin: 'auto' }}>
           <Slider {...settings} >
-            {packages}
+              {packages}  
           </Slider>
-        </div>
-        {/* </Grid> */}
+        </Grid>
 
       </div>
     );
