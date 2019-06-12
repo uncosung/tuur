@@ -50,6 +50,7 @@ class SearchResultGuide extends Component {
     this.filterGuides = this.filterGuides.bind(this);
   }
   componentDidMount() {
+    
     this.fetchProfiles();
   }
   fetchProfiles() {
