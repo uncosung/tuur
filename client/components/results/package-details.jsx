@@ -233,7 +233,8 @@ class PackageDetails extends Component {
   componentDidMount() {
     fetch(`/api/profile.php?email=${this.props.location.state.item.profileEmail}`)
       .then(res => res.json())
-      .then(response => this.setState({ package: response }));
+      .then(response => {
+        this.setState({ package: response})});
 
     const id = this.props.match.params.id;
     fetch('/api/package.php?id=' + id)

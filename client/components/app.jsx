@@ -27,9 +27,10 @@ class App extends Component {
     };
     this.setView = this.setView.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleDates = this.handleDates.bind(this);
+    // this.handleDates = this.handleDates.bind(this);
     this.logIn = this.logIn.bind(this);
     this.edit = this.edit.bind(this);
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -58,36 +59,42 @@ class App extends Component {
   }
 
   logIn(user) {
-    this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
+    this.setState({ user }, () => {
+      console.log( 'in login' , user )
+      this.props.history.push(
+      
+      {pathname: '/user-profile/' + user.email,
+      state: { user }
+    })}
+    );
   }
 
   edit(user) {
     this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
   }
 
-  handleSearch(location, tags) {
-    debugger;
+
+  handleSearch(location, tags, dates) {
     if (!location.name && tags) {
       this.setState({
         tags: tags
-      });
+      }, () => console.log('these arent the dates', this.state))
+      return
+    }
+    else if (!location.name && !tags){
+      return
+    }
+    else {
 
-    } else if (!location.name && !tags) {
-
-    } else {
       this.setState({
         location: location,
-        tags: tags
-      });
+        tags: tags,
+        dates: {
+          start: dates.start,
+          end: dates.end
+        }
+      }, () => console.log('these arent the dates', this.state));
     }
-  }
-  handleDates(dates) {
-    this.setState({
-      dates: {
-        start: dates.start,
-        end: dates.end
-      }
-    }, () => console.log('these are the dates', this.state));
   }
 
   render() {
@@ -120,7 +127,7 @@ class App extends Component {
             render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav user={this.state.user}/></div>}/>
 
           <Route exact path="/user-profile/:email"
-            render={props => <div><UserProfile user={this.state.user} view={this.setView} {...props} isAuthed={true}/>,
+            render={props => <div><UserProfile user={this.state.user} view={this.setView} {...props} isAuthed={true} />>,
             </div>}
           />
 

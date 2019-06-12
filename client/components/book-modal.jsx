@@ -66,24 +66,26 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SimpleModal(props) {
-  console.log(props);
   const [open, setOpen] = React.useState(false);
   const [openSnackBar, setSnackBarOpen] = React.useState(false);
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
 
   const handleOpen = () => {
-    const notlogin = false;
-    if (notlogin) {
+    const status = props.loggedIn;
+    console.log( status )
+    if (!status) {
       handleSnackbarOpen();
     } else {
       setOpen(true);
+      console.log('should book');
+      props.booking();
     }
   };
 
   const handleClose = () => {
     setOpen(false);
-    props.booking();
+    
   };
 
   const handleSnackbarOpen = () => {
@@ -95,7 +97,7 @@ function SimpleModal(props) {
   };
 
   const classes = useStyles();
-  console.log(props);
+  console.log( props)
   return (
     <div>
       <ThemeProvider theme={theme}>

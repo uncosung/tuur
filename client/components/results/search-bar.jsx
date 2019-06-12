@@ -235,7 +235,7 @@ class SearchBar extends Component {
     this.setState({
       openModal: false,
       dates: { start: startDate, end: endDate }
-    }, this.handleDates);
+    });
   }
   modalClose() {
     this.setState({ openModal: false });
@@ -248,7 +248,7 @@ class SearchBar extends Component {
       location: { ...this.state.location, tags: this.state.tags }
     }, () => {
       let locationParam = this.state.searchParameters.name ? this.state.searchParameters : this.state.location
-      this.props.handleSearch(locationParam, this.state.tags)
+      this.props.handleSearch(locationParam, this.state.tags, this.state.dates)
     })
     
   }
@@ -338,7 +338,7 @@ class SearchBar extends Component {
              </Grid>
            </Modal>
          </Grid>
-         { this.state.location.toggleStatus ? <Mapbox tags={this.props.tags} location={this.props.location} /> : '' }
+         { this.state.location.toggleStatus ? <Mapbox dates={this.props.dates} tags={this.props.tags} location={this.props.location} /> : '' }
       </>
     );
   }
