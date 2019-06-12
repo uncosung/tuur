@@ -8,8 +8,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
-import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
+import { Link } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -41,6 +41,9 @@ const styles = theme => ({
     marginTop: theme.spacing(8)
   },
   marginBottom: {
+    marginBottom: theme.spacing(4)
+  },
+  marginBottom2: {
     marginBottom: theme.spacing(2)
   },
   tile: {
@@ -76,6 +79,7 @@ class Search extends Component {
   handleClick() {
     this.props.search(this.state.location)
     this.props.path('/results');
+
   }
   handleSelect(result) {
     this.setState({
@@ -114,15 +118,14 @@ class Search extends Component {
       autoplaySpeed: 3000,
       cssEase: 'linear',
       adaptiveHeight: true
-
     };
     let packages = '';
     if (this.state.package) {
       packages = this.state.package.map((article, index) => {
         return (
-          <div key={index} >
+          <Grid key={index} component={Link} to={{ pathname: '/package-details/' + article.id, state: { item: article } }}>
             <img src={article.mainImage} alt={article.title} style={{ height: '120px' }} />
-          </div>
+          </Grid>
         );
       });
     }
@@ -165,17 +168,14 @@ class Search extends Component {
             </Grid>
           </Grid>
         </Grid>
-
-        <Typography variant="h6" align="center">
+        <Typography variant="h5" align="center" className={classes.marginBottom2}>
              Popular tuurs
         </Typography>
-        <div style={{ height: '120px', width: '85%', margin: 'auto' }}>
+        <Grid style={{ height: '120px', width: '85%', margin: 'auto' }}>
           <Slider {...settings} >
             {packages}
           </Slider>
-        </div>
-        {/* </Grid> */}
-
+        </Grid>
       </div>
     );
   }

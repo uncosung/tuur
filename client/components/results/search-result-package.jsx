@@ -43,7 +43,6 @@ class SearchPackages extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log('updated', prevProps, this.props)
     if (prevProps.tags.toString() !== this.props.tags.toString()) {
       console.log('no match tags', this.props.tags)
       this.setState({
@@ -106,6 +105,15 @@ class SearchPackages extends Component {
     this.props.tags.length === 0 && this.props.dates.start !== null ? this.filterDates(filterTuurs) : this.filterTags(filterTuurs);
 
   }
+
+//   filterTags () {
+//     let tagArray = [];
+//     for (let i = 0; i < this.state.filteredTuurs.length; i++){
+//       for (let j = 0; j < this.props.tags.length; j++){
+//         for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
+//           if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
+//             tagArray = [...tagArray, this.state.filteredTuurs[i]]
+
   filterTags (filterTuurs) {
     console.log('reached filter tags', filterTuurs)
       if (this.state.tags.length === 0){
@@ -145,6 +153,7 @@ class SearchPackages extends Component {
         filteredTuurs: tagArray
       })
   }
+
   filterDates (tagArray) {
     const endDate = new Date( this.props.dates.end );
     const begDate = new Date( this.props.dates.start );
@@ -187,6 +196,7 @@ class SearchPackages extends Component {
   checkAvailability(tagArray, year, month, day) {
     for (let i = 0; i < tagArray.length; i++){
       let parseDate = JSON.parse(tagArray[i].tuur.dates)
+
       for (var value of parseDate) {
         const packageDate = new Date(value);
         const packageYear = packageDate.getFullYear();
@@ -199,8 +209,6 @@ class SearchPackages extends Component {
     }
 
   }
-
-  
 
   nextDay(month, day) {
     // last day of month = 31

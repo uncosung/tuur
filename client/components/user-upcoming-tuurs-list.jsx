@@ -6,8 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import UpComingTuurItem from './user-upcoming-tuurs-list-item';
 import GridList from '@material-ui/core/GridList';
 import Grid from '@material-ui/core/Grid';
-// import Button from '@material-ui/core/Button';
-// import { ThemeProvider } from '@material-ui/styles';
+import BookedTuurs from './user-booked-tuurs-list-item';
 
 const theme = createMuiTheme({
   palette: {
@@ -57,6 +56,12 @@ const styles = theme => ({
   },
   marginTop2: {
     marginTop: theme.spacing(4)
+  },
+  fab: {
+    margin: theme.spacing(1)
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1)
   }
 });
 
@@ -64,31 +69,65 @@ class UpComingTuursList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userEmail: '',
       packages: [],
       booked: []
     };
   }
 
-  componentDidMount() {
-    fetch('/api/booking.php?id')
+  getBooked() {
+    fetch('/api/booked.php')
+      .then(res => res.json())
+      .then(booked => this.setState({ booked }));
+  }
+
+  getCreatedPackages() {
+    fetch('/api/package.php?email')
       .then(res => res.json())
       .then(packages => this.setState({ packages }));
+  }
 
-    fetch("/api/package.php?id")
-      .then(res => res.json())
-      .then(booked => this.setState({ booked }))
+  componentDidMount() {
+    this.getBooked();
+    this.getCreatedPackages();
+
+  }
+
+  componentDidUpdate() {
+    if (!this.state.packages && !this.state.booked) {
+      this.getBooked();
+      this.getCreatedPackages();
+    }
+
   }
 
   render() {
+    console.log('0000', this.props);
     const { classes } = this.props;
-    const packageMap = this.state.packages.map(packageItem => {
-      return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
+    const bookedMap = this.state.booked.map((bookedItem, id) => {
+      return <BookedTuurs key={id} booked={bookedItem} />;
+    });
+    const packageMap = this.state.packages.map((packageItem, id) => {
+      return <UpComingTuurItem key={id} package={packageItem} />;
     });
     return (
       <>
+        {/* BOOKED PACKAGES */}
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
-            Upcoming Tuurs
+            Booked Packages
+          </Typography>
+        </Container>
+        <div className={classes.root}>
+          <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
+            {bookedMap}
+          </GridList>
+        </div>
+
+        {/* CREATED PACKAGES BY GUIDES */}
+        <Container className={classes.marginBottom} >
+          <Typography className={classes.marginTop} variant="h4">
+            Packages
           </Typography>
         </Container>
         <div className={classes.root}>
@@ -98,14 +137,9 @@ class UpComingTuursList extends Component {
         </div>
         <Grid justify="center" className={classes.margin} container>
           <Grid className={classes.marginTop2} container justify="center" >
-            {/* <ThemeProvider theme={theme}> */}
-            {/* IF GUIDE, INCLUDE CREATE PACKAGE BUTTON */}
-            {/* <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user)}>
-                <Typography variant="body1" gutterBottom>Create Package</Typography>
-              </Button> */}
-            {/* </ThemeProvider> */}
           </Grid>
         </Grid>
+
       </>
     );
   }

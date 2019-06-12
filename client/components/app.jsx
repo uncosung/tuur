@@ -10,6 +10,7 @@ import PackageDetails from './results/package-details';
 import UserViewProfile from './user-view-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
+import CreatePackage from './createPackage';
 
 class App extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class App extends Component {
     };
     this.setRoutePath = this.setRoutePath.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+
     this.logIn = this.logIn.bind(this);
     this.edit = this.edit.bind(this);
 
@@ -41,13 +43,22 @@ class App extends Component {
 
   setRoutePath(path) {
     console.log('setting path', this.state);
+
     this.setState({
       path: path
     }, () => console.log('stateystate', this.state));
   }
 
   logIn(user) {
-    this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
+    this.setState({ user }, () => {
+      console.log('in login', user);
+      this.props.history.push(
+
+        { pathname: '/user-profile/' + user.email,
+          state: { user }
+        });
+    }
+    );
   }
 
   edit(user) {
@@ -55,10 +66,10 @@ class App extends Component {
   }
 
   handleSearch(location, tags, dates) {
-    console.log('searched!', location, tags, dates)
     if (!location.name && tags) {
       this.setState({
         tags: tags
+
       }, () => console.log('these arent the dates', this.state))
       return
     }
@@ -71,6 +82,7 @@ class App extends Component {
       })
     }
     else {
+
       this.setState({
         location: location,
         tags: tags,
@@ -113,22 +125,27 @@ class App extends Component {
 
           <Route exact path="/user-profile/:email"
             render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>,
+
             </div>}
           />
 
           <Route exact path="/edit-profile/:email"
-            render={props => <div><EditProfile user={this.state.user} {...props} isAuthed={true}/>,
+            render={props => <div><EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>,
             </div>}
           />
 
           <Route path="/results" render={props =>
             <div>
               <Results dates={this.state.dates} handleDates={this.handleDates} toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
-
             </div>
           }/>
           <Route path="/package-details/:id"
-            render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
+            render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}
+          />
+
+          <Route path="/create-package"
+            render={props => <CreatePackage packages={this.state.user}{...props} isAuthed={true}/>}
+          />
 
         </Switch>
         <BottomNav path={this.setRoutePath} user={this.state.user}/>
