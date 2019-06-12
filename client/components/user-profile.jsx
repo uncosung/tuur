@@ -31,6 +31,10 @@ const styles = theme => ({
   },
   marginLeft: {
     marginLeft: theme.spacing(2)
+  },
+  buttonCreate: {
+    color: 'white',
+    marginTop: 7
   }
 });
 
@@ -79,7 +83,10 @@ class UserProfile extends Component {
         <Grid item xs={6}>
           <ThemeProvider theme={theme}>
             <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.user.email} >
-              <Typography variant="button">Edit</Typography>
+              <Typography variant="button">Edit profile</Typography>
+            </Button>
+            <Button className={classes.buttonCreate} type="button" fullWidth variant="contained" color="secondary" component={Link} to={'/create-package'} >
+                  Create Package
             </Button>
           </ThemeProvider>
         </Grid>
