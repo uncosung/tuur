@@ -80,26 +80,31 @@ class UpComingTuursList extends Component {
     };
   }
 
-  componentDidMount() {
-    let email = '';
-
+  getBooked(){
     fetch('/api/booked.php')
       .then(res => res.json())
       .then(booked => this.setState({ booked }));
+  }
 
-    // <<<<<<< HEAD
+  getCreatedPackages(){
     fetch("/api/package.php?email")
       .then(res => res.json())
       .then(packages => this.setState({ packages }));
-    // =======
-    //     fetch('/api/package.php?id')
-    //       .then(res => res.json())
-    //       .then(booked => this.setState({ booked }));
-    // >>>>>>> d55e6d71d16630ed9c37f5dc3ebf40aa00822a7c
+  }
+
+  componentDidMount() {
+    this.getBooked();
+    this.getCreatedPackages();
+
+  }
+
+  componentDidUpdate(){
+    this.getBooked();
+    this.getCreatedPackages();
   }
 
   render() {
-    // console.log('0000', this.props );
+    console.log('0000', this.props );
     const { classes } = this.props;
     const bookedMap = this.state.booked.map((bookedItem, id) => {
       return <BookedTuurs key={id} booked={bookedItem} />
@@ -109,6 +114,7 @@ class UpComingTuursList extends Component {
     });
     return (
       <>
+        {/* BOOKED PACKAGES */}
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
             Booked Packages
@@ -119,6 +125,11 @@ class UpComingTuursList extends Component {
           {bookedMap}
           </GridList>
         </div>
+
+
+        {/* CREATED PACKAGES BY GUIDES */}
+        { this.props.user.isGuide ? 
+        <>
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
             Packages
@@ -145,6 +156,9 @@ class UpComingTuursList extends Component {
             {/* </ThemeProvider> */}
           </Grid>
         </Grid>
+        </>
+        : null
+        }
       </>
     );
   }
