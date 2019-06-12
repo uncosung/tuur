@@ -45,7 +45,7 @@ class LogIn extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    fetch(`/api/profile.php?email=${this.state.email}`)
+    fetch(`/api/profile.php?login=${this.state.email}`)
       .then(res => res.json())
       .then(data => {
         if (data.auth) {
@@ -57,6 +57,7 @@ class LogIn extends React.Component {
   render() {
     const { classes } = this.props;
     if (this.state.auth) {
+      console.log( 'relksjdflsk' );
       return <Redirect to={{
         pathname: '/user-profile/' + this.state.email,
         state: { user: this.state }

@@ -75,6 +75,8 @@ class Search extends Component {
   }
 
   handleClick() {
+    console.log( 'on handle click search bar', this.props ),
+    console.log( 'location', this.state );
     this.props.search('/results', null, this.state.location);
   }
   handleSelect(result) {
@@ -107,16 +109,17 @@ class Search extends Component {
       speed: 2000,
       autoplaySpeed: 3000,
       cssEase: 'linear',
-      adaptiveHeight: true
-
+      adaptiveHeight: true,
     };
     let packages = '';
     if (this.state.package) {
       packages = this.state.package.map((article, index) => {
         return (
-          <div key={index} >
-            <img src={article.mainImage} alt={article.title} style={{ height: '120px', width: '100%' }} />
-          </div>
+
+          <Grid key={index} component={Link} to={{ pathname: '/package-details/' + article.id, state: { item: article }}}>
+            <img src={article.mainImage} alt={article.title} style={{ height: '120px' }} />
+          </Grid>
+
         );
       });
     }
@@ -159,15 +162,15 @@ class Search extends Component {
             </Grid>
           </Grid>
         </Grid>
-
         <Typography variant="h5" align="center" className={classes.marginBottom2}>
              Popular tuurs
         </Typography>
-        <div style={{ height: '120px', width: '85%', margin: 'auto' }}>
+        <Grid style={{ height: '120px', width: '85%', margin: 'auto' }}>
           <Slider {...settings} >
-            {packages}
+              {packages}  
           </Slider>
         </div>
+        </Grid>
       </div>
     );
   }

@@ -41,17 +41,17 @@ class Itinerary extends Component {
     return date;
   }
 
-  componentDidMount() {
-    fetch('/api/booking.php?id')
-      .then(res => res.json())
-      .then(packages => this.setState({ packages }));
+  componentDidMount(){
+    fetch('/api/booking.php?email')
+      .then( res => res.json() )
+      .then( packages => this.setState( { packages } ))
   }
 
-  componentDidUpdate() {
-    if (this.state.package) {
-      fetch('/api/booking.php?id')
-        .then(res => res.json())
-        .then(packages => this.setState({ packages }));
+  componentDidUpdate(){
+    if ( this.state.package ){
+      fetch('/api/booking.php?email')
+      .then( res => res.json() )
+      .then( packages => this.setState( { packages } ), () => console.log( 'updatedlkjlkjklj'))
     }
   }
 

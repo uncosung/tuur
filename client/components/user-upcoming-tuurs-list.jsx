@@ -11,6 +11,7 @@ import BorderColor from '@material-ui/icons/BorderColor';
 import Fab from '@material-ui/core/Fab';
 import { ThemeProvider } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
+import BookedTuurs from './user-booked-tuurs-list-item';
 
 const theme = createMuiTheme({
   palette: {
@@ -73,31 +74,69 @@ class UpComingTuursList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userEmail: '',
       packages: [],
       booked: []
     };
   }
 
-  componentDidMount() {
-    fetch('/api/booking.php?id')
-      .then(res => res.json())
-      .then(packages => this.setState({ packages }));
-
-    fetch('/api/package.php?id')
+  getBooked(){
+    fetch('/api/booked.php')
       .then(res => res.json())
       .then(booked => this.setState({ booked }));
   }
 
+  getCreatedPackages(){
+    fetch("/api/package.php?email")
+      .then(res => res.json())
+      .then(packages => this.setState({ packages }));
+  }
+
+  componentDidMount() {
+    this.getBooked();
+    this.getCreatedPackages();
+
+  }
+
+  componentDidUpdate(){
+    if ( !this.state.packages && !this.state.booked ){
+      this.getBooked();
+      this.getCreatedPackages();
+    }
+
+    
+  }
+
   render() {
+    console.log('0000', this.props );
     const { classes } = this.props;
-    const packageMap = this.state.packages.map(packageItem => {
-      return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
+    const bookedMap = this.state.booked.map((bookedItem, id) => {
+      return <BookedTuurs key={id} booked={bookedItem} />
+    })
+    const packageMap = this.state.packages.map((packageItem, id) => {
+      return <UpComingTuurItem key={id} package={packageItem} key={packageItem.id} />;
     });
     return (
       <>
+        {/* BOOKED PACKAGES */}
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
-            Upcoming Tuurs
+            Booked Packages
+          </Typography>
+        </Container>
+        <div className={classes.root}>
+          <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
+          {bookedMap}
+          </GridList>
+        </div>
+
+
+        {/* CREATED PACKAGES BY GUIDES */}
+        { this.props.user.isGuide ? 
+        <>
+        <Container className={classes.marginBottom} >
+          <Typography className={classes.marginTop} variant="h4">
+            Packages
           </Typography>
         </Container>
         <div className={classes.root}>
@@ -115,6 +154,9 @@ class UpComingTuursList extends Component {
             {/* </ThemeProvider> */}
           </Grid>
         </Grid>
+        </>
+        : null
+        }
       </>
     );
   }

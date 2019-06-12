@@ -93,7 +93,7 @@ class DatePicker extends Component {
     if (this.props.location.state) {
       item = this.props.location.state.item;
     }
-    console.log(item);
+
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
     return (
@@ -130,7 +130,7 @@ class DatePicker extends Component {
                 {/* <Button onClick={this.handleBooking} type="button" className={classes.margin} fullWidth variant="contained" color="primary" >
                   <Typography variant="body1" gutterBottom>Book</Typography>
                 </Button> */}
-                <SimpleModal item={item } booking={ this.handleBooking } dates={ this.state.dates } />
+                <SimpleModal item={item } booking={ this.handleBooking } dates={ this.state.dates } loggedIn={this.props.item.package.status} />
               </div>
               : <Button onClick={this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
                 <Typography variant="body1" gutterBottom>Select Dates</Typography>

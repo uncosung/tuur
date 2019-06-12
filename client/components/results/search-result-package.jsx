@@ -24,7 +24,10 @@ class SearchPackages extends Component {
       fetchResult: null,
       fetchCoordinates: [],
       filteredTuurs: [],
-      dates: {}
+      dates: {
+        start: null,
+        end: null
+      }
     };
     
     this.fetchPackages = this.fetchPackages.bind(this);
@@ -39,7 +42,11 @@ class SearchPackages extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log( prevProps )
     if (prevProps.tags.toString() !== this.props.tags.toString()) {
+      this.fetchPackages();
+    }
+    else if (this.props.dates.start !== prevProps.dates.start){
       this.fetchPackages();
     }
   }
@@ -47,7 +54,7 @@ class SearchPackages extends Component {
   fetchPackages() {
     fetch('/api/package.php')
       .then(res => res.json())
-      .then(packages => this.setState({ packages }, this.fetchLocation));
+      .then(packages =>  this.fetchLocation(packages));
   }
   
   renderPackage() {
@@ -64,78 +71,76 @@ class SearchPackages extends Component {
       coord: respJson.features[0].center
     };
   }
-  mapTuurs() {
-    let mapArray = this.state.packages.map(this.getTuurLocationData);
+  mapTuurs(fetchCoordinates, packages) {
+    let mapArray = packages.map(this.getTuurLocationData);
 
-    Promise.all(mapArray).then(tuurCoordinates => {
-      this.setState({
-        fetchCoordinates: tuurCoordinates
-      }, this.filterTuurs);
-    });
-
+    Promise.all(mapArray).then(tuurCoordinates => this.filterTuurs(fetchCoordinates, packages, tuurCoordinates));
   }
-  fetchLocation() {
+  fetchLocation(packages) {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
       .then(res => res.json())
-      .then(result => {
-        this.setState({
-          fetchResult: result
-        }, this.mapTuurs);
-      });
-
+      .then(fetchCoordinates => this.mapTuurs(fetchCoordinates, packages));
   }
-  filterTuurs() {
+
+  filterTuurs(fetchCoordinates, packages, tuurCoordinates) {
     let filterTuurs = [];
     let tooFar = [];
-    for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
-      if (this.state.fetchCoordinates[i].coord[0] < this.props.location.coordinates[0] - 1 || this.state.fetchCoordinates[i].coord[0] > this.props.location.coordinates[0] + 1 || this.state.fetchCoordinates[i].coord[1] < this.props.location.coordinates[1] - 0.2 || this.state.fetchCoordinates[i].coord[1] > this.props.location.coordinates[1] + 0.2) {
-        tooFar = [...tooFar, this.state.fetchCoordinates[i]];
+    for (let i = 0; i < tuurCoordinates.length; i++) {
+      if (tuurCoordinates[i].coord[0] < this.props.location.coordinates[0] - 1 || tuurCoordinates[i].coord[0] > this.props.location.coordinates[0] + 1 || tuurCoordinates[i].coord[1] < this.props.location.coordinates[1] - 0.2 || tuurCoordinates[i].coord[1] > this.props.location.coordinates[1] + 0.2) {
+        tooFar = [...tooFar, tuurCoordinates[i]];
       } else {
-        filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];
+        filterTuurs = [...filterTuurs, tuurCoordinates[i]];
       }
     }
-    this.setState({
-      filteredTuurs: filterTuurs
-    }, () => {
-      if (this.props.tags.length > 0){
-        this.filterTags();
-      }
-    });
+  
+    this.props.tags.length === 0 && this.props.dates.start !== null ? this.filterDates(filterTuurs) : this.filterTags(filterTuurs);
 
   }
-  filterTags () {
-    debugger;
-    let tagArray = [];
-    for (let i = 0; i < this.state.filteredTuurs.length; i++){
-      for (let j = 0; j < this.props.tags.length; j++){
-        for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
-          if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
-            tagArray = [...tagArray, this.state.filteredTuurs[i]]
+
+//   filterTags () {
+//     let tagArray = [];
+//     for (let i = 0; i < this.state.filteredTuurs.length; i++){
+//       for (let j = 0; j < this.props.tags.length; j++){
+//         for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
+//           if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
+//             tagArray = [...tagArray, this.state.filteredTuurs[i]]
+
+  filterTags (filterTuurs) {
+      if (this.props.tags.length === 0){
+        this.setState({
+          filteredTuurs: filterTuurs
+        })
+        return
+      }
+      let tagArray = [];
+      for (let i = 0; i < filterTuurs.length; i++){
+        for (let j = 0; j < this.props.tags.length; j++){
+          for (let k = 0; k < JSON.parse(filterTuurs[i].tuur.tags).length; k++){
+            if (JSON.parse(filterTuurs[i].tuur.tags)[k] === this.props.tags[j]){
+              tagArray = [...tagArray, filterTuurs[i]]
+            }
           }
         }
       }
-    }
-    for (let h = 0; h < tagArray.length; h++){
-      for (let g = h+1; g < tagArray.length; g++){
-        if (tagArray[h] === tagArray[g]){
-          tagArray.splice(g, 1)
+      for (let h = 0; h < tagArray.length; h++){
+        for (let g = h+1; g < tagArray.length; g++){
+          if (tagArray[h] === tagArray[g]){
+            tagArray.splice(g, 1)
+          }
         }
       }
-    }
-    if (tagArray.length === 0){
-      this.setState({
-        filteredTuurs: []
+      if (tagArray.length === 0){
+        this.setState({
+          filteredTuurs: filterTuurs
+        })
+        return
+      }
+      this.props.dates.start !== null ? this.filterDates(tagArray) : this.setState({
+        filteredTuurs: filterTuurs
       })
-      return
-    }
-    this.setState ({
-      filteredTuurs: tagArray
-    }, this.filterDates)
   }
-  filterDates () {
-    debugger;
-    console.log('yoyoyo', this.props.dates)
-    // console.log(this.props.dates.end / .start )
+
+  filterDates (tagArray) {
     const endDate = new Date( this.props.dates.end );
     const begDate = new Date( this.props.dates.start );
     let begDateYear = begDate.getFullYear();
@@ -149,46 +154,49 @@ class SearchPackages extends Component {
     let availableTuur = [];
     dateArray.push( new Date( begDateYear, begDateMonth, begDateDay));
     while (begDateMonth !== endDateMonth || begDateDay !== endDateDay) {
-      begDateDay = this.nextDay(begDateMonth, begDateDay);
       if (begDateDay === 1) {
         begDateMonth = begDateMonth === 11 ? 0 : ++begDateMonth;
       }
       if (begDateMonth === 0 && begDateDay === 1) {
         begDateYear = begDateMonth === 1 ? ++begDateYear : begDateYear;
       }  
-      availableTuur = this.checkAvailability(begDateYear, begDateMonth, begDateDay )
+      availableTuur = this.checkAvailability(tagArray, begDateYear, begDateMonth, begDateDay )
+      begDateDay = this.nextDay(begDateMonth, begDateDay);
       if ( availableTuur ){
         availablePackage.push( availableTuur );
       }
-      console.log('date filtered tuurs', availablePackage)
-      // dateArray.push(new Date(begDateYear, begDateMonth, begDateDay));
     }
 
     if ( begDateMonth === endDateMonth && begDateDay === endDateDay){
-      availableTuur = this.checkAvailability(begDateYear, begDateMonth, begDateDay )
+      availableTuur = this.checkAvailability(tagArray, begDateYear, begDateMonth, begDateDay )
       if ( availableTuur ){
         availablePackage.push( availableTuur );
       }
     }
-    console.log('date filtered tuurs', availablePackage)
 
     this.setState({
       filteredTuurs: availablePackage
     });
   }
 
-  checkAvailability( year, month, day) {
+
+//   checkAvailability( year, month, day) {
+//     for (let i = 0; i < this.state.filteredTuurs.length; i++){
+//       console.log(this.state.filteredTuurs[i])
+//       let parseDate = JSON.parse(this.state.filteredTuurs[i].tuur.dates)
+
+  checkAvailability(tagArray, year, month, day) {
     debugger;
-    for (let i = 0; i < this.state.filteredTuurs.length; i++){
-      console.log(this.state.filteredTuurs[i])
-      let parseDate = JSON.parse(this.state.filteredTuurs[i].tuur.dates)
+    for (let i = 0; i < tagArray.length; i++){
+      let parseDate = JSON.parse(tagArray[i].tuur.dates)
+
       for (var value of parseDate) {
         const packageDate = new Date(value);
         const packageYear = packageDate.getFullYear();
         const packageMonth = packageDate.getMonth();
         const packageDay = packageDate.getDate();
         if (packageYear === year && packageMonth === month && packageDay === day) {
-          return this.state.filteredTuurs[i];
+          return tagArray[i];
         }
       }
     }
@@ -235,7 +243,7 @@ class SearchPackages extends Component {
               Tuurs
             </Typography>
           </Container>
-          { this.state.filteredTuurs.length === 0 ? "There are no tuurs that match the search criteria" : this.renderPackage() }
+          { this.state.filteredTuurs.length === 0 ? <div>There are no tuurs that match the search criteria</div> : this.renderPackage() }
       </>
     );
   }
