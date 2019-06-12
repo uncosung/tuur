@@ -213,8 +213,9 @@ class CreatePackage extends Component {
             { title, location, tags, timeRange, description, dates, imageUrl })
         })
           .then(res => res.json())
-          .then(newPackage => this.props.view('userProfile', this.props.user));
+          .then(newPackage => console.log(newPackage));
         this.setState({ openSnackBar: false });
+        this.props.history.push('/user-profile/' + this.props.packages.email);
       }
       // }
     }
@@ -223,7 +224,6 @@ class CreatePackage extends Component {
     } else {
       this.setState({ openSnackBar: false });
     }
-    this.props.history.push('/user-profile/' + this.props.packages.email);
   }
 
   handleSnackbarClose(event, reason) {
@@ -416,7 +416,7 @@ class CreatePackage extends Component {
               </Modal>
             </Grid>
           </Grid>
-          <Grid container style={{ margin: 'auto' }} justify="center">
+          <div style={{ padding: '0 25px 0 30px 0', display: 'flex', width: '80%', flexWrap: 'wrap' }} >
             {this.state.dates.map((data, index) => {
               let date = data.getDate();
               let month = data.getMonth() + 1;
@@ -433,7 +433,7 @@ class CreatePackage extends Component {
               );
 
             })}
-          </Grid>
+          </div>
 
           <Grid className={classes.margin} style={{ marginBottom: '30px' }} container alignItems="flex-end" justify="center">
             <div className={classes.root}>
