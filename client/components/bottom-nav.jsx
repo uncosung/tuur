@@ -11,7 +11,7 @@ const styles = theme => ({
   root: {
     width: '100%',
     position: 'fixed',
-    bottom: 0,
+    bottom: 0
     // padding: '50px 0 10px 0'
   }
 });
@@ -22,31 +22,31 @@ class BottomNav extends Component {
     this.state = {};
     this.handleClick = this.handleClick.bind(this);
   }
-  handleClick (event) {
+  handleClick(event) {
     let path = null;
     if (!this.props.user) {
       path = '/login';
     } else {
       path = '/user-profile/' + this.props.user.email;
     }
-    console.log('click', event.currentTarget)
-    switch (event.currentTarget.id){
+    console.log('click', event.currentTarget);
+    switch (event.currentTarget.id) {
       case 'home':
         console.log('home clicked');
-        this.props.path('/')
+        this.props.path('/');
         break;
       case 'itinerary':
         console.log('itinerary clicked');
-        this.props.path('/itinerary')
+        this.props.path('/itinerary');
         break;
       case 'account':
         console.log('account clicked');
-        this.props.path(path)
+        this.props.path(path);
         break;
     }
   }
   render() {
-    console.log('props', this.props)
+    console.log('props', this.props);
     const { classes } = this.props;
     return (
       <BottomNavigation
