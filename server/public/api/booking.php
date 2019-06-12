@@ -7,7 +7,6 @@ $method = $_SERVER['REQUEST_METHOD'];
 $item = file_get_contents('php://input');
 $email = $_SESSION['userEmail'];
 $tuuristId = $_SESSION['id'];
-// $email = 'pam@dundermifflin.com';
 
 if ( $method === "POST"){
   $output = json_decode( $item , true );

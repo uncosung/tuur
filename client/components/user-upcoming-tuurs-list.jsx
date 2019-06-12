@@ -64,25 +64,30 @@ class UpComingTuursList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userEmail: '',
       packages: [],
       booked: []
     };
   }
 
   componentDidMount() {
-    fetch('/api/booking.php?id')
+    let email = '';
+    console.log( 'lksjdflksdjflsdkjfdslfjsdklfsjl', this.props.user );
+
+    fetch('/api/booking.php?email')
       .then(res => res.json())
       .then(packages => this.setState({ packages }));
 
-    fetch("/api/package.php?id")
+    fetch("/api/package.php?email")
       .then(res => res.json())
-      .then(booked => this.setState({ booked }))
+      .then(booked => this.setState({ booked }), () => console.log( booked ));
   }
 
   render() {
+    // console.log('0000', this.props );
     const { classes } = this.props;
-    const packageMap = this.state.packages.map(packageItem => {
-      return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
+    const packageMap = this.state.booked.map((packageItem, id) => {
+      return <UpComingTuurItem key={id} package={packageItem} key={packageItem.id} />;
     });
     return (
       <>

@@ -57,6 +57,7 @@ class LogIn extends React.Component {
   render() {
     const { classes } = this.props;
     if (this.state.auth) {
+      console.log( 'relksjdflsk' );
       return <Redirect to={{
         pathname: '/user-profile/' + this.state.email,
         state: { user: this.state }
