@@ -32,6 +32,7 @@
     "mui-places-autocomplete": "^2.0.0",
     "npm": "^6.9.0",
     "react": "^16.8.6",
+    "react-animated-slider": "^1.1.4",
     "react-dom": "^16.8.6",
     "react-infinite-calendar": "^2.3.1",
     "react-map-gl": "^5.0.1",
@@ -40,12 +41,13 @@
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.0",
     "react-select": "^3.0.3",
-    "react-slick": "0.24.0",
+    "react-slick": "^0.24.0",
     "style-loader": "^0.23.1",
     "typeface-roboto": "0.0.54"
   },
   "devDependencies": {
     "@babel/core": "7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-transform-react-jsx": "7.3.0",
     "babel-eslint": "10.0.1",
     "babel-loader": "8.0.6",

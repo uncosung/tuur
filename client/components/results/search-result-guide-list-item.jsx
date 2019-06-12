@@ -23,14 +23,12 @@ const styles = theme => ({
 class SearchResultGuideItem extends Component {
   constructor(props) {
     super(props);
-    // this.state = {};
   }
 
   render() {
     const { classes } = this.props;
     return (
       <>
-          {/* <GridListTile className={classes.font} key={this.props.profile.id}> */}
           <GridListTile className={classes.font} component={Link} style={{ textDecoration: 'none' }} to={'/user-view-profile/' + this.props.profile.email}>
             <img className={classes.tile} src={this.props.profile.image} alt={this.props.profile.name} />
             <GridListTileBar

@@ -11,6 +11,8 @@ import Switch from '@material-ui/core/Switch';
 import Email from '@material-ui/icons/Email';
 import LocationOn from '@material-ui/icons/LocationOn';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { Link, withRouter } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -66,7 +68,8 @@ class SignUp extends Component {
         location: false,
         image: false,
         bio: false
-      }
+      },
+      user: null
 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -113,15 +116,15 @@ class SignUp extends Component {
         } })
         .then(res => res.json())
         .then(newUser => {
-          console.log(newUser, 'newUser');
           if (!newUser.auth) {
             return this.setState({
               inputErrors: {
                 email: true
               }
             });
+          } else {
+            this.props.logIn(this.state);
           }
-          this.props.view('userProfile', this.state);
         });
     }
   }
@@ -193,11 +196,11 @@ class SignUp extends Component {
             <FormControlLabel control={
               <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} value="guide" />} label="Do you want to be a guide?" />
             <Grid className={classes.marginTop} container justify="center" >
-
-              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
-
-                <Typography variant="body1" gutterBottom>Sign Up</Typography>
-              </Button>
+              <ThemeProvider theme={theme}>
+                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
+                  <Typography variant="body1" >Sign Up</Typography>
+                </Button>
+              </ThemeProvider>
             </Grid>
           </Grid>
 
@@ -207,4 +210,4 @@ class SignUp extends Component {
   }
 }
 
-export default withStyles(styles)(SignUp);
+export default withRouter(withStyles(styles)(SignUp));

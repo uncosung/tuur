@@ -12,14 +12,14 @@ const styles = theme => ({
     width: '100%',
     position: 'fixed',
     bottom: 0,
-    padding: 10
+    padding: '10px 0'
   }
 });
 
 class BottomNav extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {};
   }
 
   render() {
@@ -28,7 +28,7 @@ class BottomNav extends Component {
     if (!this.props.user) {
       path = '/login';
     } else {
-      path = '/user-view-profile';
+      path = '/user-view-profile/' + this.props.user.email;
     }
     return (
       <BottomNavigation
@@ -36,7 +36,7 @@ class BottomNav extends Component {
         showLabels
         className={classes.root}
       >
-        <BottomNavigationAction label="Home" icon={<Home />} component={Link} to={'/results'} />
+        <BottomNavigationAction label="Home" icon={<Home />} component={Link} to={'/'} />
         <BottomNavigationAction label="Itinerary" icon={<CardTravel />} component={Link} to={'/itinerary'} />
         <BottomNavigationAction label="Account" icon={<AccountCircle />} component={Link} to={path} />
       </BottomNavigation>

@@ -9,6 +9,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
 import { Link } from 'react-router-dom';
+import Slider from 'react-slick';
 
 const theme = createMuiTheme({
   palette: {
@@ -34,10 +35,26 @@ const styles = theme => ({
     maxWidth: 370
   },
   media: {
-    height: 250
+    height: 200
   },
   marginTop: {
     marginTop: theme.spacing(8)
+  },
+  marginBottom: {
+    marginBottom: theme.spacing(2)
+  },
+  tile: {
+    width: 200,
+    height: '100%'
+  },
+  font: {
+    fontFamily: 'Roboto',
+    fontSize: '1.3rem',
+    marginRight: theme.spacing(1)
+  },
+  titleBar: {
+    background:
+      'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)'
   }
 });
 
@@ -48,7 +65,8 @@ class Search extends Component {
       location: {
         name: '',
         coordinates: []
-      }
+      },
+      package: null
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
@@ -66,62 +84,91 @@ class Search extends Component {
       }
     });
   }
-
+  componentDidMount() {
+    fetch('/api/package.php')
+      .then(res => res.json())
+      .then(response => this.setState({ package: response }));
+  }
   render() {
+    console.log(this.state.package);
     const { classes } = this.props;
     const geocoderApiOptions = {
       country: 'us',
       proximity: { longitude: -118.243683, latitude: 34.052235 }
     };
+    const settings = {
+      dots: true,
+      infinite: true,
+      slidesToShow: 2,
+      slidesToScroll: 3,
+      autoplay: true,
+      speed: 2000,
+      autoplaySpeed: 3000,
+      cssEase: 'linear',
+      adaptiveHeight: true
 
+    };
+    let packages = '';
+    if (this.state.package) {
+      packages = this.state.package.map((article, index) => {
+        return (
+          <div key={index} >
+            <img src={article.mainImage} alt={article.title} style={{ height: '120px' }} />
+          </div>
+        );
+      });
+    }
     return (
-    <div style={{ fontSize: 0}}>
-    <img style={imgStyle} src="https://files.slack.com/files-pri/T1EHQUJ8J-FKDRN6G4D/my_post__2_.png" alt="logo"/>
-    <Card style={{maxWidth: '100%'}} mt={0} className={classes.card}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          component="img"
-          image="https://chopra.com/sites/default/files/field/image/6reasonswhytravelingisgoodforyou.jpg"
-          title="Travel Image"
-        />
-      </CardActionArea>
-    </Card>
-
-    {/* <Paper className={classes.root}>
-      <InputBase className={classes.input} placeholder="Where do you want to go?" />
-     </Paper> */}
-      <Grid justify="center" className={classes.marginTop} container>
-        <Grid item xs={10}>
-          <MatGeocoder
-            inputPlaceholder="Where do you want to go?"
-            accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
-            showLoader={true}
-            showInputContainer={false}
-            autocomplete={true}
-            fuzzyMatch={true}
-            {...geocoderApiOptions}
-            onSelect={this.handleSelect}
-          />
+      <div style={{ fontSize: 0 }}>
+        <img style={imgStyle} src="https://i.imgur.com/AU3rU4N.png" alt="logo"/>
+        <Card style={{ maxWidth: '100%' }} mt={0} className={classes.card}>
+          <CardActionArea>
+            <CardMedia
+              className={classes.media}
+              component="img"
+              image="https://chopra.com/sites/default/files/field/image/6reasonswhytravelingisgoodforyou.jpg"
+              title="Travel Image"
+            />
+          </CardActionArea>
+        </Card>
+        <Grid justify="center" className={classes.marginTop} container>
+          <Grid item xs={10}>
+            <MatGeocoder
+              inputPlaceholder="Where do you want to go?"
+              accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
+              showLoader={true}
+              showInputContainer={false}
+              autocomplete={true}
+              fuzzyMatch={true}
+              {...geocoderApiOptions}
+              onSelect={this.handleSelect}
+            />
+          </Grid>
         </Grid>
-      </Grid>
 
-     <Grid justify="center" container>
-       <Grid className={classes.marginTop} container justify="center" >
-         <Grid item xs={10}>
-           <ThemeProvider theme={theme}>
+        <Grid justify="center" container className={classes.marginBottom} >
+          <Grid className={classes.marginTop} container justify="center" >
+            <Grid item xs={10}>
+              <ThemeProvider theme={theme}>
+                <Button type="button" fullWidth variant="contained" color="primary" component='a' onClick={this.handleClick}>
+                  <Typography variant="body1" gutterBottom>Search</Typography>
+                </Button>
+              </ThemeProvider>
+            </Grid>
+          </Grid>
+        </Grid>
 
-             {/* <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/results/' + this.state.location}> */}
-             <Button type="button" fullWidth variant="contained" color="primary" component={Link} onClick={this.handleClick}>
-               {/* <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('searchResult', null, this.state.location)}> */}
-               <Typography variant="body1" gutterBottom>Search</Typography>
-             </Button>
-           </ThemeProvider>
-         </Grid>
-       </Grid>
-     </Grid>
+        <Typography variant="h6" align="center">
+             Popular tuurs
+        </Typography>
+        <div style={{ height: '120px', width: '85%', margin: 'auto' }}>
+          <Slider {...settings} >
+            {packages}
+          </Slider>
+        </div>
+        {/* </Grid> */}
 
-    </div>
+      </div>
     );
   }
 }

@@ -105,6 +105,7 @@ class Mapbox extends Component {
     });
 
   }
+
   filterTags () {
     if (this.props.tags.length === 0 && this.props.dates.start !== null){
       this.filterDates();
@@ -114,27 +115,29 @@ class Mapbox extends Component {
       return;
     }
     let tagArray = [];
-    for (let i = 0; i < this.state.filteredTuurs.length; i++){
-      for (let j = 0; j < this.props.tags.length; j++){
-        for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
-          if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
-            tagArray = [...tagArray, this.state.filteredTuurs[i]]
+    for (let i = 0; i < this.state.filteredTuurs.length; i++) {
+      for (let j = 0; j < this.props.tags.length; j++) {
+        for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++) {
+          if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]) {
+            tagArray = [...tagArray, this.state.filteredTuurs[i]];
           }
         }
       }
     }
-    for (let h = 0; h < tagArray.length; h++){
-      for (let g = h+1; g < tagArray.length; g++){
-        if (tagArray[h] === tagArray[g]){
-          tagArray.splice(g, 1)
+    for (let h = 0; h < tagArray.length; h++) {
+      for (let g = h + 1; g < tagArray.length; g++) {
+        if (tagArray[h] === tagArray[g]) {
+          tagArray.splice(g, 1);
         }
       }
     }
+
     this.setState ({
       filteredTuurs: tagArray
     }, () => {
       this.props.dates.start !==null && this.filterDates
     })
+
   }
   filterDates () {
     debugger;
