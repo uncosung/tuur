@@ -115,7 +115,7 @@ class Search extends Component {
       slidesToScroll: 3,
       autoplay: true,
       speed: 2000,
-      autoplaySpeed: 3000,
+      autoplaySpeed: 4000,
       cssEase: 'linear',
       adaptiveHeight: true
     };
@@ -124,7 +124,7 @@ class Search extends Component {
       packages = this.state.package.map((article, index) => {
         return (
           <Grid key={index} component={Link} to={{ pathname: '/package-details/' + article.id, state: { item: article } }}>
-            <img src={article.mainImage} alt={article.title} style={{ height: '120px' }} />
+            <img src={article.mainImage} alt={article.title} style={{ height: '120px', width: '100%' }} />
           </Grid>
         );
       });
