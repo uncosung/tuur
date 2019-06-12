@@ -27,7 +27,7 @@ class App extends Component {
     };
     this.setView = this.setView.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleDates = this.handleDates.bind(this);
+    // this.handleDates = this.handleDates.bind(this);
     this.logIn = this.logIn.bind(this);
     this.edit = this.edit.bind(this);
 
