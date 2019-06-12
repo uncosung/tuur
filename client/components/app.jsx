@@ -40,7 +40,7 @@ class App extends Component {
   }
 
   setView(name, user, location) {
-    debugger;
+    console
     if (!location) {
       this.setState({
         user
@@ -124,16 +124,15 @@ class App extends Component {
             </div>
           }/>
           <Route exact path="/user-view-profile/:email"
-            render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav user={this.state.user}/></div>}/>
+            render={props => <div><UserViewProfile {...props} isAuthed={true}/><BottomNav user={this.state.user}/></div>}/>
 
           <Route exact path="/user-profile/:email"
-            render={props => <div><UserProfile user={this.state.user} view={this.setView} {...props} isAuthed={true} />>,
+            render={props => <div><UserProfile user={this.state.user} view={this.setView} {...props} isAuthed={true} />
             </div>}
           />
 
           <Route exact path="/edit-profile/:email"
-            render={props => <div><EditProfile user={this.state.user} {...props} isAuthed={true}/>,
-            </div>}
+            render={props => <div><EditProfile user={this.state.user} {...props} isAuthed={true}/></div>}
           />
 
           <Route path="/results" render={props =>
