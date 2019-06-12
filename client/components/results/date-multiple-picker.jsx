@@ -43,7 +43,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(4),
-    outline: 'none',
+    outline: 'none'
   }
 });
 
@@ -90,10 +90,10 @@ class DatePicker extends Component {
 
   render() {
     let item;
-    if ( this.props.location.state.item ){
-      item = this.props.location.state.item
+    if (this.props.location.state) {
+      item = this.props.location.state.item;
     }
-    console.log( item );
+    console.log(item);
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
     return (
@@ -126,8 +126,7 @@ class DatePicker extends Component {
         <Grid className={classes.marginLeft} justify="center" alignItems="center" container>
           <Grid item xs={7} >
             {this.props.unavailableDates.disabledList
-              ?
-              <div>
+              ? <div>
                 {/* <Button onClick={this.handleBooking} type="button" className={classes.margin} fullWidth variant="contained" color="primary" >
                   <Typography variant="body1" gutterBottom>Book</Typography>
                 </Button> */}

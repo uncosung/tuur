@@ -113,7 +113,7 @@ class Search extends Component {
       packages = this.state.package.map((article, index) => {
         return (
           <div key={index} >
-            <img src={article.mainImage} alt={article.title} style={{ height: '120px' }} />
+            <img src={article.mainImage} alt={article.title} style={{ height: '120px', width: '100%' }} />
           </div>
         );
       });

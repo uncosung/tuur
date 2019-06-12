@@ -10,6 +10,7 @@ import PackageDetails from './results/package-details';
 import UserViewProfile from './user-view-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
+import CreatePackage from './createPackage';
 
 class App extends Component {
   constructor(props) {
@@ -130,11 +131,13 @@ class App extends Component {
           <Route path="/results" render={props =>
             <div>
               <Results dates={this.state.dates} handleDates={this.handleDates} toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
-
             </div>
           }/>
           <Route path="/package-details/:id"
             render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
+
+          <Route path="/create-package"
+            render={props => <CreatePackage packages={this.state.user}{...props} isAuthed={true}/>}/>
 
         </Switch>
         <BottomNav user={this.state.user}/>

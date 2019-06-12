@@ -6,7 +6,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
@@ -19,6 +18,8 @@ import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import DatePicker from './results/date-multiple-picker';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
+import BorderColor from '@material-ui/icons/BorderColor';
+import Fab from '@material-ui/core/Fab';
 
 const divStyle = {
   width: '47px',
@@ -212,6 +213,7 @@ class CreatePackage extends Component {
     } else {
       this.setState({ openSnackBar: false });
     }
+    this.props.history.push('/user-profile/' + this.props.packages.email);
   }
 
   handleSnackbarClose(event, reason) {
@@ -329,7 +331,7 @@ class CreatePackage extends Component {
                     Images (max 4)
                 </InputLabel>
                 <Input
-                  placeholder='Images (max 4 images)'
+                  placeholder='Images (max 4 images, click to remove)'
                   className={classes.input}
                   id="input-imageUrl"
                   type = 'text'
@@ -460,15 +462,12 @@ class CreatePackage extends Component {
 
           </Grid>
 
-          <Grid justify="center" className={classes.margin} container>
-            <Grid className={classes.marginTop} container justify="center" >
-              <ThemeProvider theme={theme}>
-                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
-                  <Typography variant="body1" gutterBottom>Create Package</Typography>
-                </Button>
-              </ThemeProvider>
-            </Grid>
-          </Grid>
+          <ThemeProvider theme={theme}>
+            <Fab size="medium" color="primary" onClick={this.handleSubmit} variant="extended" aria-label="create" className={classes.fab} >
+              <BorderColor className={classes.extendedIcon} />
+                Create Package
+            </Fab>
+          </ThemeProvider>
 
           <Snackbar
             anchorOrigin={{

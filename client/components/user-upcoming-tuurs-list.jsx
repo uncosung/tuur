@@ -7,7 +7,10 @@ import UpComingTuurItem from './user-upcoming-tuurs-list-item';
 import GridList from '@material-ui/core/GridList';
 import Grid from '@material-ui/core/Grid';
 // import Button from '@material-ui/core/Button';
-// import { ThemeProvider } from '@material-ui/styles';
+import BorderColor from '@material-ui/icons/BorderColor';
+import Fab from '@material-ui/core/Fab';
+import { ThemeProvider } from '@material-ui/styles';
+import { Link } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -57,6 +60,12 @@ const styles = theme => ({
   },
   marginTop2: {
     marginTop: theme.spacing(4)
+  },
+  fab: {
+    margin: theme.spacing(1)
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1)
   }
 });
 
@@ -74,9 +83,9 @@ class UpComingTuursList extends Component {
       .then(res => res.json())
       .then(packages => this.setState({ packages }));
 
-    fetch("/api/package.php?id")
+    fetch('/api/package.php?id')
       .then(res => res.json())
-      .then(booked => this.setState({ booked }))
+      .then(booked => this.setState({ booked }));
   }
 
   render() {
@@ -101,8 +110,14 @@ class UpComingTuursList extends Component {
             {/* <ThemeProvider theme={theme}> */}
             {/* IF GUIDE, INCLUDE CREATE PACKAGE BUTTON */}
             {/* <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user)}>
-                <Typography variant="body1" gutterBottom>Create Package</Typography>
-              </Button> */}
+              <Typography variant="body1" gutterBottom>Create Package</Typography>
+            </Button> */}
+            <ThemeProvider theme={theme}>
+              <Fab color="primary" variant="extended" aria-label="create" className={classes.fab} component={Link} to={'/create-package'} >
+                <BorderColor className={classes.extendedIcon} />
+                  Create Package
+              </Fab>
+            </ThemeProvider>
             {/* </ThemeProvider> */}
           </Grid>
         </Grid>
