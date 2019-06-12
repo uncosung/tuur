@@ -119,7 +119,7 @@ class UpComingTuursList extends Component {
       <>
         {/* BOOKED PACKAGES */}
         <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h4">
+          <Typography className={classes.marginTop} variant="h5">
             Booked Packages
           </Typography>
         </Container>
@@ -130,7 +130,7 @@ class UpComingTuursList extends Component {
         </div>
 
         <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h4">
+          <Typography className={classes.marginTop} variant="h5">
             Packages
           </Typography>
         </Container>
