@@ -35,7 +35,7 @@ const styles = theme => ({
     maxWidth: 370
   },
   media: {
-    height: 200
+    height: 230
   },
   marginTop: {
     marginTop: theme.spacing(8)
@@ -77,7 +77,7 @@ class Search extends Component {
   }
 
   handleClick() {
-    this.props.search(this.state.location)
+    this.props.search(this.state.location);
     this.props.path('/results');
 
   }
@@ -90,15 +90,15 @@ class Search extends Component {
       }
     });
   }
-  fetchPackages(){
+  fetchPackages() {
     fetch('/api/package.php')
       .then(res => res.json())
       .then(response => this.setState({ package: response }));
   }
   componentDidMount() {
-    this.fetchPackages()
+    this.fetchPackages();
   }
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     console.log('prev', prevProps, 'current props', this.props, 'state', this.state);
   }
   render() {

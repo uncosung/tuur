@@ -35,7 +35,7 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('previous', prevState, 'current', this.state)
+    console.log('previous', prevState, 'current', this.state);
     if (this.state.path !== prevState.path || this.state.tags !== prevState.tags) {
       this.props.history.push(this.state.path);
     }
@@ -74,7 +74,7 @@ class App extends Component {
       return
     }
     else if (!location.name && !tags){
-      return
+      
     }
     else if (!tags && !dates){
       this.setState({
@@ -121,16 +121,16 @@ class App extends Component {
             </div>
           }/>
           <Route exact path="/user-view-profile/:email"
-            render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav path={this.setRoutePath} user={this.state.user}/></div>}/>
+            render={props => <div><UserViewProfile {...props} isAuthed={true}/> <BottomNav path={this.setRoutePath} user={this.state.user}/></div>}/>
 
           <Route exact path="/user-profile/:email"
-            render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>,
+            render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>
 
             </div>}
           />
 
           <Route exact path="/edit-profile/:email"
-            render={props => <div><EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>,
+            render={props => <div><EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>
             </div>}
           />
 

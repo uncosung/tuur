@@ -80,14 +80,14 @@ class UpComingTuursList extends Component {
     };
   }
 
-  getBooked(){
+  getBooked() {
     fetch('/api/booked.php')
       .then(res => res.json())
       .then(booked => this.setState({ booked }));
   }
 
-  getCreatedPackages(){
-    fetch("/api/package.php?email")
+  getCreatedPackages() {
+    fetch('/api/package.php?email')
       .then(res => res.json())
       .then(packages => this.setState({ packages }));
   }
@@ -98,23 +98,22 @@ class UpComingTuursList extends Component {
 
   }
 
-  componentDidUpdate(){
-    if ( !this.state.packages && !this.state.booked ){
+  componentDidUpdate() {
+    if (!this.state.packages && !this.state.booked) {
       this.getBooked();
       this.getCreatedPackages();
     }
 
-    
   }
 
   render() {
-    console.log('0000', this.props );
+    console.log('0000', this.props);
     const { classes } = this.props;
     const bookedMap = this.state.booked.map((bookedItem, id) => {
-      return <BookedTuurs key={id} booked={bookedItem} />
-    })
+      return <BookedTuurs key={id} booked={bookedItem} />;
+    });
     const packageMap = this.state.packages.map((packageItem, id) => {
-      return <UpComingTuurItem key={id} package={packageItem} key={packageItem.id} />;
+      return <UpComingTuurItem key={id} package={packageItem} />;
     });
     return (
       <>
@@ -126,7 +125,7 @@ class UpComingTuursList extends Component {
         </Container>
         <div className={classes.root}>
           <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-          {bookedMap}
+            {bookedMap}
           </GridList>
         </div>
 
@@ -135,22 +134,11 @@ class UpComingTuursList extends Component {
             Packages
           </Typography>
         </Container>
-        <div className={classes.root}>
+        <div className={classes.root} style={{ paddingBottom: '80px' }}>
           <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
             {packageMap}
           </GridList>
         </div>
-        <Grid justify="center" className={classes.margin} container>
-          <Grid className={classes.marginTop2} container justify="center" >
-            <ThemeProvider theme={theme}>
-              <Fab color="primary" variant="extended" aria-label="create" className={classes.fab} component={Link} to={'/create-package'} >
-                <BorderColor className={classes.extendedIcon} />
-                Create Package
-              </Fab>
-            </ThemeProvider>
-            {/* </ThemeProvider> */}
-          </Grid>
-        </Grid>
         </>
 
     );
