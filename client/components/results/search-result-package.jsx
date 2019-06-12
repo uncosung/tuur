@@ -27,7 +27,8 @@ class SearchPackages extends Component {
       dates: {
         start: null,
         end: null
-      }
+      },
+      tags: []
     };
     
     this.fetchPackages = this.fetchPackages.bind(this);
@@ -42,9 +43,11 @@ class SearchPackages extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log( prevProps )
     if (prevProps.tags.toString() !== this.props.tags.toString()) {
-      this.fetchPackages();
+      console.log('no match tags', this.props.tags)
+      this.setState({
+        tags: this.props.tags
+      }, this.fetchPackages)
     }
     else if (this.props.dates.start !== prevProps.dates.start){
       this.fetchPackages();
@@ -52,9 +55,12 @@ class SearchPackages extends Component {
   }
 
   fetchPackages() {
+    console.log('reached fetch')
     fetch('/api/package.php')
       .then(res => res.json())
-      .then(packages =>  this.fetchLocation(packages));
+      .then(packages =>  {
+        console.log('fetched', packages)
+        this.fetchLocation(packages)});
   }
   
   renderPackage() {
@@ -72,17 +78,20 @@ class SearchPackages extends Component {
     };
   }
   mapTuurs(fetchCoordinates, packages) {
+    console.log('reached map')
     let mapArray = packages.map(this.getTuurLocationData);
 
     Promise.all(mapArray).then(tuurCoordinates => this.filterTuurs(fetchCoordinates, packages, tuurCoordinates));
   }
   fetchLocation(packages) {
+    console.log('reached fetch loc')
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
       .then(res => res.json())
       .then(fetchCoordinates => this.mapTuurs(fetchCoordinates, packages));
   }
 
   filterTuurs(fetchCoordinates, packages, tuurCoordinates) {
+    console.log('reached filter')
     let filterTuurs = [];
     let tooFar = [];
     for (let i = 0; i < tuurCoordinates.length; i++) {
@@ -106,7 +115,8 @@ class SearchPackages extends Component {
 //             tagArray = [...tagArray, this.state.filteredTuurs[i]]
 
   filterTags (filterTuurs) {
-      if (this.props.tags.length === 0){
+    console.log('reached filter tags', filterTuurs)
+      if (this.state.tags.length === 0){
         this.setState({
           filteredTuurs: filterTuurs
         })
@@ -114,9 +124,11 @@ class SearchPackages extends Component {
       }
       let tagArray = [];
       for (let i = 0; i < filterTuurs.length; i++){
-        for (let j = 0; j < this.props.tags.length; j++){
+        for (let j = 0; j < this.state.tags.length; j++){
           for (let k = 0; k < JSON.parse(filterTuurs[i].tuur.tags).length; k++){
-            if (JSON.parse(filterTuurs[i].tuur.tags)[k] === this.props.tags[j]){
+            console.log('comparing:', JSON.parse(filterTuurs[i].tuur.tags)[k], this.state.tags[j])
+            if (JSON.parse(filterTuurs[i].tuur.tags)[k] === (this.state.tags[j])){
+              console.log(filterTuurs[i].tuur.tags)
               tagArray = [...tagArray, filterTuurs[i]]
             }
           }
@@ -129,6 +141,8 @@ class SearchPackages extends Component {
           }
         }
       }
+      console.log('tasgsss', tagArray)
+
       if (tagArray.length === 0){
         this.setState({
           filteredTuurs: filterTuurs
@@ -136,7 +150,7 @@ class SearchPackages extends Component {
         return
       }
       this.props.dates.start !== null ? this.filterDates(tagArray) : this.setState({
-        filteredTuurs: filterTuurs
+        filteredTuurs: tagArray
       })
   }
 
@@ -179,14 +193,7 @@ class SearchPackages extends Component {
     });
   }
 
-
-//   checkAvailability( year, month, day) {
-//     for (let i = 0; i < this.state.filteredTuurs.length; i++){
-//       console.log(this.state.filteredTuurs[i])
-//       let parseDate = JSON.parse(this.state.filteredTuurs[i].tuur.dates)
-
   checkAvailability(tagArray, year, month, day) {
-    debugger;
     for (let i = 0; i < tagArray.length; i++){
       let parseDate = JSON.parse(tagArray[i].tuur.dates)
 
@@ -202,8 +209,6 @@ class SearchPackages extends Component {
     }
 
   }
-
-  
 
   nextDay(month, day) {
     // last day of month = 31

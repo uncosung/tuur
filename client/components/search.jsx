@@ -73,12 +73,13 @@ class Search extends Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.fetchPackages = this.fetchPackages.bind(this);
   }
 
   handleClick() {
-    console.log('on handle click search bar', this.props),
-    console.log('location', this.state);
-    this.props.search('/results', null, this.state.location);
+    this.props.search(this.state.location)
+    this.props.path('/results');
+
   }
   handleSelect(result) {
     this.setState({
@@ -89,10 +90,16 @@ class Search extends Component {
       }
     });
   }
-  componentDidMount() {
+  fetchPackages(){
     fetch('/api/package.php')
       .then(res => res.json())
       .then(response => this.setState({ package: response }));
+  }
+  componentDidMount() {
+    this.fetchPackages()
+  }
+  componentDidUpdate(prevProps){
+    console.log('prev', prevProps, 'current props', this.props, 'state', this.state);
   }
   render() {
     console.log(this.state.package);
@@ -108,7 +115,7 @@ class Search extends Component {
       slidesToScroll: 3,
       autoplay: true,
       speed: 2000,
-      autoplaySpeed: 3000,
+      autoplaySpeed: 4000,
       cssEase: 'linear',
       adaptiveHeight: true
     };
