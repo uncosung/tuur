@@ -45,7 +45,7 @@ class LogIn extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    fetch(`/api/profile.php?email=${this.state.email}`)
+    fetch(`/api/profile.php?login=${this.state.email}`)
       .then(res => res.json())
       .then(data => {
         if (data.auth) {
