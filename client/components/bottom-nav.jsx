@@ -20,25 +20,43 @@ class BottomNav extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.handleClick = this.handleClick.bind(this);
   }
-
-  render() {
-    const { classes } = this.props;
+  handleClick (event) {
     let path = null;
     if (!this.props.user) {
       path = '/login';
     } else {
-      path = '/user-view-profile/' + this.props.user.email;
+      path = '/user-profile/' + this.props.user.email;
     }
+    console.log('click', event.currentTarget)
+    switch (event.currentTarget.id){
+      case 'home':
+        console.log('home clicked');
+        this.props.path('/')
+        break;
+      case 'itinerary':
+        console.log('itinerary clicked');
+        this.props.path('/itinerary')
+        break;
+      case 'account':
+        console.log('account clicked');
+        this.props.path(path)
+        break;
+    }
+  }
+  render() {
+    console.log('props', this.props)
+    const { classes } = this.props;
     return (
       <BottomNavigation
         onChange={this.handleChange}
         showLabels
         className={classes.root}
       >
-        <BottomNavigationAction label="Home" icon={<Home />} component={Link} to={'/'} />
-        <BottomNavigationAction label="Itinerary" icon={<CardTravel />} component={Link} to={'/itinerary'} />
-        <BottomNavigationAction label="Account" icon={<AccountCircle />} component={Link} to={path} />
+        <BottomNavigationAction id={'home'} onClick={this.handleClick} label="Home" icon={<Home />} />
+        <BottomNavigationAction id={'itinerary'} onClick={this.handleClick} label="Itinerary" icon={<CardTravel />}/>
+        <BottomNavigationAction id={'account'} onClick={this.handleClick} label="Account" icon={<AccountCircle />}/>
       </BottomNavigation>
     );
   }

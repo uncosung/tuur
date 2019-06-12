@@ -70,10 +70,12 @@ class Search extends Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.fetchPackages = this.fetchPackages.bind(this);
   }
 
   handleClick() {
-    this.props.search('/results', null, this.state.location);
+    this.props.search(this.state.location)
+    this.props.path('/results');
   }
   handleSelect(result) {
     this.setState({
@@ -84,10 +86,16 @@ class Search extends Component {
       }
     });
   }
-  componentDidMount() {
+  fetchPackages(){
     fetch('/api/package.php')
       .then(res => res.json())
       .then(response => this.setState({ package: response }));
+  }
+  componentDidMount() {
+    this.fetchPackages()
+  }
+  componentDidUpdate(prevProps){
+    console.log('prev', prevProps, 'current props', this.props, 'state', this.state);
   }
   render() {
     console.log(this.state.package);

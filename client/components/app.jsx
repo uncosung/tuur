@@ -15,7 +15,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: '',
+      path: '',
       user: null,
       location: [],
       tags: [],
@@ -25,36 +25,25 @@ class App extends Component {
         end: null
       }
     };
-    this.setView = this.setView.bind(this);
+    this.setRoutePath = this.setRoutePath.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleDates = this.handleDates.bind(this);
     this.logIn = this.logIn.bind(this);
     this.edit = this.edit.bind(this);
 
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.view !== prevState.view) {
-      this.props.history.push(this.state.view);
+    console.log('previous', prevState, 'current', this.state)
+    if (this.state.path !== prevState.path || this.state.tags !== prevState.tags) {
+      this.props.history.push(this.state.path);
     }
   }
 
-  setView(name, user, location) {
-    if (!location) {
-      this.setState({
-        user
-      });
-      return;
-    }
+  setRoutePath(path) {
+    console.log('setting path', this.state);
     this.setState({
-      view: name,
-      user,
-      location: {
-        name: location.name,
-        coordinates: location.coordinates,
-        toggleStatus: !location.toggleStatus
-      }
-    });
+      path: path
+    }, () => console.log('stateystate', this.state));
   }
 
   logIn(user) {
@@ -76,8 +65,12 @@ class App extends Component {
     else if (!location.name && !tags){
       return
     }
+    else if (!tags && !dates){
+      this.setState({
+        location:location
+      })
+    }
     else {
-
       this.setState({
         location: location,
         tags: tags,
@@ -96,13 +89,13 @@ class App extends Component {
           <Route exact path="/login"
             render={props =>
               <div>
-                <LogIn {...props} logIn={this.logIn} view={this.setView} isAuthed={true}/>
+                <LogIn {...props} logIn={this.logIn} isAuthed={true}/>
               </div>
             }/>
 
           <Route exact path="/" render={props =>
             <div>
-              <Search search={this.setView} />
+              <Search search={this.handleSearch} path={this.setRoutePath} />
             </div>
           }/>
           <Route exact path="/itinerary" render={props =>
@@ -112,14 +105,14 @@ class App extends Component {
           }/>
           <Route exact path="/sign-up" render={props =>
             <div>
-              <SignUp logIn={this.logIn} search={this.setView}/>
+              <SignUp logIn={this.logIn}/>
             </div>
           }/>
           <Route exact path="/user-view-profile/:email"
-            render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav user={this.state.user}/></div>}/>
+            render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav path={this.setRoutePath} user={this.state.user}/></div>}/>
 
           <Route exact path="/user-profile/:email"
-            render={props => <div><UserProfile user={this.state.user} view={this.setView} {...props} isAuthed={true}/>,
+            render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>,
             </div>}
           />
 
@@ -138,7 +131,7 @@ class App extends Component {
             render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
 
         </Switch>
-        <BottomNav user={this.state.user}/>
+        <BottomNav path={this.setRoutePath} user={this.state.user}/>
       </div>
 
     );
