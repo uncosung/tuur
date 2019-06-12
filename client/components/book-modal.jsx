@@ -15,7 +15,7 @@ function getModalStyle() {
   return {
     top: `${top}%`,
     left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
+    transform: `translate(-${top}%, -${left}%)`
   };
 }
 
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing()
   },
   marginBottom: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   },
   marginLeft: {
     marginLeft: -17
@@ -40,12 +40,12 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2),
-    outline: 'none',
-  },
+    outline: 'none'
+  }
 }));
 
-function SimpleModal( props ) {
-  console.log( props );
+function SimpleModal(props) {
+  console.log(props);
   const [open, setOpen] = React.useState(false);
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
@@ -59,7 +59,7 @@ function SimpleModal( props ) {
     props.booking();
   };
   const classes = useStyles();
-  console.log( props );
+  console.log(props);
   return (
     <div>
       <Button onClick={ props.dates.length ? handleOpen : null} type="button" className={classes.margin} fullWidth variant="contained" color="primary" >
@@ -78,10 +78,10 @@ function SimpleModal( props ) {
             Confirmation
           </Typography>
           <Typography variant="subtitle1" id="simple-modal-description">
-            { props.item.title }  
+            { props.item.title }
           </Typography>
           <Typography variant="subtitle1" id="simple-modal-description">
-          { props.item.location }
+            { props.item.location }
           </Typography>
           <Typography variant="subtitle1" id="simple-modal-description">
             Booked for the following dates:

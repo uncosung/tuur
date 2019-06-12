@@ -12,7 +12,7 @@ const styles = theme => ({
     width: '100%',
     position: 'fixed',
     bottom: 0,
-    padding: 10
+    padding: '10px 0'
   }
 });
 
