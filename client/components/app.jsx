@@ -41,7 +41,7 @@ class App extends Component {
   }
 
   setView(name, user, location) {
-    console
+    console;
     if (!location) {
       this.setState({
         user
@@ -61,12 +61,13 @@ class App extends Component {
 
   logIn(user) {
     this.setState({ user }, () => {
-      console.log( 'in login' , user )
+      console.log('in login', user);
       this.props.history.push(
-      
-      {pathname: '/user-profile/' + user.email,
-      state: { user }
-    })}
+
+        { pathname: '/user-profile/' + user.email,
+          state: { user }
+        });
+    }
     );
   }
 
@@ -74,18 +75,15 @@ class App extends Component {
     this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
   }
 
-
   handleSearch(location, tags, dates) {
     if (!location.name && tags) {
       this.setState({
         tags: tags
-      }, () => console.log('these arent the dates', this.state))
-      return
-    }
-    else if (!location.name && !tags){
-      return
-    }
-    else {
+      }, () => console.log('these arent the dates', this.state));
+
+    } else if (!location.name && !tags) {
+
+    } else {
 
       this.setState({
         location: location,
@@ -133,7 +131,7 @@ class App extends Component {
           />
 
           <Route exact path="/edit-profile/:email"
-            render={props => <div><EditProfile user={this.state.user} {...props} isAuthed={true}/></div>}
+            render={props => <div><EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/></div>}
           />
 
           <Route path="/results" render={props =>
