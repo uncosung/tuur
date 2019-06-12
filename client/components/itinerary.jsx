@@ -42,16 +42,16 @@ class Itinerary extends Component {
   }
 
   componentDidMount(){
-    fetch('/api/booking.php?id')
+    fetch('/api/booking.php?email')
       .then( res => res.json() )
       .then( packages => this.setState( { packages } ))
   }
 
   componentDidUpdate(){
     if ( this.state.package ){
-      fetch('/api/booking.php?id')
+      fetch('/api/booking.php?email')
       .then( res => res.json() )
-      .then( packages => this.setState( { packages } ))
+      .then( packages => this.setState( { packages } ), () => console.log( 'updatedlkjlkjklj'))
     }
     
   }

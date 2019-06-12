@@ -73,6 +73,8 @@ class Search extends Component {
   }
 
   handleClick() {
+    console.log( 'on handle click search bar', this.props ),
+    console.log( 'location', this.state );
     this.props.search('/results', null, this.state.location);
   }
   handleSelect(result) {
@@ -110,7 +112,6 @@ class Search extends Component {
     let packages = '';
     if (this.state.package) {
       packages = this.state.package.map((article, index) => {
-        debugger;
         return (
           <Grid key={index} component={Link} to={{ pathname: '/package-details/' + article.id, state: { item: article }}}>
             <img src={article.mainImage} alt={article.title} style={{ height: '120px' }} />
@@ -159,7 +160,7 @@ class Search extends Component {
         </Grid>
 
         <Typography variant="h6" align="center">
-             Popular tuurs
+          Popular tuurs
         </Typography>
         <Grid style={{ height: '120px', width: '85%', margin: 'auto' }}>
           <Slider {...settings} >

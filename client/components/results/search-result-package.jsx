@@ -38,7 +38,6 @@ class SearchPackages extends Component {
   }
 
   componentDidMount() {
-    debugger;
     this.fetchPackages();
   }
 
