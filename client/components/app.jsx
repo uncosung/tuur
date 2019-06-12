@@ -131,7 +131,8 @@ class App extends Component {
           />
 
           <Route exact path="/edit-profile/:email"
-            render={props => <div><EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/></div>}
+            render={props => <div><EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>,
+            </div>}
           />
 
           <Route path="/results" render={props =>

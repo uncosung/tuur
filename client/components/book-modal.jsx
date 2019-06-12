@@ -8,6 +8,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import { Link } from 'react-router-dom';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -148,7 +149,7 @@ function SimpleModal(props) {
             className={classes.snackbar}
             message={
               <Typography variant="button" id="message-id" > ✨ Please
-                <Button className={classes.btnColor} key="undo" style={{ textDecorationLine: 'underline' }} size="medium" onClick={handleClose}>
+                <Button className={classes.btnColor} key="undo" style={{ textDecorationLine: 'underline' }} size="medium" component={Link} to={'/login'}>
               Log in
                 </Button>
              to book ✨</Typography>

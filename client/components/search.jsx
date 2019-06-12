@@ -8,7 +8,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
-import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 
 const theme = createMuiTheme({
@@ -41,6 +40,9 @@ const styles = theme => ({
     marginTop: theme.spacing(8)
   },
   marginBottom: {
+    marginBottom: theme.spacing(4)
+  },
+  marginBottom2: {
     marginBottom: theme.spacing(2)
   },
   tile: {
@@ -160,16 +162,15 @@ class Search extends Component {
             </Grid>
           </Grid>
         </Grid>
-
-        <Typography variant="h6" align="center">
-          Popular tuurs
+        <Typography variant="h5" align="center" className={classes.marginBottom2}>
+             Popular tuurs
         </Typography>
         <Grid style={{ height: '120px', width: '85%', margin: 'auto' }}>
           <Slider {...settings} >
               {packages}  
           </Slider>
+        </div>
         </Grid>
-
       </div>
     );
   }

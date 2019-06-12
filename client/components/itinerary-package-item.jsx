@@ -39,7 +39,7 @@ const styles = theme => ({
     transform: 'rotate(180deg)'
   },
   datail: {
-    paddingLeft: '60%'
+    paddingLeft: '54%'
   }
 });
 
@@ -97,7 +97,7 @@ class ItineraryItem extends Component {
               {description}
             </Typography>
           </CardContent>
-          <CardActions className={classes.detail} style={{ paddingLeft: '58%' }}>
+          <CardActions className={classes.detail} style={{ paddingLeft: '54%' }}>
             <ThemeProvider theme={theme}>
               <Typography className={classes.detail} variant="button" color="primary" align="right">
                 More detail

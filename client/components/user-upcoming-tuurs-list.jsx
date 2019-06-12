@@ -151,12 +151,6 @@ class UpComingTuursList extends Component {
             {/* <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user)}>
               <Typography variant="body1" gutterBottom>Create Package</Typography>
             </Button> */}
-            <ThemeProvider theme={theme}>
-              <Fab color="primary" variant="extended" aria-label="create" className={classes.fab} component={Link} to={'/create-package'} >
-                <BorderColor className={classes.extendedIcon} />
-                Create Package
-              </Fab>
-            </ThemeProvider>
             {/* </ThemeProvider> */}
           </Grid>
         </Grid>

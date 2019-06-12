@@ -18,8 +18,9 @@ import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import DatePicker from './results/date-multiple-picker';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
-import BorderColor from '@material-ui/icons/BorderColor';
+import Add from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button';
 
 const divStyle = {
   width: '47px',
@@ -59,7 +60,7 @@ const styles = theme => ({
     width: '100%'
   },
   marginTop: {
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(3)
   },
   paddingTop: {
     paddingTop: theme.spacing(5)
@@ -69,7 +70,7 @@ const styles = theme => ({
   },
   marginLeft: {
     marginLeft: theme.spacing(4),
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(1)
   },
   chip: {
     width: '31%',
@@ -118,6 +119,15 @@ const styles = theme => ({
   },
   info: {
     backgroundColor: theme.palette.primary.dark
+  },
+  fab: {
+    margin: theme.spacing(1),
+    right: 20,
+    bottom: '77px',
+    position: 'fixed'
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1)
   }
 });
 
@@ -203,8 +213,9 @@ class CreatePackage extends Component {
             { title, location, tags, timeRange, description, dates, imageUrl })
         })
           .then(res => res.json())
-          .then(newPackage => this.props.view('userProfile', this.props.user));
+          .then(newPackage => console.log(newPackage));
         this.setState({ openSnackBar: false });
+        this.props.history.push('/user-profile/' + this.props.packages.email);
       }
       // }
     }
@@ -213,7 +224,6 @@ class CreatePackage extends Component {
     } else {
       this.setState({ openSnackBar: false });
     }
-    this.props.history.push('/user-profile/' + this.props.packages.email);
   }
 
   handleSnackbarClose(event, reason) {
@@ -307,7 +317,7 @@ class CreatePackage extends Component {
       warning = '⛔️ You need to pick categories 🍧';
     }
     return (
-      <Container>
+      <Container style={{ paddingBottom: '80px' }}>
         <Typography className={classes.marginTop} variant="h4" align="center" gutterBottom>
             Create Tuur
         </Typography>
@@ -328,7 +338,7 @@ class CreatePackage extends Component {
             <Grid item xs={10} >
               <FormControl className={classes.form}>
                 <InputLabel htmlFor="input-image" required>
-                    Images (max 4)
+                    Images (max 4, click to remove)
                 </InputLabel>
                 <Input
                   placeholder='Images (max 4 images, click to remove)'
@@ -406,7 +416,7 @@ class CreatePackage extends Component {
               </Modal>
             </Grid>
           </Grid>
-          <Grid container>
+          <div style={{ padding: '0 25px 0 30px 0', display: 'flex', width: '80%', flexWrap: 'wrap' }} >
             {this.state.dates.map((data, index) => {
               let date = data.getDate();
               let month = data.getMonth() + 1;
@@ -423,9 +433,9 @@ class CreatePackage extends Component {
               );
 
             })}
-          </Grid>
+          </div>
 
-          <Grid className={classes.margin} container alignItems="flex-end" justify="center">
+          <Grid className={classes.margin} style={{ marginBottom: '30px' }} container alignItems="flex-end" justify="center">
             <div className={classes.root}>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="select-multiple-chip" required>
@@ -463,10 +473,13 @@ class CreatePackage extends Component {
           </Grid>
 
           <ThemeProvider theme={theme}>
-            <Fab size="medium" color="primary" onClick={this.handleSubmit} variant="extended" aria-label="create" className={classes.fab} >
-              <BorderColor className={classes.extendedIcon} />
-                Create Package
-            </Fab>
+            <Grid container justify="center" style={{ marginBottom: '30px' }}>
+              <Grid item xs={10}>
+                <Button type="submit" fullWidth variant="contained" color="primary" onClick={this.handleSubmit} >
+                  <Add style={{ fontSize: '30px', padding: 0, margin: 0 }} className={classes.extendedIcon} /> Create
+                </Button>
+              </Grid>
+            </Grid>
           </ThemeProvider>
 
           <Snackbar
