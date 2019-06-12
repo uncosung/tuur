@@ -13,29 +13,8 @@ import Alarm from '@material-ui/icons/Alarm';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import DatePicker from './date-multiple-picker';
 import Modal from '@material-ui/core/Modal';
-// import CalendarToday from '@material-ui/icons/CalendarToday';
 import CarouselImage from './package-detail-carousel-item';
 import { Link } from 'react-router-dom';
-
-const divStyle = {
-  width: '47px',
-  height: '40px',
-  border: '1px solid gray',
-  marginRight: '5px',
-  '&:hover': {
-    opacity: 1
-  }
-};
-
-const imgStyle = {
-  width: '100%',
-  height: '100%',
-  backgroundRepeat: 'norepeat',
-  backgroundSize: '100% 100%',
-  '&:hover': {
-    opacity: 1
-  }
-};
 
 const theme = createMuiTheme({
   palette: {
