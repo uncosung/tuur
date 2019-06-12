@@ -42,6 +42,7 @@ class SearchPackages extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log( prevProps )
     if (prevProps.tags.toString() !== this.props.tags.toString()) {
       this.fetchPackages();
     }
