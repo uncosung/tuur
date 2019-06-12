@@ -234,7 +234,8 @@ class PackageDetails extends Component {
     fetch(`/api/profile.php?email=${this.props.location.state.item.profileEmail}`)
       .then(res => res.json())
       .then(response => {
-        this.setState({ package: response})});
+        this.setState({ package: response });
+      });
 
     const id = this.props.match.params.id;
     fetch('/api/package.php?id=' + id)
@@ -275,10 +276,14 @@ class PackageDetails extends Component {
             title={ this.props.location.state.item.title }
           />
           <CardContent>
-            <LocationOn /> { this.props.location.state.item.location }
+            <Typography >
+              <LocationOn /> { this.props.location.state.item.location }
+            </Typography>
           </CardContent>
           <CardContent>
-            <Alarm/> Trip duration: { this.props.location.state.item.timeRange }
+            <Typography >
+              <Alarm/> Trip duration: { this.props.location.state.item.timeRange }
+            </Typography>
           </CardContent>
           <CardContent>
             <Typography paragraph>Trip Summary:</Typography>
@@ -288,32 +293,34 @@ class PackageDetails extends Component {
           </CardContent>
           <CardContent>
 
-            <Card className={classes.card} component={Link} style={{ textDecoration: 'none' }} to={'/user-view-profile/' + this.props.location.state.item.profileEmail}>
-              <Grid container>
-                <Grid item xs={4}>
-                  <CardMedia
-                    className={classes.cover}
-                    image={ this.state.package ? this.state.package.image : null}
-                  />
-                </Grid>
-                <Grid item xs={8}>
-                  <CardContent>
-                    <Typography variant="body1">
+            <Grid component={Link} style={{ textDecoration: 'none' }} to={'/user-view-profile/' + this.props.location.state.item.profileEmail}>
+              <Card className={classes.card}>
+                <Grid container>
+                  <Grid item xs={4}>
+                    <CardMedia
+                      className={classes.cover}
+                      image={ this.state.package ? this.state.package.image : null}
+                    />
+                  </Grid>
+                  <Grid item xs={8}>
+                    <CardContent>
+                      <Typography variant="body1">
                     Meet your Guide
-                    </Typography>
-                    <Typography variant="h5">
-                      {this.state.package ? this.state.package.name : null }
-                    </Typography>
-                  </CardContent>
+                      </Typography>
+                      <Typography variant="h5">
+                        {this.state.package ? this.state.package.name : null }
+                      </Typography>
+                    </CardContent>
 
-                  <CardContent>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      {this.state.package ? this.state.package.bio : null}
-                    </Typography>
-                  </CardContent>
+                    <CardContent>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {this.state.package ? this.state.package.bio : null}
+                      </Typography>
+                    </CardContent>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Card>
+              </Card>
+            </Grid>
           </CardContent>
 
           <Grid justify="center" container style={{ marginBottom: '100px' }}>

@@ -95,7 +95,7 @@ class UserProfile extends Component {
 
       {this.state.user.isGuide
         ? <UpComingTuursList user={ this.state.user }/>
-        : <Typography variant="h5">No Tuurs available</Typography>
+        : <Typography variant="h5" style={{ paddingLeft: '10px' }}>No Tuurs available</Typography>
       }
       </>
 
