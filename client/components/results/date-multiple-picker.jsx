@@ -93,7 +93,7 @@ class DatePicker extends Component {
     if ( this.props.location.state ){
       item = this.props.location.state.item
     }
-    console.log( this.props.item.package.status );
+    // console.log( this.props.item.package.status );
 
     const MultipleDatesCalendar = withMultipleDates(Calendar);
     const { classes } = this.props;
