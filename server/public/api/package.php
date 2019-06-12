@@ -6,6 +6,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $item = file_get_contents('php://input');
 $email = $_SESSION['userEmail'];
 $tuuristId = $_SESSION['id'];
+
 // $email = 'dPaschal@gmail.com';
 
 if ( $method === 'GET'){

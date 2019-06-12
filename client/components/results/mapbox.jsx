@@ -46,9 +46,12 @@ class Mapbox extends Component {
     this.fetchLocation = this.fetchLocation.bind(this);
     this.filterTuurs = this.filterTuurs.bind(this);
     this.clickPin = this.clickPin.bind(this);
-
+    this.fetchPackages = this.fetchPackages.bind(this);
   }
   componentDidMount() {
+    this.fetchPackages();
+  }
+  fetchPackages () {
     fetch('/api/package.php')
       .then(res => res.json())
       .then(tuurs => {
@@ -56,6 +59,14 @@ class Mapbox extends Component {
           tuurs: tuurs
         }, this.fetchLocation);
       });
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.tags.toString() !== this.props.tags.toString()) {
+      this.fetchPackages();
+    }
+    else if (this.props.dates.start !== prevProps.dates.start){
+      this.fetchPackages();
+    }
   }
   filterTuurs() {
     let filterTuurs = [];
@@ -70,9 +81,7 @@ class Mapbox extends Component {
     this.setState({
       filteredTuurs: filterTuurs
     }, () => {
-      if (this.props.tags.length > 0) {
         this.filterTags();
-      }
     });
 
   }
@@ -96,7 +105,15 @@ class Mapbox extends Component {
     });
 
   }
-  filterTags() {
+
+  filterTags () {
+    if (this.props.tags.length === 0 && this.props.dates.start !== null){
+      this.filterDates();
+      return;
+    }
+    if (this.props.tags.length === 0) {
+      return;
+    }
     let tagArray = [];
     for (let i = 0; i < this.state.filteredTuurs.length; i++) {
       for (let j = 0; j < this.props.tags.length; j++) {
@@ -114,15 +131,99 @@ class Mapbox extends Component {
         }
       }
     }
-    if (tagArray.length === 0) {
-      this.setState({
-        filteredTuurs: []
-      });
-      return;
-    }
-    this.setState({
+
+    this.setState ({
       filteredTuurs: tagArray
+    }, () => {
+      this.props.dates.start !==null && this.filterDates
+    })
+
+  }
+  filterDates () {
+    debugger;
+    const endDate = new Date( this.props.dates.end );
+    const begDate = new Date( this.props.dates.start );
+    let begDateYear = begDate.getFullYear();
+    let begDateMonth = begDate.getMonth();
+    let begDateDay = begDate.getDate();
+    const endDateYear = endDate.getFullYear();
+    const endDateMonth = endDate.getMonth();
+    const endDateDay = endDate.getDate();
+    let dateArray = []
+    let availablePackage = []
+    let availableTuur = [];
+    dateArray.push( new Date( begDateYear, begDateMonth, begDateDay));
+    while (begDateMonth !== endDateMonth || begDateDay !== endDateDay) {
+      if (begDateDay === 1) {
+        begDateMonth = begDateMonth === 11 ? 0 : ++begDateMonth;
+      }
+      if (begDateMonth === 0 && begDateDay === 1) {
+        begDateYear = begDateMonth === 1 ? ++begDateYear : begDateYear;
+      }  
+      availableTuur = this.checkAvailability(begDateYear, begDateMonth, begDateDay )
+      begDateDay = this.nextDay(begDateMonth, begDateDay);
+      if ( availableTuur ){
+        availablePackage.push( availableTuur );
+      }
+    }
+
+    if ( begDateMonth === endDateMonth && begDateDay === endDateDay){
+      availableTuur = this.checkAvailability(begDateYear, begDateMonth, begDateDay )
+      if ( availableTuur ){
+        availablePackage.push( availableTuur );
+      }
+    }
+
+    this.setState({
+      filteredTuurs: availablePackage
     });
+  }
+
+  checkAvailability( year, month, day) {
+    debugger;
+    for (let i = 0; i < this.state.filteredTuurs.length; i++){
+      let parseDate = JSON.parse(this.state.filteredTuurs[i].tuur.dates)
+      for (var value of parseDate) {
+        const packageDate = new Date(value);
+        const packageYear = packageDate.getFullYear();
+        const packageMonth = packageDate.getMonth();
+        const packageDay = packageDate.getDate();
+        if (packageYear === year && packageMonth === month && packageDay === day) {
+          return this.state.filteredTuurs[i];
+        }
+      }
+    }
+
+  }
+
+  
+
+  nextDay(month, day) {
+    // last day of month = 31
+    if (month === 0 && day != 31) return ++day;
+    // last day of month = 28
+    if (month === 1 && day !== 28) return ++day;
+    // last day of month = 31
+    if (month === 2 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 3 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 4 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 5 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 6 && day !== 31) return ++day;
+    // last day of month = 31
+    if (month === 7 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 8 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 9 && day !== 31) return ++day;
+    // last day of month = 30
+    if (month === 10 && day !== 30) return ++day;
+    // last day of month = 31
+    if (month === 11 && day !== 31) return ++day;
+    return 1;
   }
   fetchLocation() {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)

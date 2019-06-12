@@ -32,10 +32,21 @@ if ($method === 'POST'){
     }
 }
 elseif ($method === 'GET'){
-    $email = $_GET['email'];
-    if ( empty( $email )){ 
-        print_r( json_encode( ['auth' => false] ) );
-    } else {
+    if ( isset($_GET['login']) ){
+        $login = $_GET['login'];
+        $_SESSION['userEmail'] = $login;
+    } 
+    // var_dump( isset($_GET['email']));
+    if ( isset($_GET['email'])){
+        $email = $_GET['email'];
+    }
+    // elseif ( empty( $email ) || empty( $login )){ 
+    //     print_r( json_encode( ['auth' => false] ) );
+    // } 
+
+    if ( isset( $login ) && empty( $email )){
+        $email = $login;
+    }
     $query = "SELECT
     `profile`.`id`, `profile`.`name`, `profile`.`email`, `profile`.`location`, `profile`.`image`, `profile`.`bio`, `profile`.`isGuide`
     FROM `profile`
@@ -52,12 +63,16 @@ elseif ($method === 'GET'){
         $output['isGuide'] = $row['isGuide'] ? true : false;
         $output['auth'] = true;
     }
-    $json_output = json_encode($output);
-    $_SESSION['userEmail'] = $email;
-    $_SESSION['id'] = $output['id'];
-    // $_SESSION['userData'] = $json_output;
-    print_r($json_output);
+    if ( empty($_SESSION['userEmail'])){
+        $output['status'] = false;
+    } else {
+        $output['status'] = true;
     }
+
+    $json_output = json_encode($output);
+    
+    $_SESSION['id'] = $output['id'];
+    print_r($json_output);
 }
 elseif ($method === 'PATCH'){
 	$output = json_decode($item, true);
