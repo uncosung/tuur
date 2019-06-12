@@ -96,26 +96,22 @@ class App extends Component {
             render={props =>
               <div>
                 <LogIn {...props} logIn={this.logIn} view={this.setView} isAuthed={true}/>
-                <BottomNav user={this.state.user}/>
               </div>
             }/>
 
           <Route exact path="/" render={props =>
             <div>
-              <Search search={this.setView} />,
-              <BottomNav user={this.state.user}/>
+              <Search search={this.setView} />
             </div>
           }/>
           <Route exact path="/itinerary" render={props =>
             <div>
-              <Itinerary />,
-              <BottomNav user={this.state.user}/>
+              <Itinerary />
             </div>
           }/>
           <Route exact path="/sign-up" render={props =>
             <div>
-              <SignUp logIn={this.logIn} search={this.setView}/>,
-              <BottomNav user={this.state.user}/>
+              <SignUp logIn={this.logIn} search={this.setView}/>
             </div>
           }/>
           <Route exact path="/user-view-profile/:email"
@@ -123,20 +119,17 @@ class App extends Component {
 
           <Route exact path="/user-profile/:email"
             render={props => <div><UserProfile user={this.state.user} view={this.setView} {...props} isAuthed={true}/>,
-              <BottomNav user={this.state.user} />
             </div>}
           />
 
           <Route exact path="/edit-profile/:email"
-            render={props => <div><EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>,
-              <BottomNav user={this.state.user} />
+            render={props => <div><EditProfile user={this.state.user} {...props} isAuthed={true}/>,
             </div>}
           />
 
           <Route path="/results" render={props =>
             <div>
               <Results dates={this.state.dates} handleDates={this.handleDates} toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
-              <BottomNav user={this.state.user}/>
 
             </div>
           }/>
@@ -144,6 +137,7 @@ class App extends Component {
             render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
 
         </Switch>
+        <BottomNav user={this.state.user}/>
       </div>
 
     );
