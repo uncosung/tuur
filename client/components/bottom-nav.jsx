@@ -36,7 +36,7 @@ class BottomNav extends Component {
         showLabels
         className={classes.root}
       >
-        <BottomNavigationAction label="Home" icon={<Home />} component={Link} to={'/results'} />
+        <BottomNavigationAction label="Home" icon={<Home />} component={Link} to={'/'} />
         <BottomNavigationAction label="Itinerary" icon={<CardTravel />} component={Link} to={'/itinerary'} />
         <BottomNavigationAction label="Account" icon={<AccountCircle />} component={Link} to={path} />
       </BottomNavigation>

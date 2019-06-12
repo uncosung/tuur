@@ -120,7 +120,7 @@ class Search extends Component {
     }
     return (
       <div style={{ fontSize: 0 }}>
-        <img style={imgStyle} src="https://files.slack.com/files-pri/T1EHQUJ8J-FKDRN6G4D/my_post__2_.png" alt="logo"/>
+        <img style={imgStyle} src="https://i.imgur.com/AU3rU4N.png" alt="logo"/>
         <Card style={{ maxWidth: '100%' }} mt={0} className={classes.card}>
           <CardActionArea>
             <CardMedia

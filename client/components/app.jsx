@@ -29,6 +29,7 @@ class App extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleDates = this.handleDates.bind(this);
     this.logIn = this.logIn.bind(this);
+    this.edit = this.edit.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -54,7 +55,12 @@ class App extends Component {
       }
     });
   }
+
   logIn(user) {
+    this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
+  }
+
+  edit(user) {
     this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
   }
 
