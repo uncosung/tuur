@@ -39,6 +39,7 @@ class App extends Component {
   }
 
   setView(name, user, location) {
+    debugger;
     if (!location) {
       this.setState({
         user
@@ -65,6 +66,7 @@ class App extends Component {
   }
 
   handleSearch(location, tags) {
+    debugger;
     if (!location.name && tags) {
       this.setState({
         tags: tags
@@ -134,8 +136,7 @@ class App extends Component {
             </div>
           }/>
           <Route path="/package-details/:id"
-            render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>}/>
-
+            render={props => <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>} />
         </Switch>
         <BottomNav user={this.state.user}/>
       </div>
