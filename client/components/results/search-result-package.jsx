@@ -122,11 +122,10 @@ class SearchPackages extends Component {
             if (JSON.parse(filterTuurs[i].tuur.tags)[k] === (this.state.tags[j])){
               tagArray = [...tagArray, filterTuurs[i]]
             }
-
           }
         }
       }
-    }
+    
     for (let h = 0; h < tagArray.length; h++) {
       for (let g = h + 1; g < tagArray.length; g++) {
         if (tagArray[h] === tagArray[g]) {
@@ -143,6 +142,7 @@ class SearchPackages extends Component {
     this.props.dates.start !== null ? this.filterDates(tagArray) : this.setState({
       filteredTuurs: tagArray
     });
+  }
   }
 
   filterDates(tagArray) {

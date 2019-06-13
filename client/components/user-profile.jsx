@@ -100,10 +100,10 @@ class UserProfile extends Component {
       </Grid>
     </Container>
     <UpComingTuursList user={ this.state.user }/>
-<!--       {this.state.user.isGuide
+      {/* {this.state.user.isGuide
         ? <UpComingTuursList user={ this.state.user }/>
         : <Typography variant="h5" style={{ paddingLeft: '10px' }}>No Tuurs available</Typography>
-      } -->
+      }  */}
       </>
 
     );
