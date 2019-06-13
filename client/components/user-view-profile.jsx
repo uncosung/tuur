@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
+import GuidePackages from './user-view-guide-profile';
 
 const styles = theme => ({
   marginTop: {
@@ -29,7 +30,8 @@ class UserViewProfile extends Component {
       name: '',
       location: '',
       image: '',
-      isGuide: undefined
+      isGuide: undefined,
+      email: ''
     };
   }
 
@@ -42,27 +44,30 @@ class UserViewProfile extends Component {
           name: response.name,
           location: response.location,
           image: response.image,
-          isGuide: response.isGuide
+          isGuide: response.isGuide,
+          email
         });
       });
   }
   
   componentDidUpdate(){
-    const email = this.props.match.params.email;
-    fetch('/api/profile.php?email=' + email)
-      .then(res => res.json())
-      .then(response => {
-        this.setState({
-          name: response.name,
-          location: response.location,
-          image: response.image,
-          isGuide: response.isGuide
+    if ( !this.state.name ){
+      const email = this.props.match.params.email;
+      fetch('/api/profile.php?email=' + email)
+        .then(res => res.json())
+        .then(response => {
+          this.setState({
+            name: response.name,
+            location: response.location,
+            image: response.image,
+            isGuide: response.isGuide
+          });
         });
-      });
+    }
+    
   }
 
   render() {
-    console.log( 'user-view' , this.props )
     const { classes } = this.props;
     if (!this.state) return null;
     return (
@@ -88,10 +93,11 @@ class UserViewProfile extends Component {
           </Grid>
         </Grid>
       </Container>
-      {this.state.isGuide
+      <GuidePackages guideInfo={this.state} />
+      {/* {this.state.isGuide
         ? <UpComingTuursList view={this.props.view} user={ this.props.user } isGuide={this.state.isGuide}/>
         : <Typography variant="h5">No Tuurs available</Typography>
-      }
+      } */}
       </>
     );
   }

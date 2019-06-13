@@ -5,7 +5,14 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import UpComingTuurItem from './user-upcoming-tuurs-list-item';
 import GridList from '@material-ui/core/GridList';
-import BookedTuurs from './user-booked-tuurs-list-item';
+import GuidePackageList from './user-view-guide-profile-item';
+import { Link } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+
+
+
+
 
 const theme = createMuiTheme({
   palette: {
@@ -61,92 +68,56 @@ const styles = theme => ({
   },
   extendedIcon: {
     marginRight: theme.spacing(1)
+  },
+  fontSize: {
+    fontSize: '2.5rem'
+  },
+  paddingRight: {
+    paddingRight: 20
   }
 });
 
-class UpComingTuursList extends Component {
+class GuidePackages extends Component {
   constructor(props) {
     super(props);
     this.state = {
       userEmail: '',
       packages: [],
-      booked: []
     };
   }
 
-  getBooked() {
-    if (this.state.isGuide) {
-      fetch('/api/guideBooked.php')
-        .then(res => res.json())
-        .then(booked => this.setState({ booked }));
-    } else {
-      fetch('/api/tuuristBooked.php')
-        .then(res => res.json())
-        .then(booked => this.setState({ booked }));
-    }
+  componentDidMount(){
+    console.log( 'compoent did mount' , this.props );
   }
-
-  getCreatedPackages() {
-    fetch('/api/package.php?email')
-
-      .then(res => res.json())
-      .then(packages => this.setState({ packages }));
+  
+  componentDidUpdate(){
+    if ( !this.state.packages.length && !this.state.userEmail ){
+      fetch('/api/guidePackages.php?email=' + this.props.guideInfo.email )
+          .then(res => res.json())
+          .then(packages => this.setState({ userEmail: this.props.guideInfo.email, packages }));
+    } 
   }
-
-  componentDidMount() {
-    this.getBooked();
-    this.getCreatedPackages();
-
-  }
-
-  componentDidUpdate() {
-    if (!this.state.packages && !this.state.booked) {
-      this.getBooked();
-      this.getCreatedPackages();
-    }
-
-  }
-
+  
   render() {
     const { classes } = this.props;
-    const bookedMap = this.state.booked.map((bookedItem, id) => {
-      return <BookedTuurs key={id} booked={bookedItem} />;
-    });
     const packageMap = this.state.packages.map((packageItem, id) => {
-      return <UpComingTuurItem key={id} package={packageItem} />;
+      return <GuidePackageList key={id} package={packageItem} />;
     });
     return (
       <>
-        {/* BOOKED PACKAGES */}
+        <Grid item xs={2} className={classes.paddingRight} name='back' component={Link} to={'/results/'}>
+          <KeyboardArrowLeft className={classes.fontSize} />
+        </Grid>
         <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h5">
-            Booked Packages
+          <Typography className={classes.marginTop} variant="h4">
+            Packages
           </Typography>
         </Container>
         <div className={classes.root}>
           <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-            {bookedMap}
+            {packageMap}
           </GridList>
         </div>
-
-        {/* CREATED PACKAGES / GUIDES ONLY */}
-        {
-          this.props.user.isGuide
-            ? <>
-            <Container className={classes.marginBottom} >
-              <Typography className={classes.marginTop} variant="h4">
-                Packages
-              </Typography>
-            </Container>
-            <div className={classes.root}>
-              <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-                {packageMap}
-              </GridList>
-            </div>
-            </>
-            : null
-        }
-
       </>
 
     );
@@ -154,4 +125,4 @@ class UpComingTuursList extends Component {
 
 }
 
-export default withStyles(styles)(UpComingTuursList);
+export default withStyles(styles)(GuidePackages);

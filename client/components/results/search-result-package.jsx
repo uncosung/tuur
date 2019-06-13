@@ -148,7 +148,7 @@ class SearchPackages extends Component {
       this.props.dates.start !== null ? this.filterDates(tagArray) : this.setState({
         filteredTuurs: tagArray
       })
-
+    }
   }
 
   filterDates(tagArray) {
