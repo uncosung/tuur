@@ -13,7 +13,9 @@ class Itinerary extends Component {
       packages: [],
       hostedPackages: [],
       switch: false,
-      auth: []
+      auth: [],
+      loggedIn: false,
+      isLoading: true
     };
     this.handleSwitch = this.handleSwitch.bind(this);
   }
@@ -35,7 +37,6 @@ class Itinerary extends Component {
   }
 
   hostedPackageCondition() {
-    console.log('hosted')
     const hostedPackageArray = this.state.hostedPackages.map((item, id) => {
       if (typeof item.dates === 'string') {
         const date = item.dates.replace(/[^a-zA-Z0-9-_.,:]/g, '');
@@ -62,17 +63,27 @@ class Itinerary extends Component {
   }
 
   componentDidMount() {
-    // console.log( 'COMPOENTN ', this.props.user.auth.length );
+    
+    fetch( '/api/loginStatus.php')
+      .then( res => res.json())
+      .then( data => this.setState({ auth: data, loggedIn: data.loggedIn }, () => console.log( data )))
+
     fetch('/api/booking.php?email')
       .then(res => res.json())
-      .then(packages => this.setState({ packages }));
+      .then(packages => this.setState({ packages: packages }));
 
     fetch('/api/itinerary-guide.php')
       .then(res => res.json())
-      .then(hostedPackages => this.setState({ hostedPackages, auth: this.props.user.auth }, ()=>console.log( 'SET')))
+      .then(hostedPackages => this.setState({ hostedPackages }))
   }
 
   componentDidUpdate() {
+    if ( !this.state.auth.length && !this.state.loggedIn ){
+      fetch( '/api/loginStatus.php')
+      .then( res => res.json())
+      .then( data => this.setState({ auth: data, loggedIn: data.loggedIn, isLoading: false}))
+    }
+    
     if (!this.state.package && !this.state.hostedPackages) {
       fetch('/api/booking.php?email')
         .then(res => res.json())
@@ -89,21 +100,17 @@ class Itinerary extends Component {
   }
 
   render() {
-    console.log(this.props.user.auth, 'props')
     let currentState;
-    if ( this.props.user.auth ){
-      currentState = this.props.user.auth.isGuide
+    if ( this.state.auth.loggedIn ){
+      currentState = this.state.auth.isGuide
     } 
-    console.log( this.state.auth );
-
-    // console.log( this.state , 'state');
     const { classes } = this.props;
     return (
       <>
         <Container className={classes.marginBottom}>
           <Typography className={classes.marginTop} variant="h4">
             Booked Tuurs
-        </Typography>
+          </Typography>
           {/* TOGGLE **** INCLUDE ONLY IF GUIDE ****  */}
           { currentState
             ? <ItineraryToggleButton switch={this.handleSwitch} />
