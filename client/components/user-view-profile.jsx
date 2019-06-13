@@ -58,9 +58,9 @@ class UserViewProfile extends Component {
         });
       });
   }
-  
-  componentDidUpdate(){
-    if ( !this.state.name ){
+
+  componentDidUpdate() {
+    if (!this.state.name) {
       const email = this.props.match.params.email;
       fetch('/api/profile.php?email=' + email)
         .then(res => res.json())
@@ -73,19 +73,23 @@ class UserViewProfile extends Component {
           });
         });
     }
-    
+
   }
 
   render() {
     const { classes } = this.props;
     if (!this.state) return null;
+    console.log(this.state, 'moo');
     return (
       <>
       <Container className={classes.marginBottom} >
+
         <Grid item xs={2} className={classes.paddingRight} name='back' component={Link} to={'/results/'}>
           <KeyboardArrowLeft className={classes.fontSize} />
         </Grid>
-        <Typography className={classes.marginTop} variant="h4">
+
+        <Typography className={classes.marginTop} style={{ paddingLeft: '16px' }} variant="h4">
+
           {this.state.name}
         </Typography>
         <Typography className={classes.marginLeft} variant="subtitle1">
