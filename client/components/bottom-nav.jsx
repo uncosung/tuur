@@ -11,8 +11,8 @@ const styles = theme => ({
   root: {
     width: '100%',
     position: 'fixed',
-    bottom: 0,
-    padding: '50px 0 10px 0'
+    bottom: 0, 
+    padding: '6px'
   }
 });
 
@@ -22,13 +22,14 @@ class BottomNav extends Component {
     this.state = {};
     this.handleClick = this.handleClick.bind(this);
   }
-  handleClick (event) {
+  handleClick(event) {
     let path = null;
     if (!this.props.user) {
       path = '/login';
     } else {
       path = '/user-profile/' + this.props.user.email;
     }
+
     switch (event.currentTarget.id){
       case 'home':
         this.props.path('/')
@@ -38,6 +39,7 @@ class BottomNav extends Component {
         break;
       case 'account':
         this.props.path(path)
+
         break;
     }
   }

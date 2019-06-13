@@ -81,6 +81,7 @@ class UpComingTuursList extends Component {
   }
 
   getBooked() {
+
     if ( this.state.isGuide ){
       fetch('/api/guideBooked.php')
         .then(res => res.json())
@@ -97,6 +98,7 @@ class UpComingTuursList extends Component {
 
   getCreatedPackages() {
     fetch("/api/package.php?email")
+
       .then(res => res.json())
       .then(packages => this.setState({ packages }));
   }
@@ -112,23 +114,23 @@ class UpComingTuursList extends Component {
       this.getBooked();
       this.getCreatedPackages();
     }
+
   }
 
 
   render() {
-    console.log('PROPS IN USERUPCOMING ', this.props)
     const { classes } = this.props;
     const bookedMap = this.state.booked.map((bookedItem, id) => {
-      return <BookedTuurs key={id} booked={bookedItem} />
-    })
+      return <BookedTuurs key={id} booked={bookedItem} />;
+    });
     const packageMap = this.state.packages.map((packageItem, id) => {
-      return <UpComingTuurItem key={id} package={packageItem} key={packageItem.id} />;
+      return <UpComingTuurItem key={id} package={packageItem} />;
     });
     return (
       <>
         {/* BOOKED PACKAGES */}
         <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h4">
+          <Typography className={classes.marginTop} variant="h5">
             Booked Packages
           </Typography>
         </Container>
@@ -157,6 +159,7 @@ class UpComingTuursList extends Component {
         }
         
       </>
+
 
     );
   }

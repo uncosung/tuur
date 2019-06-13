@@ -10,6 +10,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 
 const styles = theme => ({
   marginTop: {
@@ -36,8 +37,8 @@ class SearchPackageItem extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <>
-        <Card className={classes.card} style={{ textDecoration: 'none' }} component={Link} to={{ pathname: `/package-details/ ${this.props.item.id}`, state: { item: this.props.item } }} >
+      <Container style={{ textDecoration: 'none' }} component={Link} to={{ pathname: `/package-details/ ${this.props.item.id}`, state: { item: this.props.item } }}>
+        <Card className={classes.card} >
           <CardHeader
             title={ this.props.item.title }
           />
@@ -60,7 +61,7 @@ class SearchPackageItem extends Component {
             </IconButton>
           </CardActions>
         </Card>
-      </>
+      </Container>
     );
   }
 }

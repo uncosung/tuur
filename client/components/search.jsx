@@ -35,7 +35,7 @@ const styles = theme => ({
     maxWidth: 370
   },
   media: {
-    height: 200
+    height: 230
   },
   marginTop: {
     marginTop: theme.spacing(8)
@@ -77,7 +77,7 @@ class Search extends Component {
   }
 
   handleClick() {
-    this.props.search(this.state.location)
+    this.props.search(this.state.location);
     this.props.path('/results');
 
   }
@@ -90,16 +90,16 @@ class Search extends Component {
       }
     });
   }
-  fetchPackages(){
+  fetchPackages() {
     fetch('/api/package.php')
       .then(res => res.json())
       .then(response => this.setState({ package: response }));
   }
   componentDidMount() {
-    this.fetchPackages()
+    this.fetchPackages();
   }
-  
   componentDidUpdate(prevProps){
+
   }
 
   render() {
@@ -112,7 +112,7 @@ class Search extends Component {
       dots: true,
       infinite: true,
       slidesToShow: 2,
-      slidesToScroll: 3,
+      slidesToScroll: 1,
       autoplay: true,
       speed: 2000,
       autoplaySpeed: 4000,
@@ -124,7 +124,7 @@ class Search extends Component {
       packages = this.state.package.map((article, index) => {
         return (
           <Grid key={index} component={Link} to={{ pathname: '/package-details/' + article.id, state: { item: article } }}>
-            <img src={article.mainImage} alt={article.title} style={{ height: '120px', width: '100%' }} />
+            <img src={article.mainImage} alt={article.title} style={{ height: '120px', width: '100%', border: '6px solid white' }} />
           </Grid>
         );
       });

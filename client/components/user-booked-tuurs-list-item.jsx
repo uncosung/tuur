@@ -5,7 +5,8 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 const styles = theme => ({
   tile: {
-    width: 300
+    width: 300,
+    height: '100%'
   },
   font: {
     fontFamily: 'Roboto',
@@ -29,7 +30,7 @@ class BookedTuurs extends Component {
     const { classes } = this.props;
     return (
       <>
-          <GridListTile className={classes.font} key={this.props.booked.mainImage}>
+          <GridListTile className={classes.font} key={this.props.booked.mainImage} >
             <img className={classes.tile} src={this.props.booked.mainImage} alt={this.props.booked.title} />
             <GridListTileBar
               title={this.props.booked.title}

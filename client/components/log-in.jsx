@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import { Redirect, Link } from 'react-router-dom';
+
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
@@ -15,13 +16,25 @@ const theme = createMuiTheme({
   }
 });
 
+const imgStyle = {
+  width: '100%',
+  height: '70px',
+  backgroundRepeat: 'norepeat',
+  backgroundSize: '100% 100%',
+  '&:hover': {
+    opacity: 1
+  }
+};
 const styles = theme => ({
   marginTop: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(5)
+    marginTop: theme.spacing(4)
   },
   marginLeft: {
     marginLeft: -5
+  },
+  margin: {
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2)
   }
 });
 
@@ -64,12 +77,15 @@ class LogIn extends React.Component {
     }
     return (
     <>
+    <div style = {{ fontSize: 0 }}>
+      <img style={imgStyle} src="https://i.imgur.com/AU3rU4N.png" alt="logo"/>
+      <img style={{ width: '100%', height: '260px' }} src="https://cdn.pixabay.com/photo/2016/11/18/19/40/adventure-1836601_1280.jpg" alt="mainImage"/>
+    </div>
       <Grid justify="center" alignItems="center" container>
         <Typography className={classes.marginTop} variant="h4" gutterBottom>
         Welcome back
         </Typography>
       </Grid>
-
       <Grid className={classes.marginTop} container justify="center" alignItems="flex-end">
         <Grid item xs={10}>
           <TextField onChange={this.handleInputChange} required fullWidth id="input-email" label="email" name="email" />
@@ -88,7 +104,7 @@ class LogIn extends React.Component {
 
       <Grid className={classes.marginTop} container justify="center" alignItems="flex-end">
         <Grid item xs={7}>
-          <Typography className={classes.marginTop} variant="button" gutterBottom align="center">
+          <Typography className={classes.margin} variant="button" gutterBottom align="center">
             Don't have an account? </Typography>
         </Grid>
         <Grid item xs={3}>
