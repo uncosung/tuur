@@ -6,6 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import GuidePackages from './user-view-guide-profile';
+import { Link } from 'react-router-dom';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+
 
 const styles = theme => ({
   marginTop: {
@@ -20,6 +23,12 @@ const styles = theme => ({
   },
   marginLeft: {
     marginLeft: theme.spacing(2)
+  },
+  fontSize: {
+    fontSize: '2.5rem'
+  },
+  paddingRight: {
+    paddingRight: 20,
   }
 });
 
@@ -74,7 +83,13 @@ class UserViewProfile extends Component {
     return (
       <>
       <Container className={classes.marginBottom} >
+
+        <Grid item xs={2} className={classes.paddingRight} name='back' component={Link} to={'/results/'}>
+          <KeyboardArrowLeft className={classes.fontSize} />
+        </Grid>
+
         <Typography className={classes.marginTop} style={{ paddingLeft: '16px' }} variant="h4">
+
           {this.state.name}
         </Typography>
         <Typography className={classes.marginLeft} variant="subtitle1">

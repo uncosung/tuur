@@ -105,9 +105,7 @@ class GuidePackages extends Component {
     });
     return (
       <>
-        <Grid item xs={2} className={classes.paddingRight} name='back' component={Link} to={'/results/'}>
-          <KeyboardArrowLeft className={classes.fontSize} />
-        </Grid>
+        
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
             Packages
