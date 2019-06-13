@@ -39,7 +39,8 @@ const styles = theme => ({
   },
   media: {
     height: 0,
-    paddingTop: '56.25%'
+    paddingTop: '56.25%',
+    backgroundSize: '100% 100%'
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -295,13 +296,13 @@ class PackageDetails extends Component {
             <Grid component={Link} style={{ textDecoration: 'none' }} to={'/user-view-profile/' + this.props.location.state.item.profileEmail}>
               <Card className={classes.card}>
                 <Grid container>
-                  <Grid item xs={4}>
+                  <Grid item xs={5}>
                     <CardMedia
                       className={classes.cover}
                       image={ this.state.package ? this.state.package.image : null}
                     />
                   </Grid>
-                  <Grid item xs={8}>
+                  <Grid item xs={7}>
                     <CardContent>
                       <Typography variant="body1">
                     Meet your Guide
