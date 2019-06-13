@@ -78,7 +78,7 @@ class Itinerary extends Component {
   }
 
   componentDidUpdate() {
-    if ( !this.state.auth.length && !this.state.loggedIn ){
+    if ( !this.state.auth.length && !this.state.loggedIn && !this.state.isLoading ){
       fetch( '/api/loginStatus.php')
       .then( res => res.json())
       .then( data => this.setState({ auth: data, loggedIn: data.loggedIn, isLoading: false}))
