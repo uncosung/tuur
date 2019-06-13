@@ -51,12 +51,13 @@ class UserProfile extends Component {
       fetch('/api/profile.php?email=' + this.props.match.params.email)
         .then(res => res.json())
         .then(response => {
-          this.setState({ user: response });
+          this.setState({ user: response});
         });
     } else {
       this.setState({ user: this.props.user });
     }
   }
+
   render() {
     const { classes } = this.props;
     if (!this.state.user) {
@@ -85,21 +86,24 @@ class UserProfile extends Component {
             <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.user.email} >
               <Typography variant="button">Edit profile</Typography>
             </Button>
-            {this.state.user.isGuide
-            ?<Button className={classes.buttonCreate} type="button" fullWidth variant="contained" color="secondary" component={Link} to={'/create-package'} >
+            { this.state.user.isGuide 
+              ? <Button className={classes.buttonCreate} type="button" fullWidth variant="contained" color="secondary" component={Link} to={'/create-package'} >
                   Create Package
-            </Button>
-            :null
+                </Button>
+              : null
             }
+            
+                  
+
           </ThemeProvider>
         </Grid>
       </Grid>
     </Container>
-
-      {this.state.user.isGuide
+    <UpComingTuursList user={ this.state.user }/>
+<!--       {this.state.user.isGuide
         ? <UpComingTuursList user={ this.state.user }/>
         : <Typography variant="h5" style={{ paddingLeft: '10px' }}>No Tuurs available</Typography>
-      }
+      } -->
       </>
 
     );

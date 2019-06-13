@@ -46,8 +46,23 @@ class UserViewProfile extends Component {
         });
       });
   }
+  
+  componentDidUpdate(){
+    const email = this.props.match.params.email;
+    fetch('/api/profile.php?email=' + email)
+      .then(res => res.json())
+      .then(response => {
+        this.setState({
+          name: response.name,
+          location: response.location,
+          image: response.image,
+          isGuide: response.isGuide
+        });
+      });
+  }
 
   render() {
+    console.log( 'user-view' , this.props )
     const { classes } = this.props;
     if (!this.state) return null;
     return (

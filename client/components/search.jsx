@@ -98,11 +98,11 @@ class Search extends Component {
   componentDidMount() {
     this.fetchPackages();
   }
-  componentDidUpdate(prevProps) {
-    console.log('prev', prevProps, 'current props', this.props, 'state', this.state);
+  componentDidUpdate(prevProps){
+
   }
+
   render() {
-    console.log(this.state.package);
     const { classes } = this.props;
     const geocoderApiOptions = {
       country: 'us',
