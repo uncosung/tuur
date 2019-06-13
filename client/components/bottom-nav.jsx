@@ -11,8 +11,8 @@ const styles = theme => ({
   root: {
     width: '100%',
     position: 'fixed',
-    bottom: 0, 
-    padding: '6px'
+    bottom: 0,
+    padding: '7px 0'
   }
 });
 
@@ -30,15 +30,15 @@ class BottomNav extends Component {
       path = '/user-profile/' + this.props.user.email;
     }
 
-    switch (event.currentTarget.id){
+    switch (event.currentTarget.id) {
       case 'home':
-        this.props.path('/')
+        this.props.path('/');
         break;
       case 'itinerary':
-        this.props.path('/itinerary')
+        this.props.path('/itinerary');
         break;
       case 'account':
-        this.props.path(path)
+        this.props.path(path);
 
         break;
     }
