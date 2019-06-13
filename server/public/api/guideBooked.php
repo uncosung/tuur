@@ -10,11 +10,13 @@ $email = $_SESSION['userEmail'];
 $tuuristId = $_SESSION['id'];
 
 if ( $method === 'GET'){
+  var_dump( $email );
   $query = "SELECT b.packageId, GROUP_CONCAT( b.dates ) AS dates, b.tuuristEmail, b.tuuristId, p.title, p.description, p.tags, p.location, p.mainImage,p.images 
   FROM `booking` AS b 
   JOIN `package` AS p ON p.id = b.packageId 
   WHERE p.profileEmail = '{$email}'
   GROUP BY b.packageId, b.tuuristId, b.tuuristEmail";
+  var_dump( $query );
   $result = mysqli_query( $conn, $query );
   $output = [];
   while ( $row = mysqli_fetch_assoc( $result )){

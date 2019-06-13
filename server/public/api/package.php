@@ -4,8 +4,11 @@ session_start();
 header("Content-Type:application/json");
 $method = $_SERVER['REQUEST_METHOD'];
 $item = file_get_contents('php://input');
+
 if ( $method === 'GET'){
   if ( isset($_GET['email'])){
+    // $_email = $_GET['email'];
+
     $where = " WHERE `profileEmail` = '{$_SESSION['userEmail']}'";
   }
   elseif ( isset($_GET['id'])){

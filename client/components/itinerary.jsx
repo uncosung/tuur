@@ -51,11 +51,12 @@ class Itinerary extends Component {
     if ( this.state.package ){
       fetch('/api/booking.php?email')
       .then( res => res.json() )
-      .then( packages => this.setState( { packages } ), () => console.log( 'updatedlkjlkjklj'))
+      .then( packages => this.setState( { packages } ))
     }
   }
 
   render() {
+    console.log( this.props)
     const { classes } = this.props;
     return (
       <>

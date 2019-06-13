@@ -75,7 +75,8 @@ class DatePicker extends Component {
   handleBooking() {
     if (this.state.dates.length) {
       this.props.booking(this.state.dates);
-      this.props.history.push('../itinerary');
+      //  MOVE TO PARENT BOOKING HANDLER
+      // this.props.history.push('../itinerary');
     }
   }
 
