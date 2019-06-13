@@ -32,7 +32,7 @@ class BottomNav extends Component {
     } else {
       path = '/user-profile/' + this.props.user.email;
     }
-
+    console.log( 'id', event.currentTarget.id);
     switch (event.currentTarget.id) {
       case 'home':
         this.props.path('/');
