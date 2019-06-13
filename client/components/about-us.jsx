@@ -5,11 +5,13 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   card: {
     display: 'flex',
-    height: '165px',
+    height: '150px',
     marginBottom: theme.spacing(2),
     width: '89%'
   },
@@ -30,18 +32,27 @@ const styles = theme => ({
   },
   title: {
     margin: theme.spacing(2)
+  },
+  back: {
+    position: 'absolute',
+    top: 20,
+    left: '16px',
+    color: '#a49f9f',
+    fontSize: '20px'
   }
-
 });
 
 function AboutUs(props) {
   const { classes } = props;
   return (
     <>
-      <Grid container justify="center">
-        <Typography variant="h3" className={classes.title}>
+      <Grid container justify="center" style={{ paddingBottom: '80px' }}>
+        <Grid className={classes.back} component={Link} to={'/'}>
+          <KeyboardArrowLeft style={{ fontSize: '40px' }} />
+        </Grid>
+        <Typography variant="h4" className={classes.title}>
           About us
-          </Typography>
+        </Typography>
 
         <Card className={classes.card}>
           <Grid container justify="center">
@@ -55,11 +66,11 @@ function AboutUs(props) {
               <CardContent className={classes.content}>
                 <Typography variant="h5">
                   Jennifer
-                  </Typography>
+                </Typography>
                 <Typography variant="subtitle1" color="textSecondary" className={classes.padding}>
                   I'm the mother of components
-                  </Typography>
-                <div><i className="fab fa-github"></i><span> link</span></div>
+                </Typography>
+                <div><i className="fab fa-github"></i></div>
                 <div><i className="fab fa-linkedin"></i></div>
                 <div><i className="far fa-envelope"></i></div>
               </CardContent>
@@ -79,10 +90,10 @@ function AboutUs(props) {
               <CardContent className={classes.content}>
                 <Typography variant="h5">
                   Eric
-                  </Typography>
+                </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
                   mapbox :3
-                  </Typography>
+                </Typography>
                 <div><i className="fab fa-github"></i></div>
                 <div><i className="fab fa-linkedin"></i></div>
                 <div><i className="far fa-envelope"></i></div>
@@ -102,10 +113,10 @@ function AboutUs(props) {
               <CardContent className={classes.content}>
                 <Typography variant="h5">
                   Kate
-                  </Typography>
+                </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
                   Boba?
-                  </Typography>
+                </Typography>
                 <div><i className="fab fa-github"></i></div>
                 <div><i className="fab fa-linkedin"></i></div>
                 <div><i className="far fa-envelope"></i></div>
@@ -125,10 +136,10 @@ function AboutUs(props) {
               <CardContent className={classes.content}>
                 <Typography variant="h5">
                   Kevin
-                  </Typography>
+                </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
                   ...
-                  </Typography>
+                </Typography>
                 <div><i className="fab fa-github"></i></div>
                 <div><i className="fab fa-linkedin"></i></div>
                 <div><i className="far fa-envelope"></i></div>

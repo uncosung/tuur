@@ -10,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
+import MoreVert from '@material-ui/icons/MoreVert';
+import { generateKeyPair } from 'crypto';
 
 const theme = createMuiTheme({
   palette: {
@@ -58,6 +60,13 @@ const styles = theme => ({
   titleBar: {
     background:
       'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)'
+  },
+  aboutUs: {
+    position: 'absolute',
+    top: 20,
+    right: '11px',
+    color: '#a49f9f',
+    fontSize: '20px'
   }
 });
 
@@ -74,12 +83,11 @@ class Search extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.fetchPackages = this.fetchPackages.bind(this);
+    this.aboutUs = this.aboutUs.bind(this);
   }
-
   handleClick() {
     this.props.search(this.state.location);
     this.props.path('/results');
-
   }
   handleSelect(result) {
     this.setState({
@@ -100,6 +108,9 @@ class Search extends Component {
   }
   componentDidUpdate(prevProps) {
     console.log('prev', prevProps, 'current props', this.props, 'state', this.state);
+  }
+  aboutUs() {
+    this.props.path('/about-us');
   }
   render() {
     console.log(this.state.package);
@@ -132,6 +143,7 @@ class Search extends Component {
     return (
       <div style={{ fontSize: 0 }}>
         <img style={imgStyle} src="https://i.imgur.com/AU3rU4N.png" alt="logo"/>
+        <div className={classes.aboutUs} component='a' onClick={this.aboutUs} ><MoreVert style={{ fontSize: '30px' }} /></div>
         <Card style={{ maxWidth: '100%' }} mt={0} className={classes.card}>
           <CardActionArea>
             <CardMedia
