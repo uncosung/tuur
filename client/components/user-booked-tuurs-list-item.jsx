@@ -26,7 +26,6 @@ class BookedTuurs extends Component {
   }
 
   render() {
-    console.log( 'propity prop prop', this.props );
     const { classes } = this.props;
     return (
       <>

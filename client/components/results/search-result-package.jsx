@@ -44,7 +44,6 @@ class SearchPackages extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.tags.toString() !== this.props.tags.toString()) {
-      console.log('no match tags', this.props.tags)
       this.setState({
         tags: this.props.tags
       }, this.fetchPackages)
@@ -55,11 +54,9 @@ class SearchPackages extends Component {
   }
 
   fetchPackages() {
-    console.log('reached fetch')
     fetch('/api/package.php')
       .then(res => res.json())
       .then(packages =>  {
-        console.log('fetched', packages)
         this.fetchLocation(packages)});
   }
   
@@ -78,20 +75,17 @@ class SearchPackages extends Component {
     };
   }
   mapTuurs(fetchCoordinates, packages) {
-    console.log('reached map')
     let mapArray = packages.map(this.getTuurLocationData);
 
     Promise.all(mapArray).then(tuurCoordinates => this.filterTuurs(fetchCoordinates, packages, tuurCoordinates));
   }
   fetchLocation(packages) {
-    console.log('reached fetch loc')
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
       .then(res => res.json())
       .then(fetchCoordinates => this.mapTuurs(fetchCoordinates, packages));
   }
 
   filterTuurs(fetchCoordinates, packages, tuurCoordinates) {
-    console.log('reached filter')
     let filterTuurs = [];
     let tooFar = [];
     for (let i = 0; i < tuurCoordinates.length; i++) {
@@ -115,7 +109,6 @@ class SearchPackages extends Component {
 //             tagArray = [...tagArray, this.state.filteredTuurs[i]]
 
   filterTags (filterTuurs) {
-    console.log('reached filter tags', filterTuurs)
       if (this.state.tags.length === 0){
         this.setState({
           filteredTuurs: filterTuurs
@@ -126,9 +119,7 @@ class SearchPackages extends Component {
       for (let i = 0; i < filterTuurs.length; i++){
         for (let j = 0; j < this.state.tags.length; j++){
           for (let k = 0; k < JSON.parse(filterTuurs[i].tuur.tags).length; k++){
-            console.log('comparing:', JSON.parse(filterTuurs[i].tuur.tags)[k], this.state.tags[j])
             if (JSON.parse(filterTuurs[i].tuur.tags)[k] === (this.state.tags[j])){
-              console.log(filterTuurs[i].tuur.tags)
               tagArray = [...tagArray, filterTuurs[i]]
             }
           }
@@ -141,7 +132,6 @@ class SearchPackages extends Component {
           }
         }
       }
-      console.log('tasgsss', tagArray)
 
       if (tagArray.length === 0){
         this.setState({

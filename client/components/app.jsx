@@ -35,7 +35,6 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('previous', prevState, 'current', this.state)
     if (this.state.path !== prevState.path || this.state.tags !== prevState.tags) {
       this.props.history.push(this.state.path);
     }
@@ -46,12 +45,11 @@ class App extends Component {
 
     this.setState({
       path: path
-    }, () => console.log('stateystate', this.state));
+    });
   }
 
   logIn(user) {
     this.setState({ user }, () => {
-      console.log('in login', user);
       this.props.history.push(
 
         { pathname: '/user-profile/' + user.email,
@@ -62,7 +60,10 @@ class App extends Component {
   }
 
   edit(user) {
-    this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
+    this.setState({ user }, () => this.props.history.push({
+      pathname: '/user-profile/' + user.email,
+      state: {user}
+  }));
   }
 
   handleSearch(location, tags, dates) {
@@ -70,7 +71,7 @@ class App extends Component {
       this.setState({
         tags: tags
 
-      }, () => console.log('these arent the dates', this.state))
+      })
       return
     }
     else if (!location.name && !tags){
@@ -90,7 +91,7 @@ class App extends Component {
           start: dates.start,
           end: dates.end
         }
-      }, () => console.log('these arent the dates', this.state));
+      });
     }
   }
 

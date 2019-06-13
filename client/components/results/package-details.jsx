@@ -219,13 +219,12 @@ class PackageDetails extends Component {
   bookHandler(dates) {
     const packageId = this.state.item.id;
     if (dates) {
-      console.log('inside package detail', dates);
       fetch('/api/booking.php', {
         method: 'POST',
         body: JSON.stringify({ packageId, dates })
       })
         .then(res => res.json())
-        .then(data => console.log(data));
+        .then(data => this.props.history.push('../itinerary'));
     }
 
   }

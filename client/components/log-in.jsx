@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import { Redirect, Link } from 'react-router-dom';
-console.log('test');
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
@@ -57,7 +56,6 @@ class LogIn extends React.Component {
   render() {
     const { classes } = this.props;
     if (this.state.auth) {
-      console.log( 'relksjdflsk' );
       return <Redirect to={{
         pathname: '/user-profile/' + this.state.email,
         state: { user: this.state }

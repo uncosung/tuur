@@ -74,18 +74,17 @@ function SimpleModal(props) {
 
   const handleOpen = () => {
     const status = props.loggedIn;
-    console.log( status )
     if (!status) {
       handleSnackbarOpen();
     } else {
       setOpen(true);
-      console.log('should book');
-      props.booking();
+      
     }
   };
 
   const handleClose = () => {
     setOpen(false);
+    props.booking();
     
   };
 
@@ -98,7 +97,6 @@ function SimpleModal(props) {
   };
 
   const classes = useStyles();
-  console.log( props)
   return (
     <div>
       <ThemeProvider theme={theme}>
