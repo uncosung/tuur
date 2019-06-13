@@ -22,7 +22,7 @@ class Mapbox extends Component {
     this.state = {
       viewport: {
         width: '100%',
-        height: '705px',
+        height: '667px',
         latitude: this.props.location.coordinates[1],
         longitude: this.props.location.coordinates[0],
         zoom: 12
@@ -51,7 +51,7 @@ class Mapbox extends Component {
   componentDidMount() {
     this.fetchPackages();
   }
-  fetchPackages () {
+  fetchPackages() {
     fetch('/api/package.php')
       .then(res => res.json())
       .then(tuurs => {
@@ -63,8 +63,7 @@ class Mapbox extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.tags.toString() !== this.props.tags.toString()) {
       this.fetchPackages();
-    }
-    else if (this.props.dates.start !== prevProps.dates.start){
+    } else if (this.props.dates.start !== prevProps.dates.start) {
       this.fetchPackages();
     }
   }
@@ -81,7 +80,7 @@ class Mapbox extends Component {
     this.setState({
       filteredTuurs: filterTuurs
     }, () => {
-        this.filterTags();
+      this.filterTags();
     });
 
   }
@@ -106,8 +105,8 @@ class Mapbox extends Component {
 
   }
 
-  filterTags () {
-    if (this.props.tags.length === 0 && this.props.dates.start !== null){
+  filterTags() {
+    if (this.props.tags.length === 0 && this.props.dates.start !== null) {
       this.filterDates();
       return;
     }
@@ -132,45 +131,45 @@ class Mapbox extends Component {
       }
     }
 
-    this.setState ({
+    this.setState({
       filteredTuurs: tagArray
     }, () => {
-      this.props.dates.start !==null && this.filterDates
-    })
+      this.props.dates.start !== null && this.filterDates;
+    });
 
   }
-  filterDates () {
+  filterDates() {
     debugger;
-    const endDate = new Date( this.props.dates.end );
-    const begDate = new Date( this.props.dates.start );
+    const endDate = new Date(this.props.dates.end);
+    const begDate = new Date(this.props.dates.start);
     let begDateYear = begDate.getFullYear();
     let begDateMonth = begDate.getMonth();
     let begDateDay = begDate.getDate();
     const endDateYear = endDate.getFullYear();
     const endDateMonth = endDate.getMonth();
     const endDateDay = endDate.getDate();
-    let dateArray = []
-    let availablePackage = []
+    let dateArray = [];
+    let availablePackage = [];
     let availableTuur = [];
-    dateArray.push( new Date( begDateYear, begDateMonth, begDateDay));
+    dateArray.push(new Date(begDateYear, begDateMonth, begDateDay));
     while (begDateMonth !== endDateMonth || begDateDay !== endDateDay) {
       if (begDateDay === 1) {
         begDateMonth = begDateMonth === 11 ? 0 : ++begDateMonth;
       }
       if (begDateMonth === 0 && begDateDay === 1) {
         begDateYear = begDateMonth === 1 ? ++begDateYear : begDateYear;
-      }  
-      availableTuur = this.checkAvailability(begDateYear, begDateMonth, begDateDay )
+      }
+      availableTuur = this.checkAvailability(begDateYear, begDateMonth, begDateDay);
       begDateDay = this.nextDay(begDateMonth, begDateDay);
-      if ( availableTuur ){
-        availablePackage.push( availableTuur );
+      if (availableTuur) {
+        availablePackage.push(availableTuur);
       }
     }
 
-    if ( begDateMonth === endDateMonth && begDateDay === endDateDay){
-      availableTuur = this.checkAvailability(begDateYear, begDateMonth, begDateDay )
-      if ( availableTuur ){
-        availablePackage.push( availableTuur );
+    if (begDateMonth === endDateMonth && begDateDay === endDateDay) {
+      availableTuur = this.checkAvailability(begDateYear, begDateMonth, begDateDay);
+      if (availableTuur) {
+        availablePackage.push(availableTuur);
       }
     }
 
@@ -179,10 +178,10 @@ class Mapbox extends Component {
     });
   }
 
-  checkAvailability( year, month, day) {
+  checkAvailability(year, month, day) {
     debugger;
-    for (let i = 0; i < this.state.filteredTuurs.length; i++){
-      let parseDate = JSON.parse(this.state.filteredTuurs[i].tuur.dates)
+    for (let i = 0; i < this.state.filteredTuurs.length; i++) {
+      let parseDate = JSON.parse(this.state.filteredTuurs[i].tuur.dates);
       for (var value of parseDate) {
         const packageDate = new Date(value);
         const packageYear = packageDate.getFullYear();
@@ -195,8 +194,6 @@ class Mapbox extends Component {
     }
 
   }
-
-  
 
   nextDay(month, day) {
     // last day of month = 31
