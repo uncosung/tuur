@@ -85,9 +85,12 @@ class UserProfile extends Component {
             <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.user.email} >
               <Typography variant="button">Edit profile</Typography>
             </Button>
-            <Button className={classes.buttonCreate} type="button" fullWidth variant="contained" color="secondary" component={Link} to={'/create-package'} >
+            {this.state.user.isGuide
+            ?<Button className={classes.buttonCreate} type="button" fullWidth variant="contained" color="secondary" component={Link} to={'/create-package'} >
                   Create Package
             </Button>
+            :null
+            }
           </ThemeProvider>
         </Grid>
       </Grid>
