@@ -257,7 +257,7 @@ class Mapbox extends Component {
           closeOnClick={false}
           onClose={() => this.setState({ popupInfo: null })}
         >
-          <PopupInfo view={this.props.view} info={popupInfo.tuur}/>
+          <PopupInfo path={this.props.path} info={popupInfo.tuur}/>
         </Popup>
       )
     );

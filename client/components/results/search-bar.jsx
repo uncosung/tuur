@@ -338,7 +338,7 @@ class SearchBar extends Component {
              </Grid>
            </Modal>
          </Grid>
-         { this.state.location.toggleStatus ? <Mapbox dates={this.props.dates} tags={this.props.tags} location={this.props.location} /> : '' }
+         { this.state.location.toggleStatus ? <Mapbox path={this.props.path} dates={this.props.dates} tags={this.props.tags} location={this.props.location} /> : '' }
       </>
     );
   }
