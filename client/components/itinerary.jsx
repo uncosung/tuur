@@ -12,9 +12,10 @@ class Itinerary extends Component {
       // expanded: false,
       packages: [],
       hostedPackages: [],
-      switch: false
+      switch: false,
+      auth: []
     };
-    this.handleSwitch = this.handleSwitch.bind( this );
+    this.handleSwitch = this.handleSwitch.bind(this);
   }
 
   packageCondition() {
@@ -61,33 +62,41 @@ class Itinerary extends Component {
   }
 
   componentDidMount() {
+    // console.log( 'COMPOENTN ', this.props.user.auth.length );
     fetch('/api/booking.php?email')
       .then(res => res.json())
       .then(packages => this.setState({ packages }));
 
     fetch('/api/itinerary-guide.php')
       .then(res => res.json())
-      .then( hostedPackages => this.setState({ hostedPackages}))
+      .then(hostedPackages => this.setState({ hostedPackages, auth: this.props.user.auth }, ()=>console.log( 'SET')))
   }
 
   componentDidUpdate() {
-    if (this.state.package && this.state.hostedPackages ) {
+    if (!this.state.package && !this.state.hostedPackages) {
       fetch('/api/booking.php?email')
         .then(res => res.json())
         .then(packages => this.setState({ packages }))
 
       fetch('/api/itinerary-guide.php')
         .then(res => res.json())
-        .then( hostedPackages => this.setState({ hostedPackages}))
+        .then(hostedPackages => this.setState({ hostedPackages }))
     }
   }
 
   handleSwitch(state) {
-    this.setState( { switch: state } )
+    this.setState({ switch: state })
   }
 
   render() {
-    console.log(this.props)
+    console.log(this.props.user.auth, 'props')
+    let currentState;
+    if ( this.props.user.auth ){
+      currentState = this.props.user.auth.isGuide
+    } 
+    console.log( this.state.auth );
+
+    // console.log( this.state , 'state');
     const { classes } = this.props;
     return (
       <>
@@ -96,11 +105,15 @@ class Itinerary extends Component {
             Booked Tuurs
         </Typography>
           {/* TOGGLE **** INCLUDE ONLY IF GUIDE ****  */}
-          <ItineraryToggleButton switch={this.handleSwitch} />
+          { currentState
+            ? <ItineraryToggleButton switch={this.handleSwitch} />
+            : null
+          }
+
         </Container>
 
 
-        { this.state.switch
+        {this.state.switch
           ? <> {/* HOSTED ON TRUE */}
             <Container style={{ paddingBottom: '80px' }}>
               {this.state.packages ? this.hostedPackageCondition() : null}

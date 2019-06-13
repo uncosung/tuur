@@ -24,7 +24,8 @@ class App extends Component {
       dates: {
         start: null,
         end: null
-      }
+      },
+      auth: []
     };
     this.setRoutePath = this.setRoutePath.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
@@ -93,6 +94,13 @@ class App extends Component {
     }
   }
 
+  componentDidMount(){
+    // console.log('MOUNTED');
+    fetch( '/api/loginStatus.php')
+      .then( res => res.json())
+      .then( data => this.setState({ auth: data }))
+  }
+
   render() {
     return (
       <div>
@@ -120,7 +128,7 @@ class App extends Component {
             </div>
           }/>
           <Route exact path="/user-view-profile/:email"
-            render={props => <div><UserViewProfile {...props} isAuthed={true}/> <BottomNav path={this.setRoutePath} user={this.state.user}/></div>}/>
+            render={props => <div><UserViewProfile {...props} isAuthed={true}/> <BottomNav path={this.setRoutePath} user={this.state.user} auth={ this.state.auth}/></div>}/>
 
           <Route exact path="/user-profile/:email"
             render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>
@@ -150,7 +158,7 @@ class App extends Component {
           />
 
         </Switch>
-        <BottomNav path={this.setRoutePath} user={this.state.user}/>
+        <BottomNav path={this.setRoutePath} user={this.state.user} auth={ this.state.auth}/>
       </div>
 
     );

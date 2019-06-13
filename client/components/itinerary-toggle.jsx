@@ -21,8 +21,8 @@ export default function ItineraryToggleButton(props) {
         control={
           <Switch
             checked={state.checkedB}
-            onChange={handleChange('checkedB')}
-            value="checkedB"
+            onChange={handleChange('checked')}
+            value="checked"
             color="primary"
           />
         }
