@@ -12,7 +12,8 @@ const styles = theme => ({
     width: '100%',
     position: 'fixed',
     bottom: 0,
-    padding: '7px 0'
+    padding: '7px 0',
+    zIndex: '100'
   }
 });
 
