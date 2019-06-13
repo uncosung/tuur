@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import SearchPackageItem from './search-result-package-item';
 import TOKEN from './mapbox-token';
 
-
 const styles = theme => ({
   marginTop: {
     marginTop: theme.spacing(3)
@@ -30,7 +29,7 @@ class SearchPackages extends Component {
       },
       tags: []
     };
-    
+
     this.fetchPackages = this.fetchPackages.bind(this);
     this.filterDates = this.filterDates.bind(this);
     this.filterTags = this.filterTags.bind(this);
@@ -44,25 +43,22 @@ class SearchPackages extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.tags.toString() !== this.props.tags.toString()) {
-      console.log('no match tags', this.props.tags)
+
       this.setState({
         tags: this.props.tags
-      }, this.fetchPackages)
-    }
-    else if (this.props.dates.start !== prevProps.dates.start){
+      }, this.fetchPackages);
+    } else if (this.props.dates.start !== prevProps.dates.start) {
       this.fetchPackages();
     }
   }
 
   fetchPackages() {
-    console.log('reached fetch')
     fetch('/api/package.php')
       .then(res => res.json())
       .then(packages =>  {
-        console.log('fetched', packages)
         this.fetchLocation(packages)});
   }
-  
+
   renderPackage() {
     const packages = this.state.filteredTuurs.map((item, id) => {
       return <SearchPackageItem key={id} item={ item.tuur } />;
@@ -78,20 +74,17 @@ class SearchPackages extends Component {
     };
   }
   mapTuurs(fetchCoordinates, packages) {
-    console.log('reached map')
     let mapArray = packages.map(this.getTuurLocationData);
 
     Promise.all(mapArray).then(tuurCoordinates => this.filterTuurs(fetchCoordinates, packages, tuurCoordinates));
   }
   fetchLocation(packages) {
-    console.log('reached fetch loc')
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
       .then(res => res.json())
       .then(fetchCoordinates => this.mapTuurs(fetchCoordinates, packages));
   }
 
   filterTuurs(fetchCoordinates, packages, tuurCoordinates) {
-    console.log('reached filter')
     let filterTuurs = [];
     let tooFar = [];
     for (let i = 0; i < tuurCoordinates.length; i++) {
@@ -101,21 +94,21 @@ class SearchPackages extends Component {
         filterTuurs = [...filterTuurs, tuurCoordinates[i]];
       }
     }
-  
+
     this.props.tags.length === 0 && this.props.dates.start !== null ? this.filterDates(filterTuurs) : this.filterTags(filterTuurs);
 
   }
 
-//   filterTags () {
-//     let tagArray = [];
-//     for (let i = 0; i < this.state.filteredTuurs.length; i++){
-//       for (let j = 0; j < this.props.tags.length; j++){
-//         for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
-//           if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
-//             tagArray = [...tagArray, this.state.filteredTuurs[i]]
+  //   filterTags () {
+  //     let tagArray = [];
+  //     for (let i = 0; i < this.state.filteredTuurs.length; i++){
+  //       for (let j = 0; j < this.props.tags.length; j++){
+  //         for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
+  //           if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
+  //             tagArray = [...tagArray, this.state.filteredTuurs[i]]
+
 
   filterTags (filterTuurs) {
-    console.log('reached filter tags', filterTuurs)
       if (this.state.tags.length === 0){
         this.setState({
           filteredTuurs: filterTuurs
@@ -126,21 +119,20 @@ class SearchPackages extends Component {
       for (let i = 0; i < filterTuurs.length; i++){
         for (let j = 0; j < this.state.tags.length; j++){
           for (let k = 0; k < JSON.parse(filterTuurs[i].tuur.tags).length; k++){
-            console.log('comparing:', JSON.parse(filterTuurs[i].tuur.tags)[k], this.state.tags[j])
             if (JSON.parse(filterTuurs[i].tuur.tags)[k] === (this.state.tags[j])){
-              console.log(filterTuurs[i].tuur.tags)
               tagArray = [...tagArray, filterTuurs[i]]
             }
           }
         }
       }
-      for (let h = 0; h < tagArray.length; h++){
-        for (let g = h+1; g < tagArray.length; g++){
-          if (tagArray[h] === tagArray[g]){
-            tagArray.splice(g, 1)
-          }
+    
+    for (let h = 0; h < tagArray.length; h++) {
+      for (let g = h + 1; g < tagArray.length; g++) {
+        if (tagArray[h] === tagArray[g]) {
+          tagArray.splice(g, 1);
         }
       }
+
       if (tagArray.length === 0 && this.props.dates.start !== null){
         this.setState({
           filteredTuurs: filterTuurs
@@ -156,39 +148,40 @@ class SearchPackages extends Component {
       this.props.dates.start !== null ? this.filterDates(tagArray) : this.setState({
         filteredTuurs: tagArray
       })
+
   }
 
-  filterDates (tagArray) {
-    const endDate = new Date( this.props.dates.end );
-    const begDate = new Date( this.props.dates.start );
+  filterDates(tagArray) {
+    const endDate = new Date(this.props.dates.end);
+    const begDate = new Date(this.props.dates.start);
     let begDateYear = begDate.getFullYear();
     let begDateMonth = begDate.getMonth();
     let begDateDay = begDate.getDate();
     const endDateYear = endDate.getFullYear();
     const endDateMonth = endDate.getMonth();
     const endDateDay = endDate.getDate();
-    let dateArray = []
-    let availablePackage = []
+    let dateArray = [];
+    let availablePackage = [];
     let availableTuur = [];
-    dateArray.push( new Date( begDateYear, begDateMonth, begDateDay));
+    dateArray.push(new Date(begDateYear, begDateMonth, begDateDay));
     while (begDateMonth !== endDateMonth || begDateDay !== endDateDay) {
       if (begDateDay === 1) {
         begDateMonth = begDateMonth === 11 ? 0 : ++begDateMonth;
       }
       if (begDateMonth === 0 && begDateDay === 1) {
         begDateYear = begDateMonth === 1 ? ++begDateYear : begDateYear;
-      }  
-      availableTuur = this.checkAvailability(tagArray, begDateYear, begDateMonth, begDateDay )
+      }
+      availableTuur = this.checkAvailability(tagArray, begDateYear, begDateMonth, begDateDay);
       begDateDay = this.nextDay(begDateMonth, begDateDay);
-      if ( availableTuur ){
-        availablePackage.push( availableTuur );
+      if (availableTuur) {
+        availablePackage.push(availableTuur);
       }
     }
 
-    if ( begDateMonth === endDateMonth && begDateDay === endDateDay){
-      availableTuur = this.checkAvailability(tagArray, begDateYear, begDateMonth, begDateDay )
-      if ( availableTuur ){
-        availablePackage.push( availableTuur );
+    if (begDateMonth === endDateMonth && begDateDay === endDateDay) {
+      availableTuur = this.checkAvailability(tagArray, begDateYear, begDateMonth, begDateDay);
+      if (availableTuur) {
+        availablePackage.push(availableTuur);
       }
     }
 
@@ -198,8 +191,8 @@ class SearchPackages extends Component {
   }
 
   checkAvailability(tagArray, year, month, day) {
-    for (let i = 0; i < tagArray.length; i++){
-      let parseDate = JSON.parse(tagArray[i].tuur.dates)
+    for (let i = 0; i < tagArray.length; i++) {
+      let parseDate = JSON.parse(tagArray[i].tuur.dates);
 
       for (var value of parseDate) {
         const packageDate = new Date(value);
@@ -242,7 +235,6 @@ class SearchPackages extends Component {
     return 1;
   }
 
-  
   render() {
     const { classes } = this.props;
     return (
@@ -252,7 +244,9 @@ class SearchPackages extends Component {
               Tuurs
             </Typography>
           </Container>
-          { this.state.filteredTuurs.length === 0 ? <div>There are no tuurs that match the search criteria</div> : this.renderPackage() }
+          <Container style={{ paddingBottom: '80px' }}>
+            { this.state.filteredTuurs.length === 0 ? <Typography variant="subtitle1">There are no tuurs that match the search criteria</Typography> : this.renderPackage() }
+          </Container>
       </>
     );
   }

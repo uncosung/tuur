@@ -50,7 +50,7 @@ class SearchResultGuide extends Component {
     this.filterGuides = this.filterGuides.bind(this);
   }
   componentDidMount() {
-    
+
     this.fetchProfiles();
   }
   fetchProfiles() {
@@ -112,7 +112,7 @@ class SearchResultGuide extends Component {
         </Container>
         <div className={classes.root}>
           <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-            { this.state.filteredGuides.length === 0 ? <div>There are no guides that match the search criteria</div> : profile }
+            { this.state.filteredGuides.length === 0 ? <Typography variant="subtitle1">There are no guides that match the search criteria</Typography> : profile }
           </GridList>
         </div>
       </>

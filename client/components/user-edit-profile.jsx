@@ -55,7 +55,8 @@ class EditProfile extends Component {
       email: '',
       location: '',
       image: '',
-      bio: ''
+      bio: '',
+      isGuide: this.props.user.isGuide
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -113,8 +114,6 @@ class EditProfile extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props);
-    // if(!this.state) return null
     return (
             <>
             <Container className={classes.marginBottom} >

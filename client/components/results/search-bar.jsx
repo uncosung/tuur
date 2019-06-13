@@ -175,7 +175,7 @@ class SearchBar extends Component {
       },
       searchParameters: {
         name: '',
-        coordinates: [],
+        coordinates: []
       }
     };
     this.handleToggle = this.handleToggle.bind(this);
@@ -207,7 +207,7 @@ class SearchBar extends Component {
       ...this.state,
       location: {
         ...this.state.location,
-        toggleStatus: !this.state.location.toggleStatus      
+        toggleStatus: !this.state.location.toggleStatus
       }
     };
 
@@ -240,17 +240,17 @@ class SearchBar extends Component {
   modalClose() {
     this.setState({ openModal: false });
   }
-  handleDates () {
+  handleDates() {
     this.props.handleDates(this.state.dates);
   }
   handleSearch() {
     this.setState({
       location: { ...this.state.location, tags: this.state.tags }
     }, () => {
-      let locationParam = this.state.searchParameters.name ? this.state.searchParameters : this.state.location
-      this.props.handleSearch(locationParam, this.state.tags, this.state.dates)
-    })
-    
+      let locationParam = this.state.searchParameters.name ? this.state.searchParameters : this.state.location;
+      this.props.handleSearch(locationParam, this.state.tags, this.state.dates);
+    });
+
   }
   render() {
     const geocoderApiOptions = {
@@ -320,7 +320,7 @@ class SearchBar extends Component {
 
                <Grid item xs={3} className={classes.display}>
                  <FormControlLabel control={
-                   <Switch checked={this.state.location.toggleStatus} onChange={event => this.handleToggle(event)} />} label={this.state.location.toggleStatus ? 'TO MAP' : 'TO LIST'} />
+                   <Switch checked={this.state.location.toggleStatus} onChange={event => this.handleToggle(event)} />} label={this.state.location.toggleStatus ? 'TO LIST' : 'TO MAP'} />
                </Grid>
              </Grid>
            </AppBar>

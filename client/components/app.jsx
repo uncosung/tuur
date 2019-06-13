@@ -11,7 +11,7 @@ import UserViewProfile from './user-view-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 import CreatePackage from './createPackage';
-
+import AboutUs from './about-us';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +35,6 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('previous', prevState, 'current', this.state)
     if (this.state.path !== prevState.path || this.state.tags !== prevState.tags) {
       this.props.history.push(this.state.path);
     }
@@ -45,12 +44,11 @@ class App extends Component {
     console.log('setting path', this.state);
     this.setState({
       path: path
-    }, () => console.log('stateystate', this.state));
+    });
   }
 
   logIn(user) {
     this.setState({ user }, () => {
-      console.log('in login', user);
       this.props.history.push(
 
         { pathname: '/user-profile/' + user.email,
@@ -61,7 +59,10 @@ class App extends Component {
   }
 
   edit(user) {
-    this.setState({ user }, () => this.props.history.push('/user-profile/' + user.email));
+    this.setState({ user }, () => this.props.history.push({
+      pathname: '/user-profile/' + user.email,
+      state: { user }
+    }));
   }
 
   handleSearch(location, tags, dates) {
@@ -69,18 +70,17 @@ class App extends Component {
       this.setState({
         tags: tags
 
-      }, () => console.log('these arent the dates', this.state))
-      return
+      })
+      
     }
     else if (!location.name && !tags){
-      return
+      
     }
     else if (!tags && !dates){
       this.setState({
-        location:location
-      })
-    }
-    else {
+        location: location
+      });
+    } else {
 
       this.setState({
         location: location,
@@ -89,7 +89,7 @@ class App extends Component {
           start: dates.start,
           end: dates.end
         }
-      }, () => console.log('these arent the dates', this.state));
+      });
     }
   }
 
@@ -120,16 +120,15 @@ class App extends Component {
             </div>
           }/>
           <Route exact path="/user-view-profile/:email"
-            render={props => <div><UserViewProfile {...props} isAuthed={true}/>, <BottomNav path={this.setRoutePath} user={this.state.user}/></div>}/>
+            render={props => <div><UserViewProfile {...props} isAuthed={true}/> <BottomNav path={this.setRoutePath} user={this.state.user}/></div>}/>
 
           <Route exact path="/user-profile/:email"
-            render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>,
-
+            render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>
             </div>}
           />
 
           <Route exact path="/edit-profile/:email"
-            render={props => <div><EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>,
+            render={props => <div><EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>
             </div>}
           />
 
@@ -144,6 +143,10 @@ class App extends Component {
 
           <Route path="/create-package"
             render={props => <CreatePackage packages={this.state.user}{...props} isAuthed={true}/>}
+          />
+
+          <Route path="/about-us"
+            render={props => <AboutUs {...props} />}
           />
 
         </Switch>

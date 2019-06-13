@@ -5,7 +5,6 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import UpComingTuurItem from './user-upcoming-tuurs-list-item';
 import GridList from '@material-ui/core/GridList';
-import Grid from '@material-ui/core/Grid';
 import BookedTuurs from './user-booked-tuurs-list-item';
 
 const theme = createMuiTheme({
@@ -76,13 +75,24 @@ class UpComingTuursList extends Component {
   }
 
   getBooked() {
-    fetch('/api/booked.php')
-      .then(res => res.json())
-      .then(booked => this.setState({ booked }));
+
+    if (this.state.isGuide) {
+      fetch('/api/guideBooked.php')
+        .then(res => res.json())
+        .then(booked => this.setState({ booked }));
+    } else {
+      fetch('/api/tuuristBooked.php')
+        .then(res => res.json())
+        .then(booked => this.setState({ booked }));
+    }
+
+
+
   }
 
   getCreatedPackages() {
     fetch('/api/package.php?email')
+
       .then(res => res.json())
       .then(packages => this.setState({ packages }));
   }
@@ -102,7 +112,6 @@ class UpComingTuursList extends Component {
   }
 
   render() {
-    console.log('0000', this.props);
     const { classes } = this.props;
     const bookedMap = this.state.booked.map((bookedItem, id) => {
       return <BookedTuurs key={id} booked={bookedItem} />;
@@ -114,7 +123,7 @@ class UpComingTuursList extends Component {
       <>
         {/* BOOKED PACKAGES */}
         <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h4">
+          <Typography className={classes.marginTop} variant="h5">
             Booked Packages
           </Typography>
         </Container>
@@ -124,23 +133,26 @@ class UpComingTuursList extends Component {
           </GridList>
         </div>
 
-        {/* CREATED PACKAGES BY GUIDES */}
-        <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h4">
-            Packages
-          </Typography>
-        </Container>
-        <div className={classes.root}>
-          <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-            {packageMap}
-          </GridList>
-        </div>
-        <Grid justify="center" className={classes.margin} container>
-          <Grid className={classes.marginTop2} container justify="center" >
-          </Grid>
-        </Grid>
+        {/* CREATED PACKAGES / GUIDES ONLY */}
+        {
+          this.props.user.isGuide
+            ? <>
+            <Container className={classes.marginBottom} >
+              <Typography className={classes.marginTop} variant="h4">
+                Packages
+              </Typography>
+            </Container>
+            <div className={classes.root}>
+              <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
+                {packageMap}
+              </GridList>
+            </div>
+            </>
+            : null
+        }
 
       </>
+
     );
   }
 

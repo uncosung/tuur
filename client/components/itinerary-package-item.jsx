@@ -77,7 +77,6 @@ class ItineraryItem extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { classes } = this.props;
     const { title, timeRange, tags, profileEmail, mainImage, location, images, description, dates } = this.props.item;
     return (

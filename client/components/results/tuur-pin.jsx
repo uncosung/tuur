@@ -16,7 +16,6 @@ class TuurPin extends PureComponent {
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick() {
-    console.log('click!');
     this.props.onClick;
   }
   render() {
