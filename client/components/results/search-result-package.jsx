@@ -57,8 +57,10 @@ class SearchPackages extends Component {
   fetchPackages() {
     fetch('/api/package.php')
       .then(res => res.json())
-      .then(packages =>  {
-        this.fetchLocation(packages)});
+      .then(packages => {
+        this.fetchLocation(packages)
+        ; 
+});
   }
 
   renderPackage() {
@@ -109,26 +111,25 @@ class SearchPackages extends Component {
   //           if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
   //             tagArray = [...tagArray, this.state.filteredTuurs[i]]
 
-
-  filterTags (filterTuurs) {
-      if (this.state.tags.length === 0){
-        this.setState({
-          filteredTuurs: filterTuurs,
-          isLoading: false
-        })
-        return
-      }
-      let tagArray = [];
-      for (let i = 0; i < filterTuurs.length; i++){
-        for (let j = 0; j < this.state.tags.length; j++){
-          for (let k = 0; k < JSON.parse(filterTuurs[i].tuur.tags).length; k++){
-            if (JSON.parse(filterTuurs[i].tuur.tags)[k] === (this.state.tags[j])){
-              tagArray = [...tagArray, filterTuurs[i]]
-            }
+  filterTags(filterTuurs) {
+    if (this.state.tags.length === 0) {
+      this.setState({
+        filteredTuurs: filterTuurs,
+        isLoading: false
+      });
+      return;
+    }
+    let tagArray = [];
+    for (let i = 0; i < filterTuurs.length; i++) {
+      for (let j = 0; j < this.state.tags.length; j++) {
+        for (let k = 0; k < JSON.parse(filterTuurs[i].tuur.tags).length; k++) {
+          if (JSON.parse(filterTuurs[i].tuur.tags)[k] === (this.state.tags[j])) {
+            tagArray = [...tagArray, filterTuurs[i]];
           }
         }
       }
-    
+    }
+
     for (let h = 0; h < tagArray.length; h++) {
       for (let g = h + 1; g < tagArray.length; g++) {
         if (tagArray[h] === tagArray[g]) {
@@ -136,27 +137,25 @@ class SearchPackages extends Component {
         }
       }
 
-      if (tagArray.length === 0 && this.props.dates.start !== null){
+      if (tagArray.length === 0 && this.props.dates.start !== null) {
         this.setState({
           filteredTuurs: filterTuurs,
           isLoading: false
-        })
-        return
-      }
-      else if (tagArray.length === 0 && this.props.dates.start === null){
+        });
+        return;
+      } else if (tagArray.length === 0 && this.props.dates.start === null) {
         this.setState({
           filteredTuurs: [],
           isLoading: false
-        })
-        return
+        });
+        return;
       }
       this.props.dates.start !== null ? this.filterDates(tagArray) : this.setState({
         filteredTuurs: tagArray,
         isLoading: false
-      })
+      });
     }
   }
-
 
   filterDates(tagArray) {
     const endDate = new Date(this.props.dates.end);
@@ -244,16 +243,14 @@ class SearchPackages extends Component {
   }
 
   render() {
-    debugger;
     const { classes } = this.props;
-    if (this.state.isLoading === true){
+    if (this.state.isLoading === true) {
       return (
-        <div style={{height: '250px', width: '250px'}}>
-          <img  src='https://ui-ex.com/images/transparent-gif-loading-1.gif'></img>
+        <div style={{ height: '100px', width: '100px', margin: 'auto' }}>
+          <img src='https://ui-ex.com/images/transparent-gif-loading-1.gif' style={{ width: '100%' }} />
         </div>
-      )
-    }
-    else {
+      );
+    } else {
       return (
         <>
             <Container className={classes.marginBottom} >

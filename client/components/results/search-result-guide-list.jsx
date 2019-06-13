@@ -101,17 +101,15 @@ class SearchResultGuide extends Component {
     });
   }
   render() {
-    debugger;
     const { classes } = this.props;
     const profile = this.state.filteredGuides.map(profile => {
       return <SearchResultGuideItem profile={profile.guide} key={profile.guide.id} />;
     });
-    if (this.state.isLoading === true){
-      return(
+    if (this.state.isLoading === true) {
+      return (
         <div></div>
-      )
-    }
-    else {
+      );
+    } else {
       return (
         <>
           <Container className={classes.marginBottom} >
