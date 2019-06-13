@@ -141,11 +141,15 @@ class SearchPackages extends Component {
           }
         }
       }
-      console.log('tasgsss', tagArray)
-
-      if (tagArray.length === 0){
+      if (tagArray.length === 0 && this.props.dates.start !== null){
         this.setState({
           filteredTuurs: filterTuurs
+        })
+        return
+      }
+      else if (tagArray.length === 0 && this.props.dates.start === null){
+        this.setState({
+          filteredTuurs: []
         })
         return
       }
