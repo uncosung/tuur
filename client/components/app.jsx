@@ -41,7 +41,7 @@ class App extends Component {
   }
 
   setRoutePath(path) {
-    console.log('setting path', this.state);
+    // console.log('setting path', this.state);
     this.setState({
       path: path
     });
@@ -111,7 +111,7 @@ class App extends Component {
           }/>
           <Route exact path="/itinerary" render={props =>
             <div>
-              <Itinerary />
+              <Itinerary user={this.state} />
             </div>
           }/>
           <Route exact path="/sign-up" render={props =>
