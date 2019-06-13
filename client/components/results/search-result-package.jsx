@@ -133,16 +133,22 @@ class SearchPackages extends Component {
         }
       }
 
-    if (tagArray.length === 0) {
-      this.setState({
-        filteredTuurs: filterTuurs
-      });
-      return;
-    }
-    this.props.dates.start !== null ? this.filterDates(tagArray) : this.setState({
-      filteredTuurs: tagArray
-    });
-  }
+      if (tagArray.length === 0 && this.props.dates.start !== null){
+        this.setState({
+          filteredTuurs: filterTuurs
+        })
+        return
+      }
+      else if (tagArray.length === 0 && this.props.dates.start === null){
+        this.setState({
+          filteredTuurs: []
+        })
+        return
+      }
+      this.props.dates.start !== null ? this.filterDates(tagArray) : this.setState({
+        filteredTuurs: tagArray
+      })
+
   }
 
   filterDates(tagArray) {

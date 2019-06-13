@@ -42,7 +42,6 @@ class App extends Component {
 
   setRoutePath(path) {
     console.log('setting path', this.state);
-
     this.setState({
       path: path
     });
@@ -135,7 +134,7 @@ class App extends Component {
 
           <Route path="/results" render={props =>
             <div>
-              <Results dates={this.state.dates} handleDates={this.handleDates} toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
+              <Results path={this.setRoutePath} dates={this.state.dates} handleDates={this.handleDates} toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
             </div>
           }/>
           <Route path="/package-details/:id"
