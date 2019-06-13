@@ -11,7 +11,7 @@ import UserViewProfile from './user-view-profile';
 import EditProfile from './user-edit-profile';
 import SignUp from './sign-up';
 import CreatePackage from './createPackage';
-
+import AboutUs from './about-us';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -62,8 +62,8 @@ class App extends Component {
   edit(user) {
     this.setState({ user }, () => this.props.history.push({
       pathname: '/user-profile/' + user.email,
-      state: {user}
-  }));
+      state: { user }
+    }));
   }
 
   handleSearch(location, tags, dates) {
@@ -72,17 +72,16 @@ class App extends Component {
         tags: tags
 
       })
-      return
+      
     }
     else if (!location.name && !tags){
       
     }
     else if (!tags && !dates){
       this.setState({
-        location:location
-      })
-    }
-    else {
+        location: location
+      });
+    } else {
 
       this.setState({
         location: location,
@@ -126,7 +125,6 @@ class App extends Component {
 
           <Route exact path="/user-profile/:email"
             render={props => <div><UserProfile user={this.state.user} {...props} isAuthed={true}/>
-
             </div>}
           />
 
@@ -146,6 +144,10 @@ class App extends Component {
 
           <Route path="/create-package"
             render={props => <CreatePackage packages={this.state.user}{...props} isAuthed={true}/>}
+          />
+
+          <Route path="/about-us"
+            render={props => <AboutUs {...props} />}
           />
 
         </Switch>
