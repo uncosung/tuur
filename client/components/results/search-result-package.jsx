@@ -150,6 +150,7 @@ class SearchPackages extends Component {
       })
     }
   }
+}
 
   filterDates(tagArray) {
     const endDate = new Date(this.props.dates.end);

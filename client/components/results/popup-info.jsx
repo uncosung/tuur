@@ -5,10 +5,11 @@ class CityInfo extends PureComponent {
 
   render() {
     const { info } = this.props;
-    const displayName = `${info.title}, ${info.location}`;
+    const displayName = info.title;
+    const displayLocation = info.location;
 
-    return (
-      <div onClick={() => {
+    return (  
+      <div style={{ width: '240px', fontFamily: 'Roboto' }} onClick={() => {
         this.props.history.push({
           pathname: '/package-details/ '+info.id,
           state: {
@@ -18,10 +19,15 @@ class CityInfo extends PureComponent {
       }} 
       style={{ width: '240px', fontFamily: 'Roboto' }}
       >
-        <div>
+        <div style={{ fontSize: '20px', textAlign: 'center' }}>
+         <img style={{ width: '100%' }} src={info.mainImage} />
+         <div>
           {displayName}
+         </div>
+         <div style={{ fontSize: '15px', textAlign: 'center' }}>
+          {displayLocation}
+         </div>
         </div>
-        <img width={200} src={info.mainImage} />
       </div>
     );
   }

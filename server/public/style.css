@@ -1,3 +1,18 @@
 body {
     margin: 0
   }
+.mapboxgl-popup-close-button {
+  font-size: 70px;
+  color: white;
+  text-shadow: 2px 2px gray;
+}
+
+.mapboxgl-popup-close-button > div {
+  font-family: Roboto;
+  font-size: 21px;
+  width: 100%;
+}
+
+.mapboxgl-popup-close-button img{
+  width: 100%;
+}
