@@ -42,7 +42,8 @@ class SearchResultGuide extends Component {
       guideProfile: [],
       fetchResult: [],
       fetchCoordinates: [],
-      filteredGuides: []
+      filteredGuides: [],
+      isLoading: true
     };
     this.fetchProfiles = this.fetchProfiles.bind(this);
     this.fetchLocation = this.fetchLocation.bind(this);
@@ -56,7 +57,7 @@ class SearchResultGuide extends Component {
   fetchProfiles() {
     fetch('/api/search.php')
       .then(res => res.json())
-      .then(search => this.setState({ guideProfile: search }, this.fetchLocation));
+      .then(search => this.setState({ guideProfile: search, isLoading: true }, this.fetchLocation));
   }
   fetchLocation() {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
@@ -95,28 +96,37 @@ class SearchResultGuide extends Component {
       }
     }
     this.setState({
-      filteredGuides: filterGuides
+      filteredGuides: filterGuides,
+      isLoading: false
     });
   }
   render() {
+    debugger;
     const { classes } = this.props;
     const profile = this.state.filteredGuides.map(profile => {
       return <SearchResultGuideItem profile={profile.guide} key={profile.guide.id} />;
     });
-    return (
-      <>
-        <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h5">
-          Meet the Tuur Guides
-          </Typography>
-        </Container>
-        <div className={classes.root}>
-          <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-            { this.state.filteredGuides.length === 0 ? <Typography variant="subtitle1">There are no guides that match the search criteria</Typography> : profile }
-          </GridList>
-        </div>
-      </>
-    );
+    if (this.state.isLoading === true){
+      return(
+        <div></div>
+      )
+    }
+    else {
+      return (
+        <>
+          <Container className={classes.marginBottom} >
+            <Typography className={classes.marginTop} variant="h5">
+            Meet the Tuur Guides
+            </Typography>
+          </Container>
+          <div className={classes.root}>
+            <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
+              { this.state.filteredGuides.length === 0 ? <Typography variant="subtitle1">There are no guides that match the search criteria</Typography> : profile }
+            </GridList>
+          </div>
+        </>
+      );
+    }
   }
 
 }
