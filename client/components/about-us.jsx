@@ -151,7 +151,7 @@ function AboutUs(props) {
             <Grid item xs={4}>
               <CardMedia
                 className={classes.cover}
-                image='../images/kev.jpg'
+                image='../images/kev.png'
               />
             </Grid>
             <Grid item xs={7}>

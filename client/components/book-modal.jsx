@@ -123,7 +123,7 @@ function SimpleModal(props) {
               { props.item.location }
             </Typography>
             <Typography className={classes.marginBottom} variant="subtitle1" id="simple-modal-description">
-            Booked for the following dates:
+            {/* Booked for the following dates: */}
             </Typography>
             <Button type="button" className={classes.margin} fullWidth variant="contained" color="primary" onClick={handleClose}>
               <Typography variant="body1" gutterBottom>Close</Typography>

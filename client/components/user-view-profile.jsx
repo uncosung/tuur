@@ -40,7 +40,8 @@ class UserViewProfile extends Component {
       location: '',
       image: '',
       isGuide: undefined,
-      email: ''
+      email: '',
+      bio: ''
     };
   }
 
@@ -54,7 +55,8 @@ class UserViewProfile extends Component {
           location: response.location,
           image: response.image,
           isGuide: response.isGuide,
-          email
+          email: response.email,
+          bio: response.bio
         });
       });
   }
