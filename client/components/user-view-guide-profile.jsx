@@ -108,7 +108,7 @@ class GuidePackages extends Component {
         
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
-            Packages
+            Created Packages
           </Typography>
         </Container>
         <div className={classes.root}>
