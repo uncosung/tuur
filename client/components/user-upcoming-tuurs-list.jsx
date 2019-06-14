@@ -135,7 +135,7 @@ class UpComingTuursList extends Component {
             ? <>
             <Container className={classes.marginBottom} >
               <Typography className={classes.marginTop} variant="h5">
-                Packages
+                Created Packages
               </Typography>
             </Container>
             <div className={classes.root} style={{ paddingBottom: '80px' }}>
