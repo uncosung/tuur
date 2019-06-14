@@ -186,31 +186,28 @@ class SearchPackages extends Component {
 
     if (begDateMonth === endDateMonth && begDateDay === endDateDay) {
       availableTuur = this.checkAvailability(tagArray, begDateYear, begDateMonth, begDateDay);
-      if (availableTuur) {
-        availablePackage.push(availableTuur);
-      }
     }
-
     this.setState({
-      filteredTuurs: availablePackage,
+      filteredTuurs: availableTuur,
       isLoading: false
     });
   }
 
   checkAvailability(tagArray, year, month, day) {
+    const returnArray = [];
     for (let i = 0; i < tagArray.length; i++) {
       let parseDate = JSON.parse(tagArray[i].tuur.dates);
-
       for (var value of parseDate) {
         const packageDate = new Date(value);
         const packageYear = packageDate.getFullYear();
         const packageMonth = packageDate.getMonth();
         const packageDay = packageDate.getDate();
         if (packageYear === year && packageMonth === month && packageDay === day) {
-          return tagArray[i];
+          returnArray.push(tagArray[i]);
         }
       }
     }
+    return returnArray
 
   }
 
