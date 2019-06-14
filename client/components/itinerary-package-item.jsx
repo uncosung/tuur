@@ -23,7 +23,8 @@ const theme = createMuiTheme({
 
 const styles = theme => ({
   card: {
-    maxWidth: 400
+    maxWidth: 400,
+    marginBottom: '10px'
   },
   media: {
     height: 0,
@@ -96,7 +97,7 @@ class ItineraryItem extends Component {
               {description}
             </Typography>
           </CardContent>
-          <CardActions className={classes.detail} style={{ paddingLeft: '54%' }}>
+          <CardActions className={classes.detail} style={{ paddingLeft: '52%' }}>
             <ThemeProvider theme={theme}>
               <Typography className={classes.detail} variant="button" color="primary" align="right">
                 More detail
