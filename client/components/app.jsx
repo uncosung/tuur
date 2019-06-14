@@ -36,15 +36,12 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(' updated path routing' , prevProps, prevState );
-    console.log( 'update state', this.state.path)
     if (this.state.path !== prevState.path || this.state.tags !== prevState.tags) {
       this.props.history.push(this.state.path);
     }
   }
 
   setRoutePath(path) {
-    // console.log('setting path', this.state);
     this.setState({
       path: path
     });

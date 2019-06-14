@@ -95,7 +95,7 @@ function AboutUs(props) {
             <Grid item xs={4}>
               <CardMedia
                 className={classes.cover}
-                image="https://files.slack.com/files-pri/T1EHQUJ8J-FKCAG755X/image-1__1_.jpg"
+                image="https://i.imgur.com/CsqrQ0Z.jpg"
               />
             </Grid>
             <Grid item xs={7}>

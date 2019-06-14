@@ -81,7 +81,6 @@ class UserViewProfile extends Component {
   render() {
     const { classes } = this.props;
     if (!this.state) return null;
-    console.log(this.state, 'moo');
     return (
       <>
       <Container className={classes.marginBottom} >

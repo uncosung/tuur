@@ -66,7 +66,7 @@ class Itinerary extends Component {
 
     fetch('/api/loginStatus.php')
       .then(res => res.json())
-      .then(data => this.setState({ auth: data, loggedIn: data.loggedIn }, () => console.log(data)));
+      .then(data => this.setState({ auth: data, loggedIn: data.loggedIn }));
 
     fetch('/api/booking.php?email')
       .then(res => res.json())

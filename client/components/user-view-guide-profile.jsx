@@ -86,10 +86,6 @@ class GuidePackages extends Component {
     };
   }
 
-  componentDidMount(){
-    console.log( 'compoent did mount' , this.props );
-  }
-  
   componentDidUpdate(){
     if ( !this.state.packages.length && !this.state.userEmail ){
       fetch('/api/guidePackages.php?email=' + this.props.guideInfo.email )
