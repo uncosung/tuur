@@ -121,8 +121,7 @@ function SimpleModal(props) {
         <Button onClick={ props.dates.length ? handleOpen : null} type="button" className={classes.margin} fullWidth variant="contained" color="primary" >
           <Typography variant="body1" gutterBottom>Book</Typography>
         </Button>
-        {/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
-        {/* <Button onClick={handleOpen}>Open Modal</Button> */}
+
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
