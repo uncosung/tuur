@@ -46,9 +46,8 @@ const styles = theme => ({
     outline: 'none'
   },
   calender: {
-
-    fontSize: '18px',
-    fontWeight: 'bolder'
+    fontWeight: 'bolder',
+    marginBottom: theme.spacing(3)
   }
 });
 
