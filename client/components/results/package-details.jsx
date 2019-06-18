@@ -89,6 +89,9 @@ const styles = theme => ({
   cover: {
     width: '100%',
     height: '100%'
+  },
+  link: {
+    color: 'inherit'
   }
 });
 
@@ -278,7 +281,7 @@ class PackageDetails extends Component {
           <CardContent>
             <Typography >
               <LocationOn /> 
-              <a href={`https://maps.google.com/?q=${this.props.location.state.item.location}`}>
+              <a className={classes.link} href={`https://maps.google.com/?q=${this.props.location.state.item.location}`}>
                 { this.props.location.state.item.location }
               </a>
             </Typography>
