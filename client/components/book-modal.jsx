@@ -22,7 +22,7 @@ function getModalStyle() {
     top: `${top}%`,
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
-    height: '55%'
+    height: '70%'
   };
 }
 
@@ -97,6 +97,24 @@ function SimpleModal(props) {
   };
 
   const classes = useStyles();
+
+  const bookingDates = () => {
+    const dates = props.dates;
+    let datesArray = '';
+    for ( let index = 0; index < dates.length; index++ ){
+      const yyyy = dates[index].getFullYear();
+      const mm = dates[index].getMonth();
+      const dd = dates[index].getDate();
+      const day = String(dates[index]).slice( 0 , 3 );
+      if ( index ){
+        datesArray += `, ${day} ${mm}-${dd}-${yyyy}`
+      } else {
+        datesArray += `${day} ${mm}-${dd}-${yyyy}`
+      }
+    }
+    return datesArray;
+  }
+
   return (
     <div>
       <ThemeProvider theme={theme}>
@@ -117,13 +135,21 @@ function SimpleModal(props) {
             </Typography>
             <img src={props.item.mainImage} className={classes.marginBottom} style={{ width: '100%', height: '200px' }} alt={props.item.title}/>
             <Typography variant="h6" id="simple-modal-description">
+              Your booking has been confirmed!
+              Product detail below:
+              <br/>
+              <br/>
+            </Typography>
+            <Typography variant="h6" id="simple-modal-description">
               { props.item.title }
             </Typography>
             <Typography variant="subtitle1" id="simple-modal-description">
               { props.item.location }
             </Typography>
             <Typography className={classes.marginBottom} variant="subtitle1" id="simple-modal-description">
-            {/* Booked for the following dates: */}
+              Booked for the following dates: 
+              <br/>
+              { bookingDates() }
             </Typography>
             <Button type="button" className={classes.margin} fullWidth variant="contained" color="primary" onClick={handleClose}>
               <Typography variant="body1" gutterBottom>Close</Typography>
@@ -150,7 +176,7 @@ function SimpleModal(props) {
                 <Button className={classes.btnColor} key="undo" style={{ textDecorationLine: 'underline' }} size="medium" component={Link} to={'/login'}>
               Log in
                 </Button>
-             to book ✨</Typography>
+              to book ✨</Typography>
             }
             action={
               <IconButton

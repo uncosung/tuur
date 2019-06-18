@@ -128,9 +128,6 @@ class DatePicker extends Component {
           <Grid item xs={7} >
             {this.props.unavailableDates.disabledList
               ? <div>
-                {/* <Button onClick={this.handleBooking} type="button" className={classes.margin} fullWidth variant="contained" color="primary" >
-                  <Typography variant="body1" gutterBottom>Book</Typography>
-                </Button> */}
                 <SimpleModal item={item } booking={ this.handleBooking } dates={ this.state.dates } loggedIn={this.props.item.package.status} />
               </div>
               : <Button onClick={this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">

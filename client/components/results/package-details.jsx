@@ -277,7 +277,10 @@ class PackageDetails extends Component {
           />
           <CardContent>
             <Typography >
-              <LocationOn /> { this.props.location.state.item.location }
+              <LocationOn /> 
+              <a href={`https://maps.google.com/?q=${this.props.location.state.item.location}`}>
+                { this.props.location.state.item.location }
+              </a>
             </Typography>
           </CardContent>
           <CardContent>
