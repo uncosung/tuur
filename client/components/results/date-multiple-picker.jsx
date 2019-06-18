@@ -44,6 +44,11 @@ const styles = theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(4),
     outline: 'none'
+  },
+  calender: {
+
+    fontSize: '18px',
+    fontWeight: 'bolder'
   }
 });
 
@@ -121,14 +126,15 @@ class DatePicker extends Component {
           minDate={new Date(this.nextDay())}
           maxDate={this.props.unavailableDates.maxDate}
           disabledDates={(this.props.unavailableDates) ? this.props.unavailableDates.disabledList : null}
-          className={classes.marginBottom}
-        />
+          className={classes.calender}
 
+          />
+    
         <Grid className={classes.marginLeft} justify="center" alignItems="center" container>
           <Grid item xs={7} >
             {this.props.unavailableDates.disabledList
               ? <div>
-                <SimpleModal item={item } booking={ this.handleBooking } dates={ this.state.dates } loggedIn={this.props.item.package.status} />
+                <SimpleModal item={item} booking={this.handleBooking} dates={this.state.dates} loggedIn={this.props.item.package.status} />
               </div>
               : <Button onClick={this.handleSubmit} type="button" className={classes.margin} fullWidth variant="contained" color="primary">
                 <Typography variant="body1" gutterBottom>Select Dates</Typography>
