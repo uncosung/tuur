@@ -145,7 +145,8 @@ class Search extends Component {
     }
     return (
       <div style={{ fontSize: 0 }}>
-        <img style={imgStyle} src="https://i.imgur.com/AU3rU4N.png" alt="logo"/>
+        {/* <img style={imgStyle} src="https://i.imgur.com/AU3rU4N.png" alt="logo"/> */}
+        <img style={imgStyle} src="images/logo.png" alt="logo"/>
         <div className={classes.aboutUs} component='a' onClick={this.aboutUs} ><MoreVert style={{ fontSize: '30px' }} /></div>
         <Card style={{ maxWidth: '100%' }} mt={0} className={classes.card}>
           <CardActionArea>
