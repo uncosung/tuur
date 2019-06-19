@@ -70,7 +70,8 @@ class UpComingTuursList extends Component {
     this.state = {
       userEmail: '',
       packages: [],
-      booked: []
+      booked: [],
+      updated: false
     };
   }
 
@@ -88,9 +89,8 @@ class UpComingTuursList extends Component {
 
   getCreatedPackages() {
     fetch('/api/package.php?email')
-
       .then(res => res.json())
-      .then(packages => this.setState({ packages }));
+      .then(packages => this.setState({ packages, updated: true }));
   }
 
   componentDidMount() {
@@ -100,7 +100,7 @@ class UpComingTuursList extends Component {
   }
 
   componentDidUpdate() {
-    if (!this.state.packages.length && !this.state.booked.length) {
+    if (!this.state.packages.length && !this.state.booked.length || this.state.updated) {
       this.getBooked();
       this.getCreatedPackages();
     }
