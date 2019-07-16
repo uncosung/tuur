@@ -61,7 +61,7 @@ class LogIn extends React.Component {
       .then(res => res.json())
       .then(data => {
         if (data.auth) {
-          this.props.logIn(data);
+          this.props.logIn( data );
         }
       }
       );
@@ -69,6 +69,8 @@ class LogIn extends React.Component {
   
   render() {
     const { classes } = this.props;
+    console.log( this.state.auth );
+    console.log( this.state );
     if (this.state.auth) {
       return <Redirect to={{
         pathname: '/user-profile/' + this.state.email,

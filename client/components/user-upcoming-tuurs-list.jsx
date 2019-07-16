@@ -79,11 +79,11 @@ class UpComingTuursList extends Component {
     if (this.state.isGuide) {
       fetch('/api/guideBooked.php')
         .then(res => res.json())
-        .then(booked => this.setState({ booked }));
+        .then(booked => this.setState({ booked , updated: true}));
     } else {
       fetch('/api/tuuristBooked.php')
         .then(res => res.json())
-        .then(booked => this.setState({ booked }));
+        .then(booked => this.setState({ booked, updated: true}));
     }
   }
 
@@ -94,18 +94,19 @@ class UpComingTuursList extends Component {
   }
 
   componentDidMount() {
-    this.getBooked();
-    this.getCreatedPackages();
-
-  }
-
-  componentDidUpdate() {
-    if (!this.state.packages.length && !this.state.booked.length || this.state.updated) {
+    if ( !this.state.updated ){
       this.getBooked();
       this.getCreatedPackages();
     }
 
   }
+
+  // componentDidUpdate() {
+  //   if (!this.state.packages.length && !this.state.booked.length || this.state.updated) {
+  //     this.getBooked();
+  //     this.getCreatedPackages();
+  //   }
+  // }
 
   render() {
     const { classes } = this.props;

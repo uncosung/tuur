@@ -20,6 +20,7 @@ class GuidePackages extends Component {
   }
   
   componentDidUpdate(){
+    console.log( this.props, 'props', this.state );
     if ( !this.state.packages.length && !this.state.userEmail ){
       fetch('/api/guidePackages.php?email=' + this.props.guideInfo.email )
           .then(res => res.json())
@@ -28,13 +29,14 @@ class GuidePackages extends Component {
   }
   
   render() {
+    console.log( this.state );
     const { classes } = this.props;
     const packageMap = this.state.packages.map((packageItem, id) => {
       return <GuidePackageList key={id} package={packageItem} />;
     });
+
     return (
       <>
-        
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
             Created Packages

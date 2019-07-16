@@ -9,6 +9,7 @@ import Search from './search';
 import PackageDetails from './results/package-details';
 import UserViewProfile from './user-view-profile';
 import EditProfile from './user-edit-profile';
+import GuidePackages from './user-view-guide-profile';
 import SignUp from './sign-up';
 import CreatePackage from './createPackage';
 import AboutUs from './about-us';
@@ -47,11 +48,10 @@ class App extends Component {
     });
   }
 
-  logIn(user) {
+  logIn( user ) {
     this.setState({ user }, () => {
       this.props.history.push(
-
-        { pathname: '/user-profile/' + user.email,
+        { pathname: '/user-profile/' + user.id,
           state: { user }
         });
     }
@@ -121,22 +121,21 @@ class App extends Component {
                 <SignUp logIn={this.logIn}/>
               </div>
           }/>
-
-          <Route exact path="/user-view-profile/:email"
+          
+          {/* PATH TO VIEW GUIDE PROFILE FROM RESULTS PAGE */}
+          <Route exact path="/user-view-profile/:id"
             render={props => 
               <div><UserViewProfile {...props} isAuthed={true}/>
                 <BottomNav path={this.setRoutePath} user={this.state.user}/>
               </div>
           }/>
-
-          <Route exact path="/user-profile/:email"
+          <Route exact path="/user-profile/:id"
             render={props => 
               <div>
                 <UserProfile user={this.state.user} {...props} isAuthed={true}/>
               </div>
           }/>
-
-          <Route exact path="/edit-profile/:email"
+          <Route exact path="/edit-profile/:id"
             render={props => 
               <div>
                 <EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>
@@ -152,7 +151,7 @@ class App extends Component {
           <Route path="/package-details/:id"
             render={props => 
             <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>
-            }/>
+          }/>
 
           <Route path="/create-package"
             render={props => 

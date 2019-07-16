@@ -46,8 +46,9 @@ class UserViewProfile extends Component {
   }
 
   componentDidMount() {
-    const email = this.props.match.params.email;
-    fetch('/api/profile.php?email=' + email)
+    console.log( this.props.match.params );
+    const id = this.props.match.params.id;
+    fetch('/api/profile.php?id=' + id)
       .then(res => res.json())
       .then(response => {
         this.setState({
@@ -64,7 +65,7 @@ class UserViewProfile extends Component {
   componentDidUpdate() {
     if (!this.state.name) {
       const email = this.props.match.params.email;
-      fetch('/api/profile.php?email=' + email)
+      fetch('/api/profile.php?id=' + id)
         .then(res => res.json())
         .then(response => {
           this.setState({
@@ -79,6 +80,7 @@ class UserViewProfile extends Component {
   }
 
   render() {
+    console.log( this.state );
     const { classes } = this.props;
     if (!this.state) return null;
     return (

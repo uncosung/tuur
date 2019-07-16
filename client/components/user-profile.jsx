@@ -47,10 +47,11 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.user || this.props.match.params.email !== this.props.user.email) {
-      fetch('/api/profile.php?email=' + this.props.match.params.email)
+    if ( !this.props.user ) {
+      fetch('/api/profile.php?id=' + this.props.match.params.id)
         .then(res => res.json())
         .then(response => {
+          console.log( response )
           this.setState({ user: response });
         });
     } else {
@@ -61,6 +62,7 @@ class UserProfile extends Component {
   // COMPONENTDIDUPDATE?
 
   render() {
+    console.log( this.state );
     const { classes } = this.props;
     if (!this.state.user) {
       return null;
@@ -85,7 +87,7 @@ class UserProfile extends Component {
         </Grid>
         <Grid item xs={6}>
           <ThemeProvider theme={theme}>
-            <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.user.email} >
+            <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.user.id} >
               <Typography variant="button">Edit profile</Typography>
             </Button>
             { this.state.user.isGuide
