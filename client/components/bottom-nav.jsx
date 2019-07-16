@@ -26,11 +26,12 @@ class BottomNav extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick(event) {
+    console.log( this.props.user )
     let path = null;
     if (!this.props.user) {
       path = '/login';
     } else {
-      path = '/user-profile/' + this.props.user.email;
+      path = '/user-profile/' + this.props.user.id;
     }
     switch (event.currentTarget.id) {
       case 'home':
