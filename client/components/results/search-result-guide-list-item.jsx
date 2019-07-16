@@ -28,7 +28,7 @@ class SearchResultGuideItem extends Component {
     const { classes } = this.props;
     return (
       <>
-          <GridListTile className={classes.font} component={Link} style={{ textDecoration: 'none' }} to={'/user-view-profile/' + this.props.profile.email}>
+          <GridListTile className={classes.font} component={Link} style={{ textDecoration: 'none' }} to={'/user-view-guide-profile/' + this.props.profile.email}>
             <img className={classes.tile} src={this.props.profile.image} alt={this.props.profile.name} />
             <GridListTileBar
               title={this.props.profile.name}
