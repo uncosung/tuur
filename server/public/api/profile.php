@@ -38,11 +38,15 @@ elseif ($method === 'GET'){
         $query = "SELECT `profile`.`id`, `profile`.`name`, `profile`.`email`, `profile`.`location`, `profile`.`image`, `profile`.`bio`, `profile`.`isGuide`
         FROM `profile` WHERE `profile`.`email` = '{$login}'";
     } 
-
     if ( isset($_GET['id'])){
         $id = $_GET['id'];
         $query = "SELECT `profile`.`id`, `profile`.`name`, `profile`.`email`, `profile`.`location`, `profile`.`image`, `profile`.`bio`, `profile`.`isGuide`
         FROM `profile` WHERE `profile`.`id` = '{$id}'";
+    }
+    if ( isset($_GET['email'])){
+        $email = $_GET['email'];
+        $query = "SELECT `profile`.`id`, `profile`.`name`, `profile`.`email`, `profile`.`location`, `profile`.`image`, `profile`.`bio`, `profile`.`isGuide`
+        FROM `profile` WHERE `profile`.`email` = '{$email}'";
     }
 
     // if ( isset( $login ) && empty( $email )){

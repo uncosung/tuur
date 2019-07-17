@@ -26,7 +26,6 @@ class BottomNav extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick(event) {
-    console.log( this.props.user )
     let path = null;
     if (!this.props.user) {
       path = '/login';

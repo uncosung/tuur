@@ -84,7 +84,6 @@ class EditProfile extends Component {
         }
       });
     } else {
-      console.log( this.props );
       const { id, name, email, location, bio, image } = this.state;
       fetch('/api/profile.php?id=' + this.props.user.id, {
         method: 'PATCH',

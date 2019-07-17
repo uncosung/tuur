@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import SearchPackageItem from './search-result-package-item';
 import TOKEN from './mapbox-token';
+import queryString from'query-string';
 
 const styles = theme => ({
   marginTop: {
@@ -64,9 +65,23 @@ class SearchPackages extends Component {
 
   renderPackage() {
     const packages = this.state.filteredTuurs.map((item, id) => {
-      return <SearchPackageItem key={id} item={ item.tuur } />;
+      return <SearchPackageItem key={id} item={item.tuur} />;
     });
     return packages;
+  }
+
+  fetchLocation(packages) {
+    const locationQueryString = queryString.parse(this.props.history.location.search);
+    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${locationQueryString[location]}.json?access_token=${TOKEN}`)
+      .then(res => res.json())
+      .then(fetchCoordinates => {
+        this.mapTuurs(fetchCoordinates, packages)
+      });
+  }
+
+  mapTuurs(fetchCoordinates, packages) {
+    let mapArray = packages.map(this.getTuurLocationData);
+    Promise.all(mapArray).then(tuurCoordinates => this.filterTuurs(fetchCoordinates, packages, tuurCoordinates));
   }
 
   async getTuurLocationData(tuur) {
@@ -78,28 +93,19 @@ class SearchPackages extends Component {
     };
   }
 
-  mapTuurs(fetchCoordinates, packages) {
-    let mapArray = packages.map(this.getTuurLocationData);
-
-    Promise.all(mapArray).then(tuurCoordinates => this.filterTuurs(fetchCoordinates, packages, tuurCoordinates));
-  }
-  fetchLocation(packages) {
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
-      .then(res => res.json())
-      .then(fetchCoordinates => this.mapTuurs(fetchCoordinates, packages));
-  }
 
   filterTuurs(fetchCoordinates, packages, tuurCoordinates) {
     let filterTuurs = [];
     let tooFar = [];
+    const locationQueryString = queryString.parse(this.props.history.location.search);
+    const coordinates = locationQueryString.coordinates.split(' ');
     for (let i = 0; i < tuurCoordinates.length; i++) {
-      if (tuurCoordinates[i].coord[0] < this.props.location.coordinates[0] - 1 || tuurCoordinates[i].coord[0] > this.props.location.coordinates[0] + 1 || tuurCoordinates[i].coord[1] < this.props.location.coordinates[1] - 0.2 || tuurCoordinates[i].coord[1] > this.props.location.coordinates[1] + 0.2) {
+      if (tuurCoordinates[i].coord[0] < parseFloat(coordinates[0]) - 1 || tuurCoordinates[i].coord[0] > parseFloat(coordinates[0]) + 1 || tuurCoordinates[i].coord[1] < parseFloat(coordinates[1]) - 0.2 || tuurCoordinates[i].coord[1] > parseFloat(coordinates[1]) + 0.2) {
         tooFar = [...tooFar, tuurCoordinates[i]];
       } else {
         filterTuurs = [...filterTuurs, tuurCoordinates[i]];
       }
     }
-
     this.props.tags.length === 0 && this.props.dates.start !== null ? this.filterDates(filterTuurs) : this.filterTags(filterTuurs);
   }
 
@@ -208,7 +214,6 @@ class SearchPackages extends Component {
       }
     }
     return returnArray
-
   }
 
   nextDay(month, day) {
@@ -250,14 +255,14 @@ class SearchPackages extends Component {
     } else {
       return (
         <>
-            <Container className={classes.marginBottom} >
-              <Typography className={classes.marginTop} variant="h5">
-                Tuurs
+          <Container className={classes.marginBottom} >
+            <Typography className={classes.marginTop} variant="h5">
+              Tuurs
               </Typography>
-            </Container>
-            <Container style={{ paddingBottom: '80px' }}>
-              { this.state.filteredTuurs.length === 0 ? <Typography variant="subtitle1">There are no tuurs that match the search criteria</Typography> : this.renderPackage() }
-            </Container>
+          </Container>
+          <Container style={{ paddingBottom: '80px' }}>
+            {this.state.filteredTuurs.length === 0 ? <Typography variant="subtitle1">There are no tuurs that match the search criteria</Typography> : this.renderPackage()}
+          </Container>
         </>
       );
     }

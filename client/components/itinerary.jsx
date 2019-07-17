@@ -63,7 +63,6 @@ class Itinerary extends Component {
   }
 
   componentDidMount() {
-
     fetch('/api/loginStatus.php')
       .then(res => res.json())
       .then(data => this.setState({ auth: data, loggedIn: data.loggedIn }));

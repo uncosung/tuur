@@ -138,6 +138,7 @@ class Mapbox extends Component {
     });
 
   }
+  
   filterDates() {
     debugger;
     const endDate = new Date(this.props.dates.end);

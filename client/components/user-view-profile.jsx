@@ -46,7 +46,6 @@ class UserViewProfile extends Component {
   }
 
   componentDidMount() {
-    console.log( this.props.match.params );
     const id = this.props.match.params.id;
     fetch('/api/profile.php?id=' + id)
       .then(res => res.json())
@@ -80,13 +79,12 @@ class UserViewProfile extends Component {
   }
 
   render() {
-    console.log( this.state );
+    console.log( this.props );
     const { classes } = this.props;
     if (!this.state) return null;
     return (
       <>
       <Container className={classes.marginBottom} >
-
         <Grid item xs={2} className={classes.paddingRight} name='back' component={Link} to={'/results/'}>
           <KeyboardArrowLeft className={classes.fontSize} />
         </Grid>
