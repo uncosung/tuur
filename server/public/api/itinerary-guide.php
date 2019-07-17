@@ -9,6 +9,7 @@ $item = file_get_contents('php://input');
 if ( isset( $_SESSION['isGuide']) || isset($_SESSION['userEmail']) ){
   $guide = $_SESSION['isGuide'];
   $email = $_SESSION['userEmail'];
+  // var_dump( $email );
   if ( $method === 'GET'){
     if ( $guide ){
       $query = "SELECT b.packageId, GROUP_CONCAT( b.dates ) AS dates, b.tuuristEmail, b.tuuristId, p.title, p.description, p.tags, p.location, p.mainImage,p.images 
@@ -16,6 +17,7 @@ if ( isset( $_SESSION['isGuide']) || isset($_SESSION['userEmail']) ){
       JOIN `package` AS p ON p.id = b.packageId 
       WHERE p.profileEmail = '{$email}'
       GROUP BY b.packageId, b.tuuristId, b.tuuristEmail";
+      var_dump( $query );
       $result = mysqli_query( $conn, $query );
       $output = [];
       while ( $row = mysqli_fetch_assoc( $result )){

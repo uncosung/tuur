@@ -51,7 +51,6 @@ class UserProfile extends Component {
       fetch('/api/profile.php?id=' + this.props.match.params.id)
         .then(res => res.json())
         .then(response => {
-          console.log( response )
           this.setState({ user: response });
         });
     } else {
@@ -62,7 +61,6 @@ class UserProfile extends Component {
   // COMPONENTDIDUPDATE?
 
   render() {
-    console.log( this.state );
     const { classes } = this.props;
     if (!this.state.user) {
       return null;

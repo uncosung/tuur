@@ -12,6 +12,8 @@ import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import MoreVert from '@material-ui/icons/MoreVert';
 import { generateKeyPair } from 'crypto';
+import { Route, Switch, withRouter } from 'react-router-dom';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -85,10 +87,15 @@ class Search extends Component {
     this.fetchPackages = this.fetchPackages.bind(this);
     this.aboutUs = this.aboutUs.bind(this);
   }
+
   handleClick() {
     this.props.search(this.state.location);
-    this.props.path('/results');
+    this.props.history.push({
+      pathname: '/results',
+      search: `?location=${this.state.location.name}&coordinates=${this.state.location.coordinates[0]}+${this.state.location.coordinates[1]}`
+    });
   }
+
   handleSelect(result) {
     this.setState({
       location: {
@@ -98,14 +105,17 @@ class Search extends Component {
       }
     });
   }
+
   fetchPackages() {
     fetch('/api/package.php')
       .then(res => res.json())
       .then(response => this.setState({ package: response }));
   }
+
   componentDidMount() {
     this.fetchPackages();
   }
+
   componentDidUpdate(prevProps) {
 
   }
@@ -121,16 +131,15 @@ class Search extends Component {
     const settings = {
       dots: true,
       infinite: true,
-
       slidesToShow: 2,
       slidesToScroll: 1,
       autoplay: true,
       speed: 2000,
       autoplaySpeed: 4000,
-
       cssEase: 'linear',
       adaptiveHeight: true
     };
+
     let packages = '';
     if (this.state.package) {
       packages = this.state.package.map((article, index) => {
@@ -196,4 +205,4 @@ class Search extends Component {
     );
   }
 }
-export default withStyles(styles)(Search);
+export default withRouter(withStyles(styles)(Search));

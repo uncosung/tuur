@@ -256,7 +256,7 @@ class PackageDetails extends Component {
     const { classes } = this.props;
     if (this.state.images) {
       carousel = this.state.images.map((image, id) => {
-        return <CarouselImage key={ id } id={ id } click={ this.changeImage } images={image} />;
+        return <CarouselImage key={id} id={id} click={this.changeImage} images={image} />;
       });
     }
     if (!this.state.item) return null;
@@ -268,65 +268,65 @@ class PackageDetails extends Component {
           </Grid>
           <CardMedia
             className={classes.media}
-            image={ this.state.cardImg }
+            image={this.state.cardImg}
           />
         </Card>
-          <Grid container justify="center" direction="row">
-            { this.state.images ? carousel : null}
-          </Grid>
+        <Grid container justify="center" direction="row">
+          {this.state.images ? carousel : null}
+        </Grid>
         <Card>
           <CardHeader
-            title={ this.props.location.state.item.title }
+            title={this.props.location.state.item.title}
           />
           <CardContent>
             <Typography >
-              <LocationOn /> 
+              <LocationOn />
               <a className={classes.link} href={`https://maps.google.com/?q=${this.props.location.state.item.location}`}>
-                { this.props.location.state.item.location }
+                {this.props.location.state.item.location}
               </a>
             </Typography>
           </CardContent>
           <CardContent>
             <Typography >
-              <Alarm/> Trip duration: { this.props.location.state.item.timeRange }
+              <Alarm /> Trip duration: {this.props.location.state.item.timeRange}
             </Typography>
           </CardContent>
           <CardContent>
             <Typography paragraph>Trip Summary:</Typography>
             <Typography paragraph>
-              { this.props.location.state.item.description }
+              {this.props.location.state.item.description}
             </Typography>
           </CardContent>
           <CardContent>
+            { this.state.package 
+            ? <Grid component={Link} style={{ textDecoration: 'none' }} to={'/user-view-profile/' + this.state.package.id}>
+                <Card className={classes.card}>
+                  <Grid container>
+                    <Grid item xs={5}>
+                      <CardMedia
+                        className={classes.cover}
+                        image={this.state.package ? this.state.package.image : null}
+                      />
+                    </Grid>
+                    <Grid item xs={7}>
+                      <CardContent>
+                        <Typography variant="body1">Meet your Guide</Typography>
+                        <Typography variant="h5">
+                          {this.state.package ? this.state.package.name : null}
+                        </Typography>
+                      </CardContent>
 
-            <Grid component={Link} style={{ textDecoration: 'none' }} to={'/user-view-profile/' + this.props.location.state.item.profileEmail}>
-              <Card className={classes.card}>
-                <Grid container>
-                  <Grid item xs={5}>
-                    <CardMedia
-                      className={classes.cover}
-                      image={ this.state.package ? this.state.package.image : null}
-                    />
+                      <CardContent>
+                        <Typography variant="subtitle1" color="textSecondary">
+                          {this.state.package ? this.state.package.bio : null}
+                        </Typography>
+                      </CardContent>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={7}>
-                    <CardContent>
-                      <Typography variant="body1">
-                    Meet your Guide
-                      </Typography>
-                      <Typography variant="h5">
-                        {this.state.package ? this.state.package.name : null }
-                      </Typography>
-                    </CardContent>
-
-                    <CardContent>
-                      <Typography variant="subtitle1" color="textSecondary">
-                        {this.state.package ? this.state.package.bio : null}
-                      </Typography>
-                    </CardContent>
-                  </Grid>
-                </Grid>
-              </Card>
-            </Grid>
+                </Card>
+              </Grid>
+            : null
+          }
           </CardContent>
 
           <Grid justify="center" container style={{ marginBottom: '100px' }}>
@@ -346,7 +346,7 @@ class PackageDetails extends Component {
                 onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker item={this.state} booking={ this.bookHandler } dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                  <DatePicker item={this.state} booking={this.bookHandler} dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={this.unavailableDates()} />
                 </Grid>
               </Modal>
             </Grid>
