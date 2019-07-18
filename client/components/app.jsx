@@ -13,6 +13,7 @@ import GuidePackages from './user-view-guide-profile';
 import SignUp from './sign-up';
 import CreatePackage from './createPackage';
 import AboutUs from './about-us';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -69,9 +70,7 @@ class App extends Component {
     if (!location.name && tags) {
       this.setState({
         tags: tags
-
       })
-      
     }
     else if (!location.name && !tags){
       
@@ -81,7 +80,6 @@ class App extends Component {
         location: location
       });
     } else {
-
       this.setState({
         location: location,
         tags: tags,
@@ -99,67 +97,67 @@ class App extends Component {
         <Switch>
           <Route exact path="/login"
             render={props =>
-              <div>
-                <LogIn {...props} logIn={this.logIn} isAuthed={true}/>
-              </div>
+              <LogIn {...props} logIn={this.logIn} isAuthed={true}/>
           }/>
 
           <Route exact path="/" render={props =>
-              <div>
-                <Search search={this.handleSearch} path={this.setRoutePath} />
-              </div>
+            <Search search={this.handleSearch} path={this.setRoutePath} />
           }/>
 
           <Route exact path="/itinerary" render={props =>
-              <div>
-                <Itinerary user={this.state} />
-              </div>
+            <Itinerary user={this.state} />
           }/>
 
           <Route exact path="/sign-up" render={props =>
-              <div>
-                <SignUp logIn={this.logIn}/>
-              </div>
+            <SignUp logIn={this.logIn}/>
           }/>
           
           {/* PATH TO VIEW GUIDE PROFILE FROM RESULTS PAGE */}
           <Route exact path="/user-view-profile/:id"
             render={props => 
-              <div><UserViewProfile {...props} isAuthed={true}/>
+              <div>
+                <UserViewProfile {...props} isAuthed={true}/>
                 <BottomNav path={this.setRoutePath} user={this.state.user}/>
               </div>
           }/>
           <Route exact path="/user-profile/:id"
             render={props => 
-              <div>
-                <UserProfile user={this.state.user} {...props} isAuthed={true}/>
-              </div>
-          }/>
-          <Route exact path="/edit-profile/:id"
-            render={props => 
-              <div>
-                <EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>
-              </div>
+              <UserProfile user={this.state.user} {...props} isAuthed={true}/>
           }/>
 
-          <Route path="/results" render={props =>
-            <div>
-              <Results {...props} path={this.setRoutePath} dates={this.state.dates} handleDates={this.handleDates} toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
-            </div>
+          <Route exact path="/edit-profile/:id"
+            render={props => 
+              <EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>
           }/>
+
+          <Route path="/results" 
+            render={ props => 
+              <Results {...props} 
+              path={this.setRoutePath} 
+              dates={this.state.dates} 
+              handleDates={this.handleDates} 
+              toggleStatus={this.state.toggleStatus} 
+              key={this.state.location.name} 
+              tags={this.state.tags} 
+              location={this.state.location} 
+              search={this.handleSearch}/>
+            }
+          />
 
           <Route path="/package-details/:id"
             render={props => 
-            <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>
+              <PackageDetails {...props} location={ this.state.location } packages={this.state.user} isAuthed={true}/>
           }/>
-
+          
           <Route path="/create-package"
             render={props => 
-            <CreatePackage packages={this.state.user}{...props} isAuthed={true}/>
+              <CreatePackage {...props} packages={this.state.user} isAuthed={true}/>
           }/>
 
           <Route path="/about-us"
-            render={props => <AboutUs {...props} />}
+            render={props => 
+              <AboutUs {...props} />
+            }
           />
 
         </Switch>
