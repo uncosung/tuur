@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import UpComingTuurItem from './user-upcoming-tuurs-list-item';
 import GridList from '@material-ui/core/GridList';
 import GuidePackageList from './user-view-guide-profile-item';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 
@@ -115,4 +115,4 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(GuidePackages);
+export default withRouter(withStyles(styles)(GuidePackages));

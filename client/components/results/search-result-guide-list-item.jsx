@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   tile: {
@@ -28,7 +28,14 @@ class SearchResultGuideItem extends Component {
     const { classes } = this.props;
     return (
       <>
-          <GridListTile className={classes.font} component={Link} style={{ textDecoration: 'none' }} to={'/user-view-profile/' + this.props.profile.id}>
+          <GridListTile 
+            className={classes.font} 
+            component={Link} 
+            style={{ textDecoration: 'none' }} 
+            to={{
+              pathname: '/user-view-profile/' + this.props.profile.id,
+              state: { prevPath: this.props.location }
+            }}>
             <img className={classes.tile} src={this.props.profile.image} alt={this.props.profile.name} />
             <GridListTileBar
               title={this.props.profile.name}
@@ -43,4 +50,4 @@ class SearchResultGuideItem extends Component {
   }
 }
 
-export default withStyles(styles)(SearchResultGuideItem);
+export default withRouter( withStyles(styles)(SearchResultGuideItem));

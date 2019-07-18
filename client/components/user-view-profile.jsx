@@ -6,31 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import GuidePackages from './user-view-guide-profile';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 
-
-const styles = theme => ({
-  marginTop: {
-    marginTop: theme.spacing(3)
-  },
-  avatar: {
-    width: 80,
-    height: 80
-  },
-  marginBottom: {
-    marginBottom: theme.spacing(3)
-  },
-  marginLeft: {
-    marginLeft: theme.spacing(2)
-  },
-  fontSize: {
-    fontSize: '2.5rem'
-  },
-  paddingRight: {
-    paddingRight: 20,
-  }
-});
 
 class UserViewProfile extends Component {
   constructor(props) {
@@ -61,7 +39,7 @@ class UserViewProfile extends Component {
       });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate( nextProps ) {
     if (!this.state.name) {
       const email = this.props.match.params.email;
       fetch('/api/profile.php?id=' + id)
@@ -75,22 +53,24 @@ class UserViewProfile extends Component {
           });
         });
     }
-
   }
 
   render() {
-    console.log( this.props );
+    const prevUrlPathname = this.props.history.location.state.prevPath.pathname;
+    const prevUrlSearch = this.props.history.location.state.prevPath.search
     const { classes } = this.props;
     if (!this.state) return null;
     return (
       <>
       <Container className={classes.marginBottom} >
-        <Grid item xs={2} className={classes.paddingRight} name='back' component={Link} to={'/results/'}>
+        <Grid item xs={2} 
+          className={classes.paddingRight} 
+          name='back' 
+          onClick={this.props.history.goBack}
+        >
           <KeyboardArrowLeft className={classes.fontSize} />
         </Grid>
-
         <Typography className={classes.marginTop} style={{ paddingLeft: '16px' }} variant="h4">
-
           {this.state.name}
         </Typography>
         <Typography className={classes.marginLeft} variant="subtitle1">
@@ -120,4 +100,26 @@ class UserViewProfile extends Component {
   }
 }
 
-export default withStyles(styles)(UserViewProfile);
+const styles = theme => ({
+  marginTop: {
+    marginTop: theme.spacing(3)
+  },
+  avatar: {
+    width: 80,
+    height: 80
+  },
+  marginBottom: {
+    marginBottom: theme.spacing(3)
+  },
+  marginLeft: {
+    marginLeft: theme.spacing(2)
+  },
+  fontSize: {
+    fontSize: '2.5rem'
+  },
+  paddingRight: {
+    paddingRight: 20,
+  }
+});
+
+export default withRouter(withStyles(styles)(UserViewProfile));

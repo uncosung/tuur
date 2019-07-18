@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import SearchPackageItem from './search-result-package-item';
 import TOKEN from './mapbox-token';
 import queryString from'query-string';
+import { Link, withRouter } from 'react-router-dom';
+
 
 const styles = theme => ({
   marginTop: {
@@ -65,7 +67,7 @@ class SearchPackages extends Component {
 
   renderPackage() {
     const packages = this.state.filteredTuurs.map((item, id) => {
-      return <SearchPackageItem key={id} item={item.tuur} />;
+      return <SearchPackageItem key={id} item={item.tuur} searchArea={ this.props.searchArea }/>;
     });
     return packages;
   }
@@ -269,4 +271,4 @@ class SearchPackages extends Component {
   }
 }
 
-export default withStyles(styles)(SearchPackages);
+export default withRouter( withStyles(styles)(SearchPackages));

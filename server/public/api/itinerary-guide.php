@@ -17,7 +17,7 @@ if ( isset( $_SESSION['isGuide']) || isset($_SESSION['userEmail']) ){
       JOIN `package` AS p ON p.id = b.packageId 
       WHERE p.profileEmail = '{$email}'
       GROUP BY b.packageId, b.tuuristId, b.tuuristEmail";
-      var_dump( $query );
+      // var_dump( $query );
       $result = mysqli_query( $conn, $query );
       $output = [];
       while ( $row = mysqli_fetch_assoc( $result )){
