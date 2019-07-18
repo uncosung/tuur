@@ -119,9 +119,11 @@ class Search extends Component {
   componentDidUpdate(prevProps) {
 
   }
+
   aboutUs() {
     this.props.path('/about-us');
   }
+  
   render() {
     const { classes } = this.props;
     const geocoderApiOptions = {
