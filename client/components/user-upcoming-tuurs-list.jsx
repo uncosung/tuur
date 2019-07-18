@@ -139,7 +139,7 @@ class UpComingTuursList extends Component {
                 Created Packages
               </Typography>
             </Container>
-            <div className={classes.root} style={{ paddingBottom: '80px' }}>
+            <div className={classes.root} >
               <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
                 {packageMap}
               </GridList>

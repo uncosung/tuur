@@ -33,6 +33,7 @@ class App extends Component {
     this.handleSearch = this.handleSearch.bind(this);
 
     this.logIn = this.logIn.bind(this);
+    this.logoutHandler = this.logoutHandler.bind(this);
     this.edit = this.edit.bind(this);
 
   }
@@ -57,6 +58,10 @@ class App extends Component {
         });
     }
     );
+  }
+
+  logoutHandler(){
+    this.setState({user: null});
   }
 
   edit(user) {
@@ -122,7 +127,7 @@ class App extends Component {
           }/>
           <Route exact path="/user-profile/:id"
             render={props => 
-              <UserProfile user={this.state.user} {...props} isAuthed={true}/>
+              <UserProfile user={this.state.user} {...props} logout={this.logoutHandler} isAuthed={true}/>
           }/>
 
           <Route exact path="/edit-profile/:id"
