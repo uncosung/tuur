@@ -6,6 +6,8 @@ import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { withStyles } from '@material-ui/core/styles';
 import TuurPin from './tuur-pin';
 import PopupInfo from './popup-info';
+import queryString from'query-string';
+import { Link, withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   mapContainer: {
@@ -19,12 +21,13 @@ const styles = theme => ({
 class Mapbox extends Component {
   constructor(props) {
     super(props);
+    const coordinates = queryString.parse(this.props.history.location.search).coordinates.split(' ');
     this.state = {
       viewport: {
         width: '100%',
         height: '667px',
-        latitude: this.props.location.coordinates[1],
-        longitude: this.props.location.coordinates[0],
+        longitude: parseFloat(coordinates[0]),
+        latitude: parseFloat(coordinates[1]),
         zoom: 12
       },
       searchResultLayer: null,
@@ -36,7 +39,7 @@ class Mapbox extends Component {
       filteredTuurs: [],
       fetchResult: null,
       fetchCoordinates: [],
-      initialCoordinates: [this.props.location.coordinates[0], this.props.location.coordinates[1]],
+      // initialCoordinates: [this.props.location.coordinates[0], this.props.location.coordinates[1]],
       popupInfo: null
 
     };
@@ -51,15 +54,7 @@ class Mapbox extends Component {
   componentDidMount() {
     this.fetchPackages();
   }
-  fetchPackages() {
-    fetch('/api/package.php')
-      .then(res => res.json())
-      .then(tuurs => {
-        this.setState({
-          tuurs: tuurs
-        }, this.fetchLocation);
-      });
-  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.tags.toString() !== this.props.tags.toString()) {
       this.fetchPackages();
@@ -67,22 +62,35 @@ class Mapbox extends Component {
       this.fetchPackages();
     }
   }
-  filterTuurs() {
-    let filterTuurs = [];
-    let tooFar = [];
-    for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
-      if (this.state.fetchCoordinates[i].coord[0] < this.state.viewport.longitude - 1 || this.state.fetchCoordinates[i].coord[0] > this.state.viewport.longitude + 1 || this.state.fetchCoordinates[i].coord[1] < this.state.viewport.latitude - 0.2 || this.state.fetchCoordinates[i].coord[1] > this.state.viewport.latitude + 0.2) {
-        tooFar = [...tooFar, this.state.fetchCoordinates[i]];
-      } else {
-        filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];
-      }
-    }
-    this.setState({
-      filteredTuurs: filterTuurs
-    }, () => {
-      this.filterTags();
-    });
 
+  fetchPackages() {
+    fetch('/api/package.php')
+    .then(res => res.json())
+    .then(tuurs => {
+      this.setState({
+        tuurs: tuurs
+      }, this.fetchLocation);
+    });
+  }
+
+  fetchLocation() {
+    const locationQueryString = queryString.parse(this.props.history.location.search);
+    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${locationQueryString.location}.json?access_token=${TOKEN}`)
+    .then(res => res.json())
+    .then(result => {
+      this.setState({
+        fetchResult: result
+      }, this.mapTuurs);
+    });
+  }
+
+  mapTuurs() {
+    let mapArray = this.state.tuurs.map(this.getTuurLocationData);
+    Promise.all(mapArray).then(tuurCoordinates => {
+      this.setState({
+        fetchCoordinates: tuurCoordinates
+      }, this.filterTuurs);
+    });
   }
 
   async getTuurLocationData(tuur) {
@@ -94,13 +102,22 @@ class Mapbox extends Component {
     };
   }
 
-  mapTuurs() {
-    let mapArray = this.state.tuurs.map(this.getTuurLocationData);
-
-    Promise.all(mapArray).then(tuurCoordinates => {
-      this.setState({
-        fetchCoordinates: tuurCoordinates
-      }, this.filterTuurs);
+  filterTuurs() {
+    const locationQueryString = queryString.parse(this.props.history.location.search);
+    const coordinates = locationQueryString.coordinates.split(' ');
+    let filterTuurs = [];
+    let tooFar = [];
+    for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
+      if (this.state.fetchCoordinates[i].coord[0] < parseFloat( coordinates[0] ) - 1 || this.state.fetchCoordinates[i].coord[0] > parseFloat( coordinates[0] ) + 1 || this.state.fetchCoordinates[i].coord[1] < parseFloat( coordinates[1] ) - 0.2 || this.state.fetchCoordinates[i].coord[1] > parseFloat( coordinates[1] ) + 0.2) {
+        tooFar = [...tooFar, this.state.fetchCoordinates[i]];
+      } else {
+        filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];
+      }
+    }
+    this.setState({
+      filteredTuurs: filterTuurs
+    }, () => {
+      this.filterTags();
     });
 
   }
@@ -130,7 +147,6 @@ class Mapbox extends Component {
         }
       }
     }
-
     this.setState({
       filteredTuurs: tagArray
     }, () => {
@@ -140,14 +156,13 @@ class Mapbox extends Component {
   }
   
   filterDates() {
-    debugger;
     const endDate = new Date(this.props.dates.end);
     const begDate = new Date(this.props.dates.start);
     let begDateYear = begDate.getFullYear();
-    let begDateMonth = begDate.getMonth();
+    let begDateMonth = begDate.getMonth() + 1;
     let begDateDay = begDate.getDate();
     const endDateYear = endDate.getFullYear();
-    const endDateMonth = endDate.getMonth();
+    const endDateMonth = endDate.getMonth() + 1;
     const endDateDay = endDate.getDate();
     let dateArray = [];
     let availablePackage = [];
@@ -193,7 +208,6 @@ class Mapbox extends Component {
         }
       }
     }
-
   }
 
   nextDay(month, day) {
@@ -223,16 +237,8 @@ class Mapbox extends Component {
     if (month === 11 && day !== 31) return ++day;
     return 1;
   }
-  fetchLocation() {
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
-      .then(res => res.json())
-      .then(result => {
-        this.setState({
-          fetchResult: result
-        }, this.mapTuurs);
-      });
 
-  }
+
   handleViewPortChange(viewport) {
     this.setState({
       viewport: { ...this.state.viewport, ...viewport },
@@ -245,9 +251,9 @@ class Mapbox extends Component {
 
   clickPin(tuur) {
   }
+
   renderPopup() {
     const { popupInfo } = this.state;
-
     return (
       popupInfo && (
         <Popup
@@ -263,6 +269,7 @@ class Mapbox extends Component {
       )
     );
   }
+
   render() {
     const { classes } = this.props;
     const markerMap = this.state.filteredTuurs.map((marker, index) => {
@@ -304,4 +311,4 @@ class Mapbox extends Component {
   }
 }
 
-export default withStyles(styles)(Mapbox);
+export default withRouter( withStyles(styles)(Mapbox) );

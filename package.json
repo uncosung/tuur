@@ -30,6 +30,7 @@
     "deck.gl": "^7.1.0",
     "history": "^1.17.0",
     "install": "^0.12.2",
+    "mapbox-gl": "^1.1.1",
     "material-ui-enhanced-fields": "^1.0.2",
     "material-ui-selectfield": "^1.0.24",
     "moment": "^2.24.0",
