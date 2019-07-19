@@ -13,8 +13,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Mapbox from './mapbox';
+import queryString from'query-string';
+
 
 const categories = [
   'Food',
@@ -120,15 +122,19 @@ class SearchBar extends Component {
 
   handleSearch() {
     const { searchParameters , tags , dates } = this.state;
-    const startDate = this.dateFormatConverter( dates.start );
-    const endDate = this.dateFormatConverter( dates.end );
+    let startDate, endDate;
+    if ( dates.start ){
+      startDate = this.dateFormatConverter( dates.start );
+      endDate = this.dateFormatConverter( dates.end );
+    }
     const filterTags = tags.join('+');
     let dateQueryUrl = '';
     let tagQueryUrl = '';
     let locationQueryUrl = ''
     if ( !searchParameters.name ){
-      const lastQuery = this.props.history.location;
-      locationQueryUrl = `${lastQuery.search}`
+      let lastQuery = queryString.parse(this.props.history.location.search)
+      let coordinates = lastQuery.coordinates.split(' ');
+      locationQueryUrl = `?location=${ lastQuery.location }&coordinates=${ coordinates[0]}+${ coordinates[1] }`
     } else {
       locationQueryUrl = `?location=${ searchParameters.name }&coordinates=${ searchParameters.coordinates[0]}+${ searchParameters.coordinates[1]}`
     }
@@ -155,14 +161,13 @@ class SearchBar extends Component {
 
   dateFormatConverter( date ){
     let newDate = new Date( date );
-    let day = newDate.getDate() + 1;
+    let day = newDate.getDate();
     let month = newDate.getMonth();
     let year = newDate.getFullYear();
-    return `${year}-${month}-${day}`
+    return `${year}-${month + 1}-${day}`
   }
 
   render() {
-    console.log( this.props );
     const geocoderApiOptions = {
       country: 'us',
       proximity: { longitude: -118.243683, latitude: 34.052235 }
@@ -386,4 +391,4 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(SearchBar);
+export default withRouter( withStyles(styles)(SearchBar) );

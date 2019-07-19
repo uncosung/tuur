@@ -7,6 +7,7 @@ import SearchPackageItem from './search-result-package-item';
 import TOKEN from './mapbox-token';
 import queryString from'query-string';
 import { Link, withRouter } from 'react-router-dom';
+import { filter } from 'minimatch';
 
 
 const styles = theme => ({
@@ -22,6 +23,7 @@ class SearchPackages extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      locationQueryString: queryString.parse(this.props.history.location.search),
       packages: [],
       fetchResult: null,
       fetchCoordinates: [],
@@ -65,13 +67,6 @@ class SearchPackages extends Component {
       });
   }
 
-  renderPackage() {
-    const packages = this.state.filteredTuurs.map((item, id) => {
-      return <SearchPackageItem key={id} item={item.tuur} searchArea={ this.props.searchArea }/>;
-    });
-    return packages;
-  }
-
   fetchLocation(packages) {
     const locationQueryString = queryString.parse(this.props.history.location.search);
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${locationQueryString[location]}.json?access_token=${TOKEN}`)
@@ -95,12 +90,24 @@ class SearchPackages extends Component {
     };
   }
 
-
   filterTuurs(fetchCoordinates, packages, tuurCoordinates) {
-    let filterTuurs = [];
-    let tooFar = [];
     const locationQueryString = queryString.parse(this.props.history.location.search);
     const coordinates = locationQueryString.coordinates.split(' ');
+    let filterTuurs = [];
+    let tooFar = [];
+    let tags = [];
+    let dates = {
+      start:null,
+      end: null
+    };
+    if ( locationQueryString.tags ){
+      tags = locationQueryString.tags.split(' ');
+    }
+    if ( locationQueryString.dates ){
+      let filteredDates = locationQueryString.dates.split(' ');
+      dates.start = filteredDates[0];
+      dates.end = filteredDates[1];
+    }
     for (let i = 0; i < tuurCoordinates.length; i++) {
       if (tuurCoordinates[i].coord[0] < parseFloat(coordinates[0]) - 1 || tuurCoordinates[i].coord[0] > parseFloat(coordinates[0]) + 1 || tuurCoordinates[i].coord[1] < parseFloat(coordinates[1]) - 0.2 || tuurCoordinates[i].coord[1] > parseFloat(coordinates[1]) + 0.2) {
         tooFar = [...tooFar, tuurCoordinates[i]];
@@ -108,30 +115,28 @@ class SearchPackages extends Component {
         filterTuurs = [...filterTuurs, tuurCoordinates[i]];
       }
     }
-    this.props.tags.length === 0 && this.props.dates.start !== null ? this.filterDates(filterTuurs) : this.filterTags(filterTuurs);
+    debugger;
+    if ( tags.length === 0 && !dates.start ) return this.setTuurPackages( filterTuurs );
+    if ( tags.length && !dates.start || tags.length && dates.start ) return this.filterTags( filterTuurs, tags , dates);
+    if (tags.length === 0 && dates.start) return this.filterDates( filterTuurs, dates);
+    // if ( this.filterTags(filterTuurs, tags);
   }
 
-  //   filterTags () {
-  //     let tagArray = [];
-  //     for (let i = 0; i < this.state.filteredTuurs.length; i++){
-  //       for (let j = 0; j < this.props.tags.length; j++){
-  //         for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
-  //           if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
-  //             tagArray = [...tagArray, this.state.filteredTuurs[i]]
+  setTuurPackages( filteredTuurs ){
+    this.setState({
+      filteredTuurs,
+      isLoading: false
+    })
+  }
 
-  filterTags(filterTuurs) {
-    if (this.state.tags.length === 0) {
-      this.setState({
-        filteredTuurs: filterTuurs,
-        isLoading: false
-      });
-      return;
-    }
+  filterTags( filterTuurs, tags, dates ) {
+    const locationQueryString = queryString.parse(this.props.history.location.search);
+  
     let tagArray = [];
     for (let i = 0; i < filterTuurs.length; i++) {
-      for (let j = 0; j < this.state.tags.length; j++) {
+      for (let j = 0; j < tags.length; j++) {
         for (let k = 0; k < JSON.parse(filterTuurs[i].tuur.tags).length; k++) {
-          if (JSON.parse(filterTuurs[i].tuur.tags)[k] === (this.state.tags[j])) {
+          if (JSON.parse(filterTuurs[i].tuur.tags)[k] === (tags[j])) {
             tagArray = [...tagArray, filterTuurs[i]];
           }
         }
@@ -144,39 +149,31 @@ class SearchPackages extends Component {
           tagArray.splice(g, 1);
         }
       }
-
-      if (tagArray.length === 0 && this.props.dates.start !== null) {
+      if ( dates.start ){
+        this.filterDates( tagArray, dates );
+      } else {
         this.setState({
-          filteredTuurs: filterTuurs,
+          filteredTuurs: tagArray,
           isLoading: false
-        });
-        return;
-      } else if (tagArray.length === 0 && this.props.dates.start === null) {
-        this.setState({
-          filteredTuurs: [],
-          isLoading: false
-        });
-        return;
+        })
       }
-      this.props.dates.start !== null ? this.filterDates(tagArray) : this.setState({
-        filteredTuurs: tagArray,
-        isLoading: false
-      });
     }
   }
 
-  filterDates(tagArray) {
-    const endDate = new Date(this.props.dates.end);
-    const begDate = new Date(this.props.dates.start);
+  filterDates( filteredTuurs, dates ) {
+    debugger;
+    const begDate = new Date( dates.start );
+    const endDate = new Date( dates.end );
     let begDateYear = begDate.getFullYear();
-    let begDateMonth = begDate.getMonth();
+    let begDateMonth = begDate.getMonth() + 1;
     let begDateDay = begDate.getDate();
     const endDateYear = endDate.getFullYear();
-    const endDateMonth = endDate.getMonth();
+    const endDateMonth = endDate.getMonth() + 1;
     const endDateDay = endDate.getDate();
     let dateArray = [];
     let availablePackage = [];
     let availableTuur = [];
+
     dateArray.push(new Date(begDateYear, begDateMonth, begDateDay));
     while (begDateMonth !== endDateMonth || begDateDay !== endDateDay) {
       if (begDateDay === 1) {
@@ -185,7 +182,7 @@ class SearchPackages extends Component {
       if (begDateMonth === 0 && begDateDay === 1) {
         begDateYear = begDateMonth === 1 ? ++begDateYear : begDateYear;
       }
-      availableTuur = this.checkAvailability(tagArray, begDateYear, begDateMonth, begDateDay);
+      availableTuur = this.checkAvailability(filteredTuurs , begDateYear, begDateMonth, begDateDay);
       begDateDay = this.nextDay(begDateMonth, begDateDay);
       if (availableTuur) {
         availablePackage.push(availableTuur);
@@ -193,7 +190,7 @@ class SearchPackages extends Component {
     }
 
     if (begDateMonth === endDateMonth && begDateDay === endDateDay) {
-      availableTuur = this.checkAvailability(tagArray, begDateYear, begDateMonth, begDateDay);
+      availableTuur = this.checkAvailability(filteredTuurs , begDateYear, begDateMonth, begDateDay);
     }
     this.setState({
       filteredTuurs: availableTuur,
@@ -206,9 +203,9 @@ class SearchPackages extends Component {
     for (let i = 0; i < tagArray.length; i++) {
       let parseDate = JSON.parse(tagArray[i].tuur.dates);
       for (var value of parseDate) {
-        const packageDate = new Date(value);
+        const packageDate = new Date( value );
         const packageYear = packageDate.getFullYear();
-        const packageMonth = packageDate.getMonth();
+        const packageMonth = packageDate.getMonth() + 1;
         const packageDay = packageDate.getDate();
         if (packageYear === year && packageMonth === month && packageDay === day) {
           returnArray.push(tagArray[i]);
@@ -246,6 +243,13 @@ class SearchPackages extends Component {
     return 1;
   }
 
+  renderPackage() {
+    const packages = this.state.filteredTuurs.map((item, id) => {
+      return <SearchPackageItem key={id} item={item.tuur} searchArea={ this.props.searchArea }/>;
+    });
+    return packages;
+  }
+
   render() {
     const { classes } = this.props;
     if (this.state.isLoading === true) {
@@ -260,7 +264,7 @@ class SearchPackages extends Component {
           <Container className={classes.marginBottom} >
             <Typography className={classes.marginTop} variant="h5">
               Tuurs
-              </Typography>
+            </Typography>
           </Container>
           <Container style={{ paddingBottom: '80px' }}>
             {this.state.filteredTuurs.length === 0 ? <Typography variant="subtitle1">There are no tuurs that match the search criteria</Typography> : this.renderPackage()}
