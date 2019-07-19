@@ -24,6 +24,7 @@ class SearchPackages extends Component {
     super(props);
     this.state = {
       locationQueryString: queryString.parse(this.props.history.location.search),
+      locationQueryStringUrl: this.props.history.location.search,
       packages: [],
       fetchResult: null,
       fetchCoordinates: [],
@@ -33,7 +34,7 @@ class SearchPackages extends Component {
         end: null
       },
       tags: [],
-      isLoading: true
+      isLoading: true,
     };
 
     this.fetchPackages = this.fetchPackages.bind(this);
@@ -48,15 +49,11 @@ class SearchPackages extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.tags.toString() !== this.props.tags.toString()) {
-
-      this.setState({
-        tags: this.props.tags,
-        isLoading: !this.state.isLoading
-      }, this.fetchPackages);
-    } else if (this.props.dates.start !== prevProps.dates.start) {
-      this.fetchPackages();
-    }
+    const currentUrl =  this.props.history.location.search.replace( / /g, '%20');
+    const stateQueryUrl = this.state.locationQueryStringUrl.replace( / /g, '%20');
+    if ( currentUrl !== stateQueryUrl){
+      return this.fetchPackages();
+    } 
   }
 
   fetchPackages() {
@@ -115,7 +112,7 @@ class SearchPackages extends Component {
         filterTuurs = [...filterTuurs, tuurCoordinates[i]];
       }
     }
-    debugger;
+
     if ( tags.length === 0 && !dates.start ) return this.setTuurPackages( filterTuurs );
     if ( tags.length && !dates.start || tags.length && dates.start ) return this.filterTags( filterTuurs, tags , dates);
     if (tags.length === 0 && dates.start) return this.filterDates( filterTuurs, dates);
@@ -125,7 +122,8 @@ class SearchPackages extends Component {
   setTuurPackages( filteredTuurs ){
     this.setState({
       filteredTuurs,
-      isLoading: false
+      isLoading: false,
+      locationQueryStringUrl: this.props.history.location.search
     })
   }
 
@@ -154,7 +152,8 @@ class SearchPackages extends Component {
       } else {
         this.setState({
           filteredTuurs: tagArray,
-          isLoading: false
+          isLoading: false,
+          locationQueryStringUrl: this.props.history.location.search
         })
       }
     }
@@ -194,7 +193,8 @@ class SearchPackages extends Component {
     }
     this.setState({
       filteredTuurs: availableTuur,
-      isLoading: false
+      isLoading: false,
+      locationQueryStringUrl: this.props.history.location.search
     });
   }
 

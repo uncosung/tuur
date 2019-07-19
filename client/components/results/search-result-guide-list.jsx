@@ -7,6 +7,8 @@ import GridList from '@material-ui/core/GridList';
 import SearchResultGuideItem from './search-result-guide-list-item';
 import TOKEN from './mapbox-token';
 import queryString from'query-string';
+import { Link, withRouter } from 'react-router-dom';
+
 
 const styles = theme => ({
   marginTop: {
@@ -44,7 +46,8 @@ class SearchResultGuide extends Component {
       fetchResult: [],
       fetchCoordinates: [],
       filteredGuides: [],
-      isLoading: true
+      isLoading: true,
+      locationQueryStringUrl: this.props.history.location.search
     };
     this.fetchProfiles = this.fetchProfiles.bind(this);
     this.fetchLocation = this.fetchLocation.bind(this);
@@ -56,10 +59,23 @@ class SearchResultGuide extends Component {
     this.fetchProfiles();
   }
 
+  componentDidUpdate(){
+    const currentUrl =  this.props.history.location.search.replace( / /g, '%20');
+    const stateQueryUrl = this.state.locationQueryStringUrl.replace( / /g, '%20');
+    if ( currentUrl !== stateQueryUrl){
+      return this.fetchProfiles();
+    } 
+  }
+
   fetchProfiles() {
     fetch('/api/search.php')
       .then(res => res.json())
-      .then(search => this.setState({ guideProfile: search, isLoading: true }, this.fetchLocation));
+      .then(search => 
+        this.setState({ 
+          guideProfile: search, 
+          isLoading: true,       
+          locationQueryStringUrl: this.props.history.location.search
+      }, this.fetchLocation));
   }
 
   fetchLocation() {
@@ -101,7 +117,8 @@ class SearchResultGuide extends Component {
     }
     this.setState({
       filteredGuides: filterGuides,
-      isLoading: false
+      isLoading: false,
+      locationQueryStringUrl: this.props.history.location.search
     });
   }
 
@@ -137,4 +154,4 @@ class SearchResultGuide extends Component {
 
 }
 
-export default withStyles(styles)(SearchResultGuide);
+export default withRouter( withStyles(styles)(SearchResultGuide) );
