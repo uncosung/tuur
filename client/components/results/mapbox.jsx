@@ -40,7 +40,9 @@ class Mapbox extends Component {
       fetchResult: null,
       fetchCoordinates: [],
       // initialCoordinates: [this.props.location.coordinates[0], this.props.location.coordinates[1]],
-      popupInfo: null
+      popupInfo: null,
+      locationQueryStringUrl: this.props.history.location.search,
+
 
     };
     this.mapRef = React.createRef();
@@ -56,11 +58,11 @@ class Mapbox extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.tags.toString() !== this.props.tags.toString()) {
-      this.fetchPackages();
-    } else if (this.props.dates.start !== prevProps.dates.start) {
-      this.fetchPackages();
-    }
+    const currentUrl =  this.props.history.location.search.replace( / /g, '%20');
+    const stateQueryUrl = this.state.locationQueryStringUrl.replace( / /g, '%20');
+    if ( currentUrl !== stateQueryUrl){
+      return this.fetchPackages();
+    } 
   }
 
   fetchPackages() {
@@ -68,7 +70,8 @@ class Mapbox extends Component {
     .then(res => res.json())
     .then(tuurs => {
       this.setState({
-        tuurs: tuurs
+        tuurs: tuurs,
+        locationQueryStringUrl: this.props.history.location.search
       }, this.fetchLocation);
     });
   }
@@ -107,6 +110,7 @@ class Mapbox extends Component {
     const coordinates = locationQueryString.coordinates.split(' ');
     let filterTuurs = [];
     let tooFar = [];
+
     for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
       if (this.state.fetchCoordinates[i].coord[0] < parseFloat( coordinates[0] ) - 1 || this.state.fetchCoordinates[i].coord[0] > parseFloat( coordinates[0] ) + 1 || this.state.fetchCoordinates[i].coord[1] < parseFloat( coordinates[1] ) - 0.2 || this.state.fetchCoordinates[i].coord[1] > parseFloat( coordinates[1] ) + 0.2) {
         tooFar = [...tooFar, this.state.fetchCoordinates[i]];
@@ -123,41 +127,51 @@ class Mapbox extends Component {
   }
 
   filterTags() {
-    if (this.props.tags.length === 0 && this.props.dates.start !== null) {
-      this.filterDates();
+    const locationQueryUrl =  queryString.parse(this.props.history.location.search);
+    let tags = [];
+    let dates = {};
+    if ( locationQueryUrl.tags ) {
+      tags = locationQueryUrl.tags.split(' ');
+    }
+    if ( locationQueryUrl.dates ){
+      dates = locationQueryUrl.dates.split(' ');
+      dates.start = dates[0];
+      dates.end = dates[1];
+    }
+
+    if ( !tags.length && dates.start ) {
+      this.filterDates( dates.start, dates.end );
       return;
     }
-    if (this.props.tags.length === 0) {
-      return;
-    }
-    let tagArray = [];
-    for (let i = 0; i < this.state.filteredTuurs.length; i++) {
-      for (let j = 0; j < this.props.tags.length; j++) {
-        for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++) {
-          if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]) {
-            tagArray = [...tagArray, this.state.filteredTuurs[i]];
+    if ( tags.length ) {
+      let tagArray = [];
+      for (let i = 0; i < this.state.filteredTuurs.length; i++) {
+        for (let j = 0; j < tags.length; j++) {
+          for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++) {
+            if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === tags[j]) {
+              tagArray = [...tagArray, this.state.filteredTuurs[i]];
+            }
           }
         }
       }
-    }
-    for (let h = 0; h < tagArray.length; h++) {
-      for (let g = h + 1; g < tagArray.length; g++) {
-        if (tagArray[h] === tagArray[g]) {
-          tagArray.splice(g, 1);
+      for (let h = 0; h < tagArray.length; h++) {
+        for (let g = h + 1; g < tagArray.length; g++) {
+          if (tagArray[h] === tagArray[g]) {
+            tagArray.splice(g, 1);
+          }
         }
       }
-    }
-    this.setState({
-      filteredTuurs: tagArray
-    }, () => {
-      this.props.dates.start !== null && this.filterDates;
-    });
-
+      this.setState({
+        filteredTuurs: tagArray
+      }, () => {
+        if ( dates.start ) return this.filterDates( dates.start, dates.end );
+      });
+    }  
   }
   
-  filterDates() {
-    const endDate = new Date(this.props.dates.end);
-    const begDate = new Date(this.props.dates.start);
+  filterDates( start, end ) {
+    const endDate = new Date( end );
+    const begDate = new Date( start );
     let begDateYear = begDate.getFullYear();
     let begDateMonth = begDate.getMonth() + 1;
     let begDateDay = begDate.getDate();
@@ -195,7 +209,6 @@ class Mapbox extends Component {
   }
 
   checkAvailability(year, month, day) {
-    debugger;
     for (let i = 0; i < this.state.filteredTuurs.length; i++) {
       let parseDate = JSON.parse(this.state.filteredTuurs[i].tuur.dates);
       for (var value of parseDate) {
