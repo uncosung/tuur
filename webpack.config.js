@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const srcPath = path.resolve(__dirname, 'client');
 const publicPath = path.resolve(__dirname, 'server/public');
 
@@ -33,10 +32,6 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new HtmlWebpackPlugin({title: 'react-map-gl Example'}),
-    new webpack.EnvironmentPlugin(['MapboxAccessToken'])
-  ],
   devtool: 'source-map',
   devServer: {
     host: '0.0.0.0',
