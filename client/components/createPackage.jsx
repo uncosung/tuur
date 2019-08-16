@@ -141,7 +141,7 @@ const categories = [
   'Activities',
   'Other'
 ];
-
+  
 class CreatePackage extends Component {
   constructor(props) {
     super(props);
@@ -171,7 +171,8 @@ class CreatePackage extends Component {
     };
   }
 
-  handleSelect=result => {
+
+  handleSelect= (result) => {
     this.setState({
       location: {
         name: result.place_name,
@@ -180,14 +181,17 @@ class CreatePackage extends Component {
     });
   }
 
-  handleChange=event => {
+
+  handleChange = (event) => {
+
     const { value } = event.target;
     this.setState({
       tags: value
     });
   }
 
-  handleInputChange=event => {
+
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
@@ -195,7 +199,8 @@ class CreatePackage extends Component {
     });
   }
 
-  handleSubmit=event => {
+
+  handleSubmit = (event) => {
     event.preventDefault();
     const { title, description, location, tags, timeRange, dates, imageUrl } = this.state;
 
@@ -209,6 +214,8 @@ class CreatePackage extends Component {
         }
       });
     } else {
+
+      // for ( var value of dates ){
       if (imageUrl.length !== 0 && dates.length !== 0 && tags.length !== 0 && location.name.length !== 0) {
         fetch('/api/package.php', {
           method: 'POST',
@@ -216,7 +223,7 @@ class CreatePackage extends Component {
             { title, location, tags, timeRange, description, dates, imageUrl })
         })
           .then(res => res.json())
-          .then(newPackage => console.log(newPackage));
+          .then(newPackage => console.log('new package on createPackage', newPackage));
         this.setState({ openSnackBar: false });
         this.props.history.push('/user-profile/' + this.props.packages.email);
       }
@@ -228,29 +235,32 @@ class CreatePackage extends Component {
     }
   }
 
-  handleSnackbarClose=(event, reason) => {
+
+  handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     this.setState({ openSnackBar: false });
   }
 
-  handleSnackbarOpen=() => {
+
+  handleSnackbarOpen = () => {
     this.setState({ openSnackBar: true });
   }
 
-  handleModalClose=dates => {
+  handleModalClose = (dates) => {
     this.setState({
       openModal: false,
       dates: dates
     });
   }
 
-  modalClose=() => {
+
+  modalClose = () => {
     this.setState({ openModal: false });
   }
 
-  iconClickhandler=() => {
+  iconClickhandler = () => {
     let img = document.getElementById('input-imageUrl').value;
     let imgArray = this.state.imageUrl;
     if (img) {
@@ -263,7 +273,7 @@ class CreatePackage extends Component {
     }
   }
 
-  removeImage=e => {
+  removeImage = (e) => {
     let id = e.target.id;
     id = parseInt(id);
     let imgArray = this.state.imageUrl;
@@ -271,7 +281,7 @@ class CreatePackage extends Component {
     this.setState({ imageUrl: imgArray });
   }
 
-  removeChips=e => {
+  removeChips = (e) => {
     let dateId = e.currentTarget.id;
     dateId = parseInt(dateId);
     let datesArray = this.state.dates;
@@ -327,13 +337,13 @@ class CreatePackage extends Component {
     return (
       <Container style={{ paddingBottom: '80px' }}>
         <Typography className={classes.marginTop} variant="h4" align="center" gutterBottom>
-            Create Tuur
+          Create Tuur
         </Typography>
         <Grid mx="auto" container component="form" justify="center" onSubmit={this.handleSubmit}>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.title ? 'Must include a title' : ' '} error={this.state.inputErrors.title} fullWidth id="input-title" label="Title" name="title" onChange={this.handleInputChange} text={ this.state.name}/>
+              <TextField required helperText={this.state.inputErrors.title ? 'Must include a title' : ' '} error={this.state.inputErrors.title} fullWidth id="input-title" label="Title" name="title" onChange={this.handleInputChange} text={this.state.name} />
             </Grid>
           </Grid>
 
@@ -358,13 +368,13 @@ class CreatePackage extends Component {
             <Grid item xs={10} >
               <FormControl className={classes.form}>
                 <InputLabel htmlFor="input-image" required>
-                    Images (max 4, click to remove)
+                  Images (max 4, click to remove)
                 </InputLabel>
                 <Input
                   placeholder='Images (max 4 images, click to remove)'
                   className={classes.input}
                   id="input-imageUrl"
-                  type = 'text'
+                  type='text'
                 />
               </FormControl>
             </Grid>
@@ -372,19 +382,19 @@ class CreatePackage extends Component {
 
           <Grid container justify="center" direction="row">
             <div style={divStyle} className="preview" onClick={this.removeImage}>
-              <img id="0" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[0] : null} alt=""/>
+              <img id="0" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[0] : null} alt="" />
             </div>
             <div style={divStyle} className="preview" onClick={this.removeImage}>
-              <img id="1" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[1] : null} alt=""/>
+              <img id="1" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[1] : null} alt="" />
             </div>
             <div style={divStyle} className="preview" onClick={this.removeImage}>
-              <img id="2" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[2] : null} alt=""/>
+              <img id="2" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[2] : null} alt="" />
             </div>
             <div style={divStyle} className="preview" onClick={this.removeImage}>
-              <img id="3" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[3] : null} alt=""/>
+              <img id="3" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[3] : null} alt="" />
             </div>
             <IconButton aria-label="add" className={classes.noPadding} onClick={this.iconClickhandler}>
-              <AddCircleOutline style={{ fontSize: 40 }}/>
+              <AddCircleOutline style={{ fontSize: 40 }} />
             </IconButton>
           </Grid>
 
@@ -415,11 +425,11 @@ class CreatePackage extends Component {
           <Grid className={classes.margin} container alignItems="flex-end">
             <Grid item xs={6} className={classes.marginLeft}>
               <Typography className={classes.subtitle} variant="subtitle2" align="left" gutterBottom>
-              Available Dates
+                Available Dates
               </Typography>
             </Grid>
             <Grid item xs={2} >
-              <CalendarToday onClick={() => this.setState({ openModal: true })}/>
+              <CalendarToday onClick={() => this.setState({ openModal: true })} />
             </Grid>
 
             <Grid item xs={11} >
@@ -430,7 +440,7 @@ class CreatePackage extends Component {
                 onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.maxDate()} />
+                  <DatePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={this.maxDate()} />
 
                 </Grid>
               </Modal>
@@ -459,7 +469,7 @@ class CreatePackage extends Component {
             <div className={classes.root}>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="select-multiple-chip" required>
-                    Categories
+                  Categories
                 </InputLabel>
                 <Select
                   multiple
@@ -531,5 +541,124 @@ class CreatePackage extends Component {
     );
   }
 }
+
+// const divStyle = {
+//   width: '47px',
+//   height: '40px',
+//   border: '1px solid gray',
+//   marginRight: '5px'
+// };
+
+// const imgStyle = {
+//   width: '100%',
+//   height: '100%',
+//   backgroundRepeat: 'norepeat',
+//   backgroundSize: '100% 100%'
+// };
+
+// const theme = createMuiTheme({
+//   palette: {
+//     primary: { main: '#3A8288' },
+//     secondary: { main: '#A6C7C8' },
+//     inherit: { main: '#A0C3C5' },
+//     default: { main: '#f5e1da' }
+//   }
+// });
+
+// const styles = theme => ({
+//   root: {
+//     display: 'flex',
+//     justifyContent: 'center',
+//     flexWrap: 'wrap'
+//   },
+//   margin: {
+//     margin: theme.spacing(0.5),
+//     fontSize: 33
+//   },
+//   textField: {
+//     marginRight: theme.spacing(1),
+//     width: '100%'
+//   },
+//   marginTop: {
+//     marginTop: theme.spacing(3)
+//   },
+//   paddingTop: {
+//     paddingTop: theme.spacing(5)
+//   },
+//   noPadding: {
+//     padding: 2
+//   },
+//   marginLeft: {
+//     marginLeft: theme.spacing(4),
+//     marginTop: theme.spacing(1)
+//   },
+//   chip: {
+//     width: '31%',
+//     fontSize: '1rem',
+//     margin: '2px'
+//   },
+//   chips: {
+//     display: 'flex',
+//     flexWrap: 'wrap'
+//   },
+//   formControl: {
+//     margin: theme.spacing(1),
+//     minWidth: 276,
+//     maxWidth: 276
+//   },
+//   subtitle: {
+//     fontSize: 20
+//   },
+//   modalStyle: {
+//     top: 5,
+//     left: 5
+//   },
+//   paper: {
+//     position: 'absolute',
+//     width: 400,
+//     backgroundColor: theme.palette.background.paper,
+//     boxShadow: theme.shadows[5],
+//     padding: 7,
+//     outline: 'none'
+//   },
+//   input: {
+//     width: '100%'
+//   },
+//   form: {
+//     width: '100%'
+//   },
+//   dateChip: {
+//     display: 'flex',
+//     flexWrap: 'wrap',
+//     width: 40,
+//     marginRight: '4px',
+//     marginBottom: '4px'
+//   },
+//   close: {
+//     padding: theme.spacing(2)
+//   },
+//   info: {
+//     backgroundColor: theme.palette.primary.dark
+//   },
+//   fab: {
+//     margin: theme.spacing(1),
+//     right: 20,
+//     bottom: '77px',
+//     position: 'fixed'
+//   },
+//   extendedIcon: {
+//     marginRight: theme.spacing(1)
+//   }
+// });
+
+// const categories = [
+//   'Food',
+//   'Shopping',
+//   'Coffee',
+//   'Outdoors',
+//   'Nightlife',
+//   'Activities',
+//   'Other'
+// ];
 
 export default withStyles(styles)(CreatePackage);

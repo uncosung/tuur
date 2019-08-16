@@ -6,6 +6,8 @@ import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { withStyles } from '@material-ui/core/styles';
 import TuurPin from './tuur-pin';
 import PopupInfo from './popup-info';
+import queryString from'query-string';
+import { Link, withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   mapContainer: {
@@ -19,12 +21,13 @@ const styles = theme => ({
 class Mapbox extends Component {
   constructor(props) {
     super(props);
+    const coordinates = queryString.parse(this.props.history.location.search).coordinates.split(' ');
     this.state = {
       viewport: {
         width: '100%',
         height: '667px',
-        latitude: this.props.location.coordinates[1],
-        longitude: this.props.location.coordinates[0],
+        longitude: parseFloat(coordinates[0]),
+        latitude: parseFloat(coordinates[1]),
         zoom: 12
       },
       searchResultLayer: null,
@@ -36,8 +39,10 @@ class Mapbox extends Component {
       filteredTuurs: [],
       fetchResult: null,
       fetchCoordinates: [],
-      initialCoordinates: [this.props.location.coordinates[0], this.props.location.coordinates[1]],
-      popupInfo: null
+      // initialCoordinates: [this.props.location.coordinates[0], this.props.location.coordinates[1]],
+      popupInfo: null,
+      locationQueryStringUrl: this.props.history.location.search,
+
 
     };
     this.mapRef = React.createRef();
@@ -53,38 +58,42 @@ class Mapbox extends Component {
     this.fetchPackages();
   }
 
+  componentDidUpdate(prevProps) {
+    const currentUrl =  this.props.history.location.search.replace( / /g, '%20');
+    const stateQueryUrl = this.state.locationQueryStringUrl.replace( / /g, '%20');
+    if ( currentUrl !== stateQueryUrl){
+      return this.fetchPackages();
+    } 
+  }
+
   fetchPackages() {
     fetch('/api/package.php')
-      .then(res => res.json())
-      .then(tuurs => {
-        this.setState({
-          tuurs: tuurs
-        }, this.fetchLocation);
-      });
+    .then(res => res.json())
+    .then(tuurs => {
+      this.setState({
+        tuurs: tuurs,
+        locationQueryStringUrl: this.props.history.location.search
+      }, this.fetchLocation);
+    });
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.tags.toString() !== this.props.tags.toString()) {
-      this.fetchPackages();
-    } else if (this.props.dates.start !== prevProps.dates.start) {
-      this.fetchPackages();
-    }
+  fetchLocation() {
+    const locationQueryString = queryString.parse(this.props.history.location.search);
+    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${locationQueryString.location}.json?access_token=${TOKEN}`)
+    .then(res => res.json())
+    .then(result => {
+      this.setState({
+        fetchResult: result
+      }, this.mapTuurs);
+    });
   }
 
-  filterTuurs() {
-    let filterTuurs = [];
-    let tooFar = [];
-    for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
-      if (this.state.fetchCoordinates[i].coord[0] < this.state.viewport.longitude - 1 || this.state.fetchCoordinates[i].coord[0] > this.state.viewport.longitude + 1 || this.state.fetchCoordinates[i].coord[1] < this.state.viewport.latitude - 0.2 || this.state.fetchCoordinates[i].coord[1] > this.state.viewport.latitude + 0.2) {
-        tooFar = [...tooFar, this.state.fetchCoordinates[i]];
-      } else {
-        filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];
-      }
-    }
-    this.setState({
-      filteredTuurs: filterTuurs
-    }, () => {
-      this.filterTags();
+  mapTuurs() {
+    let mapArray = this.state.tuurs.map(this.getTuurLocationData);
+    Promise.all(mapArray).then(tuurCoordinates => {
+      this.setState({
+        fetchCoordinates: tuurCoordinates
+      }, this.filterTuurs);
     });
   }
 
@@ -97,57 +106,78 @@ class Mapbox extends Component {
     };
   }
 
-  mapTuurs() {
-    let mapArray = this.state.tuurs.map(this.getTuurLocationData);
+  filterTuurs() {
+    const locationQueryString = queryString.parse(this.props.history.location.search);
+    const coordinates = locationQueryString.coordinates.split(' ');
+    let filterTuurs = [];
+    let tooFar = [];
 
-    Promise.all(mapArray).then(tuurCoordinates => {
-      this.setState({
-        fetchCoordinates: tuurCoordinates
-      }, this.filterTuurs);
+    for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
+      if (this.state.fetchCoordinates[i].coord[0] < parseFloat( coordinates[0] ) - 1 || this.state.fetchCoordinates[i].coord[0] > parseFloat( coordinates[0] ) + 1 || this.state.fetchCoordinates[i].coord[1] < parseFloat( coordinates[1] ) - 0.2 || this.state.fetchCoordinates[i].coord[1] > parseFloat( coordinates[1] ) + 0.2) {
+        tooFar = [...tooFar, this.state.fetchCoordinates[i]];
+      } else {
+        filterTuurs = [...filterTuurs, this.state.fetchCoordinates[i]];
+      }
+    }
+    this.setState({
+      filteredTuurs: filterTuurs
+    }, () => {
+      this.filterTags();
     });
   }
 
   filterTags() {
-    if (this.props.tags.length === 0 && this.props.dates.start !== null) {
-      this.filterDates();
+    const locationQueryUrl =  queryString.parse(this.props.history.location.search);
+    let tags = [];
+    let dates = {};
+    if ( locationQueryUrl.tags ) {
+      tags = locationQueryUrl.tags.split(' ');
+    }
+    if ( locationQueryUrl.dates ){
+      dates = locationQueryUrl.dates.split(' ');
+      dates.start = dates[0];
+      dates.end = dates[1];
+    }
+
+    if ( !tags.length && dates.start ) {
+      this.filterDates( dates.start, dates.end );
       return;
     }
-    if (this.props.tags.length === 0) {
-      return;
-    }
-    let tagArray = [];
-    for (let i = 0; i < this.state.filteredTuurs.length; i++) {
-      for (let j = 0; j < this.props.tags.length; j++) {
-        for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++) {
-          if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]) {
-            tagArray = [...tagArray, this.state.filteredTuurs[i]];
+    if ( tags.length ) {
+      let tagArray = [];
+      for (let i = 0; i < this.state.filteredTuurs.length; i++) {
+        for (let j = 0; j < tags.length; j++) {
+          for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++) {
+            if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === tags[j]) {
+              tagArray = [...tagArray, this.state.filteredTuurs[i]];
+            }
           }
         }
       }
-    }
-    for (let h = 0; h < tagArray.length; h++) {
-      for (let g = h + 1; g < tagArray.length; g++) {
-        if (tagArray[h] === tagArray[g]) {
-          tagArray.splice(g, 1);
+      for (let h = 0; h < tagArray.length; h++) {
+        for (let g = h + 1; g < tagArray.length; g++) {
+          if (tagArray[h] === tagArray[g]) {
+            tagArray.splice(g, 1);
+          }
         }
       }
-    }
 
-    this.setState({
-      filteredTuurs: tagArray
-    }, () => {
-      this.props.dates.start !== null && this.filterDates;
-    });
+      this.setState({
+        filteredTuurs: tagArray
+      }, () => {
+        if ( dates.start ) return this.filterDates( dates.start, dates.end );
+      });
+    }  
   }
-
-  filterDates() {
-    const endDate = new Date(this.props.dates.end);
-    const begDate = new Date(this.props.dates.start);
+  
+  filterDates( start, end ) {
+    const endDate = new Date( end );
+    const begDate = new Date( start );
     let begDateYear = begDate.getFullYear();
-    let begDateMonth = begDate.getMonth();
+    let begDateMonth = begDate.getMonth() + 1;
     let begDateDay = begDate.getDate();
     const endDateYear = endDate.getFullYear();
-    const endDateMonth = endDate.getMonth();
+    const endDateMonth = endDate.getMonth() + 1;
     const endDateDay = endDate.getDate();
     let dateArray = [];
     let availablePackage = [];
@@ -222,16 +252,6 @@ class Mapbox extends Component {
     return 1;
   }
 
-  fetchLocation() {
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
-      .then(res => res.json())
-      .then(result => {
-        this.setState({
-          fetchResult: result
-        }, this.mapTuurs);
-      });
-  }
-
   handleViewPortChange(viewport) {
     this.setState({
       viewport: { ...this.state.viewport, ...viewport },
@@ -242,9 +262,11 @@ class Mapbox extends Component {
     }, this.filterTuurs);
   }
 
+  clickPin(tuur) {
+  }
+
   renderPopup() {
     const { popupInfo } = this.state;
-
     return (
       popupInfo && (
         <Popup
@@ -260,6 +282,7 @@ class Mapbox extends Component {
       )
     );
   }
+
   render() {
     const { classes } = this.props;
     const markerMap = this.state.filteredTuurs.map((marker, index) => {
@@ -301,4 +324,4 @@ class Mapbox extends Component {
   }
 }
 
-export default withStyles(styles)(Mapbox);
+export default withRouter( withStyles(styles)(Mapbox) );

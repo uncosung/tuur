@@ -97,14 +97,15 @@ class SignUp extends Component {
     const regexFullName = /[A-Za-z][A-Za-z.'-]+\s[A-Za-z][A-Za-z.'-]+$/g;
     const emailTest = regexEmail.test(email);
     const nameTest = regexFullName.test(name);
-    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || !emailTest || !nameTest) {
+    const imageTest = this.state.image.length > 255;
+    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || !emailTest || !nameTest || this.state.image.length > 255) {
       this.setState({
         inputErrors: {
           name: !nameTest,
           email: !emailTest,
           location: !this.state.location,
           bio: !this.state.bio,
-          image: !this.state.image
+          image: imageTest
         }
       });
     } else {
@@ -172,7 +173,7 @@ class SignUp extends Component {
               <Avatar alt="avatar" src={this.state.image ? this.state.image : 'https://www.pngfind.com/pngs/m/481-4816267_default-icon-shadow-of-man-head-hd-png.png'} className={classes.avatar}/>
             </Grid>
             <Grid item xs={9}>
-              <TextField required helperText={this.state.inputErrors.image ? 'Please enter a valid image url' : ' '} error={this.state.inputErrors.image} fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.image ? 'Please enter a valid image url (255 character min)' : ' '} error={this.state.inputErrors.image} fullWidth id="input-imageUrl" label="Upload your image(URL)" name="image" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
           <Grid className={classes.margin} container alignItems="flex-end">

@@ -83,8 +83,8 @@ class EditProfile extends Component {
         }
       });
     } else {
-      const { name, email, location, bio, image } = this.state;
-      fetch('/api/profile.php?email=' + email, {
+      const { id, name, email, location, bio, image } = this.state;
+      fetch('/api/profile.php?id=' + this.props.user.id, {
         method: 'PATCH',
         body: JSON.stringify({
           name: name,

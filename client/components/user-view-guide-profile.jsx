@@ -5,9 +5,51 @@ import Typography from '@material-ui/core/Typography';
 import UpComingTuurItem from './user-upcoming-tuurs-list-item';
 import GridList from '@material-ui/core/GridList';
 import GuidePackageList from './user-view-guide-profile-item';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+
+class GuidePackages extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userEmail: '',
+      packages: [],
+    };
+  }
+  
+  componentDidUpdate(){
+    if ( !this.state.packages.length && !this.state.userEmail ){
+      fetch('/api/guidePackages.php?email=' + this.props.guideInfo.email )
+          .then(res => res.json())
+          .then(packages => this.setState({ userEmail: this.props.guideInfo.email, packages }));
+    } 
+  }
+  
+  render() {
+    const { classes } = this.props;
+    const packageMap = this.state.packages.map((packageItem, id) => {
+      return <GuidePackageList key={id} package={packageItem} />;
+    });
+
+    return (
+      <>
+        <Container className={classes.marginBottom} >
+          <Typography className={classes.marginTop} variant="h4">
+            Created Packages
+          </Typography>
+        </Container>
+        <div className={classes.root}>
+          <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
+            {packageMap}
+          </GridList>
+        </div>
+      </>
+
+    );
+  }
+
+}
 
 const theme = createMuiTheme({
   palette: {
@@ -72,46 +114,5 @@ const styles = theme => ({
   }
 });
 
-class GuidePackages extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userEmail: '',
-      packages: []
-    };
-  }
+export default withRouter(withStyles(styles)(GuidePackages));
 
-  componentDidUpdate() {
-    if (!this.state.packages.length && !this.state.userEmail) {
-      fetch('/api/guidePackages.php?email=' + this.props.guideInfo.email)
-        .then(res => res.json())
-        .then(packages => this.setState({ userEmail: this.props.guideInfo.email, packages }));
-    }
-  }
-
-  render() {
-    const { classes } = this.props;
-    const packageMap = this.state.packages.map((packageItem, id) => {
-      return <GuidePackageList key={id} package={packageItem} />;
-    });
-    return (
-      <>
-
-        <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h4">
-            Created Packages
-          </Typography>
-        </Container>
-        <div className={classes.root}>
-          <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-            {packageMap}
-          </GridList>
-        </div>
-      </>
-
-    );
-  }
-
-}
-
-export default withStyles(styles)(GuidePackages);

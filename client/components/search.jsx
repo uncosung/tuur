@@ -10,6 +10,9 @@ import Grid from '@material-ui/core/Grid';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
 import { Link } from 'react-router-dom';
 import MoreVert from '@material-ui/icons/MoreVert';
+import { generateKeyPair } from 'crypto';
+import { Route, Switch, withRouter } from 'react-router-dom';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -109,7 +112,10 @@ class Search extends Component {
 
   handleClick() {
     this.props.search(this.state.location);
-    this.props.path('/results');
+    this.props.history.push({
+      pathname: '/results',
+      search: `?location=${this.state.location.name}&coordinates=${this.state.location.coordinates[0]}+${this.state.location.coordinates[1]}`
+    });
   }
 
   handleSelect(result) {
@@ -132,10 +138,14 @@ class Search extends Component {
     this.fetchPackages();
   }
 
+  componentDidUpdate(prevProps) {
+
+  }
+
   aboutUs() {
     this.props.path('/about-us');
   }
-
+  
   render() {
     const { classes } = this.props;
 
@@ -145,6 +155,19 @@ class Search extends Component {
     };
 
     const placeHolder = !this.state.location.name ? 'Where do you want to go?' : this.state.location.name;
+
+    const settings = {
+      dots: true,
+      infinite: true,
+      slidesToShow: 2,
+      slidesToScroll: 1,
+      autoplay: true,
+      speed: 2000,
+      autoplaySpeed: 4000,
+      cssEase: 'linear',
+      adaptiveHeight: true
+    };
+
 
     let packages = '';
     if (this.state.package) {
@@ -219,4 +242,4 @@ class Search extends Component {
     );
   }
 }
-export default withStyles(styles)(Search);
+export default withRouter(withStyles(styles)(Search));

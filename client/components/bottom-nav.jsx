@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import { Link, withRouter } from 'react-router-dom';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Home from '@material-ui/icons/Home';
@@ -35,33 +36,50 @@ class BottomNav extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      auth: []
+      auth: this.props.user,
+      loggedIn: false
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick(event) {
     let path = null;
-    if (!this.props.user) {
+    if (!this.state.auth.loggedIn ) {
       path = '/login';
     } else {
-      path = '/user-profile/' + this.props.user.email;
+      path = '/user-profile/' + this.state.auth.id;
     }
     switch (event.currentTarget.id) {
       case 'home':
-        this.props.path('/');
+        this.props.history.push('/');
         break;
       case 'itinerary':
-        this.props.path('/itinerary');
+        this.props.history.push('/itinerary');
         break;
       case 'account':
-        this.props.path(path);
+        this.props.history.push( path );
         break;
     }
   }
 
-  componentDidMount() {
-    this.setState({ auth: this.props.auth });
+  componentDidMount(){
+    this.getLoginStatus()
+  }
+
+  getLoginStatus(){
+    fetch('/api/loginStatus.php')
+    .then( res => res.json())
+    .then( data => 
+      this.setState({ 
+        auth: data, 
+        loggedIn: data.loggedIn })
+    )
+  }
+
+  componentDidUpdate( prevProps, prevState ){
+    if ( prevState.auth === this.state.auth ){
+      this.getLoginStatus();
+    }
   }
 
   render() {
@@ -84,4 +102,4 @@ class BottomNav extends Component {
 
 }
 
-export default withStyles(styles)(BottomNav);
+export default withRouter(withStyles(styles)(BottomNav));

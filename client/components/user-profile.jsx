@@ -6,8 +6,101 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
+
+class UserProfile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null
+    };
+    this.logoutHandler = this.logoutHandler.bind( this );
+  }
+
+  componentDidMount() {
+    if (!this.props.user ) {
+      fetch('/api/profile.php?id=' + this.props.match.params.id)
+        .then(res => res.json())
+        .then(response => {
+          this.setState({ user: response });
+        });
+    } else {
+      this.setState({ user: this.props.user });
+    }
+  }
+
+  logoutHandler() {
+    fetch( '/api/loginStatus.php?logout=true' )
+    .then( res => res.json() )
+    .then( data => {
+      this.props.logout();
+      const user = {
+        isGuide: false,
+        userEmail: false,
+        id: null,
+        loggedIn: false
+      }
+      this.setState({ user }, () => this.props.history.push('/login', user )) 
+    
+    })
+      
+  }
+
+  render() {
+    const { classes } = this.props;
+    if (!this.state.user) {
+      return null;
+    }
+    return (
+      <>
+        <Container className={classes.marginBottom} >
+          <Typography className={classes.marginTop} style={{ paddingLeft: '16px' }} variant="h4">
+            {this.state.user.name}
+          </Typography>
+          <Typography className={classes.marginLeft} variant="subtitle1">
+            {this.state.user.location}
+          </Typography>
+        </Container>
+        <Container>
+          <Grid className={classes.marginBottom} container
+            direction="row"
+            justify="center"
+            alignItems="center">
+            <Grid item xs={4}>
+              <Avatar alt="avatar" src={this.state.user.image} className={classes.avatar} />
+            </Grid>
+            <Grid item xs={6}>
+              <ThemeProvider theme={theme}>
+                <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.user.id} >
+                  <Typography variant="button">Edit profile</Typography>
+                </Button>
+                {this.state.user.isGuide
+                  ? <Button className={classes.buttonCreate} type="button" fullWidth variant="contained" color="secondary" component={Link} to={'/create-package'} >
+                      Create Package
+                    </Button>
+                  : null
+                }
+              </ThemeProvider>
+            </Grid>
+          </Grid>
+        </Container>
+        <UpComingTuursList user={this.state.user} />
+        {/* {this.state.user.isGuide
+        ? <UpComingTuursList user={ this.state.user }/>
+        : <Typography variant="h5" style={{ paddingLeft: '10px' }}>No Tuurs available</Typography>
+      }  */}
+      <Container style={{paddingBottom: '90px'}}>
+          <ThemeProvider theme={theme}>
+            <Button className={classes.buttonCreate} onClick={ this.logoutHandler } type="button" fullWidth variant="contained" color="secondary">Logout</Button>
+          </ThemeProvider>
+      </Container>
+
+      </>
+
+    );
+  }
+}
 
 const theme = createMuiTheme({
   palette: {
@@ -38,70 +131,4 @@ const styles = theme => ({
   }
 });
 
-class UserProfile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: null
-    };
-  }
-
-  componentDidMount() {
-    if (!this.props.user || this.props.match.params.email !== this.props.user.email) {
-      fetch('/api/profile.php?email=' + this.props.match.params.email)
-        .then(res => res.json())
-        .then(response => {
-          this.setState({ user: response });
-        });
-    } else {
-      this.setState({ user: this.props.user });
-    }
-  }
-
-  render() {
-    const { classes } = this.props;
-    if (!this.state.user) {
-      return null;
-    }
-    return (
-    <>
-    <Container className={classes.marginBottom} >
-      <Typography className={classes.marginTop} style={{ paddingLeft: '16px' }} variant="h4">
-        {this.state.user.name }
-      </Typography>
-      <Typography className={classes.marginLeft} variant="subtitle1">
-        {this.state.user.location}
-      </Typography>
-    </Container>
-    <Container>
-      <Grid className={classes.marginBottom} container
-        direction="row"
-        justify="center"
-        alignItems="center">
-        <Grid item xs={4}>
-          <Avatar alt="avatar" src={this.state.user.image} className={classes.avatar} />
-        </Grid>
-        <Grid item xs={6}>
-          <ThemeProvider theme={theme}>
-            <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.user.email} >
-              <Typography variant="button">Edit profile</Typography>
-            </Button>
-            { this.state.user.isGuide
-              ? <Button className={classes.buttonCreate} type="button" fullWidth variant="contained" color="secondary" component={Link} to={'/create-package'} >
-                  Create Package
-              </Button>
-              : null
-            }
-
-          </ThemeProvider>
-        </Grid>
-      </Grid>
-    </Container>
-    <UpComingTuursList user={ this.state.user }/>
-      </>
-
-    );
-  }
-}
-
-export default withStyles(styles)(UserProfile);
+export default withRouter( withStyles(styles)(UserProfile) );
