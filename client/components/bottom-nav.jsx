@@ -61,12 +61,6 @@ class BottomNav extends Component {
     )
   }
 
-  componentDidUpdate( prevProps, prevState ){
-    if ( prevState.auth === this.state.auth ){
-      this.getLoginStatus();
-    }
-  }
-
   render() {
     const { classes } = this.props;
     return (
