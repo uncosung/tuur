@@ -58,7 +58,7 @@ class SearchPackages extends Component {
     fetch('/api/package.php')
       .then(res => res.json())
       .then(packages => {
-        this.fetchLocation(packages)
+        this.fetchLocation(packages);
       });
   }
 
@@ -83,6 +83,7 @@ class SearchPackages extends Component {
 
     Promise.all(mapArray).then(tuurCoordinates => this.filterTuurs(fetchCoordinates, packages, tuurCoordinates));
   }
+
   fetchLocation(packages) {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
       .then(res => res.json())
@@ -102,14 +103,6 @@ class SearchPackages extends Component {
 
     this.props.tags.length === 0 && this.props.dates.start !== null ? this.filterDates(filterTuurs) : this.filterTags(filterTuurs);
   }
-
-  //   filterTags () {
-  //     let tagArray = [];
-  //     for (let i = 0; i < this.state.filteredTuurs.length; i++){
-  //       for (let j = 0; j < this.props.tags.length; j++){
-  //         for (let k = 0; k < JSON.parse(this.state.filteredTuurs[i].tuur.tags).length; k++){
-  //           if (JSON.parse(this.state.filteredTuurs[i].tuur.tags)[k] === this.props.tags[j]){
-  //             tagArray = [...tagArray, this.state.filteredTuurs[i]]
 
   filterTags(filterTuurs) {
     if (this.state.tags.length === 0) {
@@ -207,7 +200,7 @@ class SearchPackages extends Component {
         }
       }
     }
-    return returnArray
+    return returnArray;
 
   }
 

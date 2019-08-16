@@ -23,7 +23,6 @@ import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
 
-
 const divStyle = {
   width: '47px',
   height: '40px',
@@ -172,23 +171,23 @@ class CreatePackage extends Component {
     };
   }
 
-  handleSelect=(result) =>{
+  handleSelect=result => {
     this.setState({
       location: {
         name: result.place_name,
-        coordinates: result.geometry.coordinates,
+        coordinates: result.geometry.coordinates
       }
     });
   }
 
-  handleChange=(event) =>{
+  handleChange=event => {
     const { value } = event.target;
     this.setState({
       tags: value
     });
   }
 
-  handleInputChange=(event) =>{
+  handleInputChange=event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
@@ -196,7 +195,7 @@ class CreatePackage extends Component {
     });
   }
 
-  handleSubmit=(event) =>{
+  handleSubmit=event => {
     event.preventDefault();
     const { title, description, location, tags, timeRange, dates, imageUrl } = this.state;
 
@@ -210,8 +209,7 @@ class CreatePackage extends Component {
         }
       });
     } else {
-      // for ( var value of dates ){
-      if (imageUrl.length !== 0 && dates.length !== 0 && tags.length !== 0  && location.name.length !==0) {
+      if (imageUrl.length !== 0 && dates.length !== 0 && tags.length !== 0 && location.name.length !== 0) {
         fetch('/api/package.php', {
           method: 'POST',
           body: JSON.stringify(
@@ -222,38 +220,37 @@ class CreatePackage extends Component {
         this.setState({ openSnackBar: false });
         this.props.history.push('/user-profile/' + this.props.packages.email);
       }
-      // }
     }
-    if (imageUrl.length === 0 || dates.length === 0 || tags.length === 0 || location.name.length===0) {
+    if (imageUrl.length === 0 || dates.length === 0 || tags.length === 0 || location.name.length === 0) {
       this.setState({ openSnackBar: true });
     } else {
       this.setState({ openSnackBar: false });
     }
   }
 
-  handleSnackbarClose=(event, reason) =>{
+  handleSnackbarClose=(event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     this.setState({ openSnackBar: false });
   }
 
-  handleSnackbarOpen=() =>{
+  handleSnackbarOpen=() => {
     this.setState({ openSnackBar: true });
   }
 
-  handleModalClose=(dates) =>{
+  handleModalClose=dates => {
     this.setState({
       openModal: false,
       dates: dates
     });
   }
 
-  modalClose=() =>{
+  modalClose=() => {
     this.setState({ openModal: false });
   }
 
-  iconClickhandler=() =>{
+  iconClickhandler=() => {
     let img = document.getElementById('input-imageUrl').value;
     let imgArray = this.state.imageUrl;
     if (img) {
@@ -266,7 +263,7 @@ class CreatePackage extends Component {
     }
   }
 
-  removeImage=(e) =>{
+  removeImage=e => {
     let id = e.target.id;
     id = parseInt(id);
     let imgArray = this.state.imageUrl;
@@ -274,7 +271,7 @@ class CreatePackage extends Component {
     this.setState({ imageUrl: imgArray });
   }
 
-  removeChips=(e) =>{
+  removeChips=e => {
     let dateId = e.currentTarget.id;
     dateId = parseInt(dateId);
     let datesArray = this.state.dates;
@@ -320,8 +317,7 @@ class CreatePackage extends Component {
       warning = '⛔️ You need to pick dates 📆';
     } else if (this.state.tags.length === 0) {
       warning = '⛔️ You need to pick categories 🍧';
-    } 
-    
+    }
 
     const geocoderApiOptions = {
       country: 'us',
@@ -340,11 +336,7 @@ class CreatePackage extends Component {
               <TextField required helperText={this.state.inputErrors.title ? 'Must include a title' : ' '} error={this.state.inputErrors.title} fullWidth id="input-title" label="Title" name="title" onChange={this.handleInputChange} text={ this.state.name}/>
             </Grid>
           </Grid>
-          {/* <Grid className={classes.margin} container alignItems="flex-end" justify="center">
-            <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.location ? 'Please provide a location' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="Location" name="location" onChange={this.handleInputChange} />
-            </Grid>
-          </Grid> */}
+
           <Grid justify="center" className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
               <MatGeocoder

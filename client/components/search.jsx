@@ -8,10 +8,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
-import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import MoreVert from '@material-ui/icons/MoreVert';
-import { generateKeyPair } from 'crypto';
 
 const theme = createMuiTheme({
   palette: {
@@ -37,13 +35,25 @@ const styles = theme => ({
     maxWidth: 370
   },
   media: {
-    height: 350
+    height: 350,
+    [theme.breakpoints.up('320')]: {
+      height: 180
+    },
+    [theme.breakpoints.up('375')]: {
+      height: 300
+    },
+    [theme.breakpoints.up('414')]: {
+      height: 350
+    }
   },
   marginTop: {
-    marginTop: theme.spacing(8)
+    marginTop: theme.spacing(5)
+  },
+  marginTop2: {
+    marginTop: theme.spacing(2)
   },
   marginBottom: {
-    marginBottom: theme.spacing(4)
+    marginBottom: theme.spacing(2)
   },
   marginBottom2: {
     marginBottom: theme.spacing(2)
@@ -67,6 +77,17 @@ const styles = theme => ({
     right: '11px',
     color: '#a49f9f',
     fontSize: '20px'
+  },
+  button: {
+    [theme.breakpoints.up('320')]: {
+      fontSize: '0.7rem'
+    },
+    [theme.breakpoints.up('375')]: {
+      fontSize: '1.0rem'
+    },
+    [theme.breakpoints.up('414')]: {
+      fontSize: '1.1rem'
+    }
   }
 });
 
@@ -85,10 +106,12 @@ class Search extends Component {
     this.fetchPackages = this.fetchPackages.bind(this);
     this.aboutUs = this.aboutUs.bind(this);
   }
+
   handleClick() {
     this.props.search(this.state.location);
     this.props.path('/results');
   }
+
   handleSelect(result) {
     this.setState({
       location: {
@@ -98,54 +121,43 @@ class Search extends Component {
       }
     });
   }
+
   fetchPackages() {
     fetch('/api/package.php')
       .then(res => res.json())
       .then(response => this.setState({ package: response }));
   }
+
   componentDidMount() {
     this.fetchPackages();
   }
-  componentDidUpdate(prevProps) {
 
-  }
   aboutUs() {
     this.props.path('/about-us');
   }
+
   render() {
     const { classes } = this.props;
+
     const geocoderApiOptions = {
       country: 'us',
       proximity: { longitude: -118.243683, latitude: 34.052235 }
     };
-    const settings = {
-      dots: true,
-      infinite: true,
 
-      slidesToShow: 2,
-      slidesToScroll: 1,
-      autoplay: true,
-      speed: 2000,
-      autoplaySpeed: 4000,
+    const placeHolder = !this.state.location.name ? 'Where do you want to go?' : this.state.location.name;
 
-      cssEase: 'linear',
-      adaptiveHeight: true
-    };
     let packages = '';
     if (this.state.package) {
       packages = this.state.package.map((article, index) => {
         return (
           <Grid key={index} component={Link} to={{ pathname: '/package-details/' + article.id, state: { item: article } }}>
-
             <img src={article.mainImage} alt={article.title} style={{ height: '120px', width: '100%', border: '6px solid white' }} />
-
           </Grid>
         );
       });
     }
     return (
       <div style={{ fontSize: 0 }}>
-        {/* <img style={imgStyle} src="https://i.imgur.com/AU3rU4N.png" alt="logo"/> */}
         <img style={imgStyle} src="images/logo.png" alt="logo"/>
         <div className={classes.aboutUs} component='a' onClick={this.aboutUs} ><MoreVert style={{ fontSize: '30px' }} /></div>
         <Card style={{ maxWidth: '100%' }} mt={0} className={classes.card}>
@@ -161,7 +173,7 @@ class Search extends Component {
         <Grid justify="center" className={classes.marginTop} container>
           <Grid item xs={10}>
             <MatGeocoder
-              inputPlaceholder="Where do you want to go?"
+              inputPlaceholder={placeHolder}
               accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
               showLoader={true}
               showInputContainer={false}
@@ -173,7 +185,25 @@ class Search extends Component {
           </Grid>
         </Grid>
 
-        <Grid justify="center" container className={classes.marginBottom} >
+        <Grid container direction="row" justify="center" alignItems="center" className={classes.marginTop2} >
+          <Grid item xs={4} >
+            <ThemeProvider theme={theme} >
+              <Button type="button" variant="contained" color="secondary" component='a' onClick={() => this.handleSelect({ place_name: 'Irvine, California, United States', geometry: { coordinates: [-117.826, 33.6857] } })}>
+                <Typography className={classes.button} variant="body1" gutterBottom>Irvine</Typography>
+              </Button>
+            </ThemeProvider>
+          </Grid>
+
+          <Grid item xs={5}>
+            <ThemeProvider theme={theme}>
+              <Button type="button" variant="contained" color="secondary" component='a' onClick={() => this.handleSelect({ place_name: 'Los Angeles, California, United States', geometry: { coordinates: [-118.2439, 34.0544] } })}>
+                <Typography className={classes.button} variant="body1" gutterBottom>Los Angeles</Typography>
+              </Button>
+            </ThemeProvider>
+          </Grid>
+        </Grid>
+
+        <Grid justify="center" container >
           <Grid className={classes.marginTop} container justify="center" >
             <Grid item xs={10}>
               <ThemeProvider theme={theme}>
@@ -184,14 +214,7 @@ class Search extends Component {
             </Grid>
           </Grid>
         </Grid>
-        {/* <Typography variant="h5" align="center" className={classes.marginBottom2}>
-             Popular tuurs
-        </Typography>
-        <Grid style={{ height: '120px', width: '85%', margin: 'auto' }}>
-          <Slider {...settings} >
-            {packages}
-          </Slider>
-        </Grid> */}
+
       </div>
     );
   }

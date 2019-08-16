@@ -85,7 +85,6 @@ class ItineraryItem extends Component {
         <Card className={classes.card}>
           <CardHeader
             title={title}
-          // subheader="September 14, 2016"
           />
           <CardMedia
             className={classes.media}

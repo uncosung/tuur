@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -96,7 +95,6 @@ class UpComingTuursList extends Component {
   componentDidMount() {
     this.getBooked();
     this.getCreatedPackages();
-
   }
 
   componentDidUpdate() {
@@ -104,7 +102,6 @@ class UpComingTuursList extends Component {
       this.getBooked();
       this.getCreatedPackages();
     }
-
   }
 
   render() {
@@ -146,9 +143,7 @@ class UpComingTuursList extends Component {
             </>
             : null
         }
-
       </>
-
     );
   }
 

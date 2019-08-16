@@ -48,9 +48,11 @@ class Mapbox extends Component {
     this.clickPin = this.clickPin.bind(this);
     this.fetchPackages = this.fetchPackages.bind(this);
   }
+
   componentDidMount() {
     this.fetchPackages();
   }
+
   fetchPackages() {
     fetch('/api/package.php')
       .then(res => res.json())
@@ -60,6 +62,7 @@ class Mapbox extends Component {
         }, this.fetchLocation);
       });
   }
+
   componentDidUpdate(prevProps) {
     if (prevProps.tags.toString() !== this.props.tags.toString()) {
       this.fetchPackages();
@@ -67,6 +70,7 @@ class Mapbox extends Component {
       this.fetchPackages();
     }
   }
+
   filterTuurs() {
     let filterTuurs = [];
     let tooFar = [];
@@ -82,7 +86,6 @@ class Mapbox extends Component {
     }, () => {
       this.filterTags();
     });
-
   }
 
   async getTuurLocationData(tuur) {
@@ -102,7 +105,6 @@ class Mapbox extends Component {
         fetchCoordinates: tuurCoordinates
       }, this.filterTuurs);
     });
-
   }
 
   filterTags() {
@@ -136,10 +138,9 @@ class Mapbox extends Component {
     }, () => {
       this.props.dates.start !== null && this.filterDates;
     });
-
   }
+
   filterDates() {
-    debugger;
     const endDate = new Date(this.props.dates.end);
     const begDate = new Date(this.props.dates.start);
     let begDateYear = begDate.getFullYear();
@@ -179,7 +180,6 @@ class Mapbox extends Component {
   }
 
   checkAvailability(year, month, day) {
-    debugger;
     for (let i = 0; i < this.state.filteredTuurs.length; i++) {
       let parseDate = JSON.parse(this.state.filteredTuurs[i].tuur.dates);
       for (var value of parseDate) {
@@ -192,7 +192,6 @@ class Mapbox extends Component {
         }
       }
     }
-
   }
 
   nextDay(month, day) {
@@ -222,6 +221,7 @@ class Mapbox extends Component {
     if (month === 11 && day !== 31) return ++day;
     return 1;
   }
+
   fetchLocation() {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
       .then(res => res.json())
@@ -230,8 +230,8 @@ class Mapbox extends Component {
           fetchResult: result
         }, this.mapTuurs);
       });
-
   }
+
   handleViewPortChange(viewport) {
     this.setState({
       viewport: { ...this.state.viewport, ...viewport },
@@ -242,8 +242,6 @@ class Mapbox extends Component {
     }, this.filterTuurs);
   }
 
-  clickPin(tuur) {
-  }
   renderPopup() {
     const { popupInfo } = this.state;
 
@@ -271,7 +269,7 @@ class Mapbox extends Component {
         </Marker>
       );
     });
-    const { viewport, searchResultLayer } = this.state;
+    const { viewport } = this.state;
     return (
       <div className={classes.mapContainer}>
         <ReactMapGL

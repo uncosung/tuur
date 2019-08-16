@@ -31,7 +31,9 @@ const styles = theme => ({
     paddingLeft: 20
   }
 });
+
 const CalendarWithRange = withRange(Calendar);
+
 class DateRangePicker extends Component {
   constructor(props) {
     super(props);
@@ -42,16 +44,20 @@ class DateRangePicker extends Component {
     this.setDate = this.setDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   setDate(date) {
     this.setState({
       dates: date
     });
   }
+
   handleSubmit() {
     this.props.close(this.state.dates);
   }
+
   render() {
     const { classes } = this.props;
+
     return (
       <div className={classes.root}>
         <Grid justify="center" alignItems="center" container>
@@ -78,17 +84,6 @@ class DateRangePicker extends Component {
             headerFormat: 'MMM Do'
           }}
         />
-        {/* <InfiniteCalendar
-          width={350}
-          height={300}
-          Component={MultipleDatesCalendar}
-          selected={this.state.dates}
-          onSelect={date => {
-            this.setDate(date);
-          }}
-          disabledDates = {[]}
-          className={classes.marginBottom}
-        /> */}
 
         <Grid className={classes.marginLeft} justify="center" alignItems="center" container>
           <Grid item xs={7} >

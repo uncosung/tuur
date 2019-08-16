@@ -1,21 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
-
-class CarouselImage extends Component {
-  constructor( props ){
-    super( props );
-  }
-
-  render(){
-    const { classes } = this.props;
-
-    return (
-      <div style={divStyle} className={classes.productPreview} onClick={this.props.click }>
-        <img id={ this.props.id } style={imgStyle} src={ this.props.images }/>
-      </div>
-    )
-  }
-}
 
 const divStyle = {
   width: '47px',
@@ -49,6 +33,20 @@ const imgStyle = {
   }
 };
 
+class CarouselImage extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div style={divStyle} className={classes.productPreview} onClick={this.props.click }>
+        <img id={ this.props.id } style={imgStyle} src={ this.props.images }/>
+      </div>
+    );
+  }
+}
+
 export default withStyles(styles)(CarouselImage);
-
-

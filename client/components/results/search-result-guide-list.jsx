@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -50,15 +49,17 @@ class SearchResultGuide extends Component {
     this.mapGuides = this.mapGuides.bind(this);
     this.filterGuides = this.filterGuides.bind(this);
   }
-  componentDidMount() {
 
+  componentDidMount() {
     this.fetchProfiles();
   }
+
   fetchProfiles() {
     fetch('/api/search.php')
       .then(res => res.json())
       .then(search => this.setState({ guideProfile: search, isLoading: true }, this.fetchLocation));
   }
+
   fetchLocation() {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.props.location.name}.json?access_token=${TOKEN}`)
       .then(res => res.json())
@@ -68,6 +69,7 @@ class SearchResultGuide extends Component {
         }, this.mapGuides);
       });
   }
+
   async getGuideLocationData(guide) {
     const resp = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${guide.location}.json?access_token=${TOKEN}`);
     const respJson = await resp.json();
@@ -76,6 +78,7 @@ class SearchResultGuide extends Component {
       coord: respJson.features[0].center
     };
   }
+
   mapGuides() {
     let mapArray = this.state.guideProfile.map(this.getGuideLocationData);
 
@@ -85,6 +88,7 @@ class SearchResultGuide extends Component {
       }, this.filterGuides);
     });
   }
+
   filterGuides() {
     let filterGuides = [];
     let tooFar = [];
@@ -100,6 +104,7 @@ class SearchResultGuide extends Component {
       isLoading: false
     });
   }
+
   render() {
     const { classes } = this.props;
     const profile = this.state.filteredGuides.map(profile => {

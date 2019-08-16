@@ -58,8 +58,6 @@ class UserProfile extends Component {
     }
   }
 
-  // COMPONENTDIDUPDATE?
-
   render() {
     const { classes } = this.props;
     if (!this.state.user) {
@@ -95,17 +93,11 @@ class UserProfile extends Component {
               : null
             }
 
-
-
           </ThemeProvider>
         </Grid>
       </Grid>
     </Container>
     <UpComingTuursList user={ this.state.user }/>
-      {/* {this.state.user.isGuide
-        ? <UpComingTuursList user={ this.state.user }/>
-        : <Typography variant="h5" style={{ paddingLeft: '10px' }}>No Tuurs available</Typography>
-      }  */}
       </>
 
     );

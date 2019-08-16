@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -9,10 +8,6 @@ import GuidePackageList from './user-view-guide-profile-item';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-
-
-
-
 
 const theme = createMuiTheme({
   palette: {
@@ -82,18 +77,18 @@ class GuidePackages extends Component {
     super(props);
     this.state = {
       userEmail: '',
-      packages: [],
+      packages: []
     };
   }
 
-  componentDidUpdate(){
-    if ( !this.state.packages.length && !this.state.userEmail ){
-      fetch('/api/guidePackages.php?email=' + this.props.guideInfo.email )
-          .then(res => res.json())
-          .then(packages => this.setState({ userEmail: this.props.guideInfo.email, packages }));
-    } 
+  componentDidUpdate() {
+    if (!this.state.packages.length && !this.state.userEmail) {
+      fetch('/api/guidePackages.php?email=' + this.props.guideInfo.email)
+        .then(res => res.json())
+        .then(packages => this.setState({ userEmail: this.props.guideInfo.email, packages }));
+    }
   }
-  
+
   render() {
     const { classes } = this.props;
     const packageMap = this.state.packages.map((packageItem, id) => {
@@ -101,7 +96,7 @@ class GuidePackages extends Component {
     });
     return (
       <>
-        
+
         <Container className={classes.marginBottom} >
           <Typography className={classes.marginTop} variant="h4">
             Created Packages

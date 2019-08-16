@@ -23,7 +23,6 @@ const theme = createMuiTheme({
     lightBeige: { main: '#f1f1f1' },
     beige: { main: '#f5e1da' }
   }
-
 });
 
 const styles = theme => ({
@@ -189,7 +188,6 @@ class PackageDetails extends Component {
       }
       return false;
     }
-
   }
 
   nextDay(month, day) {
@@ -230,7 +228,6 @@ class PackageDetails extends Component {
         .then(res => res.json())
         .then(data => this.props.history.push('../itinerary'));
     }
-
   }
 
   componentDidMount() {
@@ -254,12 +251,15 @@ class PackageDetails extends Component {
   render() {
     let carousel = [];
     const { classes } = this.props;
+
     if (this.state.images) {
       carousel = this.state.images.map((image, id) => {
         return <CarouselImage key={ id } id={ id } click={ this.changeImage } images={image} />;
       });
     }
+
     if (!this.state.item) return null;
+
     return (
       <>
         <Card className={classes.card}>
@@ -280,7 +280,7 @@ class PackageDetails extends Component {
           />
           <CardContent>
             <Typography >
-              <LocationOn /> 
+              <LocationOn />
               <a className={classes.link} href={`https://maps.google.com/?q=${this.props.location.state.item.location}`}>
                 { this.props.location.state.item.location }
               </a>

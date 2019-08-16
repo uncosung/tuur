@@ -9,7 +9,6 @@ import GuidePackages from './user-view-guide-profile';
 import { Link } from 'react-router-dom';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 
-
 const styles = theme => ({
   marginTop: {
     marginTop: theme.spacing(3)
@@ -28,7 +27,7 @@ const styles = theme => ({
     fontSize: '2.5rem'
   },
   paddingRight: {
-    paddingRight: 20,
+    paddingRight: 20
   }
 });
 
@@ -111,10 +110,6 @@ class UserViewProfile extends Component {
         </Grid>
       </Container>
       <GuidePackages guideInfo={this.state} />
-      {/* {this.state.isGuide
-        ? <UpComingTuursList view={this.props.view} user={ this.props.user } isGuide={this.state.isGuide}/>
-        : <Typography variant="h5">No Tuurs available</Typography>
-      } */}
       </>
     );
   }
