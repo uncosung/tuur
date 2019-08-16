@@ -52,14 +52,6 @@ class SearchPackageItem extends Component {
               { this.props.item.description }
             </Typography>
           </CardContent>
-          {/* <CardActions disableSpacing>
-            <IconButton aria-label="Add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="Share">
-              <ShareIcon />
-            </IconButton>
-          </CardActions> */}
         </Card>
       </Container>
     );

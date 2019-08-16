@@ -72,7 +72,6 @@ class EditProfile extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    // const { name, email, location, bio, image } = this.state;
     if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length) {
       this.setState({
         inputErrors: {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import { Link, withRouter } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -14,7 +15,85 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import DatePicker from './date-multiple-picker';
 import Modal from '@material-ui/core/Modal';
 import CarouselImage from './package-detail-carousel-item';
-import { Link, withRouter } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#3A8288' },
+    secondary: { main: '#5bd1d7' },
+    lightBeige: { main: '#f1f1f1' },
+    beige: { main: '#f5e1da' }
+  }
+});
+
+const styles = theme => ({
+  marginTop: {
+    marginTop: theme.spacing(3)
+  },
+  marginBottom: {
+    marginBottom: theme.spacing(2)
+  },
+  card: {
+    maxWidth: 400,
+    marginBottom: theme.spacing(2)
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%',
+    backgroundSize: '100% 100%'
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest
+    })
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)'
+  },
+  fontSize: {
+    fontSize: '2.5rem'
+  },
+  paddingRight: {
+    paddingRight: 20
+  },
+  modalStyle: {
+    top: 5,
+    left: 5
+  },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: 7,
+    outline: 'none'
+  },
+  previewContainer: {
+    width: '160px',
+    height: '60px',
+    display: 'flex',
+    justifyContent: 'center',
+    margin: ' auto auto 10px auto'
+  },
+  productPreview: {
+    width: '50px',
+    height: '50px',
+    margin: '5px',
+    opacity: 0.5,
+    '&:hover': {
+      opacity: 1
+    }
+  },
+  cover: {
+    width: '100%',
+    height: '100%'
+  },
+  link: {
+    color: 'inherit'
+  }
+});
 
 class PackageDetails extends Component {
   constructor(props) {
@@ -207,12 +286,15 @@ class PackageDetails extends Component {
 
     let carousel = [];
     const { classes } = this.props;
+
     if (this.state.images) {
       carousel = this.state.images.map((image, id) => {
         return <CarouselImage key={id} id={id} click={this.changeImage} images={image} />;
       });
     }
+
     if (!this.state.item) return null;
+
     return (
       <>
         <Card className={classes.card}>
@@ -317,7 +399,7 @@ class PackageDetails extends Component {
   }
 }
 
-const theme = createMuiTheme({
+<!-- const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
     secondary: { main: '#5bd1d7' },
@@ -394,6 +476,6 @@ const styles = theme => ({
   link: {
     color: 'inherit'
   }
-});
+}); -->
 
 export default withRouter(withStyles(styles)(PackageDetails));

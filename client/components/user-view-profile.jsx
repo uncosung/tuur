@@ -9,6 +9,28 @@ import GuidePackages from './user-view-guide-profile';
 import { Link, withRouter } from 'react-router-dom';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 
+const styles = theme => ({
+  marginTop: {
+    marginTop: theme.spacing(3)
+  },
+  avatar: {
+    width: 80,
+    height: 80
+  },
+  marginBottom: {
+    marginBottom: theme.spacing(3)
+  },
+  marginLeft: {
+    marginLeft: theme.spacing(2)
+  },
+  fontSize: {
+    fontSize: '2.5rem'
+  },
+  paddingRight: {
+    paddingRight: 20
+  }
+});
+
 
 class UserViewProfile extends Component {
   constructor(props) {
@@ -91,16 +113,12 @@ class UserViewProfile extends Component {
         </Grid>
       </Container>
       <GuidePackages guideInfo={this.state} />
-      {/* {this.state.isGuide
-        ? <UpComingTuursList view={this.props.view} user={ this.props.user } isGuide={this.state.isGuide}/>
-        : <Typography variant="h5">No Tuurs available</Typography>
-      } */}
       </>
     );
   }
 }
 
-const styles = theme => ({
+<!-- const styles = theme => ({
   marginTop: {
     marginTop: theme.spacing(3)
   },
@@ -120,6 +138,6 @@ const styles = theme => ({
   paddingRight: {
     paddingRight: 20,
   }
-});
+}); -->
 
 export default withRouter(withStyles(styles)(UserViewProfile));

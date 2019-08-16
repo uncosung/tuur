@@ -60,7 +60,7 @@ class SearchPackages extends Component {
     fetch('/api/package.php')
       .then(res => res.json())
       .then(packages => {
-        this.fetchLocation(packages)
+        this.fetchLocation(packages);
       });
   }
 
@@ -129,7 +129,7 @@ class SearchPackages extends Component {
 
   filterTags( filterTuurs, tags, dates ) {
     const locationQueryString = queryString.parse(this.props.history.location.search);
-  
+
     let tagArray = [];
     for (let i = 0; i < filterTuurs.length; i++) {
       for (let j = 0; j < tags.length; j++) {
@@ -213,6 +213,7 @@ class SearchPackages extends Component {
       }
     }
     return returnArray
+
   }
 
   nextDay(month, day) {

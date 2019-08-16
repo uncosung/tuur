@@ -25,16 +25,76 @@ const imgStyle = {
     opacity: 1
   }
 };
+
 const styles = theme => ({
   marginTop: {
-    marginTop: theme.spacing(4)
+    marginTop: theme.spacing(4),
+    [theme.breakpoints.up('320')]: {
+      fontSize: '1.2rem',
+      marginTop: theme.spacing(0.4)
+    },
+    [theme.breakpoints.up('375')]: {
+      fontSize: '2.0rem',
+      marginTop: theme.spacing(1.5)
+    },
+    [theme.breakpoints.up('414')]: {
+      fontSize: '2.0rem',
+      marginTop: theme.spacing(2)
+    },
+    [theme.breakpoints.up('1018')]: {
+      fontSize: '2.5rem',
+      marginTop: theme.spacing(4)
+    }
   },
+  // marginTop2:{
+  //   [theme.breakpoints.up('320')]: {
+  //     marginTop: theme.spacing(0.3),
+  //   },
+  //   [theme.breakpoints.up('375')]: {
+  //     marginTop: theme.spacing(1.5),
+  //   },
+  //   [theme.breakpoints.up('414')]: {
+  //     marginTop: theme.spacing(2),
+  //   },
+  //   [theme.breakpoints.up('1018')]: {
+  //     marginTop: theme.spacing(4),
+  //   },
+  // },
   marginLeft: {
-    marginLeft: -5
+    marginLeft: -5,
+    [theme.breakpoints.up('320')]: {
+      fontSize: '0.7rem'
+    },
+    [theme.breakpoints.up('375')]: {
+      fontSize: '0.9rem'
+    },
+    [theme.breakpoints.up('414')]: {
+      fontSize: '0.9rem'
+    }
   },
   margin: {
     marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(2)
+    marginLeft: theme.spacing(2),
+    [theme.breakpoints.up('320')]: {
+      fontSize: '0.7rem'
+    },
+    [theme.breakpoints.up('375')]: {
+      fontSize: '0.9rem'
+    },
+    [theme.breakpoints.up('414')]: {
+      fontSize: '0.9rem'
+    }
+  },
+  responsiveFont: {
+    [theme.breakpoints.up('320')]: {
+      fontSize: '0.7rem'
+    },
+    [theme.breakpoints.up('375')]: {
+      fontSize: '1.1rem'
+    },
+    [theme.breakpoints.up('414')]: {
+      fontSize: '1.3rem'
+    }
   }
 });
 
@@ -56,6 +116,7 @@ class LogIn extends React.Component {
       [name]: value
     });
   }
+
   handleSubmit(event) {
     event.preventDefault();
     fetch(`/api/profile.php?login=${this.state.email}`)
@@ -67,9 +128,10 @@ class LogIn extends React.Component {
       }
       );
   }
-  
+
   render() {
     const { classes } = this.props;
+
     if (this.state.auth) {
       return <Redirect to={{
         pathname: '/user-profile/' + this.state.email,
@@ -77,11 +139,12 @@ class LogIn extends React.Component {
       }}
       />;
     }
+
     return (
     <>
     <div style = {{ fontSize: 0 }}>
       <img style={imgStyle} src="https://i.imgur.com/AU3rU4N.png" alt="logo"/>
-      <img style={{ width: '100%', height: '260px' }} src="https://cdn.pixabay.com/photo/2016/11/18/19/40/adventure-1836601_1280.jpg" alt="mainImage"/>
+      <img style={{ width: '100%', height: '260px' }} className={classes.image} src="https://cdn.pixabay.com/photo/2016/11/18/19/40/adventure-1836601_1280.jpg" alt="mainImage"/>
     </div>
       <Grid justify="center" alignItems="center" container>
         <Typography className={classes.marginTop} variant="h4" gutterBottom>
@@ -98,7 +161,7 @@ class LogIn extends React.Component {
         <Grid item xs={8}>
           <ThemeProvider theme={theme}>
             <Button type="submit" className={classes.marginTop} onClick={ this.handleSubmit } fullWidth variant="contained" color="primary">
-              <Typography variant="body1" gutterBottom>log in</Typography>
+              <Typography className={classes.responsiveFont} variant="body1" gutterBottom>log in</Typography>
             </Button>
           </ThemeProvider>
         </Grid>

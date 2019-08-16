@@ -79,8 +79,6 @@ class DatePicker extends Component {
   handleBooking() {
     if (this.state.dates.length) {
       this.props.booking(this.state.dates);
-      //  MOVE TO PARENT BOOKING HANDLER
-      // this.props.history.push('../itinerary');
     }
   }
 
@@ -127,8 +125,8 @@ class DatePicker extends Component {
           disabledDates={(this.props.unavailableDates) ? this.props.unavailableDates.disabledList : null}
           className={classes.calender}
 
-          />
-    
+        />
+
         <Grid className={classes.marginLeft} justify="center" alignItems="center" container>
           <Grid item xs={7} >
             {this.props.unavailableDates.disabledList

@@ -95,6 +95,7 @@ class UserProfile extends Component {
             <Button className={classes.buttonCreate} onClick={ this.logoutHandler } type="button" fullWidth variant="contained" color="secondary">Logout</Button>
           </ThemeProvider>
       </Container>
+
       </>
 
     );

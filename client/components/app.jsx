@@ -80,12 +80,10 @@ class App extends Component {
     if (!location.name && tags) {
       this.setState({
         tags: tags
-      })
-    }
-    else if (!location.name && !tags){
-      
-    }
-    else if (!tags && !dates){
+      });
+    } else if (!location.name && !tags) {
+    } else if (!tags && !dates) {
+
       this.setState({
         location: location
       });
@@ -103,8 +101,9 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="wrapper">
         <Switch>
+
           <Route exact path="/login"
             render={props =>
               <LogIn {...props} logIn={this.logIn} isAuthed={true}/>
@@ -139,7 +138,6 @@ class App extends Component {
             render={props => 
               <EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>
           }/>
-
           <Route path="/results" 
             render={ props => 
               <Results {...props} 
@@ -164,7 +162,6 @@ class App extends Component {
             render={props => 
               <CreatePackage {...props} packages={this.state.user} isAuthed={true}/>
           }/>
-
           <Route path="/about-us"
             render={props => 
               <AboutUs {...props} />
@@ -172,9 +169,10 @@ class App extends Component {
           />
 
         </Switch>
-        <BottomNav path={this.setRoutePath} user={this.state.user}/>
-      </div>
 
+        <BottomNav path={this.setRoutePath} user={this.state.user}/>
+
+      </div>
     );
   }
 }

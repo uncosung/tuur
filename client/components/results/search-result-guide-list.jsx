@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -54,7 +53,7 @@ class SearchResultGuide extends Component {
     this.mapGuides = this.mapGuides.bind(this);
     this.filterGuides = this.filterGuides.bind(this);
   }
-  
+
   componentDidMount() {
     this.fetchProfiles();
   }
@@ -87,7 +86,6 @@ class SearchResultGuide extends Component {
         }, this.mapGuides);
       });
   }
-
   mapGuides() {
     let mapArray = this.state.guideProfile.map(this.getGuideLocationData);
     Promise.all(mapArray).then(guideCoordinates => {

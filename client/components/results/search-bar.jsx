@@ -31,7 +31,6 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // toggle: this.props.toggleStatus,
       openModal: false,
       tags: [],
       dates: {
@@ -55,8 +54,8 @@ class SearchBar extends Component {
     this.handleSelect = this.handleSelect.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleDates = this.handleDates.bind(this);
-
   }
+
   handleSelect(result) {
     this.setState({
       searchParameters: {
@@ -65,6 +64,7 @@ class SearchBar extends Component {
       }
     });
   }
+
   handleChange(event) {
     const { value } = event.target;
     this.setState({
@@ -172,7 +172,9 @@ class SearchBar extends Component {
       country: 'us',
       proximity: { longitude: -118.243683, latitude: 34.052235 }
     };
+
     const { classes } = this.props;
+
     return (
       <>
         <ThemeProvider theme={theme}>
@@ -216,7 +218,7 @@ class SearchBar extends Component {
 
               <Grid item xs={3}>
                 <Button type="submit" className={classes.button} fullWidth variant="contained" color="secondary">Filter
-                   <Select
+                  <Select
                     className={classes.width}
                     multiple
                     value={this.state.tags}

@@ -90,7 +90,6 @@ class CreatePackage extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
   }
 
   handleChange(event) {
@@ -204,7 +203,6 @@ class CreatePackage extends Component {
             <Grid item xs={2} >
               <CalendarToday />
             </Grid>
-
           </Grid>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">

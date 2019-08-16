@@ -23,6 +23,125 @@ import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
 
+const divStyle = {
+  width: '47px',
+  height: '40px',
+  border: '1px solid gray',
+  marginRight: '5px'
+};
+
+const imgStyle = {
+  width: '100%',
+  height: '100%',
+  backgroundRepeat: 'norepeat',
+  backgroundSize: '100% 100%'
+};
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#3A8288' },
+    secondary: { main: '#A6C7C8' },
+    inherit: { main: '#A0C3C5' },
+    default: { main: '#f5e1da' }
+  }
+});
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap'
+  },
+  margin: {
+    margin: theme.spacing(0.5),
+    fontSize: 33
+  },
+  textField: {
+    marginRight: theme.spacing(1),
+    width: '100%'
+  },
+  marginTop: {
+    marginTop: theme.spacing(3)
+  },
+  paddingTop: {
+    paddingTop: theme.spacing(5)
+  },
+  noPadding: {
+    padding: 2
+  },
+  marginLeft: {
+    marginLeft: theme.spacing(4),
+    marginTop: theme.spacing(1)
+  },
+  chip: {
+    width: '31%',
+    fontSize: '1rem',
+    margin: '2px'
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 276,
+    maxWidth: 276
+  },
+  subtitle: {
+    fontSize: 20
+  },
+  modalStyle: {
+    top: 5,
+    left: 5
+  },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: 7,
+    outline: 'none'
+  },
+  input: {
+    width: '100%'
+  },
+  form: {
+    width: '100%'
+  },
+  dateChip: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    width: 40,
+    marginRight: '4px',
+    marginBottom: '4px'
+  },
+  close: {
+    padding: theme.spacing(2)
+  },
+  info: {
+    backgroundColor: theme.palette.primary.dark
+  },
+  fab: {
+    margin: theme.spacing(1),
+    right: 20,
+    bottom: '77px',
+    position: 'fixed'
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1)
+  }
+});
+
+const categories = [
+  'Food',
+  'Shopping',
+  'Coffee',
+  'Outdoors',
+  'Nightlife',
+  'Activities',
+  'Other'
+];
+  
 class CreatePackage extends Component {
   constructor(props) {
     super(props);
@@ -52,21 +171,25 @@ class CreatePackage extends Component {
     };
   }
 
-  handleSelect = (result) => {
+
+  handleSelect= (result) => {
     this.setState({
       location: {
         name: result.place_name,
-        coordinates: result.geometry.coordinates,
+        coordinates: result.geometry.coordinates
       }
     });
   }
 
+
   handleChange = (event) => {
+
     const { value } = event.target;
     this.setState({
       tags: value
     });
   }
+
 
   handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -75,6 +198,7 @@ class CreatePackage extends Component {
       inputErrors: { ...this.state.inputErrors, [name]: false }
     });
   }
+
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -90,6 +214,7 @@ class CreatePackage extends Component {
         }
       });
     } else {
+
       // for ( var value of dates ){
       if (imageUrl.length !== 0 && dates.length !== 0 && tags.length !== 0 && location.name.length !== 0) {
         fetch('/api/package.php', {
@@ -102,7 +227,6 @@ class CreatePackage extends Component {
         this.setState({ openSnackBar: false });
         this.props.history.push('/user-profile/' + this.props.packages.email);
       }
-      // }
     }
     if (imageUrl.length === 0 || dates.length === 0 || tags.length === 0 || location.name.length === 0) {
       this.setState({ openSnackBar: true });
@@ -111,12 +235,14 @@ class CreatePackage extends Component {
     }
   }
 
+
   handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     this.setState({ openSnackBar: false });
   }
+
 
   handleSnackbarOpen = () => {
     this.setState({ openSnackBar: true });
@@ -128,6 +254,7 @@ class CreatePackage extends Component {
       dates: dates
     });
   }
+
 
   modalClose = () => {
     this.setState({ openModal: false });
@@ -202,7 +329,6 @@ class CreatePackage extends Component {
       warning = '⛔️ You need to pick categories 🍧';
     }
 
-
     const geocoderApiOptions = {
       country: 'us',
       proximity: { longitude: -118.243683, latitude: 34.052235 }
@@ -220,11 +346,7 @@ class CreatePackage extends Component {
               <TextField required helperText={this.state.inputErrors.title ? 'Must include a title' : ' '} error={this.state.inputErrors.title} fullWidth id="input-title" label="Title" name="title" onChange={this.handleInputChange} text={this.state.name} />
             </Grid>
           </Grid>
-          {/* <Grid className={classes.margin} container alignItems="flex-end" justify="center">
-            <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.location ? 'Please provide a location' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="Location" name="location" onChange={this.handleInputChange} />
-            </Grid>
-          </Grid> */}
+
           <Grid justify="center" className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
               <MatGeocoder
@@ -420,123 +542,123 @@ class CreatePackage extends Component {
   }
 }
 
-const divStyle = {
-  width: '47px',
-  height: '40px',
-  border: '1px solid gray',
-  marginRight: '5px'
-};
+// const divStyle = {
+//   width: '47px',
+//   height: '40px',
+//   border: '1px solid gray',
+//   marginRight: '5px'
+// };
 
-const imgStyle = {
-  width: '100%',
-  height: '100%',
-  backgroundRepeat: 'norepeat',
-  backgroundSize: '100% 100%'
-};
+// const imgStyle = {
+//   width: '100%',
+//   height: '100%',
+//   backgroundRepeat: 'norepeat',
+//   backgroundSize: '100% 100%'
+// };
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: '#3A8288' },
-    secondary: { main: '#A6C7C8' },
-    inherit: { main: '#A0C3C5' },
-    default: { main: '#f5e1da' }
-  }
-});
+// const theme = createMuiTheme({
+//   palette: {
+//     primary: { main: '#3A8288' },
+//     secondary: { main: '#A6C7C8' },
+//     inherit: { main: '#A0C3C5' },
+//     default: { main: '#f5e1da' }
+//   }
+// });
 
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap'
-  },
-  margin: {
-    margin: theme.spacing(0.5),
-    fontSize: 33
-  },
-  textField: {
-    marginRight: theme.spacing(1),
-    width: '100%'
-  },
-  marginTop: {
-    marginTop: theme.spacing(3)
-  },
-  paddingTop: {
-    paddingTop: theme.spacing(5)
-  },
-  noPadding: {
-    padding: 2
-  },
-  marginLeft: {
-    marginLeft: theme.spacing(4),
-    marginTop: theme.spacing(1)
-  },
-  chip: {
-    width: '31%',
-    fontSize: '1rem',
-    margin: '2px'
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap'
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 276,
-    maxWidth: 276
-  },
-  subtitle: {
-    fontSize: 20
-  },
-  modalStyle: {
-    top: 5,
-    left: 5
-  },
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: 7,
-    outline: 'none'
-  },
-  input: {
-    width: '100%'
-  },
-  form: {
-    width: '100%'
-  },
-  dateChip: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    width: 40,
-    marginRight: '4px',
-    marginBottom: '4px'
-  },
-  close: {
-    padding: theme.spacing(2)
-  },
-  info: {
-    backgroundColor: theme.palette.primary.dark
-  },
-  fab: {
-    margin: theme.spacing(1),
-    right: 20,
-    bottom: '77px',
-    position: 'fixed'
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1)
-  }
-});
+// const styles = theme => ({
+//   root: {
+//     display: 'flex',
+//     justifyContent: 'center',
+//     flexWrap: 'wrap'
+//   },
+//   margin: {
+//     margin: theme.spacing(0.5),
+//     fontSize: 33
+//   },
+//   textField: {
+//     marginRight: theme.spacing(1),
+//     width: '100%'
+//   },
+//   marginTop: {
+//     marginTop: theme.spacing(3)
+//   },
+//   paddingTop: {
+//     paddingTop: theme.spacing(5)
+//   },
+//   noPadding: {
+//     padding: 2
+//   },
+//   marginLeft: {
+//     marginLeft: theme.spacing(4),
+//     marginTop: theme.spacing(1)
+//   },
+//   chip: {
+//     width: '31%',
+//     fontSize: '1rem',
+//     margin: '2px'
+//   },
+//   chips: {
+//     display: 'flex',
+//     flexWrap: 'wrap'
+//   },
+//   formControl: {
+//     margin: theme.spacing(1),
+//     minWidth: 276,
+//     maxWidth: 276
+//   },
+//   subtitle: {
+//     fontSize: 20
+//   },
+//   modalStyle: {
+//     top: 5,
+//     left: 5
+//   },
+//   paper: {
+//     position: 'absolute',
+//     width: 400,
+//     backgroundColor: theme.palette.background.paper,
+//     boxShadow: theme.shadows[5],
+//     padding: 7,
+//     outline: 'none'
+//   },
+//   input: {
+//     width: '100%'
+//   },
+//   form: {
+//     width: '100%'
+//   },
+//   dateChip: {
+//     display: 'flex',
+//     flexWrap: 'wrap',
+//     width: 40,
+//     marginRight: '4px',
+//     marginBottom: '4px'
+//   },
+//   close: {
+//     padding: theme.spacing(2)
+//   },
+//   info: {
+//     backgroundColor: theme.palette.primary.dark
+//   },
+//   fab: {
+//     margin: theme.spacing(1),
+//     right: 20,
+//     bottom: '77px',
+//     position: 'fixed'
+//   },
+//   extendedIcon: {
+//     marginRight: theme.spacing(1)
+//   }
+// });
 
-const categories = [
-  'Food',
-  'Shopping',
-  'Coffee',
-  'Outdoors',
-  'Nightlife',
-  'Activities',
-  'Other'
-];
+// const categories = [
+//   'Food',
+//   'Shopping',
+//   'Coffee',
+//   'Outdoors',
+//   'Nightlife',
+//   'Activities',
+//   'Other'
+// ];
 
 export default withStyles(styles)(CreatePackage);

@@ -53,6 +53,7 @@ class Mapbox extends Component {
     this.clickPin = this.clickPin.bind(this);
     this.fetchPackages = this.fetchPackages.bind(this);
   }
+
   componentDidMount() {
     this.fetchPackages();
   }
@@ -123,7 +124,6 @@ class Mapbox extends Component {
     }, () => {
       this.filterTags();
     });
-
   }
 
   filterTags() {
@@ -161,6 +161,7 @@ class Mapbox extends Component {
           }
         }
       }
+
       this.setState({
         filteredTuurs: tagArray
       }, () => {
@@ -251,7 +252,6 @@ class Mapbox extends Component {
     return 1;
   }
 
-
   handleViewPortChange(viewport) {
     this.setState({
       viewport: { ...this.state.viewport, ...viewport },
@@ -292,7 +292,7 @@ class Mapbox extends Component {
         </Marker>
       );
     });
-    const { viewport, searchResultLayer } = this.state;
+    const { viewport } = this.state;
     return (
       <div className={classes.mapContainer}>
         <ReactMapGL

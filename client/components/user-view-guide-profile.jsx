@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -116,3 +115,4 @@ const styles = theme => ({
 });
 
 export default withRouter(withStyles(styles)(GuidePackages));
+

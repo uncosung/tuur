@@ -9,7 +9,6 @@ class Itinerary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // expanded: false,
       packages: [],
       hostedPackages: [],
       switch: false,

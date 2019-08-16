@@ -70,12 +70,12 @@ class SignUp extends Component {
         bio: false
       },
       user: null
-
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handdleToggle = this.handdleToggle.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
+
   handleInputChange(event) {
     const { name, value } = event.target;
     this.setState({
@@ -83,10 +83,12 @@ class SignUp extends Component {
       inputErrors: { ...this.state.inputErrors, [name]: false }
     });
   }
+
   handdleToggle(event) {
     let isGuide = this.state.isGuide;
     this.setState({ isGuide: !isGuide });
   }
+
   handleSubmit(event) {
     event.preventDefault();
     const { name, email, location, bio, image, isGuide } = this.state;
