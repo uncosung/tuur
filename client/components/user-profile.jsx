@@ -19,7 +19,7 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.user) {
+    if (!this.props.user ) {
       fetch('/api/profile.php?id=' + this.props.match.params.id)
         .then(res => res.json())
         .then(response => {
@@ -35,7 +35,13 @@ class UserProfile extends Component {
     .then( res => res.json() )
     .then( data => {
       this.props.logout();
-      this.setState({ user: null }, () => this.props.history.push('/login')) 
+      const user = {
+        isGuide: false,
+        userEmail: false,
+        id: null,
+        loggedIn: false
+      }
+      this.setState({ user }, () => this.props.history.push('/login', user )) 
     
     })
       

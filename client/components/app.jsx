@@ -29,26 +29,31 @@ class App extends Component {
       },
       auth: []
     };
-    this.setRoutePath = this.setRoutePath.bind(this);
+    // this.setRoutePath = this.setRoutePath.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-
     this.logIn = this.logIn.bind(this);
     this.logoutHandler = this.logoutHandler.bind(this);
     this.edit = this.edit.bind(this);
-
+  }
+  componentDidMount(){
+    // console.log( 'app componentDidMount');
+    // fetch('/api/loginStatus.php')
+    // .then( res => res.json())
+    // .then( data => this.setState({ user: data}))
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.path !== prevState.path || this.state.tags !== prevState.tags) {
-      this.props.history.push(this.state.path);
-    }
+    // if (this.state.path !== prevState.path || this.state.tags !== prevState.tags) {
+    //   this.props.history.push(this.state.path);
+    // }
+    // IF 
   }
 
-  setRoutePath(path) {
-    this.setState({
-      path: path
-    });
-  }
+  // setRoutePath(path) {
+  //   this.setState({
+  //     path: path
+  //   });
+  // }
 
   logIn( user ) {
     this.setState({ user }, () => {

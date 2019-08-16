@@ -49,6 +49,7 @@ class LogIn extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
+
   handleInputChange(event) {
     const { name, value } = event.target;
     this.setState({
