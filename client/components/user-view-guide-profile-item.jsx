@@ -30,16 +30,16 @@ class GuidePackageList extends Component {
     const { classes } = this.props;
     return (
       <>
-          <GridListTile className={classes.font} key={this.props.package.mainImage}>
-            <img className={classes.tile} src={this.props.package.mainImage} alt={this.props.package.title} />
-            <GridListTileBar
-              title={this.props.package.title}
-              subtitle={<span>{this.props.package.description}</span>}
-              classes={{
-                root: classes.titleBar
-              }}
-            />
-          </GridListTile>
+        <GridListTile className={classes.font} key={this.props.package.mainImage}>
+          <img className={classes.tile} src={this.props.package.mainImage} alt={this.props.package.title} />
+          <GridListTileBar
+            title={this.props.package.title}
+            subtitle={<span>{this.props.package.description}</span>}
+            classes={{
+              root: classes.titleBar
+            }}
+          />
+        </GridListTile>
       </>
     );
   }

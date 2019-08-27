@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -37,7 +37,7 @@ class SearchPackageItem extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Container style={{ textDecoration: 'none' }} component={Link} to={{ pathname: `/package-details/ ${this.props.item.id}`, state: { item: this.props.item } }}>
+      <Container style={{ textDecoration: 'none' }} component={Link} to={{ pathname: `/package-details/ ${this.props.item.id}`, state: { item: this.props.item, prevPath: this.props.location }}}>
         <Card className={classes.card} >
           <CardHeader
             title={ this.props.item.title }
@@ -57,4 +57,4 @@ class SearchPackageItem extends Component {
     );
   }
 }
-export default withStyles(styles)(SearchPackageItem);
+export default withRouter(withStyles(styles)(SearchPackageItem));

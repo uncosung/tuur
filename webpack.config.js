@@ -1,5 +1,4 @@
 const path = require('path');
-
 const srcPath = path.resolve(__dirname, 'client');
 const publicPath = path.resolve(__dirname, 'server/public');
 
@@ -19,6 +18,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
+            presets: ['@babel/env', '@babel/react'],
             plugins: [
               '@babel/plugin-transform-react-jsx',
               '@babel/plugin-proposal-class-properties'

@@ -5,6 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import SearchResultGuideItem from './search-result-guide-list-item';
 import TOKEN from './mapbox-token';
+import queryString from'query-string';
+import { Link, withRouter } from 'react-router-dom';
+
 
 const styles = theme => ({
   marginTop: {
@@ -42,7 +45,8 @@ class SearchResultGuide extends Component {
       fetchResult: [],
       fetchCoordinates: [],
       filteredGuides: [],
-      isLoading: true
+      isLoading: true,
+      locationQueryStringUrl: this.props.history.location.search
     };
     this.fetchProfiles = this.fetchProfiles.bind(this);
     this.fetchLocation = this.fetchLocation.bind(this);
@@ -54,10 +58,23 @@ class SearchResultGuide extends Component {
     this.fetchProfiles();
   }
 
+  componentDidUpdate(){
+    const currentUrl =  this.props.history.location.search.replace( / /g, '%20');
+    const stateQueryUrl = this.state.locationQueryStringUrl.replace( / /g, '%20');
+    if ( currentUrl !== stateQueryUrl){
+      return this.fetchProfiles();
+    } 
+  }
+
   fetchProfiles() {
     fetch('/api/search.php')
       .then(res => res.json())
-      .then(search => this.setState({ guideProfile: search, isLoading: true }, this.fetchLocation));
+      .then(search => 
+        this.setState({ 
+          guideProfile: search, 
+          isLoading: true,       
+          locationQueryStringUrl: this.props.history.location.search
+      }, this.fetchLocation));
   }
 
   fetchLocation() {
@@ -69,6 +86,12 @@ class SearchResultGuide extends Component {
         }, this.mapGuides);
       });
   }
+  mapGuides() {
+    let mapArray = this.state.guideProfile.map(this.getGuideLocationData);
+    Promise.all(mapArray).then(guideCoordinates => {
+      this.setState({ fetchCoordinates: guideCoordinates }, this.filterGuides);
+    });
+  }
 
   async getGuideLocationData(guide) {
     const resp = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${guide.location}.json?access_token=${TOKEN}`);
@@ -79,21 +102,12 @@ class SearchResultGuide extends Component {
     };
   }
 
-  mapGuides() {
-    let mapArray = this.state.guideProfile.map(this.getGuideLocationData);
-
-    Promise.all(mapArray).then(guideCoordinates => {
-      this.setState({
-        fetchCoordinates: guideCoordinates
-      }, this.filterGuides);
-    });
-  }
-
   filterGuides() {
     let filterGuides = [];
     let tooFar = [];
+    const locationQueryStringCoordinates = queryString.parse(this.props.history.location.search).coordinates.split(' ');
     for (let i = 0; i < this.state.fetchCoordinates.length; i++) {
-      if (this.state.fetchCoordinates[i].coord[0] < this.props.location.coordinates[0] - 1 || this.state.fetchCoordinates[i].coord[0] > this.props.location.coordinates[0] + 1 || this.state.fetchCoordinates[i].coord[1] < this.props.location.coordinates[1] - 0.2 || this.state.fetchCoordinates[i].coord[1] > this.props.location.coordinates[1] + 0.2) {
+      if (this.state.fetchCoordinates[i].coord[0] < parseFloat(locationQueryStringCoordinates[0]) - 1 || this.state.fetchCoordinates[i].coord[0] > parseFloat(locationQueryStringCoordinates[0]) + 1 || this.state.fetchCoordinates[i].coord[1] < parseFloat(locationQueryStringCoordinates[1]) - 0.2 || this.state.fetchCoordinates[i].coord[1] > parseFloat(locationQueryStringCoordinates[1]) + 0.2) {
         tooFar = [...tooFar, this.state.fetchCoordinates[i]];
       } else {
         filterGuides = [...filterGuides, this.state.fetchCoordinates[i]];
@@ -101,7 +115,8 @@ class SearchResultGuide extends Component {
     }
     this.setState({
       filteredGuides: filterGuides,
-      isLoading: false
+      isLoading: false,
+      locationQueryStringUrl: this.props.history.location.search
     });
   }
 
@@ -124,7 +139,10 @@ class SearchResultGuide extends Component {
           </Container>
           <div className={classes.root}>
             <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-              { this.state.filteredGuides.length === 0 ? <Typography variant="subtitle1">There are no guides that match the search criteria</Typography> : profile }
+              { this.state.filteredGuides.length === 0 
+                ? <Typography variant="subtitle1">There are no guides that match the search criteria</Typography> 
+                : profile 
+              }
             </GridList>
           </div>
         </>
@@ -134,4 +152,4 @@ class SearchResultGuide extends Component {
 
 }
 
-export default withStyles(styles)(SearchResultGuide);
+export default withRouter( withStyles(styles)(SearchResultGuide) );

@@ -9,6 +9,7 @@ import Search from './search';
 import PackageDetails from './results/package-details';
 import UserViewProfile from './user-view-profile';
 import EditProfile from './user-edit-profile';
+import GuidePackages from './user-view-guide-profile';
 import SignUp from './sign-up';
 import CreatePackage from './createPackage';
 import AboutUs from './about-us';
@@ -28,35 +29,44 @@ class App extends Component {
       },
       auth: []
     };
-    this.setRoutePath = this.setRoutePath.bind(this);
+    // this.setRoutePath = this.setRoutePath.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-
     this.logIn = this.logIn.bind(this);
+    this.logoutHandler = this.logoutHandler.bind(this);
     this.edit = this.edit.bind(this);
-
+  }
+  componentDidMount(){
+    // console.log( 'app componentDidMount');
+    // fetch('/api/loginStatus.php')
+    // .then( res => res.json())
+    // .then( data => this.setState({ user: data}))
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.path !== prevState.path || this.state.tags !== prevState.tags) {
-      this.props.history.push(this.state.path);
-    }
+    // if (this.state.path !== prevState.path || this.state.tags !== prevState.tags) {
+    //   this.props.history.push(this.state.path);
+    // }
+    // IF 
   }
 
-  setRoutePath(path) {
-    this.setState({
-      path: path
-    });
-  }
+  // setRoutePath(path) {
+  //   this.setState({
+  //     path: path
+  //   });
+  // }
 
-  logIn(user) {
+  logIn( user ) {
     this.setState({ user }, () => {
       this.props.history.push(
-
-        { pathname: '/user-profile/' + user.email,
+        { pathname: '/user-profile/' + user.id,
           state: { user }
         });
     }
     );
+  }
+
+  logoutHandler(){
+    this.setState({user: null});
   }
 
   edit(user) {
@@ -73,6 +83,7 @@ class App extends Component {
       });
     } else if (!location.name && !tags) {
     } else if (!tags && !dates) {
+
       this.setState({
         location: location
       });
@@ -95,68 +106,66 @@ class App extends Component {
 
           <Route exact path="/login"
             render={props =>
-              <div>
-                <LogIn {...props} logIn={this.logIn} isAuthed={true}/>
-              </div>
-            }/>
+              <LogIn {...props} logIn={this.logIn} isAuthed={true}/>
+          }/>
 
           <Route exact path="/" render={props =>
-            <div>
-              <Search search={this.handleSearch} path={this.setRoutePath} />
-            </div>
+            <Search search={this.handleSearch} path={this.setRoutePath} />
           }/>
 
           <Route exact path="/itinerary" render={props =>
-            <div>
-              <Itinerary user={this.state} />
-            </div>
+            <Itinerary user={this.state} />
           }/>
 
           <Route exact path="/sign-up" render={props =>
-            <div>
-              <SignUp logIn={this.logIn}/>
-            </div>
+            <SignUp logIn={this.logIn}/>
           }/>
-
-          <Route exact path="/user-view-profile/:email"
-            render={props =>
-              <div><UserViewProfile {...props} isAuthed={true}/>
+          
+          {/* PATH TO VIEW GUIDE PROFILE FROM RESULTS PAGE */}
+          <Route exact path="/user-view-profile/:id"
+            render={props => 
+              <div>
+                <UserViewProfile {...props} isAuthed={true}/>
                 <BottomNav path={this.setRoutePath} user={this.state.user}/>
               </div>
-            }/>
-
-          <Route exact path="/user-profile/:email"
-            render={props =>
-              <div>
-                <UserProfile user={this.state.user} {...props} isAuthed={true}/>
-              </div>
-            }/>
-
-          <Route exact path="/edit-profile/:email"
-            render={props =>
-              <div>
-                <EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>
-              </div>
-            }/>
-
-          <Route path="/results" render={props =>
-            <div>
-              <Results path={this.setRoutePath} dates={this.state.dates} handleDates={this.handleDates} toggleStatus={this.state.toggleStatus} key={this.state.location.name} tags={this.state.tags} location={this.state.location} search={this.handleSearch}/>
-            </div>
+          }/>
+          <Route exact path="/user-profile/:id"
+            render={props => 
+              <UserProfile user={this.state.user} {...props} logout={this.logoutHandler} isAuthed={true}/>
           }/>
 
+          <Route exact path="/edit-profile/:id"
+            render={props => 
+              <EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>
+          }/>
+          <Route path="/results" 
+            render={ props => 
+              <Results {...props} 
+                path={this.setRoutePath} 
+                dates={this.state.dates} 
+                handleDates={this.handleDates} 
+                toggleStatus={this.state.toggleStatus} 
+                key={this.state.location.name} 
+                tags={this.state.tags} 
+                location={this.state.location} 
+                search={this.handleSearch}
+              />
+            }
+          />
+
           <Route path="/package-details/:id"
-            render={props =>
-              <PackageDetails packages={this.state.user}{...props} isAuthed={true}/>
-            }/>
-
+            render={props => 
+              <PackageDetails {...props} location={ this.state.location } packages={this.state.user} isAuthed={true}/>
+          }/>
+          
           <Route path="/create-package"
-            render={props =>
-              <CreatePackage packages={this.state.user}{...props} isAuthed={true}/>
-            }/>
-
+            render={props => 
+              <CreatePackage {...props} packages={this.state.user} isAuthed={true}/>
+          }/>
           <Route path="/about-us"
-            render={props => <AboutUs {...props} />}
+            render={props => 
+              <AboutUs {...props} />
+            }
           />
 
         </Switch>

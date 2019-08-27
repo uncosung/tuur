@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import { Link, withRouter } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -14,7 +15,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import DatePicker from './date-multiple-picker';
 import Modal from '@material-ui/core/Modal';
 import CarouselImage from './package-detail-carousel-item';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -104,12 +105,15 @@ class PackageDetails extends Component {
       item: null,
       status: null,
       images: [],
-      cardImg: this.props.location.state.item.mainImage
+      cardImg: ''
     };
     this.changeImage = this.changeImage.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
     this.modalClose = this.modalClose.bind(this);
     this.bookHandler = this.bookHandler.bind(this);
+    this.getProfileInfo = this.getProfileInfo.bind(this);
+    this.getLastObject = this.getLastObject.bind(this);
+
   }
 
   changeImage(e) {
@@ -231,16 +235,27 @@ class PackageDetails extends Component {
   }
 
   componentDidMount() {
-    fetch(`/api/profile.php?email=${this.props.location.state.item.profileEmail}`)
+    const id = this.props.match.params.id;
+    fetch('/api/package.php?id=' + id)
+      .then(res => res.json())
+      .then(item => {
+        this.setState({
+          item: item[0],
+          cardImg: item[0].mainImage
+        }, () => {
+          this.getImages()
+          this.getProfileInfo(item[0].profileEmail)
+        })
+      });
+  }
+
+  getProfileInfo(guideEmail) {
+    fetch(`/api/profile.php?email=${guideEmail}`)
+      // fetch(`/api/profile.php?email=${this.props.location.state.item.profileEmail}`)
       .then(res => res.json())
       .then(response => {
         this.setState({ package: response });
       });
-
-    const id = this.props.match.params.id;
-    fetch('/api/package.php?id=' + id)
-      .then(res => res.json())
-      .then(item => this.setState({ item: item[0] }, () => this.getImages()));
   }
 
   getImages() {
@@ -248,13 +263,33 @@ class PackageDetails extends Component {
     this.setState({ images });
   }
 
+  getLastObject(obj, prevObj) {
+    let lastObj = prevObj;
+    if (!obj.prevPath.state) {
+      return obj;
+    }
+    if (typeof obj !== 'object') {
+      return lastObj;
+    }
+    for (let prop in obj) {
+      if (obj.prevPath.state) {
+        return this.getLastObject(obj.prevPath.state, obj.prevPath);
+      }
+    }
+
+  }
+
   render() {
+    const path = this.getLastObject(this.props.location.state, this.props.location.state)
+    const prevUrlPathname = (path.prevPath) ? path.prevPath.pathname : path.pathname;
+    const prevUrlSearch = (path.prevPath) ? path.prevPath.search : path.search
+
     let carousel = [];
     const { classes } = this.props;
 
     if (this.state.images) {
       carousel = this.state.images.map((image, id) => {
-        return <CarouselImage key={ id } id={ id } click={ this.changeImage } images={image} />;
+        return <CarouselImage key={id} id={id} click={this.changeImage} images={image} />;
       });
     }
 
@@ -263,70 +298,77 @@ class PackageDetails extends Component {
     return (
       <>
         <Card className={classes.card}>
-          <Grid item xs={2} className={classes.paddingRight} name='back' component={Link} to={'/results'}>
+          {/* <Grid item xs={2} className={classes.paddingRight} name='back' onClick={ () => this.props.history.goBack() } > */}
+          <Grid item xs={2} className={classes.paddingRight} name='back' component={Link} to={prevUrlPathname + prevUrlSearch}>
             <KeyboardArrowLeft className={classes.fontSize} />
           </Grid>
           <CardMedia
             className={classes.media}
-            image={ this.state.cardImg }
+            image={this.state.cardImg}
           />
         </Card>
-          <Grid container justify="center" direction="row">
-            { this.state.images ? carousel : null}
-          </Grid>
+        <Grid container justify="center" direction="row">
+          {this.state.images ? carousel : null}
+        </Grid>
         <Card>
           <CardHeader
-            title={ this.props.location.state.item.title }
+            title={this.state.item.title}
           />
           <CardContent>
             <Typography >
               <LocationOn />
-              <a className={classes.link} href={`https://maps.google.com/?q=${this.props.location.state.item.location}`}>
-                { this.props.location.state.item.location }
+              <a className={classes.link} href={`https://maps.google.com/?q=${this.state.item.location}`}>
+                {this.state.item.location}
               </a>
             </Typography>
           </CardContent>
           <CardContent>
             <Typography >
-              <Alarm/> Trip duration: { this.props.location.state.item.timeRange }
+              <Alarm /> Trip duration: {this.state.item.timeRange}
             </Typography>
           </CardContent>
           <CardContent>
             <Typography paragraph>Trip Summary:</Typography>
             <Typography paragraph>
-              { this.props.location.state.item.description }
+              {this.state.item.description}
             </Typography>
           </CardContent>
           <CardContent>
+            {this.state.package
+              ? <Grid
+                component={Link}
+                style={{ textDecoration: 'none' }}
+                to={{
+                  pathname: '/user-view-profile/' + this.state.package.id,
+                  state: { prevPath: this.props.location }
+                }}>
+                <Card className={classes.card}>
+                  <Grid container>
+                    <Grid item xs={5}>
+                      <CardMedia
+                        className={classes.cover}
+                        image={this.state.package ? this.state.package.image : null}
+                      />
+                    </Grid>
+                    <Grid item xs={7}>
+                      <CardContent>
+                        <Typography variant="body1">Meet your Guide</Typography>
+                        <Typography variant="h5">
+                          {this.state.package ? this.state.package.name : null}
+                        </Typography>
+                      </CardContent>
 
-            <Grid component={Link} style={{ textDecoration: 'none' }} to={'/user-view-profile/' + this.props.location.state.item.profileEmail}>
-              <Card className={classes.card}>
-                <Grid container>
-                  <Grid item xs={5}>
-                    <CardMedia
-                      className={classes.cover}
-                      image={ this.state.package ? this.state.package.image : null}
-                    />
+                      <CardContent>
+                        <Typography variant="subtitle1" color="textSecondary">
+                          {this.state.package ? this.state.package.bio : null}
+                        </Typography>
+                      </CardContent>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={7}>
-                    <CardContent>
-                      <Typography variant="body1">
-                    Meet your Guide
-                      </Typography>
-                      <Typography variant="h5">
-                        {this.state.package ? this.state.package.name : null }
-                      </Typography>
-                    </CardContent>
-
-                    <CardContent>
-                      <Typography variant="subtitle1" color="textSecondary">
-                        {this.state.package ? this.state.package.bio : null}
-                      </Typography>
-                    </CardContent>
-                  </Grid>
-                </Grid>
-              </Card>
-            </Grid>
+                </Card>
+              </Grid>
+              : null
+            }
           </CardContent>
 
           <Grid justify="center" container style={{ marginBottom: '100px' }}>
@@ -346,7 +388,7 @@ class PackageDetails extends Component {
                 onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker item={this.state} booking={ this.bookHandler } dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.unavailableDates()}/>
+                  <DatePicker item={this.state} booking={this.bookHandler} dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={this.unavailableDates()} />
                 </Grid>
               </Modal>
             </Grid>
@@ -355,7 +397,8 @@ class PackageDetails extends Component {
       </>
     );
   }
-
 }
 
-export default withStyles(styles)(PackageDetails);
+
+
+export default withRouter(withStyles(styles)(PackageDetails));
