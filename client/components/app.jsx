@@ -35,7 +35,7 @@ class App extends Component {
     this.logoutHandler = this.logoutHandler.bind(this);
     this.edit = this.edit.bind(this);
   }
-  componentDidMount(){
+  componentDidMount() {
     // console.log( 'app componentDidMount');
     // fetch('/api/loginStatus.php')
     // .then( res => res.json())
@@ -46,7 +46,7 @@ class App extends Component {
     // if (this.state.path !== prevState.path || this.state.tags !== prevState.tags) {
     //   this.props.history.push(this.state.path);
     // }
-    // IF 
+    // IF
   }
 
   // setRoutePath(path) {
@@ -55,7 +55,7 @@ class App extends Component {
   //   });
   // }
 
-  logIn( user ) {
+  logIn(user) {
     this.setState({ user }, () => {
       this.props.history.push(
         { pathname: '/user-profile/' + user.id,
@@ -65,8 +65,8 @@ class App extends Component {
     );
   }
 
-  logoutHandler(){
-    this.setState({user: null});
+  logoutHandler() {
+    this.setState({ user: null });
   }
 
   edit(user) {
@@ -107,7 +107,7 @@ class App extends Component {
           <Route exact path="/login"
             render={props =>
               <LogIn {...props} logIn={this.logIn} isAuthed={true}/>
-          }/>
+            }/>
 
           <Route exact path="/" render={props =>
             <Search search={this.handleSearch} path={this.setRoutePath} />
@@ -120,50 +120,50 @@ class App extends Component {
           <Route exact path="/sign-up" render={props =>
             <SignUp logIn={this.logIn}/>
           }/>
-          
+
           {/* PATH TO VIEW GUIDE PROFILE FROM RESULTS PAGE */}
           <Route exact path="/user-view-profile/:id"
-            render={props => 
+            render={props =>
               <div>
                 <UserViewProfile {...props} isAuthed={true}/>
                 <BottomNav path={this.setRoutePath} user={this.state.user}/>
               </div>
-          }/>
+            }/>
           <Route exact path="/user-profile/:id"
-            render={props => 
+            render={props =>
               <UserProfile user={this.state.user} {...props} logout={this.logoutHandler} isAuthed={true}/>
-          }/>
+            }/>
 
           <Route exact path="/edit-profile/:id"
-            render={props => 
+            render={props =>
               <EditProfile user={this.state.user} edit={this.edit} {...props} isAuthed={true}/>
-          }/>
-          <Route path="/results" 
-            render={ props => 
-              <Results {...props} 
-                path={this.setRoutePath} 
-                dates={this.state.dates} 
-                handleDates={this.handleDates} 
-                toggleStatus={this.state.toggleStatus} 
-                key={this.state.location.name} 
-                tags={this.state.tags} 
-                location={this.state.location} 
+            }/>
+          <Route path="/results"
+            render={ props =>
+              <Results {...props}
+                path={this.setRoutePath}
+                dates={this.state.dates}
+                handleDates={this.handleDates}
+                toggleStatus={this.state.toggleStatus}
+                key={this.state.location.name}
+                tags={this.state.tags}
+                location={this.state.location}
                 search={this.handleSearch}
               />
             }
           />
 
           <Route path="/package-details/:id"
-            render={props => 
+            render={props =>
               <PackageDetails {...props} location={ this.state.location } packages={this.state.user} isAuthed={true}/>
-          }/>
-          
+            }/>
+
           <Route path="/create-package"
-            render={props => 
+            render={props =>
               <CreatePackage {...props} packages={this.state.user} isAuthed={true}/>
-          }/>
+            }/>
           <Route path="/about-us"
-            render={props => 
+            render={props =>
               <AboutUs {...props} />
             }
           />

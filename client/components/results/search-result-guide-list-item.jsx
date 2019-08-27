@@ -28,10 +28,10 @@ class SearchResultGuideItem extends Component {
     const { classes } = this.props;
     return (
       <>
-          <GridListTile 
-            className={classes.font} 
-            component={Link} 
-            style={{ textDecoration: 'none' }} 
+          <GridListTile
+            className={classes.font}
+            component={Link}
+            style={{ textDecoration: 'none' }}
             to={{
               pathname: '/user-view-profile/' + this.props.profile.id,
               state: { prevPath: this.props.location }
@@ -50,4 +50,4 @@ class SearchResultGuideItem extends Component {
   }
 }
 
-export default withRouter( withStyles(styles)(SearchResultGuideItem));
+export default withRouter(withStyles(styles)(SearchResultGuideItem));

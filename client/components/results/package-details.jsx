@@ -243,9 +243,9 @@ class PackageDetails extends Component {
           item: item[0],
           cardImg: item[0].mainImage
         }, () => {
-          this.getImages()
-          this.getProfileInfo(item[0].profileEmail)
-        })
+          this.getImages();
+          this.getProfileInfo(item[0].profileEmail);
+        });
       });
   }
 
@@ -280,9 +280,9 @@ class PackageDetails extends Component {
   }
 
   render() {
-    const path = this.getLastObject(this.props.location.state, this.props.location.state)
+    const path = this.getLastObject(this.props.location.state, this.props.location.state);
     const prevUrlPathname = (path.prevPath) ? path.prevPath.pathname : path.pathname;
-    const prevUrlSearch = (path.prevPath) ? path.prevPath.search : path.search
+    const prevUrlSearch = (path.prevPath) ? path.prevPath.search : path.search;
 
     let carousel = [];
     const { classes } = this.props;
@@ -398,7 +398,5 @@ class PackageDetails extends Component {
     );
   }
 }
-
-
 
 export default withRouter(withStyles(styles)(PackageDetails));

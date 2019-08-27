@@ -15,11 +15,11 @@ class UserProfile extends Component {
     this.state = {
       user: null
     };
-    this.logoutHandler = this.logoutHandler.bind( this );
+    this.logoutHandler = this.logoutHandler.bind(this);
   }
 
   componentDidMount() {
-    if (!this.props.user ) {
+    if (!this.props.user) {
       fetch('/api/profile.php?id=' + this.props.match.params.id)
         .then(res => res.json())
         .then(response => {
@@ -31,20 +31,20 @@ class UserProfile extends Component {
   }
 
   logoutHandler() {
-    fetch( '/api/loginStatus.php?logout=true' )
-    .then( res => res.json() )
-    .then( data => {
-      this.props.logout();
-      const user = {
-        isGuide: false,
-        userEmail: false,
-        id: null,
-        loggedIn: false
-      }
-      this.setState({ user }, () => this.props.history.push('/login', user )) 
-    
-    })
-      
+    fetch('/api/loginStatus.php?logout=true')
+      .then(res => res.json())
+      .then(data => {
+        this.props.logout();
+        const user = {
+          isGuide: false,
+          userEmail: false,
+          id: null,
+          loggedIn: false
+        };
+        this.setState({ user }, () => this.props.history.push('/login', user));
+
+      });
+
   }
 
   render() {
@@ -78,7 +78,7 @@ class UserProfile extends Component {
                 {this.state.user.isGuide
                   ? <Button className={classes.buttonCreate} type="button" fullWidth variant="contained" color="secondary" component={Link} to={'/create-package'} >
                       Create Package
-                    </Button>
+                  </Button>
                   : null
                 }
               </ThemeProvider>
@@ -90,10 +90,10 @@ class UserProfile extends Component {
         ? <UpComingTuursList user={ this.state.user }/>
         : <Typography variant="h5" style={{ paddingLeft: '10px' }}>No Tuurs available</Typography>
       }  */}
-      <Container style={{paddingBottom: '90px'}}>
-          <ThemeProvider theme={theme}>
-            <Button className={classes.buttonCreate} onClick={ this.logoutHandler } type="button" fullWidth variant="contained" color="secondary">Logout</Button>
-          </ThemeProvider>
+      <Container style={{ paddingBottom: '90px' }}>
+        <ThemeProvider theme={theme}>
+          <Button className={classes.buttonCreate} onClick={ this.logoutHandler } type="button" fullWidth variant="contained" color="secondary">Logout</Button>
+        </ThemeProvider>
       </Container>
 
       </>
@@ -131,4 +131,4 @@ const styles = theme => ({
   }
 });
 
-export default withRouter( withStyles(styles)(UserProfile) );
+export default withRouter(withStyles(styles)(UserProfile));

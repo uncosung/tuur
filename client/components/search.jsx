@@ -8,11 +8,9 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
-import { Link } from 'react-router-dom';
+import { Link, Route, Switch, withRouter } from 'react-router-dom';
 import MoreVert from '@material-ui/icons/MoreVert';
 import { generateKeyPair } from 'crypto';
-import { Route, Switch, withRouter } from 'react-router-dom';
-
 
 const theme = createMuiTheme({
   palette: {
@@ -145,7 +143,7 @@ class Search extends Component {
   aboutUs() {
     this.props.path('/about-us');
   }
-  
+
   render() {
     const { classes } = this.props;
 
@@ -167,7 +165,6 @@ class Search extends Component {
       cssEase: 'linear',
       adaptiveHeight: true
     };
-
 
     let packages = '';
     if (this.state.package) {
