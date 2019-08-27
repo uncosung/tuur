@@ -15,8 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import MatGeocoder from 'react-mui-mapbox-geocoder';
 import { Link, withRouter } from 'react-router-dom';
 import Mapbox from './mapbox';
-import queryString from'query-string';
-
+import queryString from 'query-string';
 
 const categories = [
   'Food',
@@ -121,35 +120,35 @@ class SearchBar extends Component {
   }
 
   handleSearch() {
-    const { searchParameters , tags , dates } = this.state;
+    const { searchParameters, tags, dates } = this.state;
     let startDate, endDate;
-    if ( dates.start ){
-      startDate = this.dateFormatConverter( dates.start );
-      endDate = this.dateFormatConverter( dates.end );
+    if (dates.start) {
+      startDate = this.dateFormatConverter(dates.start);
+      endDate = this.dateFormatConverter(dates.end);
     }
     const filterTags = tags.join('+');
     let dateQueryUrl = '';
     let tagQueryUrl = '';
-    let locationQueryUrl = ''
-    if ( !searchParameters.name ){
-      let lastQuery = queryString.parse(this.props.history.location.search)
+    let locationQueryUrl = '';
+    if (!searchParameters.name) {
+      let lastQuery = queryString.parse(this.props.history.location.search);
       let coordinates = lastQuery.coordinates.split(' ');
-      locationQueryUrl = `?location=${ lastQuery.location }&coordinates=${ coordinates[0]}+${ coordinates[1] }`
+      locationQueryUrl = `?location=${lastQuery.location}&coordinates=${coordinates[0]}+${coordinates[1]}`;
     } else {
-      locationQueryUrl = `?location=${ searchParameters.name }&coordinates=${ searchParameters.coordinates[0]}+${ searchParameters.coordinates[1]}`
+      locationQueryUrl = `?location=${searchParameters.name}&coordinates=${searchParameters.coordinates[0]}+${searchParameters.coordinates[1]}`;
     }
 
-    if ( startDate && endDate ){
+    if (startDate && endDate) {
       dateQueryUrl = `&dates=${startDate}+${endDate}`;
     }
-    if ( tags.length ){
+    if (tags.length) {
       tagQueryUrl = `&tags=${filterTags}`;
     }
 
     this.props.history.push({
       pathname: '/results',
       search: `${locationQueryUrl}${dateQueryUrl}${tagQueryUrl}`
-    })
+    });
 
     // this.setState({
     //   location: { ...this.state.location, tags: this.state.tags }
@@ -159,12 +158,12 @@ class SearchBar extends Component {
     // });
   }
 
-  dateFormatConverter( date ){
-    let newDate = new Date( date );
+  dateFormatConverter(date) {
+    let newDate = new Date(date);
     let day = newDate.getDate();
     let month = newDate.getMonth();
     let year = newDate.getFullYear();
-    return `${year}-${month + 1}-${day}`
+    return `${year}-${month + 1}-${day}`;
   }
 
   render() {
@@ -393,4 +392,4 @@ const styles = theme => ({
   }
 });
 
-export default withRouter( withStyles(styles)(SearchBar) );
+export default withRouter(withStyles(styles)(SearchBar));

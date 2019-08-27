@@ -5,10 +5,9 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import SearchPackageItem from './search-result-package-item';
 import TOKEN from './mapbox-token';
-import queryString from'query-string';
+import queryString from 'query-string';
 import { Link, withRouter } from 'react-router-dom';
 import { filter } from 'minimatch';
-
 
 const styles = theme => ({
   marginTop: {
@@ -34,7 +33,7 @@ class SearchPackages extends Component {
         end: null
       },
       tags: [],
-      isLoading: true,
+      isLoading: true
     };
 
     this.fetchPackages = this.fetchPackages.bind(this);
@@ -49,11 +48,11 @@ class SearchPackages extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const currentUrl =  this.props.history.location.search.replace( / /g, '%20');
-    const stateQueryUrl = this.state.locationQueryStringUrl.replace( / /g, '%20');
-    if ( currentUrl !== stateQueryUrl){
+    const currentUrl = this.props.history.location.search.replace(/ /g, '%20');
+    const stateQueryUrl = this.state.locationQueryStringUrl.replace(/ /g, '%20');
+    if (currentUrl !== stateQueryUrl) {
       return this.fetchPackages();
-    } 
+    }
   }
 
   fetchPackages() {
@@ -69,7 +68,7 @@ class SearchPackages extends Component {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${locationQueryString[location]}.json?access_token=${TOKEN}`)
       .then(res => res.json())
       .then(fetchCoordinates => {
-        this.mapTuurs(fetchCoordinates, packages)
+        this.mapTuurs(fetchCoordinates, packages);
       });
   }
 
@@ -94,13 +93,13 @@ class SearchPackages extends Component {
     let tooFar = [];
     let tags = [];
     let dates = {
-      start:null,
+      start: null,
       end: null
     };
-    if ( locationQueryString.tags ){
+    if (locationQueryString.tags) {
       tags = locationQueryString.tags.split(' ');
     }
-    if ( locationQueryString.dates ){
+    if (locationQueryString.dates) {
       let filteredDates = locationQueryString.dates.split(' ');
       dates.start = filteredDates[0];
       dates.end = filteredDates[1];
@@ -113,21 +112,21 @@ class SearchPackages extends Component {
       }
     }
 
-    if ( tags.length === 0 && !dates.start ) return this.setTuurPackages( filterTuurs );
-    if ( tags.length && !dates.start || tags.length && dates.start ) return this.filterTags( filterTuurs, tags , dates);
-    if (tags.length === 0 && dates.start) return this.filterDates( filterTuurs, dates);
+    if (tags.length === 0 && !dates.start) return this.setTuurPackages(filterTuurs);
+    if (tags.length && !dates.start || tags.length && dates.start) return this.filterTags(filterTuurs, tags, dates);
+    if (tags.length === 0 && dates.start) return this.filterDates(filterTuurs, dates);
     // if ( this.filterTags(filterTuurs, tags);
   }
 
-  setTuurPackages( filteredTuurs ){
+  setTuurPackages(filteredTuurs) {
     this.setState({
       filteredTuurs,
       isLoading: false,
       locationQueryStringUrl: this.props.history.location.search
-    })
+    });
   }
 
-  filterTags( filterTuurs, tags, dates ) {
+  filterTags(filterTuurs, tags, dates) {
     const locationQueryString = queryString.parse(this.props.history.location.search);
 
     let tagArray = [];
@@ -147,22 +146,22 @@ class SearchPackages extends Component {
           tagArray.splice(g, 1);
         }
       }
-      if ( dates.start ){
-        this.filterDates( tagArray, dates );
+      if (dates.start) {
+        this.filterDates(tagArray, dates);
       } else {
         this.setState({
           filteredTuurs: tagArray,
           isLoading: false,
           locationQueryStringUrl: this.props.history.location.search
-        })
+        });
       }
     }
   }
 
-  filterDates( filteredTuurs, dates ) {
+  filterDates(filteredTuurs, dates) {
     debugger;
-    const begDate = new Date( dates.start );
-    const endDate = new Date( dates.end );
+    const begDate = new Date(dates.start);
+    const endDate = new Date(dates.end);
     let begDateYear = begDate.getFullYear();
     let begDateMonth = begDate.getMonth() + 1;
     let begDateDay = begDate.getDate();
@@ -181,7 +180,7 @@ class SearchPackages extends Component {
       if (begDateMonth === 0 && begDateDay === 1) {
         begDateYear = begDateMonth === 1 ? ++begDateYear : begDateYear;
       }
-      availableTuur = this.checkAvailability(filteredTuurs , begDateYear, begDateMonth, begDateDay);
+      availableTuur = this.checkAvailability(filteredTuurs, begDateYear, begDateMonth, begDateDay);
       begDateDay = this.nextDay(begDateMonth, begDateDay);
       if (availableTuur) {
         availablePackage.push(availableTuur);
@@ -189,7 +188,7 @@ class SearchPackages extends Component {
     }
 
     if (begDateMonth === endDateMonth && begDateDay === endDateDay) {
-      availableTuur = this.checkAvailability(filteredTuurs , begDateYear, begDateMonth, begDateDay);
+      availableTuur = this.checkAvailability(filteredTuurs, begDateYear, begDateMonth, begDateDay);
     }
     this.setState({
       filteredTuurs: availableTuur,
@@ -203,7 +202,7 @@ class SearchPackages extends Component {
     for (let i = 0; i < tagArray.length; i++) {
       let parseDate = JSON.parse(tagArray[i].tuur.dates);
       for (var value of parseDate) {
-        const packageDate = new Date( value );
+        const packageDate = new Date(value);
         const packageYear = packageDate.getFullYear();
         const packageMonth = packageDate.getMonth() + 1;
         const packageDay = packageDate.getDate();
@@ -212,7 +211,7 @@ class SearchPackages extends Component {
         }
       }
     }
-    return returnArray
+    return returnArray;
 
   }
 
@@ -276,4 +275,4 @@ class SearchPackages extends Component {
   }
 }
 
-export default withRouter( withStyles(styles)(SearchPackages));
+export default withRouter(withStyles(styles)(SearchPackages));

@@ -5,9 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import SearchResultGuideItem from './search-result-guide-list-item';
 import TOKEN from './mapbox-token';
-import queryString from'query-string';
+import queryString from 'query-string';
 import { Link, withRouter } from 'react-router-dom';
-
 
 const styles = theme => ({
   marginTop: {
@@ -58,23 +57,23 @@ class SearchResultGuide extends Component {
     this.fetchProfiles();
   }
 
-  componentDidUpdate(){
-    const currentUrl =  this.props.history.location.search.replace( / /g, '%20');
-    const stateQueryUrl = this.state.locationQueryStringUrl.replace( / /g, '%20');
-    if ( currentUrl !== stateQueryUrl){
+  componentDidUpdate() {
+    const currentUrl = this.props.history.location.search.replace(/ /g, '%20');
+    const stateQueryUrl = this.state.locationQueryStringUrl.replace(/ /g, '%20');
+    if (currentUrl !== stateQueryUrl) {
       return this.fetchProfiles();
-    } 
+    }
   }
 
   fetchProfiles() {
     fetch('/api/search.php')
       .then(res => res.json())
-      .then(search => 
-        this.setState({ 
-          guideProfile: search, 
-          isLoading: true,       
+      .then(search =>
+        this.setState({
+          guideProfile: search,
+          isLoading: true,
           locationQueryStringUrl: this.props.history.location.search
-      }, this.fetchLocation));
+        }, this.fetchLocation));
   }
 
   fetchLocation() {
@@ -139,9 +138,9 @@ class SearchResultGuide extends Component {
           </Container>
           <div className={classes.root}>
             <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-              { this.state.filteredGuides.length === 0 
-                ? <Typography variant="subtitle1">There are no guides that match the search criteria</Typography> 
-                : profile 
+              { this.state.filteredGuides.length === 0
+                ? <Typography variant="subtitle1">There are no guides that match the search criteria</Typography>
+                : profile
               }
             </GridList>
           </div>
@@ -152,4 +151,4 @@ class SearchResultGuide extends Component {
 
 }
 
-export default withRouter( withStyles(styles)(SearchResultGuide) );
+export default withRouter(withStyles(styles)(SearchResultGuide));

@@ -123,7 +123,7 @@ class LogIn extends React.Component {
       .then(res => res.json())
       .then(data => {
         if (data.auth) {
-          this.props.logIn( data );
+          this.props.logIn(data);
         }
       }
       );

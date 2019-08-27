@@ -37,7 +37,7 @@ class SearchPackageItem extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Container style={{ textDecoration: 'none' }} component={Link} to={{ pathname: `/package-details/ ${this.props.item.id}`, state: { item: this.props.item, prevPath: this.props.location }}}>
+      <Container style={{ textDecoration: 'none' }} component={Link} to={{ pathname: `/package-details/ ${this.props.item.id}`, state: { item: this.props.item, prevPath: this.props.location } }}>
         <Card className={classes.card} >
           <CardHeader
             title={ this.props.item.title }

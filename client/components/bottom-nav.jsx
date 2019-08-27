@@ -44,7 +44,7 @@ class BottomNav extends Component {
 
   handleClick(event) {
     let path = null;
-    if (!this.state.auth.loggedIn ) {
+    if (!this.state.auth.loggedIn) {
       path = '/login';
     } else {
       path = '/user-profile/' + this.state.auth.id;
@@ -57,24 +57,31 @@ class BottomNav extends Component {
         this.props.history.push('/itinerary');
         break;
       case 'account':
-        this.props.history.push( path );
+        this.props.history.push(path);
         break;
     }
   }
 
-  componentDidMount(){
-    this.getLoginStatus()
+  componentDidMount() {
+    this.getLoginStatus();
   }
 
-  getLoginStatus(){
+  getLoginStatus() {
     fetch('/api/loginStatus.php')
-    .then( res => res.json())
-    .then( data => 
-      this.setState({ 
-        auth: data, 
-        loggedIn: data.loggedIn })
-    )
+      .then(res => res.json())
+      .then(data =>
+        this.setState({
+          auth: data,
+          loggedIn: data.loggedIn })
+      );
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.auth === this.state.auth) {
+      this.getLoginStatus();
+    }
+  }
+
 
   render() {
     const { classes } = this.props;

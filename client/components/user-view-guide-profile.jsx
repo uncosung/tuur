@@ -14,18 +14,18 @@ class GuidePackages extends Component {
     super(props);
     this.state = {
       userEmail: '',
-      packages: [],
+      packages: []
     };
   }
-  
-  componentDidUpdate(){
-    if ( !this.state.packages.length && !this.state.userEmail ){
-      fetch('/api/guidePackages.php?email=' + this.props.guideInfo.email )
-          .then(res => res.json())
-          .then(packages => this.setState({ userEmail: this.props.guideInfo.email, packages }));
-    } 
+
+  componentDidUpdate() {
+    if (!this.state.packages.length && !this.state.userEmail) {
+      fetch('/api/guidePackages.php?email=' + this.props.guideInfo.email)
+        .then(res => res.json())
+        .then(packages => this.setState({ userEmail: this.props.guideInfo.email, packages }));
+    }
   }
-  
+
   render() {
     const { classes } = this.props;
     const packageMap = this.state.packages.map((packageItem, id) => {
@@ -115,4 +115,3 @@ const styles = theme => ({
 });
 
 export default withRouter(withStyles(styles)(GuidePackages));
-

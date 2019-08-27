@@ -141,7 +141,7 @@ const categories = [
   'Activities',
   'Other'
 ];
-  
+
 class CreatePackage extends Component {
   constructor(props) {
     super(props);
@@ -171,8 +171,7 @@ class CreatePackage extends Component {
     };
   }
 
-
-  handleSelect= (result) => {
+  handleSelect= result => {
     this.setState({
       location: {
         name: result.place_name,
@@ -181,8 +180,7 @@ class CreatePackage extends Component {
     });
   }
 
-
-  handleChange = (event) => {
+  handleChange = event => {
 
     const { value } = event.target;
     this.setState({
@@ -190,8 +188,7 @@ class CreatePackage extends Component {
     });
   }
 
-
-  handleInputChange = (event) => {
+  handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
@@ -199,8 +196,7 @@ class CreatePackage extends Component {
     });
   }
 
-
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
     const { title, description, location, tags, timeRange, dates, imageUrl } = this.state;
 
@@ -235,7 +231,6 @@ class CreatePackage extends Component {
     }
   }
 
-
   handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -243,18 +238,16 @@ class CreatePackage extends Component {
     this.setState({ openSnackBar: false });
   }
 
-
   handleSnackbarOpen = () => {
     this.setState({ openSnackBar: true });
   }
 
-  handleModalClose = (dates) => {
+  handleModalClose = dates => {
     this.setState({
       openModal: false,
       dates: dates
     });
   }
-
 
   modalClose = () => {
     this.setState({ openModal: false });
@@ -273,7 +266,7 @@ class CreatePackage extends Component {
     }
   }
 
-  removeImage = (e) => {
+  removeImage = e => {
     let id = e.target.id;
     id = parseInt(id);
     let imgArray = this.state.imageUrl;
@@ -281,7 +274,7 @@ class CreatePackage extends Component {
     this.setState({ imageUrl: imgArray });
   }
 
-  removeChips = (e) => {
+  removeChips = e => {
     let dateId = e.currentTarget.id;
     dateId = parseInt(dateId);
     let datesArray = this.state.dates;

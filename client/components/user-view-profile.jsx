@@ -31,7 +31,6 @@ const styles = theme => ({
   }
 });
 
-
 class UserViewProfile extends Component {
   constructor(props) {
     super(props);
@@ -61,7 +60,7 @@ class UserViewProfile extends Component {
       });
   }
 
-  componentDidUpdate( nextProps ) {
+  componentDidUpdate(nextProps) {
     if (!this.state.name) {
       const email = this.props.match.params.email;
       fetch('/api/profile.php?id=' + id)
@@ -79,15 +78,15 @@ class UserViewProfile extends Component {
 
   render() {
     const prevUrlPathname = this.props.history.location.state.prevPath.pathname;
-    const prevUrlSearch = this.props.history.location.state.prevPath.search
+    const prevUrlSearch = this.props.history.location.state.prevPath.search;
     const { classes } = this.props;
     if (!this.state) return null;
     return (
       <>
       <Container className={classes.marginBottom} >
-        <Grid item xs={2} 
-          className={classes.paddingRight} 
-          name='back' 
+        <Grid item xs={2}
+          className={classes.paddingRight}
+          name='back'
           onClick={this.props.history.goBack}
         >
           <KeyboardArrowLeft className={classes.fontSize} />
@@ -117,27 +116,5 @@ class UserViewProfile extends Component {
     );
   }
 }
-
-<!-- const styles = theme => ({
-  marginTop: {
-    marginTop: theme.spacing(3)
-  },
-  avatar: {
-    width: 80,
-    height: 80
-  },
-  marginBottom: {
-    marginBottom: theme.spacing(3)
-  },
-  marginLeft: {
-    marginLeft: theme.spacing(2)
-  },
-  fontSize: {
-    fontSize: '2.5rem'
-  },
-  paddingRight: {
-    paddingRight: 20,
-  }
-}); -->
 
 export default withRouter(withStyles(styles)(UserViewProfile));
