@@ -6,16 +6,17 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-// import { ThemeProvider } from '@material-ui/styles';
+import { Link } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/styles';
 
-// const theme = createMuiTheme({
-//   palette: {
-//     primary: { main: '#3A8288' },
-//     secondary: { main: '#5bd1d7' },
-//     lightBeige: { main: '#f1f1f1' },
-//     beige: { main: '#f5e1da' }
-//   }
-// });
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#3A8288' },
+    secondary: { main: '#5bd1d7' },
+    lightBeige: { main: '#f1f1f1' },
+    beige: { main: '#f5e1da' }
+  }
+});
 
 const styles = theme => ({
   marginTop: {
@@ -31,65 +32,82 @@ const styles = theme => ({
   marginLeft: {
     marginLeft: theme.spacing(2)
   },
+  buttonCreate: {
+    color: 'white',
+    marginTop: 7
+  }
 });
 
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      location: '',
-      image: '',
-      isGuide: undefined
+      user: null
     };
   }
 
   componentDidMount() {
-
-    fetch(`api/profile.php?email=${ this.props.user.email }`)
-    .then(res => res.json())
-    .then(response => {
-      return this.setState({
-      name: response.name,
-      location: response.location,
-      image: response.image,
-      isGuide: response.isGuide
-      })
-    });
+    if (!this.props.user || this.props.match.params.email !== this.props.user.email) {
+      fetch('/api/profile.php?email=' + this.props.match.params.email)
+        .then(res => res.json())
+        .then(response => {
+          this.setState({ user: response });
+        });
+    } else {
+      this.setState({ user: this.props.user });
+    }
   }
+
+  // COMPONENTDIDUPDATE?
 
   render() {
     const { classes } = this.props;
+    if (!this.state.user) {
+      return null;
+    }
     return (
-      <>
-      <Container className={classes.marginBottom} >
-        <Typography className={classes.marginTop} variant="h4">
-          {this.state.name}
-        </Typography>
-        <Typography className={classes.marginLeft} variant="subtitle1">
-          {this.state.location}
-        </Typography>
-      </Container>
-      <Container>
-        <Grid className={classes.marginBottom} container
-          direction="row"
-          justify="center"
-          alignItems="center">
-          <Grid item xs={4}>
-            <Avatar alt="avatar" src={this.state.image} className={classes.avatar} />
-          </Grid>
-          <Grid item xs={6}>
-            <Button type="button" fullWidth variant="contained" color="primary" onClick={() => this.props.view('editProfile', this.props.user)} >
-              <Typography variant="button">Edit</Typography>
-            </Button>
-          </Grid>
+    <>
+    <Container className={classes.marginBottom} >
+      <Typography className={classes.marginTop} style={{ paddingLeft: '16px' }} variant="h4">
+        {this.state.user.name }
+      </Typography>
+      <Typography className={classes.marginLeft} variant="subtitle1">
+        {this.state.user.location}
+      </Typography>
+    </Container>
+    <Container>
+      <Grid className={classes.marginBottom} container
+        direction="row"
+        justify="center"
+        alignItems="center">
+        <Grid item xs={4}>
+          <Avatar alt="avatar" src={this.state.user.image} className={classes.avatar} />
         </Grid>
-      </Container>
-      {this.state.isGuide===true
-      ?<UpComingTuursList view={this.props.view} user={ this.props.user }/>
-      :<Typography variant="h5">No Tuurs available</Typography>
-      }
+        <Grid item xs={6}>
+          <ThemeProvider theme={theme}>
+            <Button type="button" fullWidth variant="contained" color="primary" component={Link} to={'/edit-profile/' + this.state.user.email} >
+              <Typography variant="button">Edit profile</Typography>
+            </Button>
+            { this.state.user.isGuide
+              ? <Button className={classes.buttonCreate} type="button" fullWidth variant="contained" color="secondary" component={Link} to={'/create-package'} >
+                  Create Package
+              </Button>
+              : null
+            }
+
+
+
+          </ThemeProvider>
+        </Grid>
+      </Grid>
+    </Container>
+    <UpComingTuursList user={ this.state.user }/>
+      {/* {this.state.user.isGuide
+        ? <UpComingTuursList user={ this.state.user }/>
+        : <Typography variant="h5" style={{ paddingLeft: '10px' }}>No Tuurs available</Typography>
+      }  */}
       </>
+
     );
   }
 }

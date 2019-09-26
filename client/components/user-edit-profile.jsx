@@ -14,9 +14,9 @@ import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
-    secondary: { main: '#5bd1d7' },
-    lightBeige: { main: '#f1f1f1' },
-    beige: { main: '#f5e1da' }
+    secondary: { main: '#A6C7C8' },
+    inherit: { main: '#A0C3C5' },
+    default: { main: '#f5e1da' }
   }
 });
 
@@ -55,7 +55,8 @@ class EditProfile extends Component {
       email: '',
       location: '',
       image: '',
-      bio: ''
+      bio: '',
+      isGuide: this.props.user.isGuide
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -71,7 +72,7 @@ class EditProfile extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    const { name, email, location, bio, image } = this.state;
+    // const { name, email, location, bio, image } = this.state;
     if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length) {
       this.setState({
         inputErrors: {
@@ -84,7 +85,7 @@ class EditProfile extends Component {
       });
     } else {
       const { name, email, location, bio, image } = this.state;
-      fetch(`api/profile.php?email=${this.state.email}`, {
+      fetch('/api/profile.php?email=' + email, {
         method: 'PATCH',
         body: JSON.stringify({
           name: name,
@@ -94,22 +95,23 @@ class EditProfile extends Component {
           bio: bio
         })
       })
-      .then(res => res.json())
-      this.props.view('userProfile', this.state);
+        .then(res => res.json());
+      this.props.edit(this.state);
     }
   }
+
   componentDidMount() {
-    // const email = 'dPaschal@gmail.com';
-    fetch(`api/profile.php?email=${this.props.user.email}`)
-      .then(res => res.json())
-      .then(response => this.setState({
-        name: response.name,
-        email: response.email,
-        location: response.location,
-        image: response.image,
-        bio: response.bio
-      }));
+    let { name, email, location, image, bio } = this.props.user;
+
+    this.setState({
+      name: name,
+      email: email,
+      location: location,
+      image: image,
+      bio: bio
+    });
   }
+
   render() {
     const { classes } = this.props;
     return (
@@ -128,7 +130,7 @@ class EditProfile extends Component {
                 justify="center"
                 alignItems="center">
                 <Grid item >
-                  <Avatar alt="avatar" src={this.state.image} className={classes.avatar} />
+                  <Avatar alt="avatar" src={this.props.user.image} className={classes.avatar} />
                 </Grid>
               </Grid>
             </Container>

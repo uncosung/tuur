@@ -10,15 +10,16 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Email from '@material-ui/icons/Email';
 import LocationOn from '@material-ui/icons/LocationOn';
-import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { Link, withRouter } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
-    secondary: { main: '#5bd1d7' },
-    lightBeige: { main: '#f1f1f1' },
-    beige: { main: '#f5e1da' }
+    secondary: { main: '#A6C7C8' },
+    inherit: { main: '#A0C3C5' },
+    default: { main: '#f5e1da' }
   }
 });
 
@@ -67,7 +68,8 @@ class SignUp extends Component {
         location: false,
         image: false,
         bio: false
-      }
+      },
+      user: null
 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -88,11 +90,12 @@ class SignUp extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const { name, email, location, bio, image, isGuide } = this.state;
+
     const regexEmail = /[?=@]/g;
     const regexFullName = /[A-Za-z][A-Za-z.'-]+\s[A-Za-z][A-Za-z.'-]+$/g;
-    const emailTest = regexEmail.test( email );
-    const nameTest = regexFullName.test( name );
-    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || !emailTest || !nameTest ) {
+    const emailTest = regexEmail.test(email);
+    const nameTest = regexFullName.test(name);
+    if (!this.state.name.length || !this.state.email.length || !this.state.location.length || !this.state.bio.length || !emailTest || !nameTest) {
       this.setState({
         inputErrors: {
           name: !nameTest,
@@ -110,10 +113,19 @@ class SignUp extends Component {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
-        }})
-        .then(res => { res.json()})
-        .then( newUser => this.props.view('userProfile', this.state )
-        );
+        } })
+        .then(res => res.json())
+        .then(newUser => {
+          if (!newUser.auth) {
+            return this.setState({
+              inputErrors: {
+                email: true
+              }
+            });
+          } else {
+            this.props.logIn(this.state);
+          }
+        });
     }
   }
 
@@ -184,11 +196,11 @@ class SignUp extends Component {
             <FormControlLabel control={
               <Switch checked={this.state.isGuide} onChange={() => this.handdleToggle(event)} value="guide" />} label="Do you want to be a guide?" />
             <Grid className={classes.marginTop} container justify="center" >
-
-              <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
-
-                <Typography variant="body1" gutterBottom>Sign Up</Typography>
-              </Button>
+              <ThemeProvider theme={theme}>
+                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
+                  <Typography variant="body1" >Sign Up</Typography>
+                </Button>
+              </ThemeProvider>
             </Grid>
           </Grid>
 
@@ -198,4 +210,4 @@ class SignUp extends Component {
   }
 }
 
-export default withStyles(styles)(SignUp);
+export default withRouter(withStyles(styles)(SignUp));

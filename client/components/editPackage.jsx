@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
-// import clsx from 'clsx';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-// import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
-// import Checkbox from '@material-ui/core/Checkbox';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
-// import FastFood from '@material-ui/icons/FastFood';
-// import LocalBar from '@material-ui/icons/LocalBar';
-// import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-// import DirectionsRun from '@material-ui/icons/DirectionsRun';
-// import FreeBreakfast from '@material-ui/icons/FreeBreakfast';
-// import DirectionsBike from '@material-ui/icons/DirectionsBike';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
@@ -26,9 +17,9 @@ import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
-    secondary: { main: '#5bd1d7' },
-    lightBeige: { main: '#f1f1f1' },
-    beige: { main: '#f5e1da' }
+    secondary: { main: '#A6C7C8' },
+    inherit: { main: '#A0C3C5' },
+    default: { main: '#f5e1da' }
   }
 });
 
