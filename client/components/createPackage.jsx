@@ -6,7 +6,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
@@ -16,7 +15,14 @@ import Modal from '@material-ui/core/Modal';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
-import DatePicker from './daterangepicker';
+import DatePicker from './results/date-multiple-picker';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+import Add from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button';
+import MatGeocoder from 'react-mui-mapbox-geocoder';
+
 
 const divStyle = {
   width: '47px',
@@ -35,9 +41,9 @@ const imgStyle = {
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
-    secondary: { main: '#5bd1d7' },
-    lightBeige: { main: '#f1f1f1' },
-    beige: { main: '#f5e1da' }
+    secondary: { main: '#A6C7C8' },
+    inherit: { main: '#A0C3C5' },
+    default: { main: '#f5e1da' }
   }
 });
 
@@ -56,14 +62,17 @@ const styles = theme => ({
     width: '100%'
   },
   marginTop: {
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(3)
   },
   paddingTop: {
     paddingTop: theme.spacing(5)
   },
+  noPadding: {
+    padding: 2
+  },
   marginLeft: {
-    marginLeft: theme.spacing(3),
-    marginTop: theme.spacing(3)
+    marginLeft: theme.spacing(4),
+    marginTop: theme.spacing(1)
   },
   chip: {
     width: '31%',
@@ -106,6 +115,21 @@ const styles = theme => ({
     width: 40,
     marginRight: '4px',
     marginBottom: '4px'
+  },
+  close: {
+    padding: theme.spacing(2)
+  },
+  info: {
+    backgroundColor: theme.palette.primary.dark
+  },
+  fab: {
+    margin: theme.spacing(1),
+    right: 20,
+    bottom: '77px',
+    position: 'fixed'
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1)
   }
 });
 
@@ -115,7 +139,8 @@ const categories = [
   'Coffee',
   'Outdoors',
   'Nightlife',
-  'Activities'
+  'Activities',
+  'Other'
 ];
 
 class CreatePackage extends Component {
@@ -125,7 +150,10 @@ class CreatePackage extends Component {
       title: '',
       description: '',
       tags: [],
-      location: '',
+      location: {
+        name: '',
+        coordinates: []
+      },
       timeRange: '',
       dates: [],
       imageUrl: '',
@@ -138,27 +166,29 @@ class CreatePackage extends Component {
         tags: false
       },
       openModal: false,
-      newDates: []
+      newDates: [],
+      openSnackBar: false
 
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleModalClose = this.handleModalClose.bind(this);
-    this.iconClickhandler = this.iconClickhandler.bind(this);
-    this.removeImage = this.removeImage.bind(this);
-    this.removeChips = this.removeChips.bind(this);
-    this.modalClose = this.modalClose.bind(this);
   }
 
-  handleChange(event) {
+  handleSelect=(result) =>{
+    this.setState({
+      location: {
+        name: result.place_name,
+        coordinates: result.geometry.coordinates,
+      }
+    });
+  }
+
+  handleChange=(event) =>{
     const { value } = event.target;
     this.setState({
       tags: value
     });
   }
 
-  handleInputChange(event) {
+  handleInputChange=(event) =>{
     const { name, value } = event.target;
     this.setState({
       [name]: value,
@@ -166,72 +196,140 @@ class CreatePackage extends Component {
     });
   }
 
-  handleSubmit(event) {
+  handleSubmit=(event) =>{
     event.preventDefault();
     const { title, description, location, tags, timeRange, dates, imageUrl } = this.state;
 
-    if (!this.state.title.length || !this.state.description.length || !this.state.location.length || !this.state.imageUrl.length) {
+    if (!title.length || !description.length || !location.name.length || !imageUrl.length) {
       this.setState({
         inputErrors: {
-          title: !this.state.title,
-          description: !this.state.description,
-          location: !this.state.location,
-          imageUrl: !this.state.imageUrl
+          title: !title,
+          description: !description,
+          location: !location,
+          imageUrl: !imageUrl
         }
       });
     } else {
-      fetch('/api/package.php', {
-        method: 'POST',
-        body: JSON.stringify(
-          { title, location, tags, timeRange, description, dates, imageUrl })
-      })
-        .then(res => res.json())
-        .then(newPackage => this.props.view( 'userProfile' , this.props.user ));
+      // for ( var value of dates ){
+      if (imageUrl.length !== 0 && dates.length !== 0 && tags.length !== 0  && location.name.length !==0) {
+        fetch('/api/package.php', {
+          method: 'POST',
+          body: JSON.stringify(
+            { title, location, tags, timeRange, description, dates, imageUrl })
+        })
+          .then(res => res.json())
+          .then(newPackage => console.log(newPackage));
+        this.setState({ openSnackBar: false });
+        this.props.history.push('/user-profile/' + this.props.packages.email);
       }
-
+      // }
     }
-  
+    if (imageUrl.length === 0 || dates.length === 0 || tags.length === 0 || location.name.length===0) {
+      this.setState({ openSnackBar: true });
+    } else {
+      this.setState({ openSnackBar: false });
+    }
+  }
 
-  handleModalClose(dates) {
+  handleSnackbarClose=(event, reason) =>{
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({ openSnackBar: false });
+  }
+
+  handleSnackbarOpen=() =>{
+    this.setState({ openSnackBar: true });
+  }
+
+  handleModalClose=(dates) =>{
     this.setState({
       openModal: false,
-      dates: dates 
+      dates: dates
     });
   }
-  modalClose() {
+
+  modalClose=() =>{
     this.setState({ openModal: false });
   }
-  iconClickhandler() {
+
+  iconClickhandler=() =>{
     let img = document.getElementById('input-imageUrl').value;
-    let imgArray= this.state.imageUrl;
-    if ( img ){
-      if(imgArray.length >= 4) {
+    let imgArray = this.state.imageUrl;
+    if (img) {
+      if (imgArray.length >= 4) {
         document.getElementById('input-imageUrl').value = '';
         return;
       }
-      this.setState({ imageUrl : [...this.state.imageUrl, img]});
+      this.setState({ imageUrl: [...this.state.imageUrl, img] });
       document.getElementById('input-imageUrl').value = '';
     }
   }
-  removeImage(e) {
+
+  removeImage=(e) =>{
     let id = e.target.id;
     id = parseInt(id);
     let imgArray = this.state.imageUrl;
     imgArray.splice(id, 1);
     this.setState({ imageUrl: imgArray });
   }
-  removeChips(e) {
+
+  removeChips=(e) =>{
     let dateId = e.currentTarget.id;
     dateId = parseInt(dateId);
     let datesArray = this.state.dates;
     datesArray.splice(dateId, 1);
     this.setState({ dates: datesArray });
   }
+
+  maxDate() {
+    const currentDate = new Date();
+    let month = currentDate.getMonth();
+    let day = currentDate.getDate();
+    let year = currentDate.getFullYear();
+    const maxMonth = this.maxMonth(month);
+    const maxDay = 1;
+    const maxYear = this.maxYear(maxMonth, year);
+    const maxDate = new Date(maxYear, maxMonth, maxDay);
+    const data = {
+      maxDate
+    };
+    return data;
+  }
+
+  maxMonth(currentMonth) {
+    if (currentMonth >= 10) {
+      return currentMonth + 2 - 12;
+    }
+    return currentMonth + 2;
+  }
+
+  maxYear(month, year) {
+    if (!month) {
+      return year++;
+    }
+    return year;
+  }
+
   render() {
     const { classes } = this.props;
+    let warning = null;
+    if (this.state.imageUrl.length === 0) {
+      warning = '⛔️ You need to upload images 🎍';
+    } else if (this.state.dates.length === 0) {
+      warning = '⛔️ You need to pick dates 📆';
+    } else if (this.state.tags.length === 0) {
+      warning = '⛔️ You need to pick categories 🍧';
+    } 
+    
+
+    const geocoderApiOptions = {
+      country: 'us',
+      proximity: { longitude: -118.243683, latitude: 34.052235 }
+    };
 
     return (
-      <Container>
+      <Container style={{ paddingBottom: '80px' }}>
         <Typography className={classes.marginTop} variant="h4" align="center" gutterBottom>
             Create Tuur
         </Typography>
@@ -242,9 +340,25 @@ class CreatePackage extends Component {
               <TextField required helperText={this.state.inputErrors.title ? 'Must include a title' : ' '} error={this.state.inputErrors.title} fullWidth id="input-title" label="Title" name="title" onChange={this.handleInputChange} text={ this.state.name}/>
             </Grid>
           </Grid>
-          <Grid className={classes.margin} container alignItems="flex-end" justify="center">
+          {/* <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
               <TextField required helperText={this.state.inputErrors.location ? 'Please provide a location' : ' '} error={this.state.inputErrors.location} fullWidth id="input-location" label="Location" name="location" onChange={this.handleInputChange} />
+            </Grid>
+          </Grid> */}
+          <Grid justify="center" className={classes.margin} container alignItems="flex-end" justify="center">
+            <Grid item xs={10}>
+              <MatGeocoder
+                inputPlaceholder="Location"
+                accessToken={'pk.eyJ1IjoiamVub25nMTkiLCJhIjoiY2p2MzJoZHFoMDIxejQ0czNvYXF2azNnNSJ9.El0sFq0rePnWEbFC4RwVTQ'}
+                showLoader={true}
+                showInputContainer={false}
+                autocomplete={true}
+                fuzzyMatch={true}
+                {...geocoderApiOptions}
+                onSelect={this.handleSelect}
+                onChange={this.handleInputChange}
+                name="location"
+              />
             </Grid>
           </Grid>
 
@@ -252,10 +366,10 @@ class CreatePackage extends Component {
             <Grid item xs={10} >
               <FormControl className={classes.form}>
                 <InputLabel htmlFor="input-image" required>
-                    Images (max 4)
+                    Images (max 4, click to remove)
                 </InputLabel>
                 <Input
-                  placeholder='Images (max 4 images)'
+                  placeholder='Images (max 4 images, click to remove)'
                   className={classes.input}
                   id="input-imageUrl"
                   type = 'text'
@@ -277,14 +391,14 @@ class CreatePackage extends Component {
             <div style={divStyle} className="preview" onClick={this.removeImage}>
               <img id="3" style={imgStyle} src={this.state.imageUrl ? this.state.imageUrl[3] : null} alt=""/>
             </div>
-            <IconButton aria-label="add" onClick={this.iconClickhandler}>
-              <AddCircleOutline />
+            <IconButton aria-label="add" className={classes.noPadding} onClick={this.iconClickhandler}>
+              <AddCircleOutline style={{ fontSize: 40 }}/>
             </IconButton>
           </Grid>
 
           <Grid className={classes.margin} container alignItems="flex-end" justify="center">
             <Grid item xs={10}>
-              <TextField required helperText={this.state.inputErrors.timeRange ? 'Please provide duration of tuur' : ' '} error={this.state.inputErrors.timeRange} fullWidth id="input-timeRange" label="Tuur Duration(timeRange)" name="timeRange" onChange={this.handleInputChange} />
+              <TextField required helperText={this.state.inputErrors.timeRange ? 'Please provide duration of tuur' : ' '} error={this.state.inputErrors.timeRange} fullWidth id="input-timeRange" label="Tuur Duration (Time range)" name="timeRange" onChange={this.handleInputChange} />
             </Grid>
           </Grid>
 
@@ -292,7 +406,7 @@ class CreatePackage extends Component {
             <Grid item xs={10}>
               <TextField
                 id='outlined-textarea'
-                label='Describe the Tuur(150 characters)'
+                label='Describe the Tuur (150 characters)'
                 required
                 helperText={this.state.inputErrors.description ? 'Please enter a short description about the tuur' : ' '}
                 error={this.state.inputErrors.description}
@@ -316,7 +430,7 @@ class CreatePackage extends Component {
               <CalendarToday onClick={() => this.setState({ openModal: true })}/>
             </Grid>
 
-            <Grid item xs={11} className={classes.marginZero}>
+            <Grid item xs={11} >
               <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
@@ -324,14 +438,13 @@ class CreatePackage extends Component {
                 onClose={() => this.handleModalClose(this.state.dates)}
               >
                 <Grid className={classes.paper}>
-                  <DatePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose}/>
+                  <DatePicker key={this.state.title} dates={this.state.dates} close={this.handleModalClose} modalClose={this.modalClose} unavailableDates={ this.maxDate()} />
 
                 </Grid>
               </Modal>
             </Grid>
           </Grid>
-
-          <Grid container>
+          <div style={{ padding: '0 25px 0 30px 0', display: 'flex', width: '80%', flexWrap: 'wrap' }} >
             {this.state.dates.map((data, index) => {
               let date = data.getDate();
               let month = data.getMonth() + 1;
@@ -348,9 +461,9 @@ class CreatePackage extends Component {
               );
 
             })}
-          </Grid>
+          </div>
 
-          <Grid className={classes.margin} container alignItems="flex-end" justify="center">
+          <Grid className={classes.margin} style={{ marginBottom: '30px' }} container alignItems="flex-end" justify="center">
             <div className={classes.root}>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="select-multiple-chip" required>
@@ -387,16 +500,40 @@ class CreatePackage extends Component {
 
           </Grid>
 
-          <Grid justify="center" className={classes.margin} container>
-            <Grid className={classes.marginTop} container justify="center" >
-              <ThemeProvider theme={theme}>
-                <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary">
-                  <Typography variant="body1" gutterBottom>Create Package</Typography>
+          <ThemeProvider theme={theme}>
+            <Grid container justify="center" style={{ marginBottom: '30px' }}>
+              <Grid item xs={10}>
+                <Button type="submit" fullWidth variant="contained" color="primary" onClick={this.handleSubmit} >
+                  <Add style={{ fontSize: '30px', padding: 0, margin: 0 }} className={classes.extendedIcon} /> Create
                 </Button>
-              </ThemeProvider>
+              </Grid>
             </Grid>
-          </Grid>
+          </ThemeProvider>
 
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left'
+            }}
+            variant="info"
+            open={this.state.openSnackBar}
+            autoHideDuration={6000}
+            onClose={this.handleSnackbarClose}
+            ContentProps={{
+              'aria-describedby': 'message-id'
+            }}
+            message={<span id="message-id">{warning}</span>}
+            action={[
+              <IconButton
+                key="close"
+                aria-label="Close"
+                color="inherit"
+                className={classes.close}
+                onClick={() => this.handleSnackbarClose()}>
+                <CloseIcon />
+              </IconButton>
+            ]}
+          />
         </Grid>
       </Container>
     );

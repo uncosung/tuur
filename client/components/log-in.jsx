@@ -5,23 +5,36 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import { Redirect, Link } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
     secondary: { main: '#5bd1d7' },
-    lightBeige: { main: '#f1f1f1' },
-    beige: { main: '#f5e1da' }
+    inherit: { main: '#f1f1f1' },
+    default: { main: '#f5e1da' }
   }
 });
 
+const imgStyle = {
+  width: '100%',
+  height: '70px',
+  backgroundRepeat: 'norepeat',
+  backgroundSize: '100% 100%',
+  '&:hover': {
+    opacity: 1
+  }
+};
 const styles = theme => ({
   marginTop: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(5)
+    marginTop: theme.spacing(4)
   },
   marginLeft: {
     marginLeft: -5
+  },
+  margin: {
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2)
   }
 });
 
@@ -29,7 +42,9 @@ class LogIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: ''
+      email: '',
+      auth: false,
+      user: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -42,20 +57,35 @@ class LogIn extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    fetch(`/api/profile.php?email=${this.state.email}`)
+    fetch(`/api/profile.php?login=${this.state.email}`)
       .then(res => res.json())
-      .then(data => this.props.view('userProfile', data));
+      .then(data => {
+        if (data.auth) {
+          this.props.logIn(data);
+        }
+      }
+      );
   }
   render() {
     const { classes } = this.props;
+    if (this.state.auth) {
+      return <Redirect to={{
+        pathname: '/user-profile/' + this.state.email,
+        state: { user: this.state }
+      }}
+      />;
+    }
     return (
     <>
+    <div style = {{ fontSize: 0 }}>
+      <img style={imgStyle} src="https://i.imgur.com/AU3rU4N.png" alt="logo"/>
+      <img style={{ width: '100%', height: '260px' }} src="https://cdn.pixabay.com/photo/2016/11/18/19/40/adventure-1836601_1280.jpg" alt="mainImage"/>
+    </div>
       <Grid justify="center" alignItems="center" container>
         <Typography className={classes.marginTop} variant="h4" gutterBottom>
         Welcome back
         </Typography>
       </Grid>
-
       <Grid className={classes.marginTop} container justify="center" alignItems="flex-end">
         <Grid item xs={10}>
           <TextField onChange={this.handleInputChange} required fullWidth id="input-email" label="email" name="email" />
@@ -74,12 +104,12 @@ class LogIn extends React.Component {
 
       <Grid className={classes.marginTop} container justify="center" alignItems="flex-end">
         <Grid item xs={7}>
-          <Typography className={classes.marginTop} variant="button" gutterBottom align="center">
+          <Typography className={classes.margin} variant="button" gutterBottom align="center">
             Don't have an account? </Typography>
         </Grid>
         <Grid item xs={3}>
           <ThemeProvider theme={theme}>
-            <Typography className={classes.marginLeft} color="primary" variant="button" align="center" onClick={() => this.props.view('signUp')}>sign up</Typography>
+            <Typography className={classes.marginLeft} color="primary" variant="button" align="center" component={Link} style={{ textDecoration: 'none' }} to={'/sign-up'}>sign up</Typography>
           </ThemeProvider>
         </Grid>
       </Grid>

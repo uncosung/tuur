@@ -1,3 +1,4 @@
 server/public/api/db_connection.php
 node_modules
 .DS_Store
+client/components/mapboxToken.js

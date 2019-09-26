@@ -5,16 +5,14 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import UpComingTuurItem from './user-upcoming-tuurs-list-item';
 import GridList from '@material-ui/core/GridList';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import { ThemeProvider } from '@material-ui/styles';
+import BookedTuurs from './user-booked-tuurs-list-item';
 
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3A8288' },
-    secondary: { main: '#5bd1d7' },
-    lightBeige: { main: '#f1f1f1' },
-    beige: { main: '#f5e1da' }
+    secondary: { main: '#A6C7C8' },
+    inherit: { main: '#A0C3C5' },
+    default: { main: '#f5e1da' }
   }
 });
 
@@ -57,6 +55,12 @@ const styles = theme => ({
   },
   marginTop2: {
     marginTop: theme.spacing(4)
+  },
+  fab: {
+    margin: theme.spacing(1)
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1)
   }
 });
 
@@ -64,44 +68,87 @@ class UpComingTuursList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      packages: []
+      userEmail: '',
+      packages: [],
+      booked: [],
+      updated: false
     };
   }
 
-  componentDidMount() {
-    fetch('/api/package.php')
+  getBooked() {
+    if (this.state.isGuide) {
+      fetch('/api/guideBooked.php')
+        .then(res => res.json())
+        .then(booked => this.setState({ booked }));
+    } else {
+      fetch('/api/tuuristBooked.php')
+        .then(res => res.json())
+        .then(booked => this.setState({ booked }));
+    }
+  }
+
+  getCreatedPackages() {
+    fetch('/api/package.php?email')
       .then(res => res.json())
-      .then(packages => this.setState({ packages: packages }));
+      .then(packages => this.setState({ packages, updated: true }));
+  }
+
+  componentDidMount() {
+    this.getBooked();
+    this.getCreatedPackages();
+
+  }
+
+  componentDidUpdate() {
+    if (!this.state.packages.length && !this.state.booked.length || this.state.updated) {
+      this.getBooked();
+      this.getCreatedPackages();
+    }
+
   }
 
   render() {
     const { classes } = this.props;
-    const packageMap = this.state.packages.map(packageItem => {
-      return <UpComingTuurItem package={packageItem} key={packageItem.id} />;
+    const bookedMap = this.state.booked.map((bookedItem, id) => {
+      return <BookedTuurs key={id} booked={bookedItem} />;
+    });
+    const packageMap = this.state.packages.map((packageItem, id) => {
+      return <UpComingTuurItem key={id} package={packageItem} />;
     });
     return (
-      
       <>
+        {/* BOOKED PACKAGES */}
         <Container className={classes.marginBottom} >
-          <Typography className={classes.marginTop} variant="h4">
-            Upcoming Tuurs
+          <Typography className={classes.marginTop} variant="h5">
+            Booked Packages
           </Typography>
         </Container>
         <div className={classes.root}>
           <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
-            {packageMap}
+            {bookedMap}
           </GridList>
         </div>
-        <Grid justify="center" className={classes.margin} container>
-        <Grid className={classes.marginTop2} container justify="center" >
-          <ThemeProvider theme={theme}>
-            <Button type="submit" className={classes.margin} fullWidth variant="contained" color="primary" onClick={() => this.props.view('createPackage', this.props.user )}>
-              <Typography variant="body1" gutterBottom>Create Package</Typography>
-            </Button>
-          </ThemeProvider>
-        </Grid>
-      </Grid>
+
+        {/* CREATED PACKAGES / GUIDES ONLY */}
+        {
+          this.props.user.isGuide
+            ? <>
+            <Container className={classes.marginBottom} >
+              <Typography className={classes.marginTop} variant="h5">
+                Created Packages
+              </Typography>
+            </Container>
+            <div className={classes.root} style={{ paddingBottom: '80px' }}>
+              <GridList className={classes.gridList} cols={1.5} cellHeight={300}>
+                {packageMap}
+              </GridList>
+            </div>
+            </>
+            : null
+        }
+
       </>
+
     );
   }
 

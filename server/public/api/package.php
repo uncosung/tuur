@@ -4,10 +4,21 @@ session_start();
 header("Content-Type:application/json");
 $method = $_SERVER['REQUEST_METHOD'];
 $item = file_get_contents('php://input');
-$email = $_SESSION['userEmail'];
 
 if ( $method === 'GET'){
-  $query = "SELECT * FROM `package` WHERE `profileEmail` = '{$email}'";
+  if ( isset($_GET['email'])){
+    // $_email = $_GET['email'];
+
+    $where = " WHERE `profileEmail` = '{$_SESSION['userEmail']}'";
+  }
+  elseif ( isset($_GET['id'])){
+    $id=$_GET['id'];
+    $where = " WHERE `id` = {$id}";
+  }
+  else {
+    $where = '';
+  }
+  $query = "SELECT * FROM `package`{$where}";
   $result = mysqli_query( $conn , $query );
   $output = [];
   while ( $row = mysqli_fetch_assoc( $result )){
@@ -22,12 +33,9 @@ if ( $method === 'POST'){
   $dates = json_encode($package['dates']);
   $images = json_encode( $package['imageUrl']);
   $query = "INSERT INTO `package`(`title`, `description`, `tags`, `location`, `timeRange`, `dates`, `mainImage`, `images`, `profileEmail`)
-            VALUES ('{$package['title']}', '{$package['description']}', '{$tags}',  '{$package['location']}', '{$package['timeRange']}', 
-            '{$dates}', '{$package['imageUrl'][0]}', '{$images}', '{$email}')";
+            VALUES (\"{$package['title']}\", \"{$package['description']}\", '{$tags}',  '{$package['location']}', '{$package['timeRange']}', 
+            '{$dates}', '{$package['imageUrl'][0]}', '{$images}', '{$_SESSION['userEmail']}')";
   $result = mysqli_query($conn, $query);
   print_r( $result );
-}
-if ( $method === 'PATCH'){
-
 }
 ?>
